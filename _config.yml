@@ -1,3 +1,88 @@
-name: Austin Tripp
+# Basic site settings
+name: "Austin Tripp"
+locale: "en"
+title: "Austin Tripp's Personal Website"
+title_separator: "-"
+repository: "https://github.com/AustinT/AustinT.github.io"
+
+# Site Author
+author:
+        name: "Austin Tripp"
+        avatar: 
+        bio: "Waterloo Undergrad into machine learning and nanotechnology"
+        email: "austin dot james dot tripp at gmail.com"
+        location: "Toronto, ON"
+        github: "AustinT"
+        linkedin: "austin-tripp"
+
+# Plugins
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed                
+
+# mimic GitHub Pages with --safe
+whitelist:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+
+# Files
+keep_files:
+        - .git
+encoding: "utf-8"
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
+
+# Blog stuff
+words_per_minute: 200
 markdown: kramdown
 permalink: /blog/:year/:month/:day/:title
+paginate: 5 # amount of posts
+paginate_path: /page:num/
+timezone: "GMT-5"
+highlighter: rouge
+incremental: false
+
+# Markdown specific stuff
+kramdown:
+        input: GFM
+        hard_wrap: false
+        auto_ids: true
+        footnote_nr: 1
+        entity_output: as_char
+        toc_levels: 1..6
+        smart_quotes: lsquo,rsquo,ldquo,rdquo
+        enable_coderay: false
+
+# Archives
+#  Type
+#  - GitHub Pages compatible archive pages built with Liquid ~> type: liquid (default)
+#  - Jekyll Archives plugin archive pages ~> type: jekyll-archives
+#  Path (examples)
+#  - Archive page should exist at path when using Liquid method or you can
+#    expect broken links (especially with breadcrumbs enabled)
+#  - <base_path>/tags/my-awesome-tag/index.html ~> path: /tags/
+#  - <base_path/categories/my-awesome-category/index.html ~> path: /categories/
+#  - <base_path/my-awesome-category/index.html ~> path: /
+category_archive:
+  type: liquid
+  path: /categories/
+tag_archive:
+  type: liquid
+  path: /tags/
+
+# Defaults
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: true
+      related: true  
