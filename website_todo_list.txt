@@ -1,0 +1,5 @@
+Website for blog categories: https://blog.webjeda.com/jekyll-categories/
+
+Add small post previews to posts page
+
+Maybe update your look to be like his: http://hongleixie.github.io/index.html

@@ -33,7 +33,7 @@ but until about 1 year ago I was super into language learning.
 - At one point I had a good grasp of 6 languages: English, Français, Deutsch, 普通话, Esperanto, and Toki Pona.
 - I like to bake cakes/muffins/cookies, but not really other kinds of cooking. Baking is the most precise form of cooking
 - [Anki]("https://apps.ankiweb.net/") is the love of my life (so far)
-- I can proudly say I have <b>never</b> changed my Facebook profile picture (and I have had Facebook for almost 6 years). Take that Zuck, you will never get more data out of me!
+- I can proudly say I have <b>never</b> changed my Facebook profile picture (and I have had Facebook for almost 6 years). I can't make it too easy for  Zuck to take my data ;)
 - I would rather read a math textbook than go out drinking (and have declined invites multiple times in the past to do so)
 - If you ask me to pick a random number between 1 and 10, I will always pick an irrational number
 - As a _nanotechnology engineer_, I have an "approximate knowledge of many things." As a _machine learning engineer_, I have "many knowledge of approximate things."
