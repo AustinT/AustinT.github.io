@@ -45,3 +45,6 @@ These are some programs I consider essential for any computer
 
 ## Linux Only
 - [Redshift](http://jonls.dk/redshift/) is essentially f.lux but for linux.
+
+# Books
+I am trying to keep a reading list now on my github ([link](https://github.com/AustinT/book-summaries)). Feel free to check it out for my notes and summaries. Note that it is definitely still a work in progress.
