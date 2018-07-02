@@ -3,7 +3,7 @@ layout: default
 title: Austin Tripp's blog
 ---
 # {{ page.title }}
-Note: this is more of a test feature than an actual blog. For the time being I don't intend to update this on a regular basis.
+Currently I am using this blog to practice technical writing, organize my thoughts on research papers, and occasionally share something interesting that I find on the internet.
 
 {% for post in site.posts %}
 - {{ post.date | date_to_string }}: [{{ post.title }}]({{ post.url }})
