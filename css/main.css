@@ -24,13 +24,9 @@ h1 {
     font-family:'Helvetica', 'Arial', 'Sans-Serif';
 }
 p, ul, ol{
-    font-size: 1.5em;
-    line-height: 1.4em;
+    font-size: 16pt;
+    line-height: 20pt;
     color: #333;
-}
-/* Fix nested list issue*/
-ul ul, ol ol{
-    font-size: 1em;
 }
 footer {
     border-top: 1px solid #d5d5d5;
