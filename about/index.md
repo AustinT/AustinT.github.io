@@ -2,6 +2,8 @@
 layout: default
 title: About Austin
 ---
+<img src="/files/about_me_img1.png" alt="pic of me" 
+style="float:right;width:400px;margin:40px">
 # About Austin
 
 My name is Austin and I am currently an undergraduate
