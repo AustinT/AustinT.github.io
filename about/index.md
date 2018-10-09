@@ -30,6 +30,7 @@ for graduate school.)_
 In my spare time, I like learning new, interesting things. 
 Lately this has consisted mostly of math and programming, 
 but until about 1 year ago I was super into language learning. 
+I am also quite obsessed with efficiency: I always try to think of ways to optimize my life, even trivially.
 
 ## Fun facts about me
 - At one point I had a good grasp of 6 languages: English, Français, Deutsch, 普通话, Esperanto, and Toki Pona.
