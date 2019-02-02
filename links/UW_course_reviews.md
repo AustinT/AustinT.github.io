@@ -38,7 +38,7 @@ which is where all the interesting reactions are anyways.
 
 # CLAS
 ## CLAS 104: Classical Mythology
-Took this course online: bad idea. Online you basically pay 1k to read a textbook and learn trivia. The tests weren't super easy either. I hear in class the lectures are really good. Definitely a mistake to take online.
+Took this course online: bad idea. Online you basically pay 1k to read a textbook and learn trivia. The tests weren't super easy either. I hear in class the lectures are really good. Definitely a mistake to take online. My Anki deck for this course is linked [here](https://ankiweb.net/shared/info/51509709).
 
 ## CLAS 202: Ancient Roman Society
 Very good course! 
