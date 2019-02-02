@@ -5,6 +5,9 @@ title: Austin's Links
 # Austin's Links
 This is a non-extensive list of interesting links and references that I have collected over the years, and put the effort into linking on my website. I hope they are of use to you.
 
+## Courses
+- [Course reviews](/links/UW_course_reviews) of courses I've taken at UWaterloo
+
 ## Learning in General
 - [Anki](https://apps.ankiweb.net/) is an amazing piece of software for memorization.
 - [Learning how to Learn](https://www.coursera.org/learn/learning-how-to-learn) is an amazing free online course
