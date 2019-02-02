@@ -36,6 +36,15 @@ I felt this course was much more useful than CHEM 266,
 because in this course you learn more about functional group reactions,
 which is where all the interesting reactions are anyways.
 
+# CLAS
+## CLAS 104: Classical Mythology
+Took this course online: bad idea. Online you basically pay 1k to read a textbook and learn trivia. The tests weren't super easy either. I hear in class the lectures are really good. Definitely a mistake to take online.
+
+## CLAS 202: Ancient Roman Society
+Very good course! 
+It made me understand a lot of the societal changes that came from Christianity (for example the modern idea of religious salvation vs the ancient idea of a "give and take" religion).
+Easily the best humanities course I've taken at UW.
+
 # MATH
 ## MATH 235: Linear Algebra 2 for Honours Mathematics
 Continuation of linear algebra, with more focus on eigenvalues.
@@ -56,6 +65,14 @@ One of the worst courses I have taken.
 Basically we just learned how to calculate compound interest,
 and formulas for annuities with interest.
 Gave no introduction to finance or financial planning.
+
+# MUSIC
+## MUSIC 140: Popular Music and Culture
+Amazing course with Simon Wood.
+The lectures were super entertaining,
+and I really enjoyed learning about the origins of Rock and Roll
+(which is effectively what the course covered).
+This was definitely my favourite elective at UW.
 
 # NE
 ## NE 201 / NE 202 / NE 301 / NE 302
@@ -182,6 +199,12 @@ I enjoyed the course overall.
 Course that deals with a lot of Monte Carlo simulations for nanoscale systems.
 I enjoyed the programming and learning about Monte Carlo.
 Best NE course in my opinion, noting that my interests are very heavily in programming so this biases my opinion. 
+
+## NE 471: Nano-electronics
+Course covers nano-scale electronics and quantum mechanics. We learned about single-electron transistors which have interesting behaviour. Overall I liked the course but I think having a better solid-state physics background would have been nice.
+
+## NE 491: Nanostructured Materials
+Very comprehensive course about nanomaterials. Overall very good.
 
 # PMATH
 ## PMATH 347: Groups and Rings
