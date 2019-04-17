@@ -10,6 +10,7 @@ This is a non-extensive list of interesting links and references that I have col
 
 ## Learning in General
 - [Anki](https://apps.ankiweb.net/) is an amazing piece of software for memorization.
+ Click [here](/links/anki) for more tips on how to use it.
 - [Learning how to Learn](https://www.coursera.org/learn/learning-how-to-learn) is an amazing free online course
 
 ## Language Learning
