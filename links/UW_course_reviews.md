@@ -9,6 +9,15 @@ Note that I have excluded project courses from this list, and a lot of the gener
 
 If you are interested in notes for any of these courses feel free to email me!
 
+# ARTS
+## ARTS 490: Global Engagement Seminar
+Very unique course; topic changes every year.
+My year was the ethics/implications of AI.
+It is a very unique course: it is taught by "fellows" and the professors essentially act as TAs.
+We also got a bit of money to do our final project.
+It was also pass/fail which was nice.
+And it counted as a list A course (ethics course for engineering), which you need to graduate.
+
 # AMATH
 ## AMATH 331: Real Analysis
 This was a very interesting course.
@@ -44,6 +53,13 @@ Took this course online: bad idea. Online you basically pay 1k to read a textboo
 Very good course! 
 It made me understand a lot of the societal changes that came from Christianity (for example the modern idea of religious salvation vs the ancient idea of a "give and take" religion).
 Easily the best humanities course I've taken at UW.
+
+# CS
+## CS 485: Statistical and Computational Foundations of Machine Learning
+Taught by Shai Ben-David. He is a great prof: really knows his stuff, and wrote a very readable textbook on theoretical machine learning. This material is hard: lots of proving bounds using random theorems, but this course cuts to the fundamentals by pulling out the theorems only when needed, and putting the proofs mainly in the appendix.
+This means when reading it you can actually understand the ideas behind it without getting bogged down in the math.
+I feel I learned a lot of useful stuff from this course:
+I would highly recommend it!
 
 # MATH
 ## MATH 235: Linear Algebra 2 for Honours Mathematics
@@ -203,10 +219,17 @@ Best NE course in my opinion, noting that my interests are very heavily in progr
 ## NE 471: Nano-electronics
 Course covers nano-scale electronics and quantum mechanics. We learned about single-electron transistors which have interesting behaviour. Overall I liked the course but I think having a better solid-state physics background would have been nice.
 
+## NE 479: Organoelectronics
+A well-organized review of the physics behind organoelectronics, and how these devices work. Course was useful if you wanted to go into that field, but I didn't enjoy it because organoelectronics didn't really interest me (but I had to take an NE course to graduate).
+
 ## NE 491: Nanostructured Materials
 Very comprehensive course about nanomaterials. Overall very good.
 
 # PMATH
+## PMATH 332: Applied Complex Analysis
+Great introduction to the interesting and unintuitive math of complex numbers. As with AMATH 331, this course just scratched the surface of the subject, and made me realize just how much stuff is out there to learn.
+A highly recommended course if you want to know about complex derivatives (which are much more interesting than real derivatives).
+
 ## PMATH 347: Groups and Rings
 One of my favourite courses ever taken at UW
 (although I think it is no longer offered).
@@ -219,3 +242,10 @@ I found that after taking this course, I can now read math pages
 on Wikipedia without getting totally lost,
 since they use terms like "ring" and "field" to be very general,
 and these terms are explained fully in this course.
+
+# SYDE
+## SYDE 372: Introduction to Pattern Recognition
+Ok intro course to classification with machine learning.
+Only super basic algorithms are covered, mostly variants of distance algorithms (nearest/farthest neighbours, distance to cluster means, weighted Euclidean distances).
+I probably knew too much of the material already to benefit from the course, but it would be a good intro if you don't know much about machine learning.
+However, the exams had a lot of tedious math and contained serious errors in the questions, which was annoying.
