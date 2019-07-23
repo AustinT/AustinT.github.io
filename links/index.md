@@ -25,6 +25,11 @@ This is a non-extensive list of interesting links and references that I have col
 ## Organizations
 - [80000 hours](https://80000hours.org) is a website to help you choose a career that will do good. If you are a student (or if you aren't a student), I recommend reading their [career guide](https://80000hours.org/career-guide/)
 
+## Lifestyle
+- Robert Wiblin (founder of 80000 hours) put a quick guide to exercise online, suited more to those who want to exercise because they rationally see that they pretty much have to. 
+ I found it pretty useful. 
+ Link [here](https://docs.google.com/document/d/16gJJeE1HdUl2BHCL19qAs-P4GrcnFTmibNdW5X3COLU/edit)
+
 ## Jokes
 - [Some unconventional proof techniques](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-042j-mathematics-for-computer-science-fall-2010/video-lectures/lecture-3-strong-induction/MIT6_042JF10_proof.pdf)
 
