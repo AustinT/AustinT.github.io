@@ -1,4 +1,4 @@
----                                                                     
+---
 title: "Why you should never be certain of your beliefs: a Bayesian perspective"
 categories:
     - Statistics
