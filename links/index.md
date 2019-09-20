@@ -18,7 +18,9 @@ This is a non-extensive list of interesting links and references that I have col
 - [Clozemaster](https://www.clozemaster.com/) is great for once you finish Duolingo, or it becomes to easy.
 
 ## Misc Programming/Machine Learning
-- [A really good tensorflow project template](https://github.com/jtoy/awesome-tensorflow)
+- [A guide to become a master of the \*nix terminal](https://skilstak.io/terminals/#terminal-masters).
+ Seriously this website has so much good content.
+- [A really good list of tensorflow projects](https://github.com/jtoy/awesome-tensorflow)
 - [Great intro to neural nets](http://neuralnetworksanddeeplearning.com/index.html)
 - [A great explanation of recursion](/links)
 

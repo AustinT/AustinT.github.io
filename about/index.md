@@ -6,32 +6,46 @@ title: About Austin
 style="float:right;width:400px;margin:40px">
 # About Austin
 
-My name is Austin and I am currently an undergraduate
-student at the university of Waterloo, in Ontario Canada. 
-I am interested in all things math.
-Right now I am most excited at the prospect of how AI could exponentially increase the rate of scientific research,
-and want to research this further in graduate school.
+My name is Austin and just finished my undergraduate
+degree at the university of Waterloo, in Ontario Canada. 
+I am very interested in applied math:
+right now I am most excited at prospect of custom AI systems
+that could help increase the rate of scientific research,
+and will pursue research to this end in graduate school.
+_\*Insert detailed description of my future thesis here.\*_
 
+## Brief bio
+- Canadian from Toronto
+- BASc at University of Waterloo
+- Like scientific computing
+- Getting PhD now
+
+## Slightly longer bio
 I have had a varied and interesting university career. 
 At first I thought I wanted to be a chemical engineer... and 
 then I realized that chemical engineers just move fluids 
 through pipes and occasionally heat the pipes (sorry chemical engineers). 
 Then I transferred into a program called nanotechnology 
-engineering, which I find very interesting. This program taught me that:  
+engineering, which I found very interesting. This program taught me that:  
 
 1. Chemistry, and nanochemistry in particular, is extremely challenging, and still not well understood from a theoretical perspective, owing largely to the difficulty of modeling these systems.  
 2. Experimental work is not for me (I am too clumsy and don't like tinkering with my hands).
 
-Motivated by this, I believe the right place for me in graduate school is doing
-machine learning research for problems motivated by physical sciences
-(e.g. materials discovery, drug design, bioinformatics).
-I am hoping to find a machine learning/statistics/applied math supervisor with similar interests.
+Motivated by this, I transitioned into doing more programming.
+After getting some experience in the software industry
+(to learn best practices for coding and development),
+I will be returning to academia to do my PhD.
+I've chosen a group that specializes in Bayesian machine learning,
+since I think that will give me the mathematical, statistical,
+and computational expertise necessary to solve difficult problems.
+Hopefully my vague plan succeeds in some way...
 
 In my spare time, I like learning new, interesting things. 
 Lately this has consisted mostly of math and programming, 
 but I am also super into language learning,
 mostly because I like thinking about different ways ideas can be structured.
-I am also quite obsessed with efficiency: I always try to think of ways to optimize my life, even trivially.
+I am also quite obsessed with optimizing my life.
+I probably think way too much about efficiency.
 
 ## Fun facts about me
 - My language skills come and go as I study different things,
