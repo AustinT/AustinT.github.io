@@ -12,6 +12,10 @@ This is a non-extensive list of interesting links and references that I have col
 - [Anki](https://apps.ankiweb.net/) is an amazing piece of software for memorization.
  Click [here](/links/anki) for more tips on how to use it.
 - [Learning how to Learn](https://www.coursera.org/learn/learning-how-to-learn) is an amazing free online course
+- [Clearer Thinking](https://www.clearerthinking.org/) is a website with quizzes
+ for you to test your thinking.
+ Their tests could point out irrational behaviours/beliefs and help you make
+ better decisions and life choices.
 
 ## Language Learning
 - [Duolingo](https://www.duolingo.com/) is great for learning languages as a beginner.
