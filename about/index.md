@@ -55,6 +55,4 @@ I probably think way too much about efficiency.
 - I really liked spaced repetition: [Anki](https://apps.ankiweb.net/) is the love of my life so far.
 - I like to bake cakes/muffins/cookies, but not really other kinds of cooking. Baking is the most precise form of cooking
 - I was a lifeguard/swim instructor for 2 years in high school.
-- I can proudly say I have <b>never</b> changed my Facebook profile picture (and I have had Facebook for almost 6 years). I can't make it too easy for  Zuck to take my data ;)
 - As a _nanotechnology engineer_, I have an "approximate knowledge of many things." As a _machine learning engineer_, I have "many knowledge of approximate things."
-
