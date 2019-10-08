@@ -6,19 +6,20 @@ title: About Austin
 style="float:right;width:400px;margin:40px">
 # About Austin
 
-My name is Austin and just finished my undergraduate
-degree at the university of Waterloo, in Ontario Canada. 
+My name is Austin and I am a new PhD student at Cambridge
+studying machine learning.
 I am very interested in applied math:
 right now I am most excited at prospect of custom AI systems
 that could help increase the rate of scientific research,
-and will pursue research to this end in graduate school.
+This will be the focus of my PhD studies.
 _\*Insert detailed description of my future thesis here.\*_
 
 ## Brief bio
 - Canadian from Toronto
 - BASc at University of Waterloo
-- Like scientific computing
-- Getting PhD now
+- Like scientific computing, dislike lab work
+ (so I chose to do computing)
+- Getting PhD now (started 2019, should finish ~2023)
 
 ## Slightly longer bio
 I have had a varied and interesting university career. 
