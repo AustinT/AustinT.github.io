@@ -2,9 +2,10 @@
 layout: default
 title: About Austin
 ---
-<img src="/files/about_me_img1.png" alt="pic of me" 
-style="float:right;width:400px;margin:40px">
+
 # About Austin
+<img src="/files/about_me_img1.png" alt="pic of me" 
+style="float:right; width:400px; margin:40px; height: auto">
 
 My name is Austin and I am a new PhD student at Cambridge
 studying machine learning.
@@ -13,6 +14,7 @@ right now I am most excited at prospect of custom AI systems
 that could help increase the rate of scientific research.
 This will be the focus of my PhD studies.
 _\*Insert detailed description of my future thesis here.\*_
+
 
 ## Brief bio
 - Canadian from Toronto
