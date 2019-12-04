@@ -49,6 +49,8 @@ These are some programs I consider essential for any computer
 - [Anki](https://apps.ankiweb.net/) for memorization/studying.
 - [Audacity](https://www.audacityteam.org/) for editing sound files. This program saved my life in high school music class!
 - [Zotero](https://www.zotero.org/) is an amazing free program for organizing research papers. A must have for any student/researcher. Unlike other solutions, zotero is free to use (for the full version), [open source](https://github.com/zotero), and comes with free online syncing of your notes. The only catch is you have to pay for online storage, but you can get around that by using an [external web service](https://www.zotero.org/support/kb/webdav_services) Apparently google drive/dropbox are supported now too!
+- [Vim](https://www.vim.org/) is currently my preferred text editor (definitely preferred terminal text editor)
+- [KeePassXC](https://keepassxc.org/) is currently what I use to store passwords securely.
 
 ## Windows Only
 - [f.lux](https://justgetflux.com/) is an amazing program that changes your screen colour at night to prevent eye fatigue and make it easier to sleep after using the computer.
