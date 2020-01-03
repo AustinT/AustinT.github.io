@@ -21,12 +21,15 @@ This is a non-extensive list of interesting links and references that I have col
 - [Duolingo](https://www.duolingo.com/) is great for learning languages as a beginner.
 - [Clozemaster](https://www.clozemaster.com/) is great for once you finish Duolingo, or it becomes to easy.
 
-## Misc Programming/Machine Learning
+## Programming
+- [An introduction on how to use Linux, with exercises!](http://www.tldp.org/LDP/intro-linux/html/index.html)
 - [A guide to become a master of the \*nix terminal](https://skilstak.io/terminals/#terminal-masters).
  Seriously this website has so much good content.
-- [A really good list of tensorflow projects](https://github.com/jtoy/awesome-tensorflow)
+- [A unexpected lesson on recursion](/links)
+
+## Machine Learning
 - [Great intro to neural nets](http://neuralnetworksanddeeplearning.com/index.html)
-- [A great explanation of recursion](/links)
+- [A really good list of tensorflow projects](https://github.com/jtoy/awesome-tensorflow)
 
 ## Organizations
 - [80000 hours](https://80000hours.org) is a website to help you choose a career that will do good. If you are a student (or if you aren't a student), I recommend reading their [career guide](https://80000hours.org/career-guide/)
@@ -48,9 +51,13 @@ These are some programs I consider essential for any computer
 - VLC Media player (for playing songs/videos). Great because it is minimalistic and open source.
 - [Anki](https://apps.ankiweb.net/) for memorization/studying.
 - [Audacity](https://www.audacityteam.org/) for editing sound files. This program saved my life in high school music class!
-- [Zotero](https://www.zotero.org/) is an amazing free program for organizing research papers. A must have for any student/researcher. Unlike other solutions, zotero is free to use (for the full version), [open source](https://github.com/zotero), and comes with free online syncing of your notes. The only catch is you have to pay for online storage, but you can get around that by using an [external web service](https://www.zotero.org/support/kb/webdav_services) Apparently google drive/dropbox are supported now too!
+- [Zotero](https://www.zotero.org/) is an amazing free program for organizing research papers. A must have for any student/researcher. Unlike other solutions, zotero is free to use (for the full version), [open source](https://github.com/zotero), and comes with free online syncing of your notes. The only catch is you have to pay for online storage, but you can get around that by using an [external web service](https://www.zotero.org/support/kb/webdav_services) Apparently google drive/Dropbox are supported now too!
 - [Vim](https://www.vim.org/) is currently my preferred text editor (definitely preferred terminal text editor)
 - [KeePassXC](https://keepassxc.org/) is currently what I use to store passwords securely.
+- [Pandoc](https://pandoc.org/) is a simple command line program that converts
+ text files between different formats, such as LaTeX, markdown, and html.
+ A sample use case is to write notes in a simple language (like markdown),
+ then convert them to a tex-formatted pdf document or html webpage for better viewing.
 
 ## Windows Only
 - [f.lux](https://justgetflux.com/) is an amazing program that changes your screen colour at night to prevent eye fatigue and make it easier to sleep after using the computer.
