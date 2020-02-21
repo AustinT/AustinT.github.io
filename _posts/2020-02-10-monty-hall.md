@@ -141,7 +141,7 @@ then can't depend on $$c$$ (breaking assumption 2). Instead, the host will
 randomly open one of the doors that doesn't have the prize, regardless of
 whether the player chose this door. This means $$p(o=3\mid a=i,c=1)=1/2$$ for
 $$i=1,2$$ ($$i=3$$ remains unchanged since the host won't open the door with
-the answer behind it). Therefore, $p(a=2|o=3,c=1)=1/2$. This scenario is
+the answer behind it). Therefore, $$p(a=2|o=3,c=1)=1/2$$. This scenario is
 certainly plausible in a real game show (although fairly unlikely).
 
 ### No door as an option
@@ -200,6 +200,7 @@ which are the following:
 Reapplying Bayes rule, we get:
 
 $$p(a\mid o,c) = \frac{p(o\mid a,c)p(a\mid c)}{\sum_{a'}p(o\mid a',c)p(a'\mid c)}$$
+
 $$p(a=2\mid o=3,c=1) = \frac{1\times(1-q)/2}{q/2 + 1\times(1-q)/2 + 0\times(1-q)/2} = 1-q$$
 
 Since $$q$$ can take on any value between 0 and 1, the posterior value can be any
