@@ -23,8 +23,6 @@ This is a non-extensive list of interesting links and references that I have col
 
 ## Programming
 - [An introduction on how to use Linux, with exercises!](http://www.tldp.org/LDP/intro-linux/html/index.html)
-- [A guide to become a master of the \*nix terminal](https://skilstak.io/terminals/#terminal-masters).
- Seriously this website has so much good content.
 - [A unexpected lesson on recursion](/links)
 
 ## Machine Learning
