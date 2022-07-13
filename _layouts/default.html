@@ -4,8 +4,9 @@
 			<title>{{ page.title }}</title>
 			<!-- link to main stylesheet -->
 			<link rel="stylesheet" type="text/css" href="/css/main.css">
-            <!-- Analytics -->
-            {% include analytics.html %}
+            <!-- Decided to remove analytics; I don't want to track people -->
+            <!--(add {} around following line to re-insert)-->
+            <!--% include analytics.html %-->
 		</head>
 		<body>
 			<nav>
@@ -36,5 +37,7 @@
                     <li> <span style="font-weight:normal"><a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Google Scholar</a></span>
                     </li>
 				</ul>
+                <p style="font-size:12px;">I no longer use Google analytics on my site.<br>
+                Site last updated: {{ site.time | date: "%Y-%m-%d" }}.</p>
 			</footer>
 		</body>

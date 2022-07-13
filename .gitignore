@@ -1,2 +1,6 @@
+# Vim files
+*.swp
+
 # Jekyll stuff
 _site/
+.jekyll-cache/
