@@ -4,3 +4,6 @@
 # Jekyll stuff
 _site/
 .jekyll-cache/
+
+# Mac files
+.DS_store
