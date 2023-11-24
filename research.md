@@ -5,13 +5,14 @@ title: Austin Tripp's Research
 
 # Research
 
+## Publications
+
 For an updated list of my research publications,
 please visit my
 [Google Scholar page](https://scholar.google.com/citations?user=WAvRaxMAAAAJ).
+For my thoughts on my own papers, please see [here](/misc/paper-retrospectives).
 
-## Current work
-
-(current = as of July 2022)
+## Current work (as of 2023)
 
 In my PhD I am thinking about how machine learning methods can be applied to
 problems in the physical sciences. Due to issues of robustness, generalization,
