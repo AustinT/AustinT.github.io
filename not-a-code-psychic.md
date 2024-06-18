@@ -179,6 +179,16 @@ Here are some unhelpful patterns which I would like to highlight in particular:
 I need to know more specifically what you consider to be "working" and what is
 actually happening. Read above.
 
+## No MWE
+
+> I'm trying to compute the logarithm of small positive numbers but am getting
+> a "math domain error" even though they are in the domain of the log function.
+> Can you help?
+
+How small are the numbers? What programming language are you using? What
+logarithm implementation? I do not know these things and therefore cannot be of
+much help. This is where a MWE is helpful.
+
 ## Screenshots
 
 Please do not screenshot error messages you get: include them as text. This
