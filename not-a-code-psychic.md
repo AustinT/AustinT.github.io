@@ -212,7 +212,7 @@ files on your computer. Please ensure that I can also run the MWE.
 
 If your code uses `pytorch` or similar, it is relevant to know whether your
 machine has a GPU and if so, what version of CUDA it is running. Please include
-this. A lot of errors end of being GPU-specific.
+this. A lot of errors end up being GPU-specific.
 
 # Why this webpage?
 
