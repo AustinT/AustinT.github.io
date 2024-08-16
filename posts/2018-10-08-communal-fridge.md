@@ -1,5 +1,6 @@
 ---
 title: "How to Keep a Communal Fridge Clean"
+date: 2018-10-08
 layout: post
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: "The Monty Hall Problem is Really About Policy Assumptions"
+date: 2020-02-10
 categories:
     - Statistics
     - frontpage

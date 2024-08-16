@@ -1,5 +1,6 @@
 ---
 title: "Language Travel Logs: Japanese 2018"
+date: 2018-09-19
 categories:
     - Japanese
 layout: post

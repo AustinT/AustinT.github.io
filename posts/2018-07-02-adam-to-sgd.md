@@ -1,5 +1,6 @@
 ---
 title: "Turning Adam Optimization into SGD"
+date: 2018-07-02
 categories:
     - MachineLearning
     - frontpage
