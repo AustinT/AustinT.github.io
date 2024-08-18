@@ -13,6 +13,7 @@ In this post, I will outline the preparation I did before going, where I was abl
 Before starting university in 2014, I knew absolutely no Japanese. 
 In fact, the only foreign language I knew was a little bit of French.
 Starting from absolutely nothing, my history of learning Japanese is the following:
+
 1. *2014-09 to 2016-08*: learn a lot of Chinese, including simplified characters.
  Although Chinese is a different language than Japanese, both languages use Chinese characters, and there is a lot of shared vocabulary between the two languages.
  So, I count it as progress towards learning Japanese.
@@ -44,6 +45,7 @@ During this time, I tried to use Japanese as much as possible.
 Most of my interactions with Japanese people were from talking to service people.
 I tried to talk to every waiter, cashier, and ticket booth worker in Japanese.
 However, these conversations tended to be very simple. For example:
+
 - Cashier: Dozo! (_welcome!_)
 - Me: Konnichiwa! (_good day_)
 - Cashier: Konnichiwa! (_good day_) [proceeds to scan items]
@@ -54,6 +56,7 @@ However, these conversations tended to be very simple. For example:
 
 Obviously it doesn't take much skill to have this kind of conversation.
 However, I was able to ask a few more complicated things to people:
+
 - When buying a dessert, I told the cashier that I have a nut allergy, 
  and asked them to read the ingredients to make sure it didn't have nuts in it.
  However, I did a lot of research asking how to say this because obviously my allergies are very important for me, so that doesn't make this as impressive as it might normally be.
@@ -71,6 +74,7 @@ However, I was able to ask a few more complicated things to people:
  (it was for a friend, I swear).
 
 That being said, I also had a lot of failures, such as:
+
 - In one of the police boxes, when the policeman said "You don't need to come asking about the wallet, we will just call you",
  I was almost completely unable to say "We are tourists, and don't have a phone number.
  The last police box we visited told us just to come back to a police box to ask about the status instead of waiting for a call".

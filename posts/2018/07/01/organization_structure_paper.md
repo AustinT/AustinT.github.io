@@ -14,11 +14,12 @@ Much of an organization's efficiency can be linked to its structure. Long, big m
 
 ## The Paper
 The paper [A Computational Approach to Organizational Structure](https://arxiv.org/abs/1806.05701) tries to address this problem from a fundamental perspective. They frame the problem as such:
+
 - Model an organization as a _graph_ with the nodes being people, and the edges being connections between them. For example, a hierarchical organization would be a tree
 - Model tasks as _tokens_, where each node (person) has tokens which they can do the following with:
   - _Compute_ with two tokens, to form one token
   - _Transmit_ one token to a neighbouring node
- These actions are assumed to take $$t_c$$ and $$t_m$$ respectively.
+ These actions are assumed to take \\(t_c\\) and \\(t_m\\) respectively.
 
 As a sample problem, the paper chooses to analyze the _information aggregation_ problem, which means taking all the tokens (tasks) and combining them at one node. This is equivalent to passing around information: for example, doing an analysis of which items to purchase for the company, then condensing and passing the recommendations to the CEO to make the final decision.
 
@@ -40,16 +41,16 @@ Another analogous problem that I think is interesting not only propagating infor
 
 
 ## More detailed explanation of the fully-connected graph optimization
-I found this quite interesting, so I thought I would elaborate more on it. The key formula is defining a tree $$T(R)$$ as the largest tree such that information can be greedily aggregated within R time steps. The formula for such a tree is:
+I found this quite interesting, so I thought I would elaborate more on it. The key formula is defining a tree \\(T(R)\\) as the largest tree such that information can be greedily aggregated within R time steps. The formula for such a tree is:
 
 $$T(R) = \begin{cases}
 \text{Single leaf},  & \text{if $R < t_m < t_c$} \\
 T(R-t_c) \text{ with child } T(R-t_c-t_m), & \text{otherwise}
 \end{cases}$$ 
 
-This can be interpreted in a simple way: if a node  has a child, then it will take $$t_m$$ time to get the token from the child node, and $$t_c$$ to compute it. So if $$R < t_m + t_c$$, then there is no way to complete the computation in $$R$$ rounds. So the tree cannot have any leaves.
+This can be interpreted in a simple way: if a node  has a child, then it will take \\(t_m\\) time to get the token from the child node, and \\(t_c\\) to compute it. So if \\(R < t_m + t_c\\), then there is no way to complete the computation in \\(R\\) rounds. So the tree cannot have any leaves.
 
-Otherwise, the tree can have leaves. So the largest tree you can create is the largest tree you can make and still have enough rounds left for one computation ($$T(R-t_c)$$), with an additional leaf tree which can be fully computed, and still have time to pass its message to the root ($$T(R-t_c-t_m)$$).
+Otherwise, the tree can have leaves. So the largest tree you can create is the largest tree you can make and still have enough rounds left for one computation (\\(T(R-t_c)\\)), with an additional leaf tree which can be fully computed, and still have time to pass its message to the root (\\(T(R-t_c-t_m)\\)).
 
 I really liked this formula because it was so clean and recursive.
 
