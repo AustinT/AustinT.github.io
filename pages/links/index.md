@@ -1,7 +1,6 @@
 ---
 title: Austin's Links
 ---
-# Austin's Links
 This is a non-extensive list of interesting links and references that I have collected over the years, and put the effort into linking on my website. I hope they are of use to you.
 
 ## Courses

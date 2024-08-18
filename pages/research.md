@@ -1,8 +1,6 @@
 ---
-title: Austin Tripp's Research
+title: Research
 ---
-
-# Research
 
 ## Publications
 
