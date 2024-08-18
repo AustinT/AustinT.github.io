@@ -4,7 +4,6 @@ date: 2018-07-01
 categories:
     - Papers
     - frontpage
-layout: post
 mathjax: true
 ---
 

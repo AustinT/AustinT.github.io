@@ -1,5 +1,4 @@
 ---
-layout: default
 title: Retrospective thoughts on my papers
 ---
 

@@ -1,5 +1,4 @@
 ---
-layout: default
 title: How to ask for code help effectively (since I'm not a code psychic).
 ---
 

@@ -4,7 +4,6 @@ date: 2018-07-02
 categories:
     - MachineLearning
     - frontpage
-layout: post
 mathjax: true
 ---
 

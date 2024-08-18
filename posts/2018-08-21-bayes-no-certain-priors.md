@@ -4,7 +4,6 @@ date: 2018-08-21
 categories:
     - Statistics
     - frontpage
-layout: post
 mathjax: true
 ---
 

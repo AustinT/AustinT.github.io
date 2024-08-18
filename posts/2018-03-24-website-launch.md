@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Launched my website"
 date: 2018-03-24
 categories:

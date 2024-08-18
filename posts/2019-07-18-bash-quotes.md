@@ -4,7 +4,6 @@ date: 2019-07-18
 categories:
     - programming
     - frontpage
-layout: post
 mathjax: true
 ---
 

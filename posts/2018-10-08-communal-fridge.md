@@ -1,7 +1,6 @@
 ---
 title: "How to Keep a Communal Fridge Clean"
 date: 2018-10-08
-layout: post
 ---
 
 Last month, my class decided that we should get a fridge for the class study room.

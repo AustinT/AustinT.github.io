@@ -1,5 +1,4 @@
 ---
-layout: default
 title: Austin Tripp
 ---
 # Curriculum Vitae

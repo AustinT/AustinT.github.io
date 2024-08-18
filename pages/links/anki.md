@@ -1,5 +1,4 @@
 ---
-layout: default
 title: More Information about Anki
 mathjax: true
 ---
