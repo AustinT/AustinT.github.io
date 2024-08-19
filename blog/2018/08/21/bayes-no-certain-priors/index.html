@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why you should never be certain of your beliefs: a Bayesian perspective | Austin Tripp's website</title>
+<link href="../../../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2018/08/21/bayes-no-certain-priors/">
+<!--[if lt IE 9]><script src="../../../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../../../07/17/gradient-boosting/" title="An Overview of Gradient Boosting and Popular Libraries for it." type="text/html">
+<link rel="next" href="../../../09/12/sparse-matrices-tips1/" title="Sparse Matrices: 5 Tips and Tricks" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Why you should never be certain of your beliefs: a Bayesian perspectiv">
+<meta property="og:url" content="https://austintripp.ca/blog/2018/08/21/bayes-no-certain-priors/">
+<meta property="og:description" content="People are notoriously bad at estimating their percent confidence in their beliefs, as explained further in this Wikipedia article. 
+Something I thought of recently is what effect this overconfidence ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-08-21T00:00:00+01:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../../../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../../../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../../about/" class="nav-link">About</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../../links/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Why you should never be certain of your beliefs: a Bayesian perspective</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2018-08-21T00:00:00+01:00" itemprop="datePublished" title="2018-08-21 00:00">2018-08-21 00:00</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>People are notoriously bad at estimating their percent confidence in their beliefs, as explained further in this <a href="https://en.wikipedia.org/wiki/Overconfidence_effect">Wikipedia article</a>. 
+Something I thought of recently is what effect this overconfidence has from a Bayesian perspective. 
+After a bit of math, I came to the conclusion that having extreme confidence in your beliefs (0% or 100% confidence) implies that you would be unable to change your beliefs if shown evidence to the contrary.
+I believe this simple argument suggests that it is very irrational to hold prior beliefs of 0 or 100%. If you do feel this way, then you should choose a very high value (99.99%) or a very low value (0.001%), but always leave some room for error.</p>
+<h3>The model</h3>
+<p>Suppose you have a belief about a fact, \(f\), which for simplicity we will assume is a binary variable (either true or false). 
+For example, \(f\) could be the statement "the earth is flat". 
+Furthermore, suppose you can make some kind of observation, \(o\), that is affected by \(f\). 
+In this example, \(o\) could be the observation of ships never disappearing over the horizon, which would be a natural consequence if the earth were flat.
+From a Bayesian perspective, this observation can be defined as a conditional distribution. That is, the value of \(o\) will change based on the true value of \(f\). 
+In our case, we could write \(p(o \mid f=\text{true}) = 1\), assuming here that the earth being flat will cause us to observe this effect with certainty.
+On the other hand, if \(f\) is false, then it might still be possible to observe \(o\), but much less likely. We will say that \(p(o \mid f=\text{false}) = \epsilon \gt 0\), without deciding on a specific value for \(\epsilon\).</p>
+<p>Now suppose you observe a ship that doesn't disappear over the horizon: what does this mean about the earth being flat? From Bayes rule, we want to calculate:</p>
+<p>$$p(f\mid o) = \frac{p(o\mid f)p(f)}{p(o)}$$</p>
+<p>In other words, we can calculate the probability of the fact \(f\), just by knowing 3 things:
+1. The effect of \(f\) on \(o\), \(p(o \mid  f) = 1\)
+2. Our believe about \(f\) prior to our observation, \(p(f)\)
+3. The probability of our observation, \(p(o)\)</p>
+<p>The goal of setting this up in a Bayesian context is to update our belief about \(f\), given that we have now made an observation. 
+One strategy is to try to select a new value of \(f\) that is most likely given what we have observed. 
+This is known as <em>maximum likelihood estimation</em> (MLE). 
+One nice thing about MLE is that we don't have to calculate \(p(f \mid o)\): we just have to maximize it with respect to \(f\). 
+This means that in the 3 terms above, item #3 doesn't matter at all, because it is constant with respect to \(f\). So we can instead update our beliefs based on maximizing the surrogate function,</p>
+<p>$$p(f \mid o) \propto p(o \mid f)p(f) = g(f)$$</p>
+<p>Since \(f\) is a binary variable, we just have to consider two options for the maximization:
+1. \(f\) is true, so \(g(f) = p(o \mid f=\text{true})p(f=\text{true}) = 
+1\times p(f=\text{true}) = p(f=\text{true})\)
+2. \(f\) is false, so \(p(f\mid o) = p(o \mid f=\text{false})p(f=\text{false}) = 
+\epsilon (1 - p(f=\text{true}))\) </p>
+<h3>The most important part</h3>
+<p>So, what we should believe about \(f\) depends largely on our prior belief about \(f\), \(p(f)\). 
+Now suppose we have an extremely certain belief about \(f\), that is \(p(f) = 1\) or \(p(f) = 0\).</p>
+<ul>
+<li>If \(p(f) = 0\), meaning that we are certain the fact is false, then from option 1 above, the probability of \(f\) being true is proportional \(p(f) = 0\), and from option 2 above \(f\) is false with probability proportional to \(\epsilon (1-0) = \epsilon \gt 0\), since \(\epsilon\) is a probability we assume to be non-zero. This means that \(f\) will always be more likely to be false, so <em>it would be impossible for our belief to change from false to true!</em> </li>
+<li>If \(p(f) = 1\), meaning that we are certain the fact is true, then from option 1 above, the probability that \(f\) is true is proportional to 1, while the probability of \(f\) being false is proportional to \((1-1) = 0\). So option 1 will always be greater than 0, <em>meaning our belief will never change from false to true</em>
+</li>
+</ul>
+<p>Note that in both of the options above, <em>it is impossible for our beliefs about \(f\) to change, despite observing evidence that supports \(f\)</em>. This is essentially the mathematical equivalent of being closed-minded.</p>
+<p>On the other hand, if \(p(f) \notin {0, 1}\), then it would be possible for either option 1 or 2 to be higher, depending on value of \(epsilon\)<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>. So, <em>it would be possible to change your beliefs</em>.</p>
+<h3>Conclusion</h3>
+<p>In short, this shows that having a certain prior is effectively the same as being unwilling to change one's beliefs, should one encounter evidence which goes against them.
+If you accept this as irrational, and abide by Bayesian statistics<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>, then you <em>must</em> accept it as irrational to hold beliefs with certainty. 
+That is, Bayes theorem is a mathematical way to show that one can only have an open mind if one is somewhat unsure about something. 
+It is because of this logic that I am careful nowadays to avoid saying I am certain about anything, both to not mislead others and to not convince myself I know more than I actually do.</p>
+<h3>PS</h3>
+<p>I found this cool website, which is a "prior belief calibrator": <a href="http://confidence.success-equation.com/">http://confidence.success-equation.com/</a>. I recommend you try it out, and see how accurate your confidence in facts is.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>specifically, when \(\epsilon = \frac{p(f)}{1-p(f)}\), the \(f\) is equally likely to be true and false. If \(\epsilon\) is higher, g is maximized when \(f\) is false, and if it is lower, then \(g\) is maximized when \(f\) is true. So depending on the value of epsilon, your belief could change. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+<li id="fn:2">
+<p>including the setup of this model, which is simplistic and could reasonably be disagreed with. <a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../../../07/17/gradient-boosting/" rel="prev" title="An Overview of Gradient Boosting and Popular Libraries for it.">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../../../09/12/sparse-matrices-tips1/" rel="next" title="Sparse Matrices: 5 Tips and Tricks">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer">
+            Contents © 2024         Austin Tripp (MIT License). <a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a> | - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../../../../../assets/js/all-nocdn.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

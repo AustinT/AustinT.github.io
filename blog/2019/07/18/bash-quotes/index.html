@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Quick Tutorial on Bash Quotes | Austin Tripp's website</title>
+<link href="../../../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2019/07/18/bash-quotes/">
+<!--[if lt IE 9]><script src="../../../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../../../../2018/10/08/communal-fridge/" title="How to Keep a Communal Fridge Clean" type="text/html">
+<link rel="next" href="../../../../2020/02/10/monty-hall/" title="The Monty Hall Problem is Really About Policy Assumptions" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="A Quick Tutorial on Bash Quotes">
+<meta property="og:url" content="https://austintripp.ca/blog/2019/07/18/bash-quotes/">
+<meta property="og:description" content="Today I learned way more about quotations in bash than I ever thought I needed to know.
+I thought I would highlight the interesting use case that I discovered, which requires some special trickery to ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-07-18T00:00:00+01:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../../../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../../../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../../about/" class="nav-link">About</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../../links/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">A Quick Tutorial on Bash Quotes</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2019-07-18T00:00:00+01:00" itemprop="datePublished" title="2019-07-18 00:00">2019-07-18 00:00</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>Today I learned <strong>way</strong> more about quotations in bash than I ever thought I needed to know.
+I thought I would highlight the interesting use case that I discovered, which requires some special trickery to write a script that executes arbitrary commands.
+First, let's quickly review some facts about bash quotes.</p>
+<h3>Quick review of bash quotes (skip this if you're an expert)</h3>
+<p>When you type a command into bash, it evaluates any special characters or sequences before executing the command.
+As a basic example, consider the following commands<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$HOME</span>
+/home/austin
+$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span>print<span class="o">(</span><span class="m">7</span><span class="o">)</span>
+bash:<span class="w"> </span>syntax<span class="w"> </span>error<span class="w"> </span>near<span class="w"> </span>unexpected<span class="w"> </span>token<span class="w"> </span><span class="sb">`</span><span class="o">(</span><span class="err">'</span>
+</pre></div>
+
+<p>The first fragment uses the command <code>echo</code>, which naturally echos the argument to feed to it.
+The argument fed to it is $HOME, which due to the dollar sign is interpreted as a bash variable.
+Therefore it evaluates the contents of this variable, which is my home directory (/home/austin).</p>
+<p>The second example runs python, using the <code>-c</code> command to execute python code passed as a string.
+<code>print(7)</code> is a completely valid python command that prints the number 7,
+however parentheses are special characters in bash.
+So, before that string makes it to the <code>python</code> command,
+bash attempts to evaluate it, determines that it is invalid bash syntax (since it's not bash it's python), and throws an error.
+Obviously that's not what that program is supposed to do.</p>
+<p>Hence the purpose of quotes: they are used to prevent bash from evaluating text that you would like to leave as a string.</p>
+<h4>Single quotes</h4>
+<p>The most basic kind of quote is the single quote (\').
+This quote completely prevents bash from evaluating a command.
+Let's look at a few examples.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">'$HOME'</span>
+<span class="nv">$HOME</span>
+</pre></div>
+
+<p>This command literally prints the string "$HOME", since nothing was evaluated.
+Now is also maybe a good time to point out that the first $ character on the first line is the shell prompt (the last character on the line where you type in commands), so it isn't actually part of the command.
+Another example:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="s1">'echo $HOME'</span>
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$HOME</span>:<span class="w"> </span><span class="nb">command</span><span class="w"> </span>not<span class="w"> </span>found
+</pre></div>
+
+<p>Putting quotes around the whole command prevents bash from parsing it at all, not even breaking up the input into a command and an argument.
+So it just assumes that the literal string "echo $HOME" is a command, and doesn't know what command that is, so it gives an error.
+One final variant would be:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="s1">'echo'</span><span class="w"> </span><span class="nv">$HOME</span>
+/home/austin
+</pre></div>
+
+<p>This command does the same thing as the initial command:
+it doesn't evaluate echo (which bash wouldn't modify anyways),
+then evaluates <code>$HOME</code> since that wasn't in quotes.</p>
+<p>Moving onto the second example, we can make the python code run directly by enclosing the program in quotes.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">'print(7)'</span>
+<span class="m">7</span>
+</pre></div>
+
+<h4>Double Quotes</h4>
+<p>The double quote (\") is also a valid quote in bash, but it works a bit differently.
+Think of it as a <em>selective quote</em>: it lets bash evaluate some things but not others.
+As explained in more detail in the 
+<a href="https://www.gnu.org/software/bash/manual/html_node/Double-Quotes.html#Double-Quotes">bash manual</a>,
+this quote stops all evaluations except for $, \, and `.
+For the examples above:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">"</span>
+/home/austin
+</pre></div>
+
+<p>As stated, since $HOME has a \$ the quotes don't stop bash from evaluating it.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="s2">"echo </span><span class="nv">$HOME</span><span class="s2">"</span>
+bash:<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/home/austin:<span class="w"> </span>No<span class="w"> </span>such<span class="w"> </span>file<span class="w"> </span>or<span class="w"> </span>directory
+</pre></div>
+
+<p>This one is funny: bash evaluates <code>$HOME</code> since it has a \$, but then doesn't evaluate the expression as a whole and treats it as a command.
+Although for some reason it treats it as a file instead of a command, and says it can't find the file.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="s2">"echo"</span><span class="w"> </span><span class="nv">$HOME</span>
+/home/austin
+</pre></div>
+
+<p>Of course, this one does the same thing as the single quotes case.</p>
+<p>With the python example, single and double quotes make no different:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"print(7)"</span>
+<span class="m">7</span>
+</pre></div>
+
+<p>This is because the double quotes prevent the evaluation of the parentheses.</p>
+<h4>Quick recap</h4>
+<p>So essentially:
+- Without quotes, bash tries to evaluate all special characters
+- Single quotes (\') prevent all evaluation
+- Double quotes (\") prevent most evaluation, but notably not the evaluation of variables</p>
+<h3>Nested Commands: the case of eval</h3>
+<p>Where things get weird is when you need to nest commands.
+A particularly nasty command is <code>eval</code>, which evaluates arbitrary bash commands.
+In the examples below, it doesn't really make sense why you would need to use <code>eval</code>, but ignore that for now: a real example will come at the end.</p>
+<p>Let's go back to our first example:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$HOME</span>
+/home/austin
+</pre></div>
+
+<p>Pretty much what you would expect: the variable <code>$HOME</code> gets replaced.
+Now what if we wanted to use <code>eval</code> to print the literal string <code>$HOME</code>?
+From above, we can put <code>$HOME</code> in single quotes:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">'$HOME'</span>
+/home/austin
+</pre></div>
+
+<p>However, this doesn't work. Why? Because nested commands effectively get evaluated twice.
+Just look at the following example:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">'$HOME'</span>
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$HOME</span>
+</pre></div>
+
+<p>The evaluation procedure effectively has 2 stages:
+1. Run through the string and do substitutions. In this case, due to the single quotes the part <code>$HOME</code> is just treated as the literal string "\$HOME".
+2. Execute the command, which here is to echo the string <code>echo $HOME</code></p>
+<p>So in the case of <code>eval</code>, it bash first parses the command, performing no substitution for <code>$HOME</code>, and then it evaluates the resulting command, since that's what <code>eval</code> does.
+In this case, the command to be evaluated is the string <code>echo $HOME</code>, which as shown in the very first example above results in <code>$HOME</code> being substituted.</p>
+<p>So, working backwards, the solution is to somehow pass the string "<code>echo '$HOME'</code>" to <code>eval</code>.
+A natural approach to do this would be to quote the entire phrase you don't want bash to evaluate, so we will place the whole phrase <code>echo '$HOME'</code> in single quotes.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s1">'echo '</span><span class="nv">$HOME</span><span class="s1">''</span>
+/home/austin
+</pre></div>
+
+<p>It didn't work! What happened?
+This one took me a long time to figure out, but the answer is that bash parses the string from left to right, not inside to outside like a nested function call in most programming language.
+Let's try it without the <code>eval</code>:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="s1">'echo '</span><span class="nv">$HOME</span><span class="s1">''</span>
+bash:<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/home/austin:<span class="w"> </span>No<span class="w"> </span>such<span class="w"> </span>file<span class="w"> </span>or<span class="w"> </span>directory
+</pre></div>
+
+<p>This is the same result as the command <code>"echo $HOME"</code> from earlier!
+Evaluating literally left to right, it actually sees it as the string "<code>echo</code>" 
+(interpreted literally so including the space),
+the variable <code>$HOME</code>, which has no quotes beside it so it is evaluated to /home/austin,
+and finally an empty string between 2 quotes.
+It then concatenates the two strings "<code>echo</code>" and "<code>/home/austin</code>" and treats it as a single string,
+therefore giving the same result as using double quotes from earlier.
+So the double quoting simply can't be done this way.</p>
+<p>In the end, I found two solutions to this problem: showing them both here.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="se">\'</span><span class="s1">'$HOME'</span><span class="se">\'</span>
+<span class="nv">$HOME</span>
+$<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"'"</span><span class="s1">'$HOME'</span><span class="s2">"'"</span>
+<span class="nv">$HOME</span>
+</pre></div>
+
+<p>Both solutions take advantage of the fact that when two strings are beside each other, they are concatenated.
+A quick example:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"hel""lo"</span>
+hello
+$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>hel<span class="s2">"lo"</span>
+hello
+</pre></div>
+
+<p>Here, the two strings "hel" and "lo" are simply concatenated when executing the command.
+The second example clarifies that both strings do not have to be in quotes.
+The two <code>eval</code> commands above work in much the same way.
+1. The string <code>echo</code> is concatenated with the escaped literal <code>\'</code>, which is taken to simply be a single quote string due to the backslash. This is concatenated with <code>'$HOME'</code>, which just gets evaluated to the string <code>$HOME</code>, and finally another literal single quote is appended.
+ The result of the evaluation is that <code>eval</code> is passed the literal string <code>echo '$HOME'</code> as desired.
+2. Much like the first, except that instead of escaping the single quotes they are enclosed in double quotes, since they block the evaluation of the single quotes
+(remember the only exceptions to double quotes are $, \, and `, not \'). So the end result is the same.</p>
+<p>Both of these solutions look pretty gross, but to put it in perspective, imagine what you have to do to use a doubly nested <code>eval</code>!
+To save you the trouble of imagining, you have to do this:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="se">\\\'\'</span><span class="s1">'$HOME'</span><span class="se">\'\\\'</span>
+<span class="nv">$HOME</span>
+</pre></div>
+
+<p>Figuring it out is left as an exercise to the reader (try replacing the first <code>eval</code> with <code>echo</code> to see how all the escaped characters are evaluated).</p>
+<h3>The script</h3>
+<p>So, what exactly was the use case that made me encounter a weird problem like this?
+Essentially, at the time of writing this post I was working at a research institute with a computing cluster than ran the job manager <a href="https://slurm.schedmd.com/overview.html">slurm</a>.
+The basic workflow of slurm is that you write a script that runs your job, then you submit the script to a job manager.
+Naively, you need one bash script for each program you run, but I was running a lot of programs with similar setup, so I wanted to just write one script.
+Eventually I came up with something like this:</p>
+<div class="code"><table class="codetable">
+<tr>
+<td class="linenos linenodiv"><a href="#-1"><code data-line-number="1"></code></a></td>
+<td class="code"><code><span class="ch">#!/bin/bash</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#-2"><code data-line-number="2"></code></a></td>
+<td class="code"><code><span class="c1">#</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#-3"><code data-line-number="3"></code></a></td>
+<td class="code"><code><span class="c1">#SBATCH --job-name=test</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#-4"><code data-line-number="4"></code></a></td>
+<td class="code"><code><span class="c1">#SBATCH --output=res.txt</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#-5"><code data-line-number="5"></code></a></td>
+<td class="code"><code><span class="c1">#</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#-6"><code data-line-number="6"></code></a></td>
+<td class="code"><code><span class="c1">#SBATCH --ntasks=1</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#-7"><code data-line-number="7"></code></a></td>
+<td class="code"><code><span class="c1">#SBATCH --time=10:00</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#-8"><code data-line-number="8"></code></a></td>
+<td class="code"><code>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#-9"><code data-line-number="9"></code></a></td>
+<td class="code"><code><span class="nb">eval</span><span class="w"> </span><span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span>
+</code></td>
+</tr>
+</table></div>
+<p>This clever script just calls <code>eval</code> on all the arguments passed to it (represented by the variable <code>$@</code>).
+The double quotes are essentially a safety measure (it is <a href="http://tldp.org/LDP/abs/html/quotingvar.html">generally recommended</a> to quote all variables in double quotes).
+Another nice part of it is that it can be called with either <code>source</code> to run it locally or <code>sbatch</code> to submit it to the job scheduler.</p>
+<p>The script works great when you are doing something simple.
+For example:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>script.sh<span class="w"> </span><span class="nb">pwd</span>
+/home/austin
+</pre></div>
+
+<p>This works because <code>pwd</code> is a nice simple command: no weird characters.
+What if I want to run a python script?
+Let's try the following:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>script.sh<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"print(7)"</span>
+bash:<span class="w"> </span>eval:<span class="w"> </span>line<span class="w"> </span><span class="m">9</span>:<span class="w"> </span>syntax<span class="w"> </span>error<span class="w"> </span>near<span class="w"> </span>unexpected<span class="w"> </span>token<span class="w"> </span><span class="sb">`</span><span class="o">(</span><span class="s1">'</span>
+<span class="s1">bash: eval: line 9: `python -c print(7)'</span>
+$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>script.sh<span class="w"> </span><span class="s1">'python -c "print(7)"'</span>
+<span class="m">7</span>
+</pre></div>
+
+<p>The first example fails because the quotes are "used up" on the initial evaluation, so there are no quotes when <code>eval</code> is called in the script.
+The second example avoids this by putting the whole thing in single quotes, thus delaying the evaluation until <code>eval</code> is called in the script.</p>
+<p>But what if you wanted to print a more complicated string, like "Only $1? Let\'s go!".
+This string has 3 challenging symbols: "\$", "\'", and "!".
+Let's try to print it.
+Of course unlike printing 7, we want to print a string, so we will need to put an additional set of quotes around the string.
+Python allows strings to be used with single or double quotes,
+but unfortunately using either will cause the number of single quotes to be imbalanced.
+Furthermore, the "$1" and the "!" need to be escaped with single quotes or they will evaluate to something.
+There are probably multiple solutions to this, but what I ended up doing was:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>script.sh<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="se">\'</span><span class="s1">'print('</span><span class="se">\"</span>Only<span class="w"> </span><span class="s1">'$1'</span>?<span class="w"> </span>Let<span class="se">\'\\\'\'</span>s<span class="w"> </span>go<span class="se">\!\"</span><span class="s1">')'</span><span class="se">\'</span>
+Only<span class="w"> </span><span class="nv">$1</span>?<span class="w"> </span>Let<span class="err">'</span>s<span class="w"> </span>go!
+</pre></div>
+
+<p>To be honest I hate quotation marks now.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Evaluated in Ubuntu terminal running bash. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../../../../2018/10/08/communal-fridge/" rel="prev" title="How to Keep a Communal Fridge Clean">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../../../../2020/02/10/monty-hall/" rel="next" title="The Monty Hall Problem is Really About Policy Assumptions">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer">
+            Contents © 2024         Austin Tripp (MIT License). <a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a> | - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../../../../../assets/js/all-nocdn.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

@@ -1,10 +1,8 @@
 ---
-layout: default
 title: About Austin
 ---
 
-# About Austin
-<img src="/files/about_me_img1.png" alt="an older picture of me" 
+<img src="/about_me_img1.png" alt="an older picture of me" 
 style="float:right; width:400px; margin:40px; height: auto">
 
 My name is Austin and I am a new PhD student at Cambridge

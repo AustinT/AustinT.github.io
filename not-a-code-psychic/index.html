@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to ask for code help effectively (since I'm not a code psychic). | Austin Tripp's website</title>
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/not-a-code-psychic/">
+<!--[if lt IE 9]><script src="../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="How to ask for code help effectively (since I'm not a code psychic).">
+<meta property="og:url" content="https://austintripp.ca/not-a-code-psychic/">
+<meta property="og:description" content="Summary
+If I have referred you to this page, then most likely you've asked me for help
+with your code without providing enough information for me to help you. Asking
+for coding help is a skill itself,">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-08-18T11:02:02+01:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../about/" class="nav-link">About</a>
+                </li>
+<li class="nav-item">
+<a href="../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../links/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../blog/" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">How to ask for code help effectively (since I'm not a code psychic).</a></h1>
+
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <h2>Summary</h2>
+<p>If I have referred you to this page, then most likely you've asked me for help
+with your code without providing enough information for me to help you. Asking
+for coding help is a skill itself, and when you are just starting out it might
+not be clear what information to provide when asking a question.
+Essentially, I think you should provide:</p>
+<ol>
+<li>A description of the goal of the code <em>and</em> how what you have does not achieve that goal.</li>
+<li>A <em>minimal working example</em> (MWE).</li>
+<li>Information about your operating system (e.g. Mac, Windows) and code environment (e.g. python 3.7 with numpy v1.2.3).</li>
+<li>If helpful, a short description of what you have tried.</li>
+</ol>
+<p>These criteria are explained more below, but before diving into that I will give an example of a <em>good</em> request.</p>
+<h3>Example of a good request</h3>
+<p>Hi, I'm trying to compute the logarithm of a number in python, but the program
+crashes instead of outputting a number.</p>
+<p>I simplified my script down to the following MWE:</p>
+<div class="code"><pre class="code literal-block"><span class="kn">import</span> <span class="nn">math</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+
+<p>When I run it, I get the following:</p>
+<div class="code"><pre class="code literal-block">Traceback (most recent call last):
+  File "~/calculate_log.py", line 2, in &lt;module&gt;
+    print(math.log(0))
+ValueError: math domain error
+</pre></div>
+
+<p>I am running on MacOS, Python 3.9.16. I Googled this error but cannot find a
+clear answer<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>. Can you suggest what might be going wrong?</p>
+<h2>Anatomy of a good request</h2>
+<p>Here I explain my formula in more detail.</p>
+<h3>Description</h3>
+<p>The essence of code "not working" is that it behaves differently than one
+desires. Clearly explaining this divergence is key to framing the issue so that
+I know what a "successful" resolution of your problem looks like. This requires
+explaining <em>both</em> what your desired outcome is <em>and</em> what you actually observe.</p>
+<h4>Part 1: the desired outcome</h4>
+<p>Sometimes people omit this, thinking that the desired behavior is obvious (and
+often it is). But please don't assume this: I may not know the background of
+your problem and it is always safer to tell me explicitly what you want.</p>
+<p>For example, in the <code>log(0)</code> example above the resolution might depend on what you desire:</p>
+<ul>
+<li>If you wanted to compute a logarithm of a general number and put 0 in as a
+  placeholder, then the issue is simply that log is not defined at this value.
+  Resolution: choose a different placeholder.</li>
+<li>If your goal is to compute <code>log(0)</code> specifically, then this goal is
+  infeasible, since <code>log(0)</code> is not defined. The resolution is that your goal
+  does not make sense.</li>
+</ul>
+<p>So please, don't leave out this part!</p>
+<h4>Part 2: the observed outcome</h4>
+<p>Generally, "not working" code will either:</p>
+<ol>
+<li>Crash (and raise an error)</li>
+<li>Produce an output without crashing, but the output is not what you expect.</li>
+</ol>
+<p>It is important to help me understand which of these outcomes it is, because
+the steps to resolve them are quite different. Crashing programs have a clear
+mistake which need to be identified. Non-crashing programs are usually logic
+mistakes (writing the wrong steps by accident) or misunderstanding some
+documentation.</p>
+<p>If a program crashes, it is helpful to include the error message, because this
+almost always contains helpful information. If a program does not crash, then
+it is helpful to include its output to save me the time of running it myself.</p>
+<h3>Minimal working example (MWE)</h3>
+<p>A MWE is the simplest way of presenting the error to me. It serves a few functions:</p>
+<ul>
+<li>Saves me the time of writing a program myself to reproduce the error</li>
+<li>Ensures that I can reproduce your error exactly as you see it (instead of
+  another version)</li>
+<li>Helps both of us narrow down where the error is occurring</li>
+</ul>
+<p>However, not all code is a MWE! Each of the letters (M,W,E) is important. Let's go through them:</p>
+<h4>W (working)</h4>
+<p>Here, "working" does not mean that the code actually works (otherwise you would
+not be asking for help). It means that I can 1) run the code and 2) get the
+same error as you do.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></p>
+<p>Both parts of this are important:
+1. The code should run. This means it must be a complete script, not a code fragment.
+2. It should produce the error you observe (not some other error).</p>
+<p>For contrast, here is an attempted MWE for the example above which I would not
+consider to be "working":</p>
+<div class="code"><pre class="code literal-block"><span class="nb">print</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+
+<p>Although this is indeed the problematic line of code, when I run it I get a <em>different</em>
+error because the <code>import math</code> statement was not included:</p>
+<div class="code"><pre class="code literal-block">Traceback (most recent call last):
+  File "~/calculate_log.py", line 1, in &lt;module&gt;
+    print(math.log(0))
+NameError: name 'math' is not defined
+</pre></div>
+
+<p>Of course, in this simple example I could probably figure out what imports are
+missing, but this should not be my job. Please just ensure that it runs.</p>
+<p>Importantly, it needs to run for <em>me</em>, not just you. For example, if your code
+refers to specific files on your computer, then it won't run on my computer
+unless I also have those files.</p>
+<h4>M (minimal)</h4>
+<p>The code should be reasonably short (&lt; 100 lines). I probably do not have time
+to read through 10000 lines of code (unless you are paying me).</p>
+<h4>E (example)</h4>
+<p>Of course you may fairly ask:</p>
+<blockquote>
+<p>But Austin, the error is occurring in my 100000 code base. I don't know what
+part is responsible. Shouldn't I include the whole thing?</p>
+</blockquote>
+<p>No! A MWE is, fundamentally, an <em>example</em> of your problem, not a <em>detailed
+record</em>. When you want to find bugs in a huge code base, you need to find out
+what part is responsible, and constructing a small example which reproduces the
+problem is an important part of this. Often, the effort of just trying to
+construct a MWE will provide the insight needed to solve your problem (without
+needing to ask me or be pointed to this document).</p>
+<h3>Information on OS and code</h3>
+<p>This can be brief, but many problems are OS specific, and if I am trying to
+debug an issue on a different OS than you I should at least know that. Also,
+knowing the version of python and versions of your python library can help
+(again, because some issues will only appear on certain versions).</p>
+<h3>Description of what you have tried</h3>
+<p>Already, the act of creating a MWE was probably enough. If however you spent
+time researching possible causes for the issue, it could be helpful to tell me
+(since it may save my time later on).</p>
+<h2>Common mistakes</h2>
+<p>Here are some unhelpful patterns which I would like to highlight in particular:</p>
+<h3>"Not working" as a description</h3>
+<blockquote>
+<p>Hi, my code below is not working, can you help?</p>
+</blockquote>
+<p>I need to know more specifically what you consider to be "working" and what is
+actually happening. Read above.</p>
+<h3>No MWE</h3>
+<blockquote>
+<p>I'm trying to compute the logarithm of small positive numbers but am getting
+a "math domain error" even though they are in the domain of the log function.
+Can you help?</p>
+</blockquote>
+<p>How small are the numbers? What programming language are you using? What
+logarithm implementation? I do not know these things and therefore cannot be of
+much help. This is where a MWE is helpful.</p>
+<h3>Screenshots</h3>
+<p>Please do not screenshot error messages you get: include them as text. This
+helps me Google them without needing to re-type them. It's only marginally
+slower for you, but much faster for me.</p>
+<h3>Custom files/packages</h3>
+<p>If your MWE looks like:</p>
+<div class="code"><pre class="code literal-block"><span class="kn">import</span> <span class="nn">my_custom_package</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"file/on/my/computer.txt"</span><span class="p">)</span>
+<span class="n">my_custom_package</span><span class="o">.</span><span class="n">process_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+
+<p>then I probably cannot run it unless I have access to the same package and same
+files on your computer. Please ensure that I can also run the MWE.</p>
+<h3>GPUs/CUDA</h3>
+<p>If your code uses <code>pytorch</code> or similar, it is relevant to know whether your
+machine has a GPU and if so, what version of CUDA it is running. Please include
+this. A lot of errors end up being GPU-specific.</p>
+<h2>Why this webpage?</h2>
+<p>Enough people have asked me for code help without providing enough information
+that I thought it would be easier to write a good answer once and link to it
+instead of writing a bespoke answer every time. Also, in the past I have found
+it hard to resist putting in some sarcastic comments along the line of "I'm not
+a code psychic" which were probably not helpful 😅</p>
+<h2>Further reading</h2>
+<p>I also found this guide from <a href="https://stackoverflow.com/help/how-to-ask">Stack Overflow</a> helpful.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Note that if you do Google this in real life, you actually do find a clear answer, and I generally expect you to do this level of basic Googling before asking me for help. This is just for illustration purposes. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+<li id="fn:2">
+<p>Perhaps the name "minimal non-working example" would be more apt. <a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    
+
+</article><!--End of body content--><footer id="footer">
+            Contents © 2024         Austin Tripp (MIT License). <a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a> | - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../assets/js/all-nocdn.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

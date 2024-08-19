@@ -1,9 +1,6 @@
 ---
-layout: default
 title: Austin Tripp
 ---
-
-# Austin Tripp
 
 Welcome to [my website](/), thanks for visiting!
 
@@ -25,9 +22,3 @@ and my miscellaneous adventures.
 
 I am looking for jobs (starting late 2024) and am in principle open to do consulting work.
 Please email me if you think I could be a good fit.
-
-## Highlighted blog posts
-
-{% for post in site.categories.frontpage %}
- <li><span>{{ post.date | date_to_string }}</span> &nbsp; <a href="{{ post.url }}">{{ post.title }}</a></li>
-{% endfor %}

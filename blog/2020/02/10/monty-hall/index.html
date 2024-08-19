@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Monty Hall Problem is Really About Policy Assumptions | Austin Tripp's website</title>
+<link href="../../../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2020/02/10/monty-hall/">
+<!--[if lt IE 9]><script src="../../../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../../../../2019/07/18/bash-quotes/" title="A Quick Tutorial on Bash Quotes" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="The Monty Hall Problem is Really About Policy Assumptions">
+<meta property="og:url" content="https://austintripp.ca/blog/2020/02/10/monty-hall/">
+<meta property="og:description" content="TL;DR: the Monty Hall problem doesn't have a well-defined solution.
+The Monty Hall problem is a classic &quot;probability paradox&quot;1, where the answer
+is counter-intuitive to most people's intuitions. To pa">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-02-10T00:00:00Z">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../../../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../../../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../../about/" class="nav-link">About</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../../links/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../../../../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">The Monty Hall Problem is Really About Policy Assumptions</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2020-02-10T00:00:00Z" itemprop="datePublished" title="2020-02-10 00:00">2020-02-10 00:00</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p><strong>TL;DR</strong>: the Monty Hall problem doesn't have a well-defined solution.</p>
+<p>The Monty Hall problem is a classic "probability paradox"<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>, where the answer
+is counter-intuitive to most people's intuitions. To paraphrase <a href="https://en.wikipedia.org/wiki/Monty_Hall_problem">Wikipedia's
+introduction to the
+problem</a><sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>:</p>
+<blockquote>
+<p>Suppose you're on a game show, and you're given the choice of three doors:
+Behind one door is a prize; behind the others, nothing. You pick a door, say No. 1,
+and the host, who knows what's behind the doors, opens another door, say No. 3,
+which has nothing. He then says to you, "Do you want to pick door No. 2?" Is it
+to your advantage to switch your choice? </p>
+</blockquote>
+<p>This can be reframed as "what is the probability that the prize is behind door 2?"
+The "<em>intuitive answer</em>" is 1/2 (meaning there is no advantage to switching),
+since initially the prize could be behind any of the 3 doors, and you find out
+that it isn't behind door #3, leaving just 2 doors left with equal probability
+of having the prize.</p>
+<p>In contrast, the "<em>correct answer</em>" is 2/3. This discrepancy is usually
+explained away as the host <em>giving away</em> information with their choice of which
+door to open. Again, paraphrasing
+<a href="https://en.wikipedia.org/wiki/Monty_Hall_problem#Simple_solutions">Wikipedia</a>:</p>
+<blockquote>
+<p>An intuitive explanation is that, if the contestant initially picks an empty door (2
+of 3 doors), the contestant will win the prize by switching because the other
+empty door can no longer be picked, whereas if the contestant initially picks the prize
+(1 of 3 doors), the contestant will not win the prize by switching.</p>
+</blockquote>
+<p>However, in this post I am arguing that <strong>neither of these answers are
+"correct"</strong>, because the answer ultimately depends on your assumptions on what
+actions the game show host would take in counterfactual situations. Since this
+is not specified in most versions of the problem, the problem can't really be
+said to have a "<em>correct answer</em>". After <a href="#bayesian-formulation-of-the-problem">introducing the math necessary to solve the problem</a>, I will work through some <a href="#examples">example
+assumptions</a> and their resulting implications, and conclude with the
+surprising result that under the right assumptions, the answer to the problem
+could be <a href="#rigged-game-the-answer-could-be-anything"><strong>any</strong> probability</a>.</p>
+<h3>Bayesian Formulation of the Problem</h3>
+<p>Let:</p>
+<ul>
+<li>\(c\) be the contestant's <strong>c</strong>oice of door</li>
+<li>\(o\) be the door the host <strong>o</strong>pens</li>
+<li>\(a\) be the <strong>a</strong>nswer (the door the prize is actually behind)</li>
+</ul>
+<p>In a Bayesian decision framework, the way to handle this problem is to:</p>
+<ol>
+<li>Use your knowledge of the situation to construct a probability distribution over the relevant variables (\(p(o,a,c)\)).</li>
+<li>Use the values of the observed variables \(c\) and \(o\) to calculate the <em>posterior probability distribution</em> over the answers: \(p(a\mid o,c)\).</li>
+<li>Use this probability distribution to make an informed choice. In this situation, reasonable choice would be to choose the most likely answer, \(a^* = \arg\max_a p(a\mid o,c)\).</li>
+</ol>
+<p>Therefore solving the problem is the same as finding the posterior distribution.
+The posterior distribution can be found using Bayes theorem:</p>
+<p>$$p(a\mid o,c) = \frac{p(o,a,c)}{p(o,c)} = \frac{p(o,a,c)}{\sum_{a'} p(o,a',c)}$$</p>
+<p>This is far as we can go without making any assumptions. The most basic
+assumptions (which aren't that interesting) is that the game is fair (\(a\) is
+chosen randomly in advance) and real (the player doesn't know anything about
+\(a\), so their choice is effectively random).
+This means that the only interesting behaviour is that of the host,
+who can choose which door to open, knowing both where the prize is and the player's choice.
+Mathematically, this means that the distribution \(p(o,a,c)\) can be <em>factored</em> as:</p>
+<p>$$p(o,a,c) = p(a)p(c)p(o\mid a,c)$$</p>
+<p>Substituting this into the posterior equation above, and nothing that \(p(c)\) is
+a constant and cancels, we find:</p>
+<p>$$p(a\mid o,c) = \frac{p(o,a,c)}{\sum_{a'} p(o,a',c)} = \frac{p(o\mid a,c)p(a)p(c)}{\sum_{a'}p(o\mid a',c)p(a')p(c)} = \frac{p(o\mid a,c)p(a)}{\sum_{a'}p(o\mid a',c)p(a')}$$</p>
+<p>Assuming further that all answers are equally probable, this further simplifies to:</p>
+<p>$$p(a\mid o,c) = \frac{p(o\mid a,c)}{\sum_{a'}p(o\mid a',c)}$$</p>
+<p>This means that for this particular problem,
+the posterior can be computed with only 3 values:
+\(p(o=3\mid a_i, c=1)\), \(i\in{1,2,3}\).</p>
+<h3>Examples</h3>
+<h4>Standard assumptions: the argument for 2/3</h4>
+<p>When most people hear this problem, beyond the assumptions outlined in
+<a href="#bayesian-formulation-of-the-problem">the previous section</a>, they usually assume the following things:</p>
+<ol>
+<li>the host will not open the door with the prize behind it</li>
+<li>the host will not open the player's door</li>
+<li>the host will always open a door</li>
+<li>if the host can open multiple doors, they will choose one at random</li>
+</ol>
+<p>Assumptions 1-2 make sense, because otherwise the game show might not be any
+fun to watch. Assumption 3 isn't necessary but is usually assumed because when
+people imagine this game show they usually imagine that this switching gimmick
+is just part of the show. Assumption 4 makes sense, since there is no reason <em>a
+priori</em> to assume that the host will be biased towards any particular door.</p>
+<p>With this, we can calculate the 3 values of \(p(o\mid a,c)\):</p>
+<ol>
+<li>\(p(o=3\mid a=1,c=1)=1/2\): the host could open doors 2 or 3 here, and would
+   therefore pick at random. This would have them pick door 3 50% of the time.</li>
+<li>\(p(o=3\mid a=2,c=1)=1\): here the host cannot choose door 1 (since the player
+   chose it) or door #2 (since it has the prize), so opening door #3 is the only
+   option</li>
+<li>\(p(o=3\mid a=3,c=1)=0\): if door #3 had the prize, the host wouldn't have opened
+   it, so this event isn't possible.</li>
+</ol>
+<p>So, \(p(a=2\mid o=3,c=1) = \frac{1}{1/2+1} = 2/3\),
+suggesting that the best choice is to pick door 2 (switch doors).
+This is the classic "correct answer" of 2/3.</p>
+<h4>Biased random choice of host</h4>
+<p>Suppose that assumption 4 above isn't true:
+when the host has multiple doors that they could choose,
+they don't make a truly random decision<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>.
+One example of this is if the host tends to pick higher numbers over lower numbers:
+that is, given a choice of opening doors 2 or 3, they will pick door 3 with probability \(z\),
+which might not be \(1/2\).</p>
+<p>This scenario is similar to the standard one, except \(p(o=3\mid a=1,c=1)=z\), so
+\(p(a=2\mid o=3,c=1)=\frac{1}{1+z}\), which can vary between 1/2 and 1 for different
+values of \(z\). Already, this formulation (which isn't completely unrealistic)
+gives a huge range of possible answers, all contingent on your belief about how
+the host picks random numbers.</p>
+<h4>Inattentive host</h4>
+<p>Suppose the host didn't see what door the player chose. The host's decision
+then can't depend on \(c\) (breaking assumption 2). Instead, the host will
+randomly open one of the doors that doesn't have the prize, regardless of
+whether the player chose this door. This means \(p(o=3\mid a=i,c=1)=1/2\) for
+\(i=1,2\) (\(i=3\) remains unchanged since the host won't open the door with
+the answer behind it). Therefore, \(p(a=2|o=3,c=1)=1/2\). This scenario is
+certainly plausible in a real game show (although fairly unlikely).</p>
+<h4>No door as an option</h4>
+<p>If the host can choose <em>not</em> to open a door, this opens up a wide range of possibilities:</p>
+<h5>Dramatic host 1</h5>
+<p>To make the show more entertaining to watch, the host wants to bait the player
+into switching doors, not getting the prize, and then watch them agonize over
+their decision to switch. One way to do this would be to only open a door if
+the player's initial guess was correct.</p>
+<p>This means \(p(o=3\mid a=1,c=1)=1/2\), and the other 2 probabilities are 0, so the
+posterior probability \(p(a=2\mid o=3,c=1)=0\).</p>
+<h5>Dramatic host 2</h5>
+<p>Dramatic host 1 is too predictable (since being offered to switch doors means
+you should never switch). Dramatic host 2 becomes slightly less predictable by
+choosing with probability \(q\) to open a wrong door if the player initially
+chose correctly. This means that \(p(o=3\mid a=1,c=1)=1/2\) (like last time), but
+\(p(o=3\mid a=2,c=1)=q\), making the posterior probability
+\(p(a=2\mid o=3,c=1)=\frac{q}{1/2+q}\), which can range from 0 to 2/3.</p>
+<h5>Merciful host</h5>
+<p>Instead, a host could open a door only if the player's initial choice was
+wrong, yielding a posterior probability \(p(a=2\mid o=3,c=1)=1\). In this case, you
+would always want to switch doors if offered.</p>
+<h5>Only door 3 can be opened</h5>
+<p>Imagine that the host will act normally (i.e. standard assumptions), but if the
+final decision is to open doors 1 or 2 they will simply not open a door at all
+(they are only willing to open door 3)<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup>. This means that \(p(o=3\mid a=1,c=1)=1\),
+so the posterior \(p(a=2\mid o=3,c=1)=1/2\).</p>
+<h3>Rigged game: the answer could be anything</h3>
+<p>Suppose that our initial model of the causal process is wrong, and the game is
+unfair. Specifically, the player chooses a door, and then the correct door is
+chosen afterwards with this information<sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup>. 
+Specifically, suppose that the producers select the player's door as correct
+with probability \(q\), and one of the other 2 doors with probability \(1-q\).
+Note that if \(q=1/3\), this corresponds to the standard assumptions of a fair game.</p>
+<p>To calculate the posterior in this scenario, we need \(p(a\mid c)\) and \(p(o\mid a,c)\),
+which are the following:</p>
+<ul>
+<li>\(p(a=1\mid c=1) = q\) (by assumption above)</li>
+<li>\(p(a=2\mid c=1) = p(a=3\mid c=1) = (1-q)/2\) (since the probabilities must add to 1)</li>
+<li>Since the hosts actions don't change, \(p(o\mid a,c)\) is the same as before
+  (\(p(o=3\mid a=1,c=1)=1/2\), \(p(o=3\mid a=2,c=1)=1\), \(p(o=3\mid a=3,c=1)=0\))</li>
+</ul>
+<p>Reapplying Bayes rule, we get:</p>
+<p>$$p(a\mid o,c) = \frac{p(o\mid a,c)p(a\mid c)}{\sum_{a'}p(o\mid a',c)p(a'\mid c)}$$</p>
+<p>$$p(a=2\mid o=3,c=1) = \frac{1\times(1-q)/2}{q/2 + 1\times(1-q)/2 + 0\times(1-q)/2} = 1-q$$</p>
+<p>Since \(q\) can take on any value between 0 and 1, the posterior value can be any
+value between 0 and 1, meaning that the right decision could be <strong>absolutely
+anything</strong>. Of course, this is far from what most people assume when they
+encounter the Monty Hall problem, but if you were actually on such a game show
+in real life and offered this deal, would it not be prudent to at least
+consider this possibility?</p>
+<h3>Conclusion</h3>
+<p>In this post, I've shown how <a href="#bayesian-formulation-of-the-problem">Bayes rule</a>
+can be used to solve the Monty Hall problem, which under <a href="#standard-assumptions-the-argument-for-23">standard
+assumptions</a> gives the "correct
+answer" of 2/3. However, under different assumptions, the posterior probability
+of the prize being behind door 2 can take on many different values, which
+between a <a href="#biased-random-choice-of-host">biased host</a> and a host that wants to
+<a href="#dramatic-host-2">make you lose</a> spans the whole range of probabilities
+between 0 and 1. In fact, just assuming that the game isn't fair yields a model
+where it could be better to switch with probabilities ranging from 0 to
+1 inclusive!.</p>
+<p>Overall, it's very misleading to suggest that this is just a simple problem
+that tests if you can do some algebra; the entire solution is <strong>completely
+determined</strong> by one's beliefs about the host's counterfactual actions, so it's
+frankly surprising that this aspect of the problem isn't more widely discussed.
+As always, while an explicit Bayesian formulation isn't required to arrive at
+the desired answer, the Bayesian framework does aid greatly in making your
+assumptions explicit.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Specifically it would be a <a href="https://en.wikipedia.org/wiki/Paradox#Quine's_classification">veridical paradox</a>, because the result appears absurd but is nonetheless true. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+<li id="fn:2">
+<p>the original version used cars and goats, which I changed to just a prize/nothing for clarity. <a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">↩</a></p>
+</li>
+<li id="fn:3">
+<p>since people are generally quite bad at choosing truly random numbers <a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">↩</a></p>
+</li>
+<li id="fn:4">
+<p>maybe they are superstitious and like the number 3? <a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">↩</a></p>
+</li>
+<li id="fn:5">
+<p>The producers of the game show might do this to increase the amount of dramatic tension on the show. Who says that "reality" TV needs to be real? <a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../../../../2019/07/18/bash-quotes/" rel="prev" title="A Quick Tutorial on Bash Quotes">Previous post</a>
+            </li>
+        </ul></nav></aside><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$latex ','$'], ['\\(','\\)']]}});
+        </script></article><!--End of body content--><footer id="footer">
+            Contents © 2024         Austin Tripp (MIT License). <a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a> | - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../../../../../assets/js/all-nocdn.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>
