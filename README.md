@@ -1,4 +1,8 @@
-# AustinT.github.io
-My personal website. The actual url of the website is: https://austint.github.io/
+This is the source code for my personal website.
+The actual url of the website is: https://austint.github.io/.
 
-Kudos to http://jmcglone.com/guides/github-pages/ for the guide to help me set up this site, despite knowing nothing about making a website.
+Previously, this website was built using jekyll (the default for GitHub pages).
+Now it uses [nikola](https://getnikola.com/).
+Thanks to the developers of nikola for producing such a useful package.
+
+For instructions on how to add to the website, see the file `DEVELOPMENT.md`.
