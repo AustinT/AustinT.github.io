@@ -1,9 +1,12 @@
 # Vim files
 *.swp
 
-# Jekyll stuff
-_site/
-.jekyll-cache/
+# Nikola stuff
+.doit.db.db
+.cache/
+output/
+cache/
+__pycache__/
 
 # Mac files
 .DS_store
