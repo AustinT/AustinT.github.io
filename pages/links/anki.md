@@ -38,14 +38,14 @@ _not_ from scientific studies.
  and that the potential for forgetting before the 1 day review is even greater
  if you have a lot of new cards every day.
 
-  Instead, I like to use the intervals of 1m, 10m, 5h,
-  since the extra 5h interval makes it much more likely that I will remember it the next day.
-  I've found that if I do this I can often increase my initial review interval from 1 day to 2 days,
-  which really makes reviewing much more manageable in the long term.
+    Instead, I like to use the intervals of 1m, 10m, 5h,
+    since the extra 5h interval makes it much more likely that I will remember it the next day.
+    I've found that if I do this I can often increase my initial review interval from 1 day to 2 days,
+    which really makes reviewing much more manageable in the long term.
 
-  I've also experimented with extra long learning phases before going to review (often up to 1w),
-  but I thought that didn't work well since I would forget a card then need to start the long learning process all over again.
-  So, a longer learning phase is good, but keep it under 1 day!
+    I've also experimented with extra long learning phases before going to review (often up to 1w),
+    but I thought that didn't work well since I would forget a card then need to start the long learning process all over again.
+    So, a longer learning phase is good, but keep it under 1 day!
 
 - **Accept leeches**: for a long time I would "clean up my leeches" every month,
  putting them back into the new card deck to make sure I learned everything.
@@ -54,7 +54,7 @@ _not_ from scientific studies.
  so just accept that you will be unable to learn ~5% of things
  and don't focus too much on them.
 
-  If later on you need to know the leeched cards you can just put them back
+    If later on you need to know the leeched cards you can just put them back
   in your deck at that time.
 
 - **Number of new cards**: don't learn too many new cards every day (at most ~50),
@@ -62,9 +62,9 @@ _not_ from scientific studies.
  in the deck to really review it every day,
  thus depriving the cards of context.
  
-  You can learn more new cards every day if you really want to do a lot of Anki,
-  but I find that spending more than 30 mins reviewing every day is quite tedious
-  so I combat this by limiting the rate at which I learn new cards.
+    You can learn more new cards every day if you really want to do a lot of Anki,
+    but I find that spending more than 30 mins reviewing every day is quite tedious
+    so I combat this by limiting the rate at which I learn new cards.
 
 - **New cards before reviews**: the default settings (last time I checked)
  mix new cards with reviews.
@@ -80,11 +80,11 @@ _not_ from scientific studies.
  is the card "hard" or "again"?
  The same difficulty occurs if you have a card with an ambiguous answer.
 
-  An example of this for me was a card asking me to list the Chinese Dynasties in order.
-  I would always mess up a few of them, but would answer "hard" since I knew most of them,
-  and over time this led to me just having a vague idea of what half the dynasties were.
-  I eventually got rid of the note since it wasn't helpful.
-  So, give your cards a _single unambiguous item_.
+    An example of this for me was a card asking me to list the Chinese Dynasties in order.
+    I would always mess up a few of them, but would answer "hard" since I knew most of them,
+    and over time this led to me just having a vague idea of what half the dynasties were.
+    I eventually got rid of the note since it wasn't helpful.
+    So, give your cards a _single unambiguous item_.
 
 - **Be critical of your performance**: if you forget a card, it can be tempting
  to think "I was pretty close, so I will just mark _hard_ instead of _again_".
@@ -95,10 +95,10 @@ _not_ from scientific studies.
  I've had this happen for a few decks, where after a few months I realized I barely
  remembered any of the cards and questioned whether I should abandon the deck entirely.
 
-  When this happens, I would say it is a sign that you have too many reviews or probably
-  don't need to memorize the thing that you are memorizing.
-  Otherwise, don't hesitate to press _again_ when you forget!
-  It will be better in the long term.
+    When this happens, I would say it is a sign that you have too many reviews or probably
+    don't need to memorize the thing that you are memorizing.
+    Otherwise, don't hesitate to press _again_ when you forget!
+    It will be better in the long term.
 
 - **Don't be afraid to turn off a deck**: the point of Anki is to put things into your
  long-term memory, so the real benefits of using it are the memories that are there
@@ -109,31 +109,31 @@ _not_ from scientific studies.
  and if you don't think you will need this knowledge in the future perhaps it makes sense
  to stop reviewing it.
 
-  If you need the knowledge again at a later date, you can always start reviewing again,
-  even if you've forgotten a lot.
-  It will take a long time, but maybe 1 month of intense review is better than 5 years
-  of a few daily reviews in a period where you aren't using the knowledge.
-  Think of the following calculation:
-  add up how long you spend reviewing per day (maybe a few minutes),
-  and compare it with the amount of intense study time you think you would need to remember
-  things after a long break.
-  If the review time is more than the future cram time, maybe turn off reviewing for that deck.
+    If you need the knowledge again at a later date, you can always start reviewing again,
+    even if you've forgotten a lot.
+    It will take a long time, but maybe 1 month of intense review is better than 5 years
+    of a few daily reviews in a period where you aren't using the knowledge.
+    Think of the following calculation:
+    add up how long you spend reviewing per day (maybe a few minutes),
+    and compare it with the amount of intense study time you think you would need to remember
+    things after a long break.
+    If the review time is more than the future cram time, maybe turn off reviewing for that deck.
 
-  Alternatively, if it is just some cards you don't find useful, you can just suspend them
-  and keep reviewing the rest.
+    Alternatively, if it is just some cards you don't find useful, you can just suspend them
+    and keep reviewing the rest.
 
 - **Resist the temptation to memorize every detail**: cramming your deck full of every single
  piece of information is just going to result in you memorizing a lot of fairly useless things.
  Just put in what you need to know.
 
-  An example for me is country capitals: originally I had a deck with every country's capital,
-  but I realized later there wasn't much point in me knowing the capital of a country I knew
-  pretty much nothing else about, so I just suspended all the notes except for the countries
-  whose capital I thought it was important to know.
+    An example for me is country capitals: originally I had a deck with every country's capital,
+    but I realized later there wasn't much point in me knowing the capital of a country I knew
+    pretty much nothing else about, so I just suspended all the notes except for the countries
+    whose capital I thought it was important to know.
 
-  Anki should be there to help you; resist the temptation to listen blindly
+    Anki should be there to help you; resist the temptation to listen blindly
   to what it tells you to study!
-  Memorize only what you need.
+    Memorize only what you need.
 
 
 ## What I use Anki for (with more detailed tips)
@@ -205,40 +205,43 @@ Here are some things I've used it for and some advice I have for specific learni
     _Specifically for Chinese characters_, I found Ankidroid very useful since it has a "writing"
     function that let's you actually draw the character.
     Otherwise I think using pen/paper to draw out the character is essential to testing yourself.
+
 - **Equations**: sometimes math/science courses require some memorization of equations,
  but in general I haven't found Anki to be a helpful tool for this.
  Here are some thoughts as to why:
-  - Sometimes knowing an equation is more about understanding than memorizing equation itself,
+    - Sometimes knowing an equation is more about understanding than memorizing equation itself,
    and if you understand the motivation for the equation you can re-derive it easily if needed.
    An example might be the ideal gas equation from physics.
    If you know the effects of every term (pressure, volume, temperature, number of moles),
    then it's fairly easy to just write out the whole equation.
    Understanding the equation is also _much less prone to memory errors_ than direct memorization.
-  - A lot of empirical equations have similar forms (like polynomials),
+    - A lot of empirical equations have similar forms (like polynomials),
    so its better to just memorize the form and then look up the specific constants of the equations.
-  - Many equations have "important parts" and "unimportant parts".
+    - Many equations have "important parts" and "unimportant parts".
    An example would be a Gaussian distribution:
    sometimes it just matters that it is proportional to a square exponential function,
    and the normalizing constant isn't relevant.
    So many you just need to memorize one part of an equation,
    or have a vague idea of its form rather than memorize the whole thing.
-  - Many equations have _multiple forms_, and any form is correct if you know how to use it.
+    - Many equations have _multiple forms_, and any form is correct if you know how to use it.
    An example would be Maxwell's equations of electromagnetism:
    generally, they have lots of constants, but they can also be written in "natural units"
    where all the constants are 1.
    Either form of the equation is "correct", provided that you know which form is appropriate in which circumstances.
 
-   In general, exactly recalling an equation means getting every variable and term right,
+     In general, exactly recalling an equation means getting every variable and term right,
    and doing this doesn't mean you understand the equation, what parts of it are important,
    nor does it guarantee that you will be able to use it.
    Additionally if you rely on a memorization-heavy approach but you misremember one tiny part
    of an equation, generally your answer will be totally wrong.
    For these reasons I don't think _memorizing_ equations is a good use of Anki.
    It is far more effective to learn equations without relying too strongly on memorization.
+
 - **Trivia**: random facts like flags/country capitals.
  I think this is a good use of Anki since short unambiguous questions are the kind of things Anki excels at.
  Whether using your _time_ to memorize trivia is a good idea is another matter
  (my current answer: _**no**_).
+
 - **Passwords**: a good use of Anki I've found is to force you to log into your accounts every once in a while so you remember your passwords.
  This is especially useful if you use a password manager (like the one in your browser),
  which might allow you to go for long periods of time without ever needing to log into your accounts.
