@@ -2,7 +2,6 @@
 title: UWaterloo Course Reviews
 ---
 
-# UWaterloo Course Review
 This page lists my thoughts on most of the courses I have taken at the [University of Waterloo](https://uwaterloo.ca/).
 Note that I have excluded project courses from this list, and a lot of the general first year courses that I feel are pretty standard. The opinions here are only my personal opinions and are in no way official.
 

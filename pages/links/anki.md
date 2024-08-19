@@ -3,9 +3,9 @@ title: More Information about Anki
 mathjax: true
 ---
 
-# More Information about Anki
 Anki is an extremely useful piece of software for learning new things.
 This page:
+
 1. links to some resources that have helped me use Anki better
 2. lists some of my own tips
 
@@ -19,6 +19,7 @@ If you **do** know what Anki is you should skip this section.
 If you **don't** know what Anki is, I will refer you to some external websites
 since I have no intention of writing my own intro when there are plenty of good ones
 already out there.
+
 - [Nicky Case's intro](https://ncase.me/remember/) is a fun interactive web app which motivates spaced repetition
  (the algorithm that Anki uses).
 - The [user manual](https://apps.ankiweb.net/docs/manual.html) is long but surprisingly readable.
@@ -29,12 +30,13 @@ These are my personal tips for using Anki.
 They are the result of me using Anki since 2014 and doing some
 non-rigorous experiments with myself,
 _not_ from scientific studies.
+
 - **Change learning intervals**: I find that the default learning intervals of 1 min,
  then 10 mins, then right into review the next day is a bit fast,
  since you can easily forget things between the 10 min review and the review the next day.
  With the 10 min interval, I think the item is only in your short term memory (not long term),
  and that the potential for forgetting before the 1 day review is even greater
- if you have a lot of new cards every day. 
+ if you have a lot of new cards every day.
 
   Instead, I like to use the intervals of 1m, 10m, 5h,
   since the extra 5h interval makes it much more likely that I will remember it the next day.
@@ -155,6 +157,7 @@ Here are some things I've used it for and some advice I have for specific learni
     The most common translation of _myself_ into English is _moi-même_,
     so having a card that tests _myself_ (en) -> _me_ (fr) is a bit misleading.
     The optional reverse would allow me to remove this card without simply removing the note for _me_ altogether.
+
   - **Sentence cards**: cards that teach a whole sentence (e.g. _J'ai un chien_ -> _I have a dog_ in French).
    I have mixed but mostly negative feelings on these:
    I think they are an ok way to teach grammar (since you learn the grammar by using it in a sentence),
