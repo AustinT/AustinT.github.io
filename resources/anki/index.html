@@ -11,11 +11,11 @@
 <meta name="theme-color" content="#5670d4">
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
-<link rel="canonical" href="https://austintripp.ca/links/anki/">
+<link rel="canonical" href="https://austintripp.ca/resources/anki/">
 <!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
 <meta property="og:site_name" content="Austin Tripp's website">
 <meta property="og:title" content="More Information about Anki">
-<meta property="og:url" content="https://austintripp.ca/links/anki/">
+<meta property="og:url" content="https://austintripp.ca/resources/anki/">
 <meta property="og:description" content="Anki is an extremely useful piece of software for learning new things.
 This page:
 
@@ -24,7 +24,7 @@ lists some of my own tips
 
 Note: this page is meant to be">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2024-08-19T15:12:13+01:00">
+<meta property="article:published_time" content="2024-08-20T11:49:01+01:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -61,9 +61,6 @@ Note: this page is meant to be">
             <ul class="navbar-nav nav-fill d-flex w-100">
 <li class="nav-item">
 <a href="../../" class="nav-link">Home</a>
-                </li>
-<li class="nav-item">
-<a href="../../about/" class="nav-link">About</a>
                 </li>
 <li class="nav-item">
 <a href="../../cv/" class="nav-link">CV</a>
@@ -105,7 +102,7 @@ This page:</p>
 <p><strong>Note</strong>: this page is meant to be a reflection of my <em>current</em> views on Anki,
 and therefore may change without notice.
 It is meant to be updated on an ongoing basis.</p>
-<h3>Anki explained</h3>
+<h3 id="anki-explained">Anki explained</h3>
 <p>If you <strong>do</strong> know what Anki is you should skip this section.</p>
 <p>If you <strong>don't</strong> know what Anki is, I will refer you to some external websites
 since I have no intention of writing my own intro when there are plenty of good ones
@@ -117,7 +114,7 @@ already out there.</p>
 <li>The <a href="https://apps.ankiweb.net/docs/manual.html">user manual</a> is long but surprisingly readable.
  Skimming the introduction is not a bad way to start learning about Anki.</li>
 </ul>
-<h3>My General Anki Tips</h3>
+<h3 id="my-general-anki-tips">My General Anki Tips</h3>
 <p>These are my personal tips for using Anki.
 They are the result of me using Anki since 2014 and doing some
 non-rigorous experiments with myself,
@@ -226,7 +223,7 @@ whose capital I thought it was important to know.</p>
 Memorize only what you need.</p>
 </li>
 </ul>
-<h3>What I use Anki for (with more detailed tips)</h3>
+<h3 id="what-i-use-anki-for-with-more-detailed-tips">What I use Anki for (with more detailed tips)</h3>
 <p>I've tried using Anki to memorize a variety of things, but mostly for languages.
 I have used it a bit for academic study but generally not as much.
 Here are some things I've used it for and some advice I have for specific learning tasks.</p>
@@ -343,7 +340,7 @@ Otherwise I think using pen/paper to draw out the character is essential to test
 <p><strong>Important note</strong>: if you do this, don't actually put your passwords into Anki:
   have them stored somewhere safe, ideally encoded, such as with a password manager.
   Anki is not a secure password safe!</p>
-<h3>Further Resources on Anki</h3>
+<h3 id="further-resources-on-anki">Further Resources on Anki</h3>
 <p>These are some websites I've found useful,
 or think have a lot of interesting content about Anki.</p>
 <ul>
@@ -375,7 +372,10 @@ or think have a lot of interesting content about Anki.</p>
 </div>
 
 
-        <script src="../../assets/js/all-nocdn.js"></script><script>
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});

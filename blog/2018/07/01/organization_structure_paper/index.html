@@ -22,6 +22,8 @@
 Ever since I've started doing internships, the concept of efficient organizations has piqued my interest. In every workplace I have been in, time is always wasted by inefficient transfers o">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2018-07-01T00:00:00+01:00">
+<meta property="article:tag" content="frontpage">
+<meta property="article:tag" content="papers">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -60,16 +62,13 @@ Ever since I've started doing internships, the concept of efficient organization
 <a href="../../../../../" class="nav-link">Home</a>
                 </li>
 <li class="nav-item">
-<a href="../../../../../about/" class="nav-link">About</a>
-                </li>
-<li class="nav-item">
 <a href="../../../../../cv/" class="nav-link">CV</a>
                 </li>
 <li class="nav-item">
 <a href="../../../../../research/" class="nav-link">Research</a>
                 </li>
 <li class="nav-item">
-<a href="../../../../../links/" class="nav-link">Resources</a>
+<a href="../../../../../resources/" class="nav-link">Resources</a>
                 </li>
 <li class="nav-item">
 <a href="../../../../" class="nav-link">Blog</a>
@@ -96,7 +95,7 @@ Ever since I've started doing internships, the concept of efficient organization
             </span></p>
             <p class="dateline">
             <a href="." rel="bookmark">
-            <time class="published dt-published" datetime="2018-07-01T00:00:00+01:00" itemprop="datePublished" title="2018-07-01 00:00">2018-07-01 00:00</time></a>
+            <time class="published dt-published" datetime="2018-07-01T00:00:00+01:00" itemprop="datePublished" title="2018-07-01">2018-07-01</time></a>
             </p>
             
         <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
@@ -105,10 +104,12 @@ Ever since I've started doing internships, the concept of efficient organization
         
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <h3>Motivation</h3>
+    <h3 id="motivation">Motivation</h3>
 <p>Ever since I've started doing internships, the concept of efficient organizations has piqued my interest. In every workplace I have been in, time is always wasted by inefficient transfers of information. For example, long meetings where most of the content is irrelevant to most of the people, or repeated interactions with co-workers where you explain the same thing to all of them. Assuming employees make ~$40/hour, a 1 h meeting with 100 people will cost $4000! If these meetings are not productive, then the company gets a negative return on its time investment, which essentially means the company is wasting money. Clearly organizational efficiency is a financially important objective.</p>
 <p>Much of an organization's efficiency can be linked to its structure. Long, big meetings are usually a consequence of a strong <em>hierarchical</em> organization, where work is done by employees, then synced to a centralized node (a boss), and then possibly recapitulated to the workers in a meeting. However, are there better ways to structure an organization that would save time?</p>
-<h3>The Paper</h3>
+<!-- TEASER_END -->
+
+<h3 id="the-paper">The Paper</h3>
 <p>The paper <a href="https://arxiv.org/abs/1806.05701">A Computational Approach to Organizational Structure</a> tries to address this problem from a fundamental perspective. They frame the problem as such:</p>
 <ul>
 <li>Model an organization as a <em>graph</em> with the nodes being people, and the edges being connections between them. For example, a hierarchical organization would be a tree</li>
@@ -120,17 +121,17 @@ Ever since I've started doing internships, the concept of efficient organization
  These actions are assumed to take \(t_c\) and \(t_m\) respectively.</li>
 </ul>
 <p>As a sample problem, the paper chooses to analyze the <em>information aggregation</em> problem, which means taking all the tokens (tasks) and combining them at one node. This is equivalent to passing around information: for example, doing an analysis of which items to purchase for the company, then condensing and passing the recommendations to the CEO to make the final decision.</p>
-<h3>Their algorithm</h3>
+<h3 id="their-algorithm">Their algorithm</h3>
 <p>The paper presents 2 things:
 - An exact, polynomial time algorithm for solving the problem on fully-connected graphs
 - An approximate algorithm for solving it on arbitrary graphs.</p>
 <p>The exact algorithm is essentially a hierarchical approach: given a tree, the leaf nodes pass their tokens to their parents, who compute it, and pass the tokens to their parents, etc. They give a formula for designing the optimal tree recursively. To make this work on an arbitrary graph, simply embed the tree in the graph. I talk about this algorithm in more detail <a href="#more-detailed-explanation-of-the-fully-connected-graph-optimization">below</a>.</p>
 <p>The approximate algorithm is similar in intuition. Designate some nodes as sources, and the rest as sinks. Then pass tokens from sources to sinks, which then aggregate the tokens together.</p>
 <p>The bulk of the paper is essentially dense math proving that these solutions run in polynomial time. </p>
-<h3>My thoughts on the paper</h3>
+<h3 id="my-thoughts-on-the-paper">My thoughts on the paper</h3>
 <p>I won't lie: I didn't read the proofs for this. But the intuition was very interesting. Essentially the result of the paper supported a hierarchical information transfer process, at least for centralized transfer of information. I think it would be interesting to consider the downwards transfer of information too, or modelling a multi-step decision process with feedback.</p>
 <p>Another analogous problem that I think is interesting not only propagating information to a central source, but as work gets done, propagating information on that work to all other nodes (i.e. keep people up to date on what other people are doing). This is another problem I have observed in big companies. The analogous idea here would probably be each computation generating its own mini-token, which should be processed and passed around to all other nodes in the network (in some form).  </p>
-<h3>More detailed explanation of the fully-connected graph optimization</h3>
+<h3 id="more-detailed-explanation-of-the-fully-connected-graph-optimization">More detailed explanation of the fully-connected graph optimization</h3>
 <p>I found this quite interesting, so I thought I would elaborate more on it. The key formula is defining a tree \(T(R)\) as the largest tree such that information can be greedily aggregated within R time steps. The formula for such a tree is:</p>
 <p>$$T(R) = \begin{cases}
 \text{Single leaf},  &amp; \text{if $R &lt; t_m &lt; t_c$} \
@@ -140,7 +141,11 @@ T(R-t_c) \text{ with child } T(R-t_c-t_m), &amp; \text{otherwise}
 <p>Otherwise, the tree can have leaves. So the largest tree you can create is the largest tree you can make and still have enough rounds left for one computation (\(T(R-t_c)\)), with an additional leaf tree which can be fully computed, and still have time to pass its message to the root (\(T(R-t_c-t_m)\)).</p>
 <p>I really liked this formula because it was so clean and recursive.</p>
     </div>
-    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../../../../categories/frontpage/" rel="tag">frontpage</a></li>
+            <li><a class="tag p-category" href="../../../../../categories/papers/" rel="tag">papers</a></li>
+        </ul>
+<ul class="pager hidden-print">
 <li class="previous">
                 <a href="../../../06/25/onyomi/" rel="prev" title="How to guess a Kanji's on-yomi in 4 easy steps">Previous post</a>
             </li>
@@ -156,7 +161,10 @@ T(R-t_c) \text{ with child } T(R-t_c-t_m), &amp; \text{otherwise}
 </div>
 
 
-        <script src="../../../../../assets/js/all-nocdn.js"></script><script>
+        <script src="../../../../../assets/js/all-nocdn.js"></script><script src="../../../../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});

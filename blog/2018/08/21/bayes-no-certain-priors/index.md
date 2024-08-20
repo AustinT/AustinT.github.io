@@ -1,8 +1,8 @@
 ---
 title: "Why you should never be certain of your beliefs: a Bayesian perspective"
 date: 2018-08-21
-categories:
-    - Statistics
+tags:
+    - statistics
     - frontpage
 mathjax: true
 ---
@@ -11,6 +11,8 @@ People are notoriously bad at estimating their percent confidence in their belie
 Something I thought of recently is what effect this overconfidence has from a Bayesian perspective. 
 After a bit of math, I came to the conclusion that having extreme confidence in your beliefs (0% or 100% confidence) implies that you would be unable to change your beliefs if shown evidence to the contrary.
 I believe this simple argument suggests that it is very irrational to hold prior beliefs of 0 or 100%. If you do feel this way, then you should choose a very high value (99.99%) or a very low value (0.001%), but always leave some room for error.
+
+<!-- TEASER_END -->
 
 ## The model
 Suppose you have a belief about a fact, \\(f\\), which for simplicity we will assume is a binary variable (either true or false). 

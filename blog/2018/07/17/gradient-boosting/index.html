@@ -24,6 +24,8 @@ The aim of this blog article is the following:
 To provide an introduction to the machine learning technique known as boosting, and sp">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2018-07-17T00:00:00+01:00">
+<meta property="article:tag" content="frontpage">
+<meta property="article:tag" content="machine learning">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -62,16 +64,13 @@ To provide an introduction to the machine learning technique known as boosting, 
 <a href="../../../../../" class="nav-link">Home</a>
                 </li>
 <li class="nav-item">
-<a href="../../../../../about/" class="nav-link">About</a>
-                </li>
-<li class="nav-item">
 <a href="../../../../../cv/" class="nav-link">CV</a>
                 </li>
 <li class="nav-item">
 <a href="../../../../../research/" class="nav-link">Research</a>
                 </li>
 <li class="nav-item">
-<a href="../../../../../links/" class="nav-link">Resources</a>
+<a href="../../../../../resources/" class="nav-link">Resources</a>
                 </li>
 <li class="nav-item">
 <a href="../../../../" class="nav-link">Blog</a>
@@ -98,7 +97,7 @@ To provide an introduction to the machine learning technique known as boosting, 
             </span></p>
             <p class="dateline">
             <a href="." rel="bookmark">
-            <time class="published dt-published" datetime="2018-07-17T00:00:00+01:00" itemprop="datePublished" title="2018-07-17 00:00">2018-07-17 00:00</time></a>
+            <time class="published dt-published" datetime="2018-07-17T00:00:00+01:00" itemprop="datePublished" title="2018-07-17">2018-07-17</time></a>
             </p>
             
         <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
@@ -115,22 +114,22 @@ The aim of this blog article is the following:</p>
 </li>
 <li>To explain and compare several popular gradient boosting frameworks, specifically <em>XGBoost</em>, <em>CatBoost</em>, and <em>LightGBM</em>.</li>
 </ol>
-<h3>A brief introduction to ensemble models</h3>
+<!-- TEASER_END --><h3 id="a-brief-introduction-to-ensemble-models">A brief introduction to ensemble models</h3>
 <p>Machine learning tasks can be framed as a function approximation task, where the goal is to approximate a function \(f(\vec{x})\) given a set of observations 
 \(\lbrace \left(\vec x_i, f(\vec x_i) \right)\rbrace _{i=1:N}\).
 The main difficulty is that \(f\) can be very complex, or potentially we might not have a lot of data. So a simple model (e.g. linear regression) might not be able to adequately model \(f\), and a sufficiently complex model would overfit the training set.</p>
 <p>This kind of scenario is perfect for an ensemble method: where multiple models are combined together to create one superior model. Two popular methods for this are called <em>bagging</em> and <em>boosting</em>.</p>
-<h4>Bagging</h4>
+<h4 id="bagging">Bagging</h4>
 <p>Personally, I find this method to be more intuitive. The intuition behind bagging is that different models tend to make different kinds of errors, so given many models, it is unlikely that they will all make a similar misclassification error. Therefore, you train multiple models, and to inference on a data point you inference on all the models and then average/vote on the result.</p>
 <p>However, how do you guarantee that all the models will make different kinds of errors? Most simple models are fit using deterministic algorithms, meaning that training multiple copies of the same model won't yield any different results. The answer for this is <em>bootstrapping</em>, which is the statistical name for subsampling from your data. By training models on different subsets of your training set, each point is only seen by a fraction of the models, and therefore not all the models will be able to overfit to that point. Furthermore, since the different models will also all see different data <em>distributions</em>, they will also be unable to precisely overfit to your training set distribution. The overall effect of this is that the different models you train will be significantly less correlated, making the above objective of independent errors more true.</p>
 <p>This technique is what gives <em>bagging</em> its name: it stands for <em>"Bootstrap AGGregatING"</em>. (I used to think it was called bagging because you had a "bag of models", but this is not the case).</p>
 <p>Moving up one level of abstraction, bagging can be thought of as a weighted averaging model: given the outputs of several models, the bagging model assigns a weight to each of the model's predictions and sums them to get a total prediction. Assuming the bagging method uses N models, an averaging bagging model assigns a weight of \(1/N\) to each sub-model, and a mode bagging model assigns a weight of \(1/N_{mode}\). </p>
-<h4>Boosting</h4>
+<h4 id="boosting">Boosting</h4>
 <p>Boosting differs from bagging in the fitting procedure, and in the goal of each model. In bagging, the goal is to train models independently so that they make less correlated errors. In boosting however, models are trained sequentially, with the goal of training each model being to correct for the errors made by the previous model.</p>
 <p>That is, if you have a model \(m_j(\vec{x})\) fit after \(j\) iterations, then the goal of boosting is to fit a model</p>
 <p>$$m_{j+1}(\vec{x}) = f(\vec{x}) - m_j(\vec{x})$$ </p>
 <p>This essentially means that you are fitting a new model, such that when it is added to the previous model, perfectly corrects for its mistakes. Intuitively, you are training a model that <em>boosts</em> the performance of your previous model, hence the name boosting.</p>
-<h3>Gradient boosting</h3>
+<h3 id="gradient-boosting">Gradient boosting</h3>
 <p><em>Gradient boosting</em> is a specific variety of boosting, with a slightly different objective. Consider the following scenario: you would like to fit your entire dataset, but there is a specific region which you care more about, so errors in that region are more problematic than errors in other regions. One example of this kind of scenario would be medical diagnosis, where a false negative (saying no disease when there is really a disease) can have severe consequences. In this case, trying to match every point equally would not be the best choice.</p>
 <p>Typically in this kind of scenario, a <em>loss function</em> is used to capture the error preferences in a single scalar value. In this context, the goal of adding another model to your set of models is not to decrease the fitting errors, but to decrease the loss function. Specifically, you would like it so that:</p>
 <p>$$L(m_{j+1} + m_j) \leq L(m_{j+1})$$</p>
@@ -141,7 +140,7 @@ The main difficulty is that \(f\) can be very complex, or potentially we might n
 <p>Whereas in gradient boosting, we want:</p>
 <p>$$m_{j+1} = \nabla _{m_j} L(m_j)$$</p>
 <p>Note that like bagging, since the outputs of different trees are being added to produce the final output, it can also be thought of as a weighted averaging model.</p>
-<h3>Gradient boosting and decision trees</h3>
+<h3 id="gradient-boosting-and-decision-trees">Gradient boosting and decision trees</h3>
 <p>Usually when gradient boosting is discussed, it is almost always in relation to decision trees. Why is that? While I am not 100% sure of this, I can think of a few main reasons:</p>
 <ul>
 <li>With linear models (i.e. linear regression), the models are already additive, so adding two linear models is always equivalent to fitting a single linear model</li>
@@ -150,7 +149,7 @@ The main difficulty is that \(f\) can be very complex, or potentially we might n
 <li>Newer models (neural nets) are usually pretty strong learners, and in theory if the neural network consistently performs poorly on a specific output you can just train on that output more, or add more parameters to increase model complexity. So gradient boosting doesn't seem very necessary for this.</li>
 </ul>
 <p>So while it seems like gradient boosting can be used for anything, in practice it is mainly used for decision tree models.</p>
-<h3>High-level comparison of gradient boosting frameworks</h3>
+<h3 id="high-level-comparison-of-gradient-boosting-frameworks">High-level comparison of gradient boosting frameworks</h3>
 <p><em>XGBoost</em>, <em>CatBoost</em>, and <em>LightGBM</em> are all popular gradient boosting frameworks for decision trees. They all use essentially the same algorithm for one part of it, with the difference being in the other part. The two steps for most gradient boosting algorithms are:
 1. An algorithm to produce candidate new trees, usually iteratively, by given a starting tree, by selecting a leaf node to split and performing a split. Usually the first tree in this algorithm is just a single leaf node (i.e. all items in one node)
 2. An algorithm to evaluate the quality of these splits.</p>
@@ -169,10 +168,14 @@ The main difficulty is that \(f\) can be very complex, or potentially we might n
 </li>
 </ul>
 <p>So in summary, the main difference between these libraries is how they choose to reduce the number of splits that they investigate, and which points they choose to make/evaluate those splits. But the underlying split evaluation idea is almost identical.</p>
-<h3>Conclusion</h3>
+<h3 id="conclusion">Conclusion</h3>
 <p>In summary, I've explained what bagging and boosting are, and some of the key gradient boosting libraries. Even though boosting techniques don't seem very prominent in modern machine learning literature, I think they are still valuable to know. They are especially useful for serving machine learning models at scale, where simple models like decision trees have huge speed advantages on large datasets. So I believe that boosting/gradient boosting will prove useful well into the future.</p>
     </div>
-    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../../../../categories/frontpage/" rel="tag">frontpage</a></li>
+            <li><a class="tag p-category" href="../../../../../categories/machine-learning/" rel="tag">machine learning</a></li>
+        </ul>
+<ul class="pager hidden-print">
 <li class="previous">
                 <a href="../../02/adam-to-sgd/" rel="prev" title="Turning Adam Optimization into SGD">Previous post</a>
             </li>
@@ -188,7 +191,10 @@ The main difficulty is that \(f\) can be very complex, or potentially we might n
 </div>
 
 
-        <script src="../../../../../assets/js/all-nocdn.js"></script><script>
+        <script src="../../../../../assets/js/all-nocdn.js"></script><script src="../../../../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});

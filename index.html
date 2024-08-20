@@ -17,13 +17,14 @@
 <meta property="og:title" content="Austin Tripp">
 <meta property="og:url" content="https://austintripp.ca/">
 <meta property="og:description" content="Welcome to my website, thanks for visiting!
-I am a PhD student
-in the machine learning group
-at the University of Cambridge.
-My research is on Bayesian machine learning algorithms
-for drug discovery a">
+I am a researcher in science and machine learning.
+This website functions as a
+CV,
+research summary,
+blog about various topics,
+and repository of miscellane">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2024-08-18T11:53:49+01:00">
+<meta property="article:published_time" content="2024-08-20T11:49:01+01:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -62,16 +63,13 @@ for drug discovery a">
 <a href="." class="nav-link">Home <span class="sr-only">(active)</span></a>
                 </li>
 <li class="nav-item">
-<a href="about/" class="nav-link">About</a>
-                </li>
-<li class="nav-item">
 <a href="cv/" class="nav-link">CV</a>
                 </li>
 <li class="nav-item">
 <a href="research/" class="nav-link">Research</a>
                 </li>
 <li class="nav-item">
-<a href="links/" class="nav-link">Resources</a>
+<a href="resources/" class="nav-link">Resources</a>
                 </li>
 <li class="nav-item">
 <a href="blog/" class="nav-link">Blog</a>
@@ -96,21 +94,21 @@ for drug discovery a">
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
     <p>Welcome to <a href=".">my website</a>, thanks for visiting!</p>
-<p>I am a <a href="https://mlg.eng.cam.ac.uk/author/austin-tripp/">PhD student</a>
-in the <a href="http://mlg.eng.cam.ac.uk/?page_id=657">machine learning group</a>
-at the University of Cambridge.
-My research is on Bayesian machine learning algorithms
-for drug discovery and chemistry
-(more info <a href="research">here</a>).
-Before my PhD, I completed my BASc in
-<a href="https://uwaterloo.ca/nanotechnology/">nanotechnology engineering</a> at the 
-<a href="https://uwaterloo.ca/">University of Waterloo</a>.</p>
-<p>Click to learn more <a href="about">about me</a>, see my <a href="cv">CV</a>,
-or read my <a href="blog">blog</a> where I [occasionally] write about math, science, language learning,
-and my miscellaneous adventures.</p>
-<h3>Consulting / employment</h3>
-<p>I am looking for jobs (starting late 2024) and am in principle open to do consulting work.
-Please email me if you think I could be a good fit.</p>
+<p>I am a researcher in science and machine learning.
+This website functions as a
+<a href="cv">CV</a>,
+<a href="research">research summary</a>,
+<a href="blog">blog</a> about various topics,
+and repository of miscellaneous <a href="resources">resources</a>.</p>
+<p>Feel free to email me if you have questions about this website,
+or if you find any issues like broken links.</p>
+<h3 id="contact">Contact</h3>
+<p>The best way to reach me is by email.
+My email can be found at the bottom of this page.</p>
+<h3 id="consulting-employment">Consulting / employment</h3>
+<p>I am not available for full-time employment now.
+If you are interested in hiring me for contract work please send me an email
+(but my availability for this will be limited).</p>
     </div>
     
 
@@ -123,7 +121,10 @@ Please email me if you think I could be a good fit.</p>
 </div>
 
 
-        <script src="assets/js/all-nocdn.js"></script><script>
+        <script src="assets/js/all-nocdn.js"></script><script src="assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});

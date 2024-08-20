@@ -1,13 +1,15 @@
 ---
 title: "The Monty Hall Problem is Really About Policy Assumptions"
 date: 2020-02-10
-categories:
-    - Statistics
+tags:
+    - statistics
     - frontpage
 has_math: true
 ---
 
 **TL;DR**: the Monty Hall problem doesn't have a well-defined solution.
+
+<!-- TEASER_END -->
 
 The Monty Hall problem is a classic "probability paradox"[^1], where the answer
 is counter-intuitive to most people's intuitions. To paraphrase [Wikipedia's

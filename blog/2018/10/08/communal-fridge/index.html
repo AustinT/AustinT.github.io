@@ -61,16 +61,13 @@ I thought this was an interesting problem and">
 <a href="../../../../../" class="nav-link">Home</a>
                 </li>
 <li class="nav-item">
-<a href="../../../../../about/" class="nav-link">About</a>
-                </li>
-<li class="nav-item">
 <a href="../../../../../cv/" class="nav-link">CV</a>
                 </li>
 <li class="nav-item">
 <a href="../../../../../research/" class="nav-link">Research</a>
                 </li>
 <li class="nav-item">
-<a href="../../../../../links/" class="nav-link">Resources</a>
+<a href="../../../../../resources/" class="nav-link">Resources</a>
                 </li>
 <li class="nav-item">
 <a href="../../../../" class="nav-link">Blog</a>
@@ -97,7 +94,7 @@ I thought this was an interesting problem and">
             </span></p>
             <p class="dateline">
             <a href="." rel="bookmark">
-            <time class="published dt-published" datetime="2018-10-08T00:00:00+01:00" itemprop="datePublished" title="2018-10-08 00:00">2018-10-08 00:00</time></a>
+            <time class="published dt-published" datetime="2018-10-08T00:00:00+01:00" itemprop="datePublished" title="2018-10-08">2018-10-08</time></a>
             </p>
             
         <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
@@ -109,7 +106,9 @@ I thought this was an interesting problem and">
     <p>Last month, my class decided that we should get a fridge for the class study room.
 This brought up an important question: how would the fridge be cleaned?
 I thought this was an interesting problem and deserved some discussion, both from a practical and a theoretical standpoint.</p>
-<h3>Description of problem</h3>
+<!-- TEASER_END -->
+
+<h3 id="description-of-problem">Description of problem</h3>
 <p>The problem with cleaning a fridge obviously isn't the actual cleaning process,
 but rather construction of a system to assign cleaning duties to a variety of people.
 It is a difficult problem for the following reasons:
@@ -123,12 +122,12 @@ It is a difficult problem for the following reasons:
 2. Only obligate people who use the fridge
 3. Be decentralized (i.e. not rely on some sort of "leader" to assign the jobs and check to make sure it is done).
 4. Be failure-resistant: if the job isn't done properly, there should be some sort of mechanism to make sure it is done properly eventually.</p>
-<h3>Volunteer Solution</h3>
+<h3 id="volunteer-solution">Volunteer Solution</h3>
 <p>The solution put forth by the group was to just put a volunteer list on the fridge, and people would sign up for a cleaning week.
 This solution would work if people using the fridge were mature enough to volunteer for a week.
 It is also distributed, self-running, and doesn't obligate people who don't use the fridge.
 For this reason, it was very popular with the rest of the group.</p>
-<h3>Free Market Solution</h3>
+<h3 id="free-market-solution">Free Market Solution</h3>
 <p>I thought of a more interesting solution: why not create a market for cleaning, and use the principles of market economics to keep the fridge clean?
 The problem with a volunteer-based solution is that people's only incentive to volunteer is a sense of decency and common good: a sense that not everybody has.
 Instead, if motivated by money, then that gives people a tangible incentive to do work.</p>
@@ -146,7 +145,7 @@ The main downside however is that in the end, it depends on people's decency to 
 If not enough people donate, then the fund won't be able to pay people properly.
 Moreover, the prices and price increases would have to be carefully planned: 
 they must be high enough to motivate people to do work, but not so high as to drain the fund too fast.</p>
-<h3>Collective Punishment Solution</h3>
+<h3 id="collective-punishment-solution">Collective Punishment Solution</h3>
 <p>This solution is inspired by the military, where if a squad as a whole fails, they are often punished as a whole.
 This solution would require a centralized leader, but their responsibility would be fairly minimal.
 A requirement would be set out that the fridge has to be cleaned every week, and if nobody does it, the leader 
@@ -157,7 +156,7 @@ because the cost of not doing so is very high.
 It essentially forces self-organization to avoid a very undesirable fate.
 This solution is interesting from the organizer's perspective, because no organized list has to be created,
 but unfortunately does require a central leader to coordinate it.</p>
-<h3>Conclusions</h3>
+<h3 id="conclusions">Conclusions</h3>
 <p>In the end, the class representatives chose the volunteer solution, because we think our class is fairly mature,
 and it is conceptually the simplest system.
 However, I do really like the free market solution, because of all the neat properties it has (like a self-adjusting price).
@@ -180,7 +179,10 @@ Hopefully the volunteer system will stand the test of time.</p>
 </div>
 
 
-        <script src="../../../../../assets/js/all-nocdn.js"></script><script>
+        <script src="../../../../../assets/js/all-nocdn.js"></script><script src="../../../../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});

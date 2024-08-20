@@ -1,8 +1,8 @@
 ---
 title: "An Overview of Gradient Boosting and Popular Libraries for it."
 date: 2018-07-17
-categories:
-    - MachineLearning
+tags:
+    - machine learning
     - frontpage
 mathjax: true
 ---
@@ -13,6 +13,8 @@ The aim of this blog article is the following:
 1. To provide an introduction to the machine learning technique known as _boosting_, and specifically _gradient boosting_.
 2. To compare/contrast boosting with other ensemble methods, such as _bagging_
 3. To explain and compare several popular gradient boosting frameworks, specifically _XGBoost_, _CatBoost_, and _LightGBM_.
+
+<!-- TEASER_END -->
 
 ## A brief introduction to ensemble models
 Machine learning tasks can be framed as a function approximation task, where the goal is to approximate a function \\(f(\vec{x})\\) given a set of observations 

@@ -1,15 +1,17 @@
 ---
 title: "A Quick Tutorial on Bash Quotes"
 date: 2019-07-18
-categories:
-    - programming
-    - frontpage
+tags:
+     - programming
+     - frontpage
 mathjax: true
 ---
 
 Today I learned **way** more about quotations in bash than I ever thought I needed to know.
 I thought I would highlight the interesting use case that I discovered, which requires some special trickery to write a script that executes arbitrary commands.
 First, let's quickly review some facts about bash quotes.
+
+<!-- TEASER_END -->
 
 ## Quick review of bash quotes (skip this if you're an expert)
 When you type a command into bash, it evaluates any special characters or sequences before executing the command.

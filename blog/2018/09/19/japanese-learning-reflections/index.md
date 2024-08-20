@@ -1,13 +1,16 @@
 ---
 title: "Language Travel Logs: Japanese 2018"
 date: 2018-09-19
-categories:
-    - Japanese
+tags:
+    - language
+    - japanese
 ---
 
 One dream I have always had since I started learning languages is to be able to go to another country and use that language to communicate.
 This August I had the first opportunity to do that during a 2 week trip to Japan. 
 In this post, I will outline the preparation I did before going, where I was able to use it when I was there, and evaluate my success.
+
+<!-- TEASER_END -->
 
 ## Preparation
 Before starting university in 2014, I knew absolutely no Japanese. 

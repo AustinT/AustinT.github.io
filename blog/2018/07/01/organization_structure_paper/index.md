@@ -1,8 +1,8 @@
 ---
 title: "Paper Review: A Computational Approach to Organizational Structure"
 date: 2018-07-01
-categories:
-    - Papers
+tags:
+    - papers
     - frontpage
 mathjax: true
 ---
@@ -11,6 +11,8 @@ mathjax: true
 Ever since I've started doing internships, the concept of efficient organizations has piqued my interest. In every workplace I have been in, time is always wasted by inefficient transfers of information. For example, long meetings where most of the content is irrelevant to most of the people, or repeated interactions with co-workers where you explain the same thing to all of them. Assuming employees make ~$40/hour, a 1 h meeting with 100 people will cost $4000! If these meetings are not productive, then the company gets a negative return on its time investment, which essentially means the company is wasting money. Clearly organizational efficiency is a financially important objective.
 
 Much of an organization's efficiency can be linked to its structure. Long, big meetings are usually a consequence of a strong _hierarchical_ organization, where work is done by employees, then synced to a centralized node (a boss), and then possibly recapitulated to the workers in a meeting. However, are there better ways to structure an organization that would save time?
+
+<!-- TEASER_END -->
 
 ## The Paper
 The paper [A Computational Approach to Organizational Structure](https://arxiv.org/abs/1806.05701) tries to address this problem from a fundamental perspective. They frame the problem as such:

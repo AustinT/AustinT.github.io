@@ -46,16 +46,13 @@
 <a href="../" class="nav-link">Home</a>
                 </li>
 <li class="nav-item">
-<a href="../about/" class="nav-link">About</a>
-                </li>
-<li class="nav-item">
 <a href="../cv/" class="nav-link">CV</a>
                 </li>
 <li class="nav-item">
 <a href="../research/" class="nav-link">Research</a>
                 </li>
 <li class="nav-item">
-<a href="../links/" class="nav-link">Resources</a>
+<a href="../resources/" class="nav-link">Resources</a>
                 </li>
 <li class="nav-item active">
 <a href="." class="nav-link">Blog <span class="sr-only">(active)</span></a>
@@ -87,211 +84,13 @@
                     </span></p>
             <p class="dateline">
             <a href="2020/02/10/monty-hall/" rel="bookmark">
-            <time class="published dt-published" datetime="2020-02-10T00:00:00Z" itemprop="datePublished" title="2020-02-10 00:00">2020-02-10 00:00</time></a>
+            <time class="published dt-published" datetime="2020-02-10T00:00:00Z" itemprop="datePublished" title="2020-02-10">2020-02-10</time></a>
             </p>
                 </div>
-            </header><div class="e-content entry-content">
-                    <p><strong>TL;DR</strong>: the Monty Hall problem doesn't have a well-defined solution.</p>
-<p>The Monty Hall problem is a classic "probability paradox"<sup id="fnref:1"><a class="footnote-ref" href="2020/02/10/monty-hall/#fn:1">1</a></sup>, where the answer
-is counter-intuitive to most people's intuitions. To paraphrase <a href="https://en.wikipedia.org/wiki/Monty_Hall_problem">Wikipedia's
-introduction to the
-problem</a><sup id="fnref:2"><a class="footnote-ref" href="2020/02/10/monty-hall/#fn:2">2</a></sup>:</p>
-<blockquote>
-<p>Suppose you're on a game show, and you're given the choice of three doors:
-Behind one door is a prize; behind the others, nothing. You pick a door, say No. 1,
-and the host, who knows what's behind the doors, opens another door, say No. 3,
-which has nothing. He then says to you, "Do you want to pick door No. 2?" Is it
-to your advantage to switch your choice? </p>
-</blockquote>
-<p>This can be reframed as "what is the probability that the prize is behind door 2?"
-The "<em>intuitive answer</em>" is 1/2 (meaning there is no advantage to switching),
-since initially the prize could be behind any of the 3 doors, and you find out
-that it isn't behind door #3, leaving just 2 doors left with equal probability
-of having the prize.</p>
-<p>In contrast, the "<em>correct answer</em>" is 2/3. This discrepancy is usually
-explained away as the host <em>giving away</em> information with their choice of which
-door to open. Again, paraphrasing
-<a href="https://en.wikipedia.org/wiki/Monty_Hall_problem#Simple_solutions">Wikipedia</a>:</p>
-<blockquote>
-<p>An intuitive explanation is that, if the contestant initially picks an empty door (2
-of 3 doors), the contestant will win the prize by switching because the other
-empty door can no longer be picked, whereas if the contestant initially picks the prize
-(1 of 3 doors), the contestant will not win the prize by switching.</p>
-</blockquote>
-<p>However, in this post I am arguing that <strong>neither of these answers are
-"correct"</strong>, because the answer ultimately depends on your assumptions on what
-actions the game show host would take in counterfactual situations. Since this
-is not specified in most versions of the problem, the problem can't really be
-said to have a "<em>correct answer</em>". After <a href="2020/02/10/monty-hall/#bayesian-formulation-of-the-problem">introducing the math necessary to solve the problem</a>, I will work through some <a href="2020/02/10/monty-hall/#examples">example
-assumptions</a> and their resulting implications, and conclude with the
-surprising result that under the right assumptions, the answer to the problem
-could be <a href="2020/02/10/monty-hall/#rigged-game-the-answer-could-be-anything"><strong>any</strong> probability</a>.</p>
-<h3>Bayesian Formulation of the Problem</h3>
-<p>Let:</p>
-<ul>
-<li>\(c\) be the contestant's <strong>c</strong>oice of door</li>
-<li>\(o\) be the door the host <strong>o</strong>pens</li>
-<li>\(a\) be the <strong>a</strong>nswer (the door the prize is actually behind)</li>
-</ul>
-<p>In a Bayesian decision framework, the way to handle this problem is to:</p>
-<ol>
-<li>Use your knowledge of the situation to construct a probability distribution over the relevant variables (\(p(o,a,c)\)).</li>
-<li>Use the values of the observed variables \(c\) and \(o\) to calculate the <em>posterior probability distribution</em> over the answers: \(p(a\mid o,c)\).</li>
-<li>Use this probability distribution to make an informed choice. In this situation, reasonable choice would be to choose the most likely answer, \(a^* = \arg\max_a p(a\mid o,c)\).</li>
-</ol>
-<p>Therefore solving the problem is the same as finding the posterior distribution.
-The posterior distribution can be found using Bayes theorem:</p>
-<p>$$p(a\mid o,c) = \frac{p(o,a,c)}{p(o,c)} = \frac{p(o,a,c)}{\sum_{a'} p(o,a',c)}$$</p>
-<p>This is far as we can go without making any assumptions. The most basic
-assumptions (which aren't that interesting) is that the game is fair (\(a\) is
-chosen randomly in advance) and real (the player doesn't know anything about
-\(a\), so their choice is effectively random).
-This means that the only interesting behaviour is that of the host,
-who can choose which door to open, knowing both where the prize is and the player's choice.
-Mathematically, this means that the distribution \(p(o,a,c)\) can be <em>factored</em> as:</p>
-<p>$$p(o,a,c) = p(a)p(c)p(o\mid a,c)$$</p>
-<p>Substituting this into the posterior equation above, and nothing that \(p(c)\) is
-a constant and cancels, we find:</p>
-<p>$$p(a\mid o,c) = \frac{p(o,a,c)}{\sum_{a'} p(o,a',c)} = \frac{p(o\mid a,c)p(a)p(c)}{\sum_{a'}p(o\mid a',c)p(a')p(c)} = \frac{p(o\mid a,c)p(a)}{\sum_{a'}p(o\mid a',c)p(a')}$$</p>
-<p>Assuming further that all answers are equally probable, this further simplifies to:</p>
-<p>$$p(a\mid o,c) = \frac{p(o\mid a,c)}{\sum_{a'}p(o\mid a',c)}$$</p>
-<p>This means that for this particular problem,
-the posterior can be computed with only 3 values:
-\(p(o=3\mid a_i, c=1)\), \(i\in{1,2,3}\).</p>
-<h3>Examples</h3>
-<h4>Standard assumptions: the argument for 2/3</h4>
-<p>When most people hear this problem, beyond the assumptions outlined in
-<a href="2020/02/10/monty-hall/#bayesian-formulation-of-the-problem">the previous section</a>, they usually assume the following things:</p>
-<ol>
-<li>the host will not open the door with the prize behind it</li>
-<li>the host will not open the player's door</li>
-<li>the host will always open a door</li>
-<li>if the host can open multiple doors, they will choose one at random</li>
-</ol>
-<p>Assumptions 1-2 make sense, because otherwise the game show might not be any
-fun to watch. Assumption 3 isn't necessary but is usually assumed because when
-people imagine this game show they usually imagine that this switching gimmick
-is just part of the show. Assumption 4 makes sense, since there is no reason <em>a
-priori</em> to assume that the host will be biased towards any particular door.</p>
-<p>With this, we can calculate the 3 values of \(p(o\mid a,c)\):</p>
-<ol>
-<li>\(p(o=3\mid a=1,c=1)=1/2\): the host could open doors 2 or 3 here, and would
-   therefore pick at random. This would have them pick door 3 50% of the time.</li>
-<li>\(p(o=3\mid a=2,c=1)=1\): here the host cannot choose door 1 (since the player
-   chose it) or door #2 (since it has the prize), so opening door #3 is the only
-   option</li>
-<li>\(p(o=3\mid a=3,c=1)=0\): if door #3 had the prize, the host wouldn't have opened
-   it, so this event isn't possible.</li>
-</ol>
-<p>So, \(p(a=2\mid o=3,c=1) = \frac{1}{1/2+1} = 2/3\),
-suggesting that the best choice is to pick door 2 (switch doors).
-This is the classic "correct answer" of 2/3.</p>
-<h4>Biased random choice of host</h4>
-<p>Suppose that assumption 4 above isn't true:
-when the host has multiple doors that they could choose,
-they don't make a truly random decision<sup id="fnref:3"><a class="footnote-ref" href="2020/02/10/monty-hall/#fn:3">3</a></sup>.
-One example of this is if the host tends to pick higher numbers over lower numbers:
-that is, given a choice of opening doors 2 or 3, they will pick door 3 with probability \(z\),
-which might not be \(1/2\).</p>
-<p>This scenario is similar to the standard one, except \(p(o=3\mid a=1,c=1)=z\), so
-\(p(a=2\mid o=3,c=1)=\frac{1}{1+z}\), which can vary between 1/2 and 1 for different
-values of \(z\). Already, this formulation (which isn't completely unrealistic)
-gives a huge range of possible answers, all contingent on your belief about how
-the host picks random numbers.</p>
-<h4>Inattentive host</h4>
-<p>Suppose the host didn't see what door the player chose. The host's decision
-then can't depend on \(c\) (breaking assumption 2). Instead, the host will
-randomly open one of the doors that doesn't have the prize, regardless of
-whether the player chose this door. This means \(p(o=3\mid a=i,c=1)=1/2\) for
-\(i=1,2\) (\(i=3\) remains unchanged since the host won't open the door with
-the answer behind it). Therefore, \(p(a=2|o=3,c=1)=1/2\). This scenario is
-certainly plausible in a real game show (although fairly unlikely).</p>
-<h4>No door as an option</h4>
-<p>If the host can choose <em>not</em> to open a door, this opens up a wide range of possibilities:</p>
-<h5>Dramatic host 1</h5>
-<p>To make the show more entertaining to watch, the host wants to bait the player
-into switching doors, not getting the prize, and then watch them agonize over
-their decision to switch. One way to do this would be to only open a door if
-the player's initial guess was correct.</p>
-<p>This means \(p(o=3\mid a=1,c=1)=1/2\), and the other 2 probabilities are 0, so the
-posterior probability \(p(a=2\mid o=3,c=1)=0\).</p>
-<h5>Dramatic host 2</h5>
-<p>Dramatic host 1 is too predictable (since being offered to switch doors means
-you should never switch). Dramatic host 2 becomes slightly less predictable by
-choosing with probability \(q\) to open a wrong door if the player initially
-chose correctly. This means that \(p(o=3\mid a=1,c=1)=1/2\) (like last time), but
-\(p(o=3\mid a=2,c=1)=q\), making the posterior probability
-\(p(a=2\mid o=3,c=1)=\frac{q}{1/2+q}\), which can range from 0 to 2/3.</p>
-<h5>Merciful host</h5>
-<p>Instead, a host could open a door only if the player's initial choice was
-wrong, yielding a posterior probability \(p(a=2\mid o=3,c=1)=1\). In this case, you
-would always want to switch doors if offered.</p>
-<h5>Only door 3 can be opened</h5>
-<p>Imagine that the host will act normally (i.e. standard assumptions), but if the
-final decision is to open doors 1 or 2 they will simply not open a door at all
-(they are only willing to open door 3)<sup id="fnref:4"><a class="footnote-ref" href="2020/02/10/monty-hall/#fn:4">4</a></sup>. This means that \(p(o=3\mid a=1,c=1)=1\),
-so the posterior \(p(a=2\mid o=3,c=1)=1/2\).</p>
-<h3>Rigged game: the answer could be anything</h3>
-<p>Suppose that our initial model of the causal process is wrong, and the game is
-unfair. Specifically, the player chooses a door, and then the correct door is
-chosen afterwards with this information<sup id="fnref:5"><a class="footnote-ref" href="2020/02/10/monty-hall/#fn:5">5</a></sup>. 
-Specifically, suppose that the producers select the player's door as correct
-with probability \(q\), and one of the other 2 doors with probability \(1-q\).
-Note that if \(q=1/3\), this corresponds to the standard assumptions of a fair game.</p>
-<p>To calculate the posterior in this scenario, we need \(p(a\mid c)\) and \(p(o\mid a,c)\),
-which are the following:</p>
-<ul>
-<li>\(p(a=1\mid c=1) = q\) (by assumption above)</li>
-<li>\(p(a=2\mid c=1) = p(a=3\mid c=1) = (1-q)/2\) (since the probabilities must add to 1)</li>
-<li>Since the hosts actions don't change, \(p(o\mid a,c)\) is the same as before
-  (\(p(o=3\mid a=1,c=1)=1/2\), \(p(o=3\mid a=2,c=1)=1\), \(p(o=3\mid a=3,c=1)=0\))</li>
-</ul>
-<p>Reapplying Bayes rule, we get:</p>
-<p>$$p(a\mid o,c) = \frac{p(o\mid a,c)p(a\mid c)}{\sum_{a'}p(o\mid a',c)p(a'\mid c)}$$</p>
-<p>$$p(a=2\mid o=3,c=1) = \frac{1\times(1-q)/2}{q/2 + 1\times(1-q)/2 + 0\times(1-q)/2} = 1-q$$</p>
-<p>Since \(q\) can take on any value between 0 and 1, the posterior value can be any
-value between 0 and 1, meaning that the right decision could be <strong>absolutely
-anything</strong>. Of course, this is far from what most people assume when they
-encounter the Monty Hall problem, but if you were actually on such a game show
-in real life and offered this deal, would it not be prudent to at least
-consider this possibility?</p>
-<h3>Conclusion</h3>
-<p>In this post, I've shown how <a href="2020/02/10/monty-hall/#bayesian-formulation-of-the-problem">Bayes rule</a>
-can be used to solve the Monty Hall problem, which under <a href="2020/02/10/monty-hall/#standard-assumptions-the-argument-for-23">standard
-assumptions</a> gives the "correct
-answer" of 2/3. However, under different assumptions, the posterior probability
-of the prize being behind door 2 can take on many different values, which
-between a <a href="2020/02/10/monty-hall/#biased-random-choice-of-host">biased host</a> and a host that wants to
-<a href="2020/02/10/monty-hall/#dramatic-host-2">make you lose</a> spans the whole range of probabilities
-between 0 and 1. In fact, just assuming that the game isn't fair yields a model
-where it could be better to switch with probabilities ranging from 0 to
-1 inclusive!.</p>
-<p>Overall, it's very misleading to suggest that this is just a simple problem
-that tests if you can do some algebra; the entire solution is <strong>completely
-determined</strong> by one's beliefs about the host's counterfactual actions, so it's
-frankly surprising that this aspect of the problem isn't more widely discussed.
-As always, while an explicit Bayesian formulation isn't required to arrive at
-the desired answer, the Bayesian framework does aid greatly in making your
-assumptions explicit.</p>
-<div class="footnote">
-<hr>
-<ol>
-<li id="fn:1">
-<p>Specifically it would be a <a href="https://en.wikipedia.org/wiki/Paradox#Quine's_classification">veridical paradox</a>, because the result appears absurd but is nonetheless true. <a class="footnote-backref" href="2020/02/10/monty-hall/#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
-</li>
-<li id="fn:2">
-<p>the original version used cars and goats, which I changed to just a prize/nothing for clarity. <a class="footnote-backref" href="2020/02/10/monty-hall/#fnref:2" title="Jump back to footnote 2 in the text">↩</a></p>
-</li>
-<li id="fn:3">
-<p>since people are generally quite bad at choosing truly random numbers <a class="footnote-backref" href="2020/02/10/monty-hall/#fnref:3" title="Jump back to footnote 3 in the text">↩</a></p>
-</li>
-<li id="fn:4">
-<p>maybe they are superstitious and like the number 3? <a class="footnote-backref" href="2020/02/10/monty-hall/#fnref:4" title="Jump back to footnote 4 in the text">↩</a></p>
-</li>
-<li id="fn:5">
-<p>The producers of the game show might do this to increase the amount of dramatic tension on the show. Who says that "reality" TV needs to be real? <a class="footnote-backref" href="2020/02/10/monty-hall/#fnref:5" title="Jump back to footnote 5 in the text">↩</a></p>
-</li>
-</ol>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p><strong>TL;DR</strong>: the Monty Hall problem doesn't have a well-defined solution.</p>
+<p class="more"><a href="2020/02/10/monty-hall/">Read more…</a></p>
 </div>
                 </div>
             </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2019/07/18/bash-quotes/" class="u-url">A Quick Tutorial on Bash Quotes</a></h1>
@@ -301,267 +100,15 @@ assumptions explicit.</p>
                     </span></p>
             <p class="dateline">
             <a href="2019/07/18/bash-quotes/" rel="bookmark">
-            <time class="published dt-published" datetime="2019-07-18T00:00:00+01:00" itemprop="datePublished" title="2019-07-18 00:00">2019-07-18 00:00</time></a>
+            <time class="published dt-published" datetime="2019-07-18T00:00:00+01:00" itemprop="datePublished" title="2019-07-18">2019-07-18</time></a>
             </p>
                 </div>
-            </header><div class="e-content entry-content">
-                    <p>Today I learned <strong>way</strong> more about quotations in bash than I ever thought I needed to know.
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>Today I learned <strong>way</strong> more about quotations in bash than I ever thought I needed to know.
 I thought I would highlight the interesting use case that I discovered, which requires some special trickery to write a script that executes arbitrary commands.
 First, let's quickly review some facts about bash quotes.</p>
-<h3>Quick review of bash quotes (skip this if you're an expert)</h3>
-<p>When you type a command into bash, it evaluates any special characters or sequences before executing the command.
-As a basic example, consider the following commands<sup id="fnref:1"><a class="footnote-ref" href="2019/07/18/bash-quotes/#fn:1">1</a></sup>:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$HOME</span>
-/home/austin
-$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span>print<span class="o">(</span><span class="m">7</span><span class="o">)</span>
-bash:<span class="w"> </span>syntax<span class="w"> </span>error<span class="w"> </span>near<span class="w"> </span>unexpected<span class="w"> </span>token<span class="w"> </span><span class="sb">`</span><span class="o">(</span><span class="err">'</span>
-</pre></div>
-
-<p>The first fragment uses the command <code>echo</code>, which naturally echos the argument to feed to it.
-The argument fed to it is $HOME, which due to the dollar sign is interpreted as a bash variable.
-Therefore it evaluates the contents of this variable, which is my home directory (/home/austin).</p>
-<p>The second example runs python, using the <code>-c</code> command to execute python code passed as a string.
-<code>print(7)</code> is a completely valid python command that prints the number 7,
-however parentheses are special characters in bash.
-So, before that string makes it to the <code>python</code> command,
-bash attempts to evaluate it, determines that it is invalid bash syntax (since it's not bash it's python), and throws an error.
-Obviously that's not what that program is supposed to do.</p>
-<p>Hence the purpose of quotes: they are used to prevent bash from evaluating text that you would like to leave as a string.</p>
-<h4>Single quotes</h4>
-<p>The most basic kind of quote is the single quote (\').
-This quote completely prevents bash from evaluating a command.
-Let's look at a few examples.</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">'$HOME'</span>
-<span class="nv">$HOME</span>
-</pre></div>
-
-<p>This command literally prints the string "$HOME", since nothing was evaluated.
-Now is also maybe a good time to point out that the first $ character on the first line is the shell prompt (the last character on the line where you type in commands), so it isn't actually part of the command.
-Another example:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="s1">'echo $HOME'</span>
-<span class="nb">echo</span><span class="w"> </span><span class="nv">$HOME</span>:<span class="w"> </span><span class="nb">command</span><span class="w"> </span>not<span class="w"> </span>found
-</pre></div>
-
-<p>Putting quotes around the whole command prevents bash from parsing it at all, not even breaking up the input into a command and an argument.
-So it just assumes that the literal string "echo $HOME" is a command, and doesn't know what command that is, so it gives an error.
-One final variant would be:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="s1">'echo'</span><span class="w"> </span><span class="nv">$HOME</span>
-/home/austin
-</pre></div>
-
-<p>This command does the same thing as the initial command:
-it doesn't evaluate echo (which bash wouldn't modify anyways),
-then evaluates <code>$HOME</code> since that wasn't in quotes.</p>
-<p>Moving onto the second example, we can make the python code run directly by enclosing the program in quotes.</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">'print(7)'</span>
-<span class="m">7</span>
-</pre></div>
-
-<h4>Double Quotes</h4>
-<p>The double quote (\") is also a valid quote in bash, but it works a bit differently.
-Think of it as a <em>selective quote</em>: it lets bash evaluate some things but not others.
-As explained in more detail in the 
-<a href="https://www.gnu.org/software/bash/manual/html_node/Double-Quotes.html#Double-Quotes">bash manual</a>,
-this quote stops all evaluations except for $, \, and `.
-For the examples above:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">"</span>
-/home/austin
-</pre></div>
-
-<p>As stated, since $HOME has a \$ the quotes don't stop bash from evaluating it.</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="s2">"echo </span><span class="nv">$HOME</span><span class="s2">"</span>
-bash:<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/home/austin:<span class="w"> </span>No<span class="w"> </span>such<span class="w"> </span>file<span class="w"> </span>or<span class="w"> </span>directory
-</pre></div>
-
-<p>This one is funny: bash evaluates <code>$HOME</code> since it has a \$, but then doesn't evaluate the expression as a whole and treats it as a command.
-Although for some reason it treats it as a file instead of a command, and says it can't find the file.</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="s2">"echo"</span><span class="w"> </span><span class="nv">$HOME</span>
-/home/austin
-</pre></div>
-
-<p>Of course, this one does the same thing as the single quotes case.</p>
-<p>With the python example, single and double quotes make no different:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"print(7)"</span>
-<span class="m">7</span>
-</pre></div>
-
-<p>This is because the double quotes prevent the evaluation of the parentheses.</p>
-<h4>Quick recap</h4>
-<p>So essentially:
-- Without quotes, bash tries to evaluate all special characters
-- Single quotes (\') prevent all evaluation
-- Double quotes (\") prevent most evaluation, but notably not the evaluation of variables</p>
-<h3>Nested Commands: the case of eval</h3>
-<p>Where things get weird is when you need to nest commands.
-A particularly nasty command is <code>eval</code>, which evaluates arbitrary bash commands.
-In the examples below, it doesn't really make sense why you would need to use <code>eval</code>, but ignore that for now: a real example will come at the end.</p>
-<p>Let's go back to our first example:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$HOME</span>
-/home/austin
-</pre></div>
-
-<p>Pretty much what you would expect: the variable <code>$HOME</code> gets replaced.
-Now what if we wanted to use <code>eval</code> to print the literal string <code>$HOME</code>?
-From above, we can put <code>$HOME</code> in single quotes:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">'$HOME'</span>
-/home/austin
-</pre></div>
-
-<p>However, this doesn't work. Why? Because nested commands effectively get evaluated twice.
-Just look at the following example:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">'$HOME'</span>
-<span class="nb">echo</span><span class="w"> </span><span class="nv">$HOME</span>
-</pre></div>
-
-<p>The evaluation procedure effectively has 2 stages:
-1. Run through the string and do substitutions. In this case, due to the single quotes the part <code>$HOME</code> is just treated as the literal string "\$HOME".
-2. Execute the command, which here is to echo the string <code>echo $HOME</code></p>
-<p>So in the case of <code>eval</code>, it bash first parses the command, performing no substitution for <code>$HOME</code>, and then it evaluates the resulting command, since that's what <code>eval</code> does.
-In this case, the command to be evaluated is the string <code>echo $HOME</code>, which as shown in the very first example above results in <code>$HOME</code> being substituted.</p>
-<p>So, working backwards, the solution is to somehow pass the string "<code>echo '$HOME'</code>" to <code>eval</code>.
-A natural approach to do this would be to quote the entire phrase you don't want bash to evaluate, so we will place the whole phrase <code>echo '$HOME'</code> in single quotes.</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s1">'echo '</span><span class="nv">$HOME</span><span class="s1">''</span>
-/home/austin
-</pre></div>
-
-<p>It didn't work! What happened?
-This one took me a long time to figure out, but the answer is that bash parses the string from left to right, not inside to outside like a nested function call in most programming language.
-Let's try it without the <code>eval</code>:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="s1">'echo '</span><span class="nv">$HOME</span><span class="s1">''</span>
-bash:<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/home/austin:<span class="w"> </span>No<span class="w"> </span>such<span class="w"> </span>file<span class="w"> </span>or<span class="w"> </span>directory
-</pre></div>
-
-<p>This is the same result as the command <code>"echo $HOME"</code> from earlier!
-Evaluating literally left to right, it actually sees it as the string "<code>echo</code>" 
-(interpreted literally so including the space),
-the variable <code>$HOME</code>, which has no quotes beside it so it is evaluated to /home/austin,
-and finally an empty string between 2 quotes.
-It then concatenates the two strings "<code>echo</code>" and "<code>/home/austin</code>" and treats it as a single string,
-therefore giving the same result as using double quotes from earlier.
-So the double quoting simply can't be done this way.</p>
-<p>In the end, I found two solutions to this problem: showing them both here.</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="se">\'</span><span class="s1">'$HOME'</span><span class="se">\'</span>
-<span class="nv">$HOME</span>
-$<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"'"</span><span class="s1">'$HOME'</span><span class="s2">"'"</span>
-<span class="nv">$HOME</span>
-</pre></div>
-
-<p>Both solutions take advantage of the fact that when two strings are beside each other, they are concatenated.
-A quick example:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"hel""lo"</span>
-hello
-$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>hel<span class="s2">"lo"</span>
-hello
-</pre></div>
-
-<p>Here, the two strings "hel" and "lo" are simply concatenated when executing the command.
-The second example clarifies that both strings do not have to be in quotes.
-The two <code>eval</code> commands above work in much the same way.
-1. The string <code>echo</code> is concatenated with the escaped literal <code>\'</code>, which is taken to simply be a single quote string due to the backslash. This is concatenated with <code>'$HOME'</code>, which just gets evaluated to the string <code>$HOME</code>, and finally another literal single quote is appended.
- The result of the evaluation is that <code>eval</code> is passed the literal string <code>echo '$HOME'</code> as desired.
-2. Much like the first, except that instead of escaping the single quotes they are enclosed in double quotes, since they block the evaluation of the single quotes
-(remember the only exceptions to double quotes are $, \, and `, not \'). So the end result is the same.</p>
-<p>Both of these solutions look pretty gross, but to put it in perspective, imagine what you have to do to use a doubly nested <code>eval</code>!
-To save you the trouble of imagining, you have to do this:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="se">\\\'\'</span><span class="s1">'$HOME'</span><span class="se">\'\\\'</span>
-<span class="nv">$HOME</span>
-</pre></div>
-
-<p>Figuring it out is left as an exercise to the reader (try replacing the first <code>eval</code> with <code>echo</code> to see how all the escaped characters are evaluated).</p>
-<h3>The script</h3>
-<p>So, what exactly was the use case that made me encounter a weird problem like this?
-Essentially, at the time of writing this post I was working at a research institute with a computing cluster than ran the job manager <a href="https://slurm.schedmd.com/overview.html">slurm</a>.
-The basic workflow of slurm is that you write a script that runs your job, then you submit the script to a job manager.
-Naively, you need one bash script for each program you run, but I was running a lot of programs with similar setup, so I wanted to just write one script.
-Eventually I came up with something like this:</p>
-<div class="code"><table class="codetable">
-<tr>
-<td class="linenos linenodiv"><a href="2019/07/18/bash-quotes/#-1"><code data-line-number="1"></code></a></td>
-<td class="code"><code><span class="ch">#!/bin/bash</span>
-</code></td>
-</tr>
-<tr>
-<td class="linenos linenodiv"><a href="2019/07/18/bash-quotes/#-2"><code data-line-number="2"></code></a></td>
-<td class="code"><code><span class="c1">#</span>
-</code></td>
-</tr>
-<tr>
-<td class="linenos linenodiv"><a href="2019/07/18/bash-quotes/#-3"><code data-line-number="3"></code></a></td>
-<td class="code"><code><span class="c1">#SBATCH --job-name=test</span>
-</code></td>
-</tr>
-<tr>
-<td class="linenos linenodiv"><a href="2019/07/18/bash-quotes/#-4"><code data-line-number="4"></code></a></td>
-<td class="code"><code><span class="c1">#SBATCH --output=res.txt</span>
-</code></td>
-</tr>
-<tr>
-<td class="linenos linenodiv"><a href="2019/07/18/bash-quotes/#-5"><code data-line-number="5"></code></a></td>
-<td class="code"><code><span class="c1">#</span>
-</code></td>
-</tr>
-<tr>
-<td class="linenos linenodiv"><a href="2019/07/18/bash-quotes/#-6"><code data-line-number="6"></code></a></td>
-<td class="code"><code><span class="c1">#SBATCH --ntasks=1</span>
-</code></td>
-</tr>
-<tr>
-<td class="linenos linenodiv"><a href="2019/07/18/bash-quotes/#-7"><code data-line-number="7"></code></a></td>
-<td class="code"><code><span class="c1">#SBATCH --time=10:00</span>
-</code></td>
-</tr>
-<tr>
-<td class="linenos linenodiv"><a href="2019/07/18/bash-quotes/#-8"><code data-line-number="8"></code></a></td>
-<td class="code"><code>
-</code></td>
-</tr>
-<tr>
-<td class="linenos linenodiv"><a href="2019/07/18/bash-quotes/#-9"><code data-line-number="9"></code></a></td>
-<td class="code"><code><span class="nb">eval</span><span class="w"> </span><span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span>
-</code></td>
-</tr>
-</table></div>
-<p>This clever script just calls <code>eval</code> on all the arguments passed to it (represented by the variable <code>$@</code>).
-The double quotes are essentially a safety measure (it is <a href="http://tldp.org/LDP/abs/html/quotingvar.html">generally recommended</a> to quote all variables in double quotes).
-Another nice part of it is that it can be called with either <code>source</code> to run it locally or <code>sbatch</code> to submit it to the job scheduler.</p>
-<p>The script works great when you are doing something simple.
-For example:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>script.sh<span class="w"> </span><span class="nb">pwd</span>
-/home/austin
-</pre></div>
-
-<p>This works because <code>pwd</code> is a nice simple command: no weird characters.
-What if I want to run a python script?
-Let's try the following:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>script.sh<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"print(7)"</span>
-bash:<span class="w"> </span>eval:<span class="w"> </span>line<span class="w"> </span><span class="m">9</span>:<span class="w"> </span>syntax<span class="w"> </span>error<span class="w"> </span>near<span class="w"> </span>unexpected<span class="w"> </span>token<span class="w"> </span><span class="sb">`</span><span class="o">(</span><span class="s1">'</span>
-<span class="s1">bash: eval: line 9: `python -c print(7)'</span>
-$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>script.sh<span class="w"> </span><span class="s1">'python -c "print(7)"'</span>
-<span class="m">7</span>
-</pre></div>
-
-<p>The first example fails because the quotes are "used up" on the initial evaluation, so there are no quotes when <code>eval</code> is called in the script.
-The second example avoids this by putting the whole thing in single quotes, thus delaying the evaluation until <code>eval</code> is called in the script.</p>
-<p>But what if you wanted to print a more complicated string, like "Only $1? Let\'s go!".
-This string has 3 challenging symbols: "\$", "\'", and "!".
-Let's try to print it.
-Of course unlike printing 7, we want to print a string, so we will need to put an additional set of quotes around the string.
-Python allows strings to be used with single or double quotes,
-but unfortunately using either will cause the number of single quotes to be imbalanced.
-Furthermore, the "$1" and the "!" need to be escaped with single quotes or they will evaluate to something.
-There are probably multiple solutions to this, but what I ended up doing was:</p>
-<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>script.sh<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="se">\'</span><span class="s1">'print('</span><span class="se">\"</span>Only<span class="w"> </span><span class="s1">'$1'</span>?<span class="w"> </span>Let<span class="se">\'\\\'\'</span>s<span class="w"> </span>go<span class="se">\!\"</span><span class="s1">')'</span><span class="se">\'</span>
-Only<span class="w"> </span><span class="nv">$1</span>?<span class="w"> </span>Let<span class="err">'</span>s<span class="w"> </span>go!
-</pre></div>
-
-<p>To be honest I hate quotation marks now.</p>
-<div class="footnote">
-<hr>
-<ol>
-<li id="fn:1">
-<p>Evaluated in Ubuntu terminal running bash. <a class="footnote-backref" href="2019/07/18/bash-quotes/#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
-</li>
-</ol>
+<p class="more"><a href="2019/07/18/bash-quotes/">Read more…</a></p>
 </div>
                 </div>
             </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/10/08/communal-fridge/" class="u-url">How to Keep a Communal Fridge Clean</a></h1>
@@ -571,67 +118,16 @@ Only<span class="w"> </span><span class="nv">$1</span>?<span class="w"> </span>L
                     </span></p>
             <p class="dateline">
             <a href="2018/10/08/communal-fridge/" rel="bookmark">
-            <time class="published dt-published" datetime="2018-10-08T00:00:00+01:00" itemprop="datePublished" title="2018-10-08 00:00">2018-10-08 00:00</time></a>
+            <time class="published dt-published" datetime="2018-10-08T00:00:00+01:00" itemprop="datePublished" title="2018-10-08">2018-10-08</time></a>
             </p>
                 </div>
-            </header><div class="e-content entry-content">
-                    <p>Last month, my class decided that we should get a fridge for the class study room.
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>Last month, my class decided that we should get a fridge for the class study room.
 This brought up an important question: how would the fridge be cleaned?
 I thought this was an interesting problem and deserved some discussion, both from a practical and a theoretical standpoint.</p>
-<h3>Description of problem</h3>
-<p>The problem with cleaning a fridge obviously isn't the actual cleaning process,
-but rather construction of a system to assign cleaning duties to a variety of people.
-It is a difficult problem for the following reasons:
-- Since each person only utilizes a fraction of the fridge, they naturally don't feel responsible for cleaning the whole fridge.
- So it is unlikely that people will spontaneously clean it 
- (or at least people might be reluctant to).
-- Some people use the fridge different amounts: one person might never put anything in it, and one person might store several weeks' worth of food.
- These people shouldn't have equal fridge-cleaning obligations.</p>
-<p>Because of this, we thought that a solution to the fridge cleaning problem must have the following properties:
-1. Distribute the workload over a large number of people (i.e. don't assign a permanent fridge cleaner)
-2. Only obligate people who use the fridge
-3. Be decentralized (i.e. not rely on some sort of "leader" to assign the jobs and check to make sure it is done).
-4. Be failure-resistant: if the job isn't done properly, there should be some sort of mechanism to make sure it is done properly eventually.</p>
-<h3>Volunteer Solution</h3>
-<p>The solution put forth by the group was to just put a volunteer list on the fridge, and people would sign up for a cleaning week.
-This solution would work if people using the fridge were mature enough to volunteer for a week.
-It is also distributed, self-running, and doesn't obligate people who don't use the fridge.
-For this reason, it was very popular with the rest of the group.</p>
-<h3>Free Market Solution</h3>
-<p>I thought of a more interesting solution: why not create a market for cleaning, and use the principles of market economics to keep the fridge clean?
-The problem with a volunteer-based solution is that people's only incentive to volunteer is a sense of decency and common good: a sense that not everybody has.
-Instead, if motivated by money, then that gives people a tangible incentive to do work.</p>
-<p>For this solution, I envision a donation jar for a "fridge cleaning fund", that would be used to pay people to clean the fridge.
-Each week, a "cleaning job" would be posted at a designated price, and somebody interested could do the job and take the reward.
-The price would probably be just enough to buy something at the campus coffee/doughnut shop ($1-2), which means a cleaner could get a tangible reward
-of their choice for their cleaning efforts.
-If nobody volunteers to clean it (maybe because it is really messy), then the price of the cleaning job would be increased until somebody is willing to take it.
-Thus, the free market is used to determine the difficulty of the cleaning job via its price, 
-and the cleaner is fairly compensated for their work at the market rate.</p>
-<p>This novel solution would satisfy all the criteria because it distributes the workload over all those who are willing to do it,
-doesn't obligate anybody (they can freely choose to accept the job), is decentralized (the market runs itself),
-and resists failure because of its natural mechanism to raise the price of a difficult cleaning job.
-The main downside however is that in the end, it depends on people's decency to donate to the fridge cleaning fund.
-If not enough people donate, then the fund won't be able to pay people properly.
-Moreover, the prices and price increases would have to be carefully planned: 
-they must be high enough to motivate people to do work, but not so high as to drain the fund too fast.</p>
-<h3>Collective Punishment Solution</h3>
-<p>This solution is inspired by the military, where if a squad as a whole fails, they are often punished as a whole.
-This solution would require a centralized leader, but their responsibility would be fairly minimal.
-A requirement would be set out that the fridge has to be cleaned every week, and if nobody does it, the leader 
-throws everything in the fridge in the garbage, and unplugs the fridge for a week (so nobody can use it).
-People who want to use the fridge will not want to lose access to it and get their stuff thrown out, 
-which will motivate somebody or a group of people to do the cleaning,
-because the cost of not doing so is very high.
-It essentially forces self-organization to avoid a very undesirable fate.
-This solution is interesting from the organizer's perspective, because no organized list has to be created,
-but unfortunately does require a central leader to coordinate it.</p>
-<h3>Conclusions</h3>
-<p>In the end, the class representatives chose the volunteer solution, because we think our class is fairly mature,
-and it is conceptually the simplest system.
-However, I do really like the free market solution, because of all the neat properties it has (like a self-adjusting price).
-It felt like something straight out of an ECON 101 textbook.
-Hopefully the volunteer system will stand the test of time.</p>
+<p class="more"><a href="2018/10/08/communal-fridge/">Read more…</a></p>
+</div>
                 </div>
             </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/09/19/japanese-learning-reflections/" class="u-url">Language Travel Logs: Japanese 2018</a></h1>
                 <div class="metadata">
@@ -640,136 +136,15 @@ Hopefully the volunteer system will stand the test of time.</p>
                     </span></p>
             <p class="dateline">
             <a href="2018/09/19/japanese-learning-reflections/" rel="bookmark">
-            <time class="published dt-published" datetime="2018-09-19T00:00:00+01:00" itemprop="datePublished" title="2018-09-19 00:00">2018-09-19 00:00</time></a>
+            <time class="published dt-published" datetime="2018-09-19T00:00:00+01:00" itemprop="datePublished" title="2018-09-19">2018-09-19</time></a>
             </p>
                 </div>
-            </header><div class="e-content entry-content">
-                    <p>One dream I have always had since I started learning languages is to be able to go to another country and use that language to communicate.
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>One dream I have always had since I started learning languages is to be able to go to another country and use that language to communicate.
 This August I had the first opportunity to do that during a 2 week trip to Japan. 
 In this post, I will outline the preparation I did before going, where I was able to use it when I was there, and evaluate my success.</p>
-<h3>Preparation</h3>
-<p>Before starting university in 2014, I knew absolutely no Japanese. 
-In fact, the only foreign language I knew was a little bit of French.
-Starting from absolutely nothing, my history of learning Japanese is the following:</p>
-<ol>
-<li>
-<em>2014-09 to 2016-08</em>: learn a lot of Chinese, including simplified characters.
- Although Chinese is a different language than Japanese, both languages use Chinese characters, and there is a lot of shared vocabulary between the two languages.
- So, I count it as progress towards learning Japanese.</li>
-<li>
-<em>2016-02 to 2016-04</em>: used flashcards to learn Hiragana/Katakana, the "alphabet"
- of Japanese<sup id="fnref:1"><a class="footnote-ref" href="2018/09/19/japanese-learning-reflections/#fn:1">1</a></sup>. Started to look through Tae Kim's guide to Japanese<sup id="fnref:2"><a class="footnote-ref" href="2018/09/19/japanese-learning-reflections/#fn:2">2</a></sup>, stopping 
- after learning the usage of the particles "wa" and "ga"</li>
-<li>2017-01 to 2017-04: Finish reading Tae Kim's grammar book. I memorized all the sentences in the book (in retrospect this wasn't a very efficient learning method).
- However, I feel that the memorization did make a lot of the grammar sink into my head, so I didn't have as much difficulty making sentences later on.
- After April, I stopped studying completely.</li>
-<li>2017-01 to 2017-09: Learned traditional Chinese characters (for Chinese).
- However, this helped my Japanese a lot because Japanese Kanji are more similar to traditional characters than simplified characters.</li>
-<li>2018-01 to 2018-08: start to watch a lot more anime to practice listening to Japanese.
- Specifically, I found that the website <a href="https://animelon.com/">animelon</a> was very helpful, since you can watch anime with both English and Japanese subtitles at the same time, so you can pause it and figure out what the characters were saying.
- Best part is that it is free!</li>
-<li>2018-06 to 2018-08: Started doing a lot of Japanese vocabulary flashcards.
- I learned about 2000 words in this time, according to Anki, however the actual 
- number is probably less, since many of those words were loanwords from English that
- I didn't really need to learn.
-According to my Anki decks, when going to Japan, I had spent:</li>
-<li>70 hours studying my Japanese decks</li>
-<li>27 hours studying traditional characters</li>
-<li>156 hours studying simplified characters
-Of course, outside of Anki I probably spent a lot more time than this, but this gives a lower bound for the time doing "traditional studying" 
-(as opposed to watching content or reading books).</li>
-</ol>
-<h3>Trip to Japan</h3>
-<p>I was in Japan for 2 weeks at the end of August<sup id="fnref:3"><a class="footnote-ref" href="2018/09/19/japanese-learning-reflections/#fn:3">3</a></sup>.
-During this time, I tried to use Japanese as much as possible.
-Most of my interactions with Japanese people were from talking to service people.
-I tried to talk to every waiter, cashier, and ticket booth worker in Japanese.
-However, these conversations tended to be very simple. For example:</p>
-<ul>
-<li>Cashier: Dozo! (<em>welcome!</em>)</li>
-<li>Me: Konnichiwa! (<em>good day</em>)</li>
-<li>Cashier: Konnichiwa! (<em>good day</em>) [proceeds to scan items]</li>
-<li>Cashier: [some number] en desu (<em>this many yen</em>)</li>
-<li>Me: [hands cashier money]</li>
-<li>Cashier: Arigatou gozaimasu! (<em>thanks</em>)</li>
-<li>Me: Arigatou gozaimasu! (<em>thanks</em>)</li>
-</ul>
-<p>Obviously it doesn't take much skill to have this kind of conversation.
-However, I was able to ask a few more complicated things to people:</p>
-<ul>
-<li>When buying a dessert, I told the cashier that I have a nut allergy, 
- and asked them to read the ingredients to make sure it didn't have nuts in it.
- However, I did a lot of research asking how to say this because obviously my allergies are very important for me, so that doesn't make this as impressive as it might normally be.</li>
-<li>At Tsujiki fish market, I bought raw shrimp from one of the vendors who spoke no English at all.
- I asked if it was raw, and he said yes (I had to look up the word for raw though). I asked him how one eats a raw shrimp, 
- so he ripped the tails off and gave it to us.</li>
-<li>I saw a vendor at the fish market with the character 鲸, which means whale.
- I asked if what he was serving was really whale, and he said yes 
- (I had to look up the word for whale).</li>
-<li>My friend lost his wallet, so I was able to go to the police station and tell them that he lost his wallet<sup id="fnref:4"><a class="footnote-ref" href="2018/09/19/japanese-learning-reflections/#fn:4">4</a></sup>.
- I had to look up the word for wallet though.</li>
-<li>I was able to ask a waiter in a restaurant with no English menu what the most popular dish was.
- He pointed to a particular soba dish, and so I told him we all wanted that.</li>
-<li>I was able to ask various stores if they had merchandise for specific animes 
- (it was for a friend, I swear).</li>
-</ul>
-<p>That being said, I also had a lot of failures, such as:</p>
-<ul>
-<li>In one of the police boxes, when the policeman said "You don't need to come asking about the wallet, we will just call you",
- I was almost completely unable to say "We are tourists, and don't have a phone number.
- The last police box we visited told us just to come back to a police box to ask about the status instead of waiting for a call".
- Instead, he had to put me on the phone with an English-speaking colleague.</li>
-<li>A few times asking for directions, I got completely lost when the other person spoke, especially if the destination was more than a few turns away.</li>
-<li>After Typhoon Jebi caused a lot of damage to the Kansai region, I had a <em>really</em>
- difficult time reading the websites of various attractions to check whether they were
- closed due to typhoon damages.
- Most of the time the announcements were never made on the English version of the websites, and the Japanese was written in a very polite and verbose manner, so I couldn't tell if it said "open" or "not open".</li>
-<li>When we were at an arcade using the "UFO Catcher" machines (the ones where you grab a prize with a crappy claw),
- my friend and I took too long to press the button, so it timed out and reset, so we lost our dollar.
- I tried to explain this to the owner of the shop, but he completely didn't understand what I meant (even when I used Google Translate!).
- It felt pretty embarrassing.</li>
-</ul>
-<h3>Reflection</h3>
-<p>I was slightly disappointed with my level of Japanese on the trip.
-I think this was because I had studied so much vocabulary, but often found myself
-unable to form a medium-difficulty sentence (like the police box one above).
-I think it would have helped significantly if I had chosen to do some language exchanges beforehand.</p>
-<p>One thing I was relatively pleased with was my listening comprehension ability.
-Obviously I was unable to understand people talking quickly about complicated things
-(such as train announcers, commercials, and random people talking on the street),
-but I was usually able to understand what people said when they spoke to me directly.
-I think this came from watching anime, which gave me a lot of listening practice.</p>
-<p>I think that in the future, if I learn languages for travelling again, I should focus more on learning essential phrases instead of trying to get a very large vocabulary.
-This will make it easier for me to have the low-level conversations I had with service people already, but require a lot less effort than what I did.</p>
-<h3>Summary</h3>
-<p>Overall, I think this is a summary of my progress:
-- Did extensive preparation for trip to Japan
-- Most interactions ok, however there were some notable failures
-- Should have practiced speaking more
-- For future trips, I should spend more time learning essential phrases</p>
-<h3>Future Plans</h3>
-<p>My next visits will likely be Korea/China, in summer 2019.
-I feel pretty confident about using Chinese, but for Korean, I want to reach a basic-intermediate level (around B1),
-with the ability to confidently handle everyday situations.
-So far, I think <a href="https://mangolanguages.com/">MangoLanguages</a> (which I get for free from my local library)
-is a good resource for learning basic phrases for daily life.
-I will try to finish their Korean course before going there; something I wish I did for Japanese before going to Japan.</p>
-<div class="footnote">
-<hr>
-<ol>
-<li id="fn:1">
-<p>technically, it is a syllabary not an alphabet. <a class="footnote-backref" href="2018/09/19/japanese-learning-reflections/#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
-</li>
-<li id="fn:2">
-<p>this is an <em>excellent</em> guide to learning Japanese. I really like his explanations. Best of all, it is free! (I don't believe you should have to pay to learn a language) <a class="footnote-backref" href="2018/09/19/japanese-learning-reflections/#fnref:2" title="Jump back to footnote 2 in the text">↩</a></p>
-</li>
-<li id="fn:3">
-<p>if you are planning a trip, note that August in Japan is <em>really</em> hot and humid. Also there are typhoons, which I got to experience. <a class="footnote-backref" href="2018/09/19/japanese-learning-reflections/#fnref:3" title="Jump back to footnote 3 in the text">↩</a></p>
-</li>
-<li id="fn:4">
-<p>the Japanese police are <em>super</em> polite, and seemed really eager to help. This is very different from Canadian/American police, who generally tend to sound  a bit annoyed when you ask them things. <a class="footnote-backref" href="2018/09/19/japanese-learning-reflections/#fnref:4" title="Jump back to footnote 4 in the text">↩</a></p>
-</li>
-</ol>
+<p class="more"><a href="2018/09/19/japanese-learning-reflections/">Read more…</a></p>
 </div>
                 </div>
             </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/09/12/sparse-matrices-tips1/" class="u-url">Sparse Matrices: 5 Tips and Tricks</a></h1>
@@ -779,37 +154,15 @@ I will try to finish their Korean course before going there; something I wish I 
                     </span></p>
             <p class="dateline">
             <a href="2018/09/12/sparse-matrices-tips1/" rel="bookmark">
-            <time class="published dt-published" datetime="2018-09-12T00:00:00+01:00" itemprop="datePublished" title="2018-09-12 00:00">2018-09-12 00:00</time></a>
+            <time class="published dt-published" datetime="2018-09-12T00:00:00+01:00" itemprop="datePublished" title="2018-09-12">2018-09-12</time></a>
             </p>
                 </div>
-            </header><div class="e-content entry-content">
-                    <p>Over the course of my internship at the online shopping company <a href="https://www.wish.com/">Wish</a>, I have dealt a lot with a lot of data in the form of sparse matrices, specificaly in the form of item interaction matrices for customer data. In doing so, I have made heavy use of <a href="https://docs.scipy.org/doc/scipy/reference/sparse.html">scipy's sparse matrices library</a>.
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>Over the course of my internship at the online shopping company <a href="https://www.wish.com/">Wish</a>, I have dealt a lot with a lot of data in the form of sparse matrices, specificaly in the form of item interaction matrices for customer data. In doing so, I have made heavy use of <a href="https://docs.scipy.org/doc/scipy/reference/sparse.html">scipy's sparse matrices library</a>.
 Here are 5 tricks that I have learned.</p>
-<p>Note this post has an <a href="https://github.com/AustinT/sparse-matrices-tips/blob/master/Sparse%20Matrix%20Tips%20and%20Tricks-%20Part%201.ipynb">associated Jupyter notebook</a> that contains example code.</p>
-<h3>1: Use a normal dict instead of a <code>dok_matrix</code> to construct sparse matrices incrementally</h3>
-<p>A dok matrix is essentially storing a sparse matrix in a hashmap. According to the <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.dok_matrix.html#scipy.sparse.dok_matrix">documentation</a>, it is an efficient structure for constructing matrices incrementally, because adding an element to a hashmap is an $$O(1)$$ operation.
-However, what the documentation doesn't mention is that the <code>dok_matrix</code> class has a very significant overhead on item assignment. Suppose you have a dok matrix and you try to perform item assignment via:</p>
-<p><code>matrix[i, j] = some_value</code></p>
-<p>This will end up calling the object's <code>__setitem__</code> method, whose implementation can be seen <a href="https://github.com/scipy/scipy/blob/552d5026754b5151eb5ae58b41f09e5b8ddcbde5/scipy/sparse/dok.py#L258-L308">here</a>. Looking at the code for this method, there is a ton of type checking on the arguments, which is really inefficient if you know that your arguments are of the right type.</p>
-<p>A faster way to do it is to use an ordinary default dict, then directly update the underlying dictionary of the dok class to construct a dok matrix.</p>
-<p>If <code>matrix_dict</code> is a default dict with (i, j) tuples as keys, and <code>matrix</code> is a dok matrix, then the key line to do the update is:</p>
-<p><code>dict.update(matrix, matrix_dict)</code></p>
-<p>See this post's <a href="https://github.com/AustinT/sparse-matrices-tips/blob/master/Sparse%20Matrix%20Tips%20and%20Tricks-%20Part%201.ipynb">notebook</a> for more detail. I noticed a 20x speedup using this trick.</p>
-<h3>2: When using compressed sparse row (csr) format, it is faster to convert the whole matrix to compressed sparse column format and back than do a bunch of column selections</h3>
-<p>When dealing with a large co-purchase matrix, I came across this problem of having to zero out a bunch of columns to account for items that were missing in the next steps of my data analysis (I was trying to use the matrix to calculate a conditional distribution of item co-purchases). But with the csr format, changing this takes an incredibly long time! I found it was faster to convert to csc and back.</p>
-<p>However, it isn't always faster, as shown in my jupyter notebook. But is is always an option to consider. I've only seen it be faster in very sparse matrices (density about 1e-6), where I had to change about 10% of columns. For most use cases, it tends to be slower.</p>
-<h3>3: Don't be afraid to access the internal structure of csr/csc matrices</h3>
-<p>Calling <code>getrow()</code> will make a copy of the data, which is obviously slower (<a href="https://github.com/scipy/scipy/blob/f4a81d908031ade435f321de7fe85ad5576e931e/scipy/sparse/csr.py#L367">see code</a>) 
-It is much faster to access the underlying arrays yourself.
-See the notebook for an example.</p>
-<h3>4: When doing adding operations, convert to csr format, since scipy does it internally anyways</h3>
-<p>Looking at <a href="https://github.com/scipy/scipy/blob/552d5026754b5151eb5ae58b41f09e5b8ddcbde5/scipy/sparse/base.py#L328-L757">the base file for sparse matrices</a>, 
-a lot of the implementations of basic functions (e.g. min, multiply, equality checking) work by first converting to a csr matrix. 
-So if you are doing these operations you might as well be in csr format to begin with. </p>
-<h3>5: NEVER convert from CSR to DOK format with a large matrix- use COO instead</h3>
-<p>Converting to a COO format is fast, and consists of just a few array swaps (see <a href="https://github.com/scipy/scipy/blob/f1251aa680623c20efa95a530a8b02e729f6d8d9/scipy/sparse/compressed.py#L931-L940">source code</a>).
-Converting to a dok matrix on the other hand is <em>extremely</em> inefficient, mainly because it <em>converts to a COO matrix anyways as an intermediate step</em>! (<a href="https://github.com/scipy/scipy/blob/f1251aa680623c20efa95a530a8b02e729f6d8d9/scipy/sparse/base.py#L891-L897">source</a>).</p>
-<p>Experimentally, I found converting to a COO matrix to be about 100x faster than converting to DOK with a large number of samples, and about twice as fast with a small number of samples.</p>
+<p class="more"><a href="2018/09/12/sparse-matrices-tips1/">Read more…</a></p>
+</div>
                 </div>
             </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/08/21/bayes-no-certain-priors/" class="u-url">Why you should never be certain of your beliefs: a Bayesian perspective</a></h1>
                 <div class="metadata">
@@ -818,66 +171,16 @@ Converting to a dok matrix on the other hand is <em>extremely</em> inefficient, 
                     </span></p>
             <p class="dateline">
             <a href="2018/08/21/bayes-no-certain-priors/" rel="bookmark">
-            <time class="published dt-published" datetime="2018-08-21T00:00:00+01:00" itemprop="datePublished" title="2018-08-21 00:00">2018-08-21 00:00</time></a>
+            <time class="published dt-published" datetime="2018-08-21T00:00:00+01:00" itemprop="datePublished" title="2018-08-21">2018-08-21</time></a>
             </p>
                 </div>
-            </header><div class="e-content entry-content">
-                    <p>People are notoriously bad at estimating their percent confidence in their beliefs, as explained further in this <a href="https://en.wikipedia.org/wiki/Overconfidence_effect">Wikipedia article</a>. 
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>People are notoriously bad at estimating their percent confidence in their beliefs, as explained further in this <a href="https://en.wikipedia.org/wiki/Overconfidence_effect">Wikipedia article</a>. 
 Something I thought of recently is what effect this overconfidence has from a Bayesian perspective. 
 After a bit of math, I came to the conclusion that having extreme confidence in your beliefs (0% or 100% confidence) implies that you would be unable to change your beliefs if shown evidence to the contrary.
 I believe this simple argument suggests that it is very irrational to hold prior beliefs of 0 or 100%. If you do feel this way, then you should choose a very high value (99.99%) or a very low value (0.001%), but always leave some room for error.</p>
-<h3>The model</h3>
-<p>Suppose you have a belief about a fact, \(f\), which for simplicity we will assume is a binary variable (either true or false). 
-For example, \(f\) could be the statement "the earth is flat". 
-Furthermore, suppose you can make some kind of observation, \(o\), that is affected by \(f\). 
-In this example, \(o\) could be the observation of ships never disappearing over the horizon, which would be a natural consequence if the earth were flat.
-From a Bayesian perspective, this observation can be defined as a conditional distribution. That is, the value of \(o\) will change based on the true value of \(f\). 
-In our case, we could write \(p(o \mid f=\text{true}) = 1\), assuming here that the earth being flat will cause us to observe this effect with certainty.
-On the other hand, if \(f\) is false, then it might still be possible to observe \(o\), but much less likely. We will say that \(p(o \mid f=\text{false}) = \epsilon \gt 0\), without deciding on a specific value for \(\epsilon\).</p>
-<p>Now suppose you observe a ship that doesn't disappear over the horizon: what does this mean about the earth being flat? From Bayes rule, we want to calculate:</p>
-<p>$$p(f\mid o) = \frac{p(o\mid f)p(f)}{p(o)}$$</p>
-<p>In other words, we can calculate the probability of the fact \(f\), just by knowing 3 things:
-1. The effect of \(f\) on \(o\), \(p(o \mid  f) = 1\)
-2. Our believe about \(f\) prior to our observation, \(p(f)\)
-3. The probability of our observation, \(p(o)\)</p>
-<p>The goal of setting this up in a Bayesian context is to update our belief about \(f\), given that we have now made an observation. 
-One strategy is to try to select a new value of \(f\) that is most likely given what we have observed. 
-This is known as <em>maximum likelihood estimation</em> (MLE). 
-One nice thing about MLE is that we don't have to calculate \(p(f \mid o)\): we just have to maximize it with respect to \(f\). 
-This means that in the 3 terms above, item #3 doesn't matter at all, because it is constant with respect to \(f\). So we can instead update our beliefs based on maximizing the surrogate function,</p>
-<p>$$p(f \mid o) \propto p(o \mid f)p(f) = g(f)$$</p>
-<p>Since \(f\) is a binary variable, we just have to consider two options for the maximization:
-1. \(f\) is true, so \(g(f) = p(o \mid f=\text{true})p(f=\text{true}) = 
-1\times p(f=\text{true}) = p(f=\text{true})\)
-2. \(f\) is false, so \(p(f\mid o) = p(o \mid f=\text{false})p(f=\text{false}) = 
-\epsilon (1 - p(f=\text{true}))\) </p>
-<h3>The most important part</h3>
-<p>So, what we should believe about \(f\) depends largely on our prior belief about \(f\), \(p(f)\). 
-Now suppose we have an extremely certain belief about \(f\), that is \(p(f) = 1\) or \(p(f) = 0\).</p>
-<ul>
-<li>If \(p(f) = 0\), meaning that we are certain the fact is false, then from option 1 above, the probability of \(f\) being true is proportional \(p(f) = 0\), and from option 2 above \(f\) is false with probability proportional to \(\epsilon (1-0) = \epsilon \gt 0\), since \(\epsilon\) is a probability we assume to be non-zero. This means that \(f\) will always be more likely to be false, so <em>it would be impossible for our belief to change from false to true!</em> </li>
-<li>If \(p(f) = 1\), meaning that we are certain the fact is true, then from option 1 above, the probability that \(f\) is true is proportional to 1, while the probability of \(f\) being false is proportional to \((1-1) = 0\). So option 1 will always be greater than 0, <em>meaning our belief will never change from false to true</em>
-</li>
-</ul>
-<p>Note that in both of the options above, <em>it is impossible for our beliefs about \(f\) to change, despite observing evidence that supports \(f\)</em>. This is essentially the mathematical equivalent of being closed-minded.</p>
-<p>On the other hand, if \(p(f) \notin {0, 1}\), then it would be possible for either option 1 or 2 to be higher, depending on value of \(epsilon\)<sup id="fnref:1"><a class="footnote-ref" href="2018/08/21/bayes-no-certain-priors/#fn:1">1</a></sup>. So, <em>it would be possible to change your beliefs</em>.</p>
-<h3>Conclusion</h3>
-<p>In short, this shows that having a certain prior is effectively the same as being unwilling to change one's beliefs, should one encounter evidence which goes against them.
-If you accept this as irrational, and abide by Bayesian statistics<sup id="fnref:2"><a class="footnote-ref" href="2018/08/21/bayes-no-certain-priors/#fn:2">2</a></sup>, then you <em>must</em> accept it as irrational to hold beliefs with certainty. 
-That is, Bayes theorem is a mathematical way to show that one can only have an open mind if one is somewhat unsure about something. 
-It is because of this logic that I am careful nowadays to avoid saying I am certain about anything, both to not mislead others and to not convince myself I know more than I actually do.</p>
-<h3>PS</h3>
-<p>I found this cool website, which is a "prior belief calibrator": <a href="http://confidence.success-equation.com/">http://confidence.success-equation.com/</a>. I recommend you try it out, and see how accurate your confidence in facts is.</p>
-<div class="footnote">
-<hr>
-<ol>
-<li id="fn:1">
-<p>specifically, when \(\epsilon = \frac{p(f)}{1-p(f)}\), the \(f\) is equally likely to be true and false. If \(\epsilon\) is higher, g is maximized when \(f\) is false, and if it is lower, then \(g\) is maximized when \(f\) is true. So depending on the value of epsilon, your belief could change. <a class="footnote-backref" href="2018/08/21/bayes-no-certain-priors/#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
-</li>
-<li id="fn:2">
-<p>including the setup of this model, which is simplistic and could reasonably be disagreed with. <a class="footnote-backref" href="2018/08/21/bayes-no-certain-priors/#fnref:2" title="Jump back to footnote 2 in the text">↩</a></p>
-</li>
-</ol>
+<p class="more"><a href="2018/08/21/bayes-no-certain-priors/">Read more…</a></p>
 </div>
                 </div>
             </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/07/17/gradient-boosting/" class="u-url">An Overview of Gradient Boosting and Popular Libraries for it.</a></h1>
@@ -887,11 +190,12 @@ It is because of this logic that I am careful nowadays to avoid saying I am cert
                     </span></p>
             <p class="dateline">
             <a href="2018/07/17/gradient-boosting/" rel="bookmark">
-            <time class="published dt-published" datetime="2018-07-17T00:00:00+01:00" itemprop="datePublished" title="2018-07-17 00:00">2018-07-17 00:00</time></a>
+            <time class="published dt-published" datetime="2018-07-17T00:00:00+01:00" itemprop="datePublished" title="2018-07-17">2018-07-17</time></a>
             </p>
                 </div>
-            </header><div class="e-content entry-content">
-                    <p>Everybody doing machine learning wants the best models possible. 
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>Everybody doing machine learning wants the best models possible. 
 The aim of this blog article is the following:</p>
 <ol>
 <li>To provide an introduction to the machine learning technique known as <em>boosting</em>, and specifically <em>gradient boosting</em>.</li>
@@ -899,62 +203,8 @@ The aim of this blog article is the following:</p>
 </li>
 <li>To explain and compare several popular gradient boosting frameworks, specifically <em>XGBoost</em>, <em>CatBoost</em>, and <em>LightGBM</em>.</li>
 </ol>
-<h3>A brief introduction to ensemble models</h3>
-<p>Machine learning tasks can be framed as a function approximation task, where the goal is to approximate a function \(f(\vec{x})\) given a set of observations 
-\(\lbrace \left(\vec x_i, f(\vec x_i) \right)\rbrace _{i=1:N}\).
-The main difficulty is that \(f\) can be very complex, or potentially we might not have a lot of data. So a simple model (e.g. linear regression) might not be able to adequately model \(f\), and a sufficiently complex model would overfit the training set.</p>
-<p>This kind of scenario is perfect for an ensemble method: where multiple models are combined together to create one superior model. Two popular methods for this are called <em>bagging</em> and <em>boosting</em>.</p>
-<h4>Bagging</h4>
-<p>Personally, I find this method to be more intuitive. The intuition behind bagging is that different models tend to make different kinds of errors, so given many models, it is unlikely that they will all make a similar misclassification error. Therefore, you train multiple models, and to inference on a data point you inference on all the models and then average/vote on the result.</p>
-<p>However, how do you guarantee that all the models will make different kinds of errors? Most simple models are fit using deterministic algorithms, meaning that training multiple copies of the same model won't yield any different results. The answer for this is <em>bootstrapping</em>, which is the statistical name for subsampling from your data. By training models on different subsets of your training set, each point is only seen by a fraction of the models, and therefore not all the models will be able to overfit to that point. Furthermore, since the different models will also all see different data <em>distributions</em>, they will also be unable to precisely overfit to your training set distribution. The overall effect of this is that the different models you train will be significantly less correlated, making the above objective of independent errors more true.</p>
-<p>This technique is what gives <em>bagging</em> its name: it stands for <em>"Bootstrap AGGregatING"</em>. (I used to think it was called bagging because you had a "bag of models", but this is not the case).</p>
-<p>Moving up one level of abstraction, bagging can be thought of as a weighted averaging model: given the outputs of several models, the bagging model assigns a weight to each of the model's predictions and sums them to get a total prediction. Assuming the bagging method uses N models, an averaging bagging model assigns a weight of \(1/N\) to each sub-model, and a mode bagging model assigns a weight of \(1/N_{mode}\). </p>
-<h4>Boosting</h4>
-<p>Boosting differs from bagging in the fitting procedure, and in the goal of each model. In bagging, the goal is to train models independently so that they make less correlated errors. In boosting however, models are trained sequentially, with the goal of training each model being to correct for the errors made by the previous model.</p>
-<p>That is, if you have a model \(m_j(\vec{x})\) fit after \(j\) iterations, then the goal of boosting is to fit a model</p>
-<p>$$m_{j+1}(\vec{x}) = f(\vec{x}) - m_j(\vec{x})$$ </p>
-<p>This essentially means that you are fitting a new model, such that when it is added to the previous model, perfectly corrects for its mistakes. Intuitively, you are training a model that <em>boosts</em> the performance of your previous model, hence the name boosting.</p>
-<h3>Gradient boosting</h3>
-<p><em>Gradient boosting</em> is a specific variety of boosting, with a slightly different objective. Consider the following scenario: you would like to fit your entire dataset, but there is a specific region which you care more about, so errors in that region are more problematic than errors in other regions. One example of this kind of scenario would be medical diagnosis, where a false negative (saying no disease when there is really a disease) can have severe consequences. In this case, trying to match every point equally would not be the best choice.</p>
-<p>Typically in this kind of scenario, a <em>loss function</em> is used to capture the error preferences in a single scalar value. In this context, the goal of adding another model to your set of models is not to decrease the fitting errors, but to decrease the loss function. Specifically, you would like it so that:</p>
-<p>$$L(m_{j+1} + m_j) \leq L(m_{j+1})$$</p>
-<p>One way to do this is to make \(m_{j+1}\) proportional to the loss gradient. By making \(m_{j+1} = \nabla_{m_j} L(m_j)\), we know that adding (subtracting) \(m_{j+1}\) will cause an increase (decrease) in the loss function, because the gradient gives the direction of steepest increase.</p>
-<p>However, because the gradient might vary significantly within a short distance, we multiply the gradient by a small constant to improve the accuracy of this first order approximation. </p>
-<p>So in summary, the difference between gradient boosting and normal boosting is the objective function. In normal boosting, we want:</p>
-<p>$$m_{j+1}(\vec{x}) = f(\vec{x}) - m_j(\vec{x})$$</p>
-<p>Whereas in gradient boosting, we want:</p>
-<p>$$m_{j+1} = \nabla _{m_j} L(m_j)$$</p>
-<p>Note that like bagging, since the outputs of different trees are being added to produce the final output, it can also be thought of as a weighted averaging model.</p>
-<h3>Gradient boosting and decision trees</h3>
-<p>Usually when gradient boosting is discussed, it is almost always in relation to decision trees. Why is that? While I am not 100% sure of this, I can think of a few main reasons:</p>
-<ul>
-<li>With linear models (i.e. linear regression), the models are already additive, so adding two linear models is always equivalent to fitting a single linear model</li>
-<li>The gradient might be very high for a few training examples, and low for the rest (e.g. if only a few examples are misclassified). With most models, changing the parameters will affect all of the results, whereas with decision trees you can simply add a new leaf node to an existing leaf to further fit those specific examples, allowing you to increase accuracy for those examples while not sacrificing it for other examples.</li>
-<li>There are nice analytic updates about whether to split a node in a decision tree, while for other models (e.g. neural nets) the fitting takes a long time.</li>
-<li>Newer models (neural nets) are usually pretty strong learners, and in theory if the neural network consistently performs poorly on a specific output you can just train on that output more, or add more parameters to increase model complexity. So gradient boosting doesn't seem very necessary for this.</li>
-</ul>
-<p>So while it seems like gradient boosting can be used for anything, in practice it is mainly used for decision tree models.</p>
-<h3>High-level comparison of gradient boosting frameworks</h3>
-<p><em>XGBoost</em>, <em>CatBoost</em>, and <em>LightGBM</em> are all popular gradient boosting frameworks for decision trees. They all use essentially the same algorithm for one part of it, with the difference being in the other part. The two steps for most gradient boosting algorithms are:
-1. An algorithm to produce candidate new trees, usually iteratively, by given a starting tree, by selecting a leaf node to split and performing a split. Usually the first tree in this algorithm is just a single leaf node (i.e. all items in one node)
-2. An algorithm to evaluate the quality of these splits.</p>
-<p>The common part is usually #2, the evaluation algorithm, since this is usually just the loss reduction caused by the split. The frameworks mainly differ in how they reduce the computationally hard problem of producing candidate trees. Roughly speaking, these are how the above 3 algorithms work:</p>
-<ul>
-<li>
-<em>XGBoost</em>: Given an existing tree, the naive way to improve it would be to iterate over every possible split value for every possible feature, and calculate the loss for each split, then choose the best split. Note that iterating over every possible split realistically just means iterating over every feature value for every data point, since the only goal is partitioning your set of training data, meaning that two splits that yield different partitions are not useful.<br>
- XGBoost notes that this iteration isn't efficient for large datasets, so they portion the dataset into quantiles for each feature, and do their partitions based on the quantiles. This results in a more efficient, but still slightly brute force method.
- <a href="https://arxiv.org/abs/1603.02754">This is the link to the XGBoost paper that explains it in more detail</a> </li>
-<li>
-<em>CatBoost</em>: one of the main ideas behind CatBoost is that if a data point is used to produce a model, then boosting it using the same data gives a biased estimate of the gradient (biased with respect to the underlying data distribution). They counteract this by training an ensemble of models based on different permutations of the data, where each model is boosted using only new data points (i.e. data points it hasn't seen before). The multiple permutations ensure that each data point has the chance to be used for a <em>good</em> model, since the first few points in a given permutation are going to be used to boost models trained on <em>even fewer points</em>, so the model will be bad.<br>
- In addition, CatBoost also has some unique ways of handling categorical variables. <a href="https://arxiv.org/abs/1706.09516">This is the CatBoost paper, which provides more detail</a>
-</li>
-<li>
-<em>LightGBM</em>: Microsoft's LightGBM does 2 things. Firstly, they throw away data points which have small gradients, reducing the amount of data that they have to calculate splits over (this is done heuristically). Secondly, they bundle features which are mutually exclusive, effectively taking two features X and Y and doing computations with a new feature, (X or Y). This is also estimated heuristically. <a href="https://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradient-boosting-decision-tree">See the original paper for more details</a>
-</li>
-</ul>
-<p>So in summary, the main difference between these libraries is how they choose to reduce the number of splits that they investigate, and which points they choose to make/evaluate those splits. But the underlying split evaluation idea is almost identical.</p>
-<h3>Conclusion</h3>
-<p>In summary, I've explained what bagging and boosting are, and some of the key gradient boosting libraries. Even though boosting techniques don't seem very prominent in modern machine learning literature, I think they are still valuable to know. They are especially useful for serving machine learning models at scale, where simple models like decision trees have huge speed advantages on large datasets. So I believe that boosting/gradient boosting will prove useful well into the future.</p>
+<p class="more"><a href="2018/07/17/gradient-boosting/">Read more…</a></p>
+</div>
                 </div>
             </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/07/02/adam-to-sgd/" class="u-url">Turning Adam Optimization into SGD</a></h1>
                 <div class="metadata">
@@ -963,28 +213,17 @@ The main difficulty is that \(f\) can be very complex, or potentially we might n
                     </span></p>
             <p class="dateline">
             <a href="2018/07/02/adam-to-sgd/" rel="bookmark">
-            <time class="published dt-published" datetime="2018-07-02T00:00:00+01:00" itemprop="datePublished" title="2018-07-02 00:00">2018-07-02 00:00</time></a>
+            <time class="published dt-published" datetime="2018-07-02T00:00:00+01:00" itemprop="datePublished" title="2018-07-02">2018-07-02</time></a>
             </p>
                 </div>
-            </header><div class="e-content entry-content">
-                    <h3>Motivation</h3>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<h3 id="motivation">Motivation</h3>
 <p>This strange question came up when working on a machine learning project to generate embeddings. 
 Working with the version of Pytorch available on our DGX (similar to version 0.3.1), I found there was an optimizer called <em>SparseAdam</em> but not one called <em>SparseSGD</em>.
 Since what I really wanted to do was use SGD, I wondered: could I turn the Adam optimizer into an SGD optimizer by setting the hyperparameters \(\beta_1\), \(\beta_2\), and \(\epsilon\)?</p>
-<h3>The Answer</h3>
-<p>Probably not. Looking at the <a href="https://arxiv.org/abs/1412.6980">original paper for Adam</a>, the formula for the parameter updates is:</p>
-<p>$$\theta_{t+1} = \theta_t - \alpha * \frac{\hat{m}}{\sqrt{\hat{v}_t}+\epsilon}$$</p>
-<p>To make this equal to gradient descent, we need the second term to equal the gradient.</p>
-<p>Luckily, \(m_t\) is directly related to the gradient, via the equation:</p>
-<p>$$m_t = \beta_1 m_{t-1} + ( 1- \beta_1) \nabla \theta_t$$</p>
-<p>$$\hat{m_t} = \frac{m_t}{1-\beta_1^t}$$</p>
-<p>Clearly, setting \(\beta_1=0\) will set the value to the gradient value. Note that this will also mean the normalization doesn't change \(m_t\).</p>
-<p>The problem is the term \(\hat{v}_t\), defined as:</p>
-<p>$$v_t = \beta_2 * v_{t-1} + (1-\beta_2) (\nabla \theta_t)^2$$</p>
-<p>$$\hat{v_t} = \frac{v_t}{1-\beta_2^t}$$</p>
-<p>We want this term to equal 1, to disappear from the fraction. However, setting \(\beta_2=0\) will cause it to be proportional to the square of the gradient, and setting \(\beta_2 = 1\) will cause a division by 0 error in the normalization. So because of this, I don't see a way to convert Adam into SGD. The gradient normalization is just build in too much into the algorithm.  </p>
-<h3>Conclusion</h3>
-<p>I don't think it is possible. And after reading the docs again, SGD is already compatible with sparse matrices, so this was completely unnecessary. It was a fun thought exercise though.</p>
+<p class="more"><a href="2018/07/02/adam-to-sgd/">Read more…</a></p>
+</div>
                 </div>
             </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/07/01/organization_structure_paper/" class="u-url">Paper Review: A Computational Approach to Organizational Structure</a></h1>
                 <div class="metadata">
@@ -993,44 +232,16 @@ Since what I really wanted to do was use SGD, I wondered: could I turn the Adam 
                     </span></p>
             <p class="dateline">
             <a href="2018/07/01/organization_structure_paper/" rel="bookmark">
-            <time class="published dt-published" datetime="2018-07-01T00:00:00+01:00" itemprop="datePublished" title="2018-07-01 00:00">2018-07-01 00:00</time></a>
+            <time class="published dt-published" datetime="2018-07-01T00:00:00+01:00" itemprop="datePublished" title="2018-07-01">2018-07-01</time></a>
             </p>
                 </div>
-            </header><div class="e-content entry-content">
-                    <h3>Motivation</h3>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<h3 id="motivation">Motivation</h3>
 <p>Ever since I've started doing internships, the concept of efficient organizations has piqued my interest. In every workplace I have been in, time is always wasted by inefficient transfers of information. For example, long meetings where most of the content is irrelevant to most of the people, or repeated interactions with co-workers where you explain the same thing to all of them. Assuming employees make ~$40/hour, a 1 h meeting with 100 people will cost $4000! If these meetings are not productive, then the company gets a negative return on its time investment, which essentially means the company is wasting money. Clearly organizational efficiency is a financially important objective.</p>
 <p>Much of an organization's efficiency can be linked to its structure. Long, big meetings are usually a consequence of a strong <em>hierarchical</em> organization, where work is done by employees, then synced to a centralized node (a boss), and then possibly recapitulated to the workers in a meeting. However, are there better ways to structure an organization that would save time?</p>
-<h3>The Paper</h3>
-<p>The paper <a href="https://arxiv.org/abs/1806.05701">A Computational Approach to Organizational Structure</a> tries to address this problem from a fundamental perspective. They frame the problem as such:</p>
-<ul>
-<li>Model an organization as a <em>graph</em> with the nodes being people, and the edges being connections between them. For example, a hierarchical organization would be a tree</li>
-<li>Model tasks as <em>tokens</em>, where each node (person) has tokens which they can do the following with:</li>
-<li>
-<em>Compute</em> with two tokens, to form one token</li>
-<li>
-<em>Transmit</em> one token to a neighbouring node
- These actions are assumed to take \(t_c\) and \(t_m\) respectively.</li>
-</ul>
-<p>As a sample problem, the paper chooses to analyze the <em>information aggregation</em> problem, which means taking all the tokens (tasks) and combining them at one node. This is equivalent to passing around information: for example, doing an analysis of which items to purchase for the company, then condensing and passing the recommendations to the CEO to make the final decision.</p>
-<h3>Their algorithm</h3>
-<p>The paper presents 2 things:
-- An exact, polynomial time algorithm for solving the problem on fully-connected graphs
-- An approximate algorithm for solving it on arbitrary graphs.</p>
-<p>The exact algorithm is essentially a hierarchical approach: given a tree, the leaf nodes pass their tokens to their parents, who compute it, and pass the tokens to their parents, etc. They give a formula for designing the optimal tree recursively. To make this work on an arbitrary graph, simply embed the tree in the graph. I talk about this algorithm in more detail <a href="2018/07/01/organization_structure_paper/#more-detailed-explanation-of-the-fully-connected-graph-optimization">below</a>.</p>
-<p>The approximate algorithm is similar in intuition. Designate some nodes as sources, and the rest as sinks. Then pass tokens from sources to sinks, which then aggregate the tokens together.</p>
-<p>The bulk of the paper is essentially dense math proving that these solutions run in polynomial time. </p>
-<h3>My thoughts on the paper</h3>
-<p>I won't lie: I didn't read the proofs for this. But the intuition was very interesting. Essentially the result of the paper supported a hierarchical information transfer process, at least for centralized transfer of information. I think it would be interesting to consider the downwards transfer of information too, or modelling a multi-step decision process with feedback.</p>
-<p>Another analogous problem that I think is interesting not only propagating information to a central source, but as work gets done, propagating information on that work to all other nodes (i.e. keep people up to date on what other people are doing). This is another problem I have observed in big companies. The analogous idea here would probably be each computation generating its own mini-token, which should be processed and passed around to all other nodes in the network (in some form).  </p>
-<h3>More detailed explanation of the fully-connected graph optimization</h3>
-<p>I found this quite interesting, so I thought I would elaborate more on it. The key formula is defining a tree \(T(R)\) as the largest tree such that information can be greedily aggregated within R time steps. The formula for such a tree is:</p>
-<p>$$T(R) = \begin{cases}
-\text{Single leaf},  &amp; \text{if $R &lt; t_m &lt; t_c$} \
-T(R-t_c) \text{ with child } T(R-t_c-t_m), &amp; \text{otherwise}
-\end{cases}$$ </p>
-<p>This can be interpreted in a simple way: if a node  has a child, then it will take \(t_m\) time to get the token from the child node, and \(t_c\) to compute it. So if \(R &lt; t_m + t_c\), then there is no way to complete the computation in \(R\) rounds. So the tree cannot have any leaves.</p>
-<p>Otherwise, the tree can have leaves. So the largest tree you can create is the largest tree you can make and still have enough rounds left for one computation (\(T(R-t_c)\)), with an additional leaf tree which can be fully computed, and still have time to pass its message to the root (\(T(R-t_c-t_m)\)).</p>
-<p>I really liked this formula because it was so clean and recursive.</p>
+<p class="more"><a href="2018/07/01/organization_structure_paper/">Read more…</a></p>
+</div>
                 </div>
             </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/06/25/onyomi/" class="u-url">How to guess a Kanji's on-yomi in 4 easy steps</a></h1>
                 <div class="metadata">
@@ -1039,149 +250,14 @@ T(R-t_c) \text{ with child } T(R-t_c-t_m), &amp; \text{otherwise}
                     </span></p>
             <p class="dateline">
             <a href="2018/06/25/onyomi/" rel="bookmark">
-            <time class="published dt-published" datetime="2018-06-25T00:00:00+01:00" itemprop="datePublished" title="2018-06-25 00:00">2018-06-25 00:00</time></a>
+            <time class="published dt-published" datetime="2018-06-25T00:00:00+01:00" itemprop="datePublished" title="2018-06-25">2018-06-25</time></a>
             </p>
                 </div>
-            </header><div class="e-content entry-content">
-                    <p>Lately I have been putting a lot of effort into studying Japanese, to prepare for my upcoming trip to Japan at the end of summer 2018. While learning the readings for various kanji (Chinese character) words, I've noticed that a lot of their pronunciations (<em>on-yomi</em>) are related to the Chinese pronunciations in an interesting way. Let me explain my empirical theory about how to to convert Chinese pronunciations into Japanese ones:</p>
-<ol>
-<li>
-<b>Say no:</b> No to too many letters. If the Chinese word has multiple consonants, or too many vowels, drop them.</li>
-<li>
-<b>Change the vowels (and sometimes the consonants:</b> Otherwise it would be too easy.</li>
-<li>
-<b>Go K-razy:</b> Find ways to put the letter K into the word as much as possible. For some reason it seems like all kanji have lots of k's in them.</li>
-<li>
-<b>(Optional) Add some extra syllables:</b> Ususally either つ (tsu) or く (ku)</li>
-</ol>
-<p>Sound weird? Let me walk you through some examples.</p>
-<h3>Some examples</h3>
-<h4>結果 [<em>jié guǒ</em>] (result)</h4>
-<ol>
-<li>Say no: the <em>ie</em> and <em>uo</em> are clusters of vowels, so we say no to that, and remove a vowel from each. So we get <em>ji'go</em>
-</li>
-<li>Change the vowels: change i to e, and o to a: so we get <em>je'ga</em>
-</li>
-<li>Go K-razy: now change all consonants to the letter k. Also add another k into the middle of the word. So we get <em>kek'ka</em>.</li>
-<li>Skip this step</li>
-</ol>
-<p>So we get the final Japanese pronunciation, <em>kekka</em> (けっか). Wow that word has a lot of k's.</p>
-<h4>計画 [<em>jì huà</em>] (plan/project)</h4>
-<ol>
-<li>Say no: the <em>ua</em> in <em>hua</em> just becomes a.</li>
-<li>Change the vowels: <em>ji</em> becomes <em>jei</em> (pronounced just like je but with a "long vowel")</li>
-<li>Go K-razy: Now make every consonant a K. It becomes <em>keika</em>. Also, just add an extra k syllable on the end, <em>ku</em>. So we get <em>keikaku</em>
-</li>
-</ol>
-<p>This gives us <em>kei'kaku</em> (けいかく), the Japanese pronunciation.</p>
-<h4>価格 [<em>jià gé</em>] (price)</h4>
-<ol>
-<li>Say no: <em>jia</em> becomes <em>ja</em>, so we have <em>ja ge</em>
-</li>
-<li>Change the vowels: <em>ge</em> becomes <em>ga</em>, so we have <em>ja ga</em>
-</li>
-<li>Add K's. <em>ja</em> becomes <em>ka</em>, and <em>ga</em> also becomes <em>ka</em>. And why not, add an extra <em>ku</em>, giving us <em>kakaku</em>. Note that every consonant has now become the letter K.</li>
-</ol>
-<p>We now have the Japanese pronunciation, <em>ka'kaku</em> (かかく).</p>
-<h3>More examples of Kanji with K's in weird places or just lots of K's</h3>
-<p>So you've seen some examples worked through. Look at all those K's!! Although those were somewhat cherry-picked, allow me to give some more examples of on-yomi with tons of extra K's.</p>
-<table>
-<thead><tr>
-<th>Kanji</th>
-<th style="text-align: right;">Meaning</th>
-<th style="text-align: center;">Chinese (no tones)</th>
-<th style="text-align: right;">Japanese</th>
-<th style="text-align: right;"># K's added</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>改革</td>
-<td style="text-align: right;">Revolution</td>
-<td style="text-align: center;">gai ge</td>
-<td style="text-align: right;">kaikaku</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr>
-<td>過去</td>
-<td style="text-align: right;">past</td>
-<td style="text-align: center;">guo qu</td>
-<td style="text-align: right;">kako</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr>
-<td>目的</td>
-<td style="text-align: right;">goal</td>
-<td style="text-align: center;">mu di</td>
-<td style="text-align: right;">moku teki</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr>
-<td>地下</td>
-<td style="text-align: right;">basement</td>
-<td style="text-align: center;">di xia</td>
-<td style="text-align: right;">chi ka</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr>
-<td>高校</td>
-<td style="text-align: right;">high school</td>
-<td style="text-align: center;">gao xiao</td>
-<td style="text-align: right;">kou kou</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr>
-<td>強化</td>
-<td style="text-align: right;">strengthening</td>
-<td style="text-align: center;">qiang hua</td>
-<td style="text-align: right;">kyou ka</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr>
-<td>教科</td>
-<td style="text-align: right;">subject</td>
-<td style="text-align: center;">jiao ke</td>
-<td style="text-align: right;">kyou ka</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr>
-<td>空港</td>
-<td style="text-align: right;">airport</td>
-<td style="text-align: center;">kong gang</td>
-<td style="text-align: right;">kuu kou</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr>
-<td>効果</td>
-<td style="text-align: right;">effect</td>
-<td style="text-align: center;">xiao guo</td>
-<td style="text-align: right;">kou ka</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr>
-<td>後悔</td>
-<td style="text-align: right;">regret</td>
-<td style="text-align: center;">hou hui</td>
-<td style="text-align: right;">kou kai</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr>
-<td>結婚</td>
-<td style="text-align: right;">marriage</td>
-<td style="text-align: center;">jie hun</td>
-<td style="text-align: right;">kekkon</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr>
-<td>国会</td>
-<td style="text-align: right;">Japanese parliament</td>
-<td style="text-align: center;">guo hui</td>
-<td style="text-align: right;">kokkai</td>
-<td style="text-align: right;">3</td>
-</tr>
-</tbody>
-</table>
-<h3>Conclusion</h3>
-<p>This weird method works surprisingly well. Even though this is probably just a confirmation bias, now that I have this idea in mind I always think of Japanese pronunciations as variations on the Chinese pronunciation. And I really notice the large number of K's! These kind of weird things are part of the reason I like learning languages.</p>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>Lately I have been putting a lot of effort into studying Japanese, to prepare for my upcoming trip to Japan at the end of summer 2018. While learning the readings for various kanji (Chinese character) words, I've noticed that a lot of their pronunciations (<em>on-yomi</em>) are related to the Chinese pronunciations in an interesting way. Let me explain my empirical theory about how to to convert Chinese pronunciations into Japanese ones:</p>
+<p class="more"><a href="2018/06/25/onyomi/">Read more…</a></p>
+</div>
                 </div>
             </article>
 </div>
@@ -1200,7 +276,10 @@ T(R-t_c) \text{ with child } T(R-t_c-t_m), &amp; \text{otherwise}
 </div>
 
 
-        <script src="../assets/js/all-nocdn.js"></script><script>
+        <script src="../assets/js/all-nocdn.js"></script><script src="../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});

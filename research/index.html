@@ -24,7 +24,7 @@ For my thoughts on my own papers, please see here.
 Current work (as of 2023)
 In my PhD I am thinking ">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2024-08-18T11:56:52+01:00">
+<meta property="article:published_time" content="2024-08-19T15:49:50+01:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -63,16 +63,13 @@ In my PhD I am thinking ">
 <a href="../" class="nav-link">Home</a>
                 </li>
 <li class="nav-item">
-<a href="../about/" class="nav-link">About</a>
-                </li>
-<li class="nav-item">
 <a href="../cv/" class="nav-link">CV</a>
                 </li>
 <li class="nav-item active">
 <a href="." class="nav-link">Research <span class="sr-only">(active)</span></a>
                 </li>
 <li class="nav-item">
-<a href="../links/" class="nav-link">Resources</a>
+<a href="../resources/" class="nav-link">Resources</a>
                 </li>
 <li class="nav-item">
 <a href="../blog/" class="nav-link">Blog</a>
@@ -96,12 +93,12 @@ In my PhD I am thinking ">
         
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <h3>Publications</h3>
+    <h3 id="publications">Publications</h3>
 <p>For an updated list of my research publications,
 please visit my
 <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Google Scholar page</a>.
 For my thoughts on my own papers, please see <a href="../misc/paper-retrospectives">here</a>.</p>
-<h3>Current work (as of 2023)</h3>
+<h3 id="current-work-as-of-2023">Current work (as of 2023)</h3>
 <p>In my PhD I am thinking about how machine learning methods can be applied to
 problems in the physical sciences. Due to issues of robustness, generalization,
 and small dataset sizes I generally do not believe that replacing existing
@@ -118,7 +115,7 @@ working on are:</p>
 <li>Retrosynthetic planning (how to synthesize novel molecules)</li>
 <li>Meaningful evaluation of ML algorithms in chemistry (average loss on a test set can be misleading)</li>
 </ul>
-<h3>General research interests</h3>
+<h3 id="general-research-interests">General research interests</h3>
 <ul>
 <li>Sequential decision making (e.g. Bayesian optimization)</li>
 <li>Gaussian processes and other kernel methods</li>
@@ -140,7 +137,10 @@ working on are:</p>
 </div>
 
 
-        <script src="../assets/js/all-nocdn.js"></script><script>
+        <script src="../assets/js/all-nocdn.js"></script><script src="../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});

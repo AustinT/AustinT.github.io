@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://austintripp.ca/</loc>
-  <lastmod>2024-08-19T14:33:00Z</lastmod>
+  <lastmod>2024-08-20T12:43:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/2018/</loc>
@@ -23,11 +23,11 @@
  </url>
  <url>
   <loc>https://austintripp.ca/about/</loc>
-  <lastmod>2024-08-18T09:52:00Z</lastmod>
+  <lastmod>2024-08-20T12:43:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/archive.html</loc>
-  <lastmod>2024-08-18T11:31:00Z</lastmod>
+  <lastmod>2024-08-20T10:51:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/</loc>
@@ -79,11 +79,43 @@
  </url>
  <url>
   <loc>https://austintripp.ca/blog/index-1.html</loc>
-  <lastmod>2024-08-18T11:31:00Z</lastmod>
+  <lastmod>2024-08-20T12:38:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/</loc>
-  <lastmod>2024-08-18T09:52:00Z</lastmod>
+  <lastmod>2024-08-20T12:38:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/frontpage/</loc>
+  <lastmod>2024-08-20T11:06:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/japanese/</loc>
+  <lastmod>2024-08-20T12:38:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/language/</loc>
+  <lastmod>2024-08-20T12:38:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/machine-learning/</loc>
+  <lastmod>2024-08-20T12:38:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/papers/</loc>
+  <lastmod>2024-08-20T12:38:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/programming/</loc>
+  <lastmod>2024-08-20T12:38:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/statistics/</loc>
+  <lastmod>2024-08-20T11:06:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/website/</loc>
+  <lastmod>2024-08-20T12:38:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/cv/</loc>
@@ -91,15 +123,7 @@
  </url>
  <url>
   <loc>https://austintripp.ca/links/</loc>
-  <lastmod>2024-08-18T09:52:00Z</lastmod>
- </url>
- <url>
-  <loc>https://austintripp.ca/links/anki/</loc>
-  <lastmod>2024-08-18T09:52:00Z</lastmod>
- </url>
- <url>
-  <loc>https://austintripp.ca/links/uw_course_reviews/</loc>
-  <lastmod>2024-08-18T09:52:00Z</lastmod>
+  <lastmod>2024-08-20T12:43:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/misc/beliefs/</loc>
@@ -116,5 +140,25 @@
  <url>
   <loc>https://austintripp.ca/research/</loc>
   <lastmod>2024-08-18T09:52:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/resources/</loc>
+  <lastmod>2024-08-20T10:10:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/resources/about/</loc>
+  <lastmod>2024-08-20T10:10:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/resources/anki/</loc>
+  <lastmod>2024-08-19T15:34:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/resources/language-learning/</loc>
+  <lastmod>2024-08-19T16:17:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/resources/uw_course_reviews/</loc>
+  <lastmod>2024-08-19T15:34:00Z</lastmod>
  </url>
 </urlset>

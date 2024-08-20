@@ -7,6 +7,8 @@ Last month, my class decided that we should get a fridge for the class study roo
 This brought up an important question: how would the fridge be cleaned?
 I thought this was an interesting problem and deserved some discussion, both from a practical and a theoretical standpoint.
 
+<!-- TEASER_END -->
+
 ## Description of problem
 The problem with cleaning a fridge obviously isn't the actual cleaning process,
 but rather construction of a system to assign cleaning duties to a variety of people.

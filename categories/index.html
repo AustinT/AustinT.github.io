@@ -45,16 +45,13 @@
 <a href="../" class="nav-link">Home</a>
                 </li>
 <li class="nav-item">
-<a href="../about/" class="nav-link">About</a>
-                </li>
-<li class="nav-item">
 <a href="../cv/" class="nav-link">CV</a>
                 </li>
 <li class="nav-item">
 <a href="../research/" class="nav-link">Research</a>
                 </li>
 <li class="nav-item">
-<a href="../links/" class="nav-link">Resources</a>
+<a href="../resources/" class="nav-link">Resources</a>
                 </li>
 <li class="nav-item">
 <a href="../blog/" class="nav-link">Blog</a>
@@ -74,10 +71,17 @@
         
         
 <h1>Tags</h1>
-
-        <!--End of body content-->
-
-        <footer id="footer">
+    <ul class="list-inline">
+<li class="list-inline-item"><a class="reference badge badge-secondary" href="frontpage/">frontpage</a></li>
+            <li class="list-inline-item"><a class="reference badge badge-secondary" href="japanese/">japanese</a></li>
+            <li class="list-inline-item"><a class="reference badge badge-secondary" href="language/">language</a></li>
+            <li class="list-inline-item"><a class="reference badge badge-secondary" href="machine-learning/">machine learning</a></li>
+            <li class="list-inline-item"><a class="reference badge badge-secondary" href="papers/">papers</a></li>
+            <li class="list-inline-item"><a class="reference badge badge-secondary" href="programming/">programming</a></li>
+            <li class="list-inline-item"><a class="reference badge badge-secondary" href="statistics/">statistics</a></li>
+            <li class="list-inline-item"><a class="reference badge badge-secondary" href="website/">website</a></li>
+    </ul>
+<!--End of body content--><footer id="footer">
             Contents © 2024         Austin Tripp (MIT License). <a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a> | - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>
             
             
@@ -86,7 +90,10 @@
 </div>
 
 
-        <script src="../assets/js/all-nocdn.js"></script><script>
+        <script src="../assets/js/all-nocdn.js"></script><script src="../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
