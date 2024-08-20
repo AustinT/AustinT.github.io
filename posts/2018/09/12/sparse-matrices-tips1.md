@@ -1,8 +1,8 @@
 ---
 title: "Sparse Matrices: 5 Tips and Tricks"
 date: 2018-09-12
-categories:
-    - MachineLearning
+tags:
+    - machine learning
     - frontpage
 mathjax: true
 ---

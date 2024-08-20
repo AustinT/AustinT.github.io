@@ -1,8 +1,9 @@
 ---
 title: "Language Travel Logs: Japanese 2018"
 date: 2018-09-19
-categories:
-    - Japanese
+tags:
+    - language
+    - japanese
 ---
 
 One dream I have always had since I started learning languages is to be able to go to another country and use that language to communicate.

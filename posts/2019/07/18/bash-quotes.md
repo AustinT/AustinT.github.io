@@ -1,9 +1,9 @@
 ---
 title: "A Quick Tutorial on Bash Quotes"
 date: 2019-07-18
-categories:
-    - programming
-    - frontpage
+tags:
+     - programming
+     - frontpage
 mathjax: true
 ---
 

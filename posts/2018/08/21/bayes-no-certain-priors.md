@@ -1,8 +1,8 @@
 ---
 title: "Why you should never be certain of your beliefs: a Bayesian perspective"
 date: 2018-08-21
-categories:
-    - Statistics
+tags:
+    - statistics
     - frontpage
 mathjax: true
 ---

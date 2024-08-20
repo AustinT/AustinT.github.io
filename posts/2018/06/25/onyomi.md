@@ -1,9 +1,9 @@
 ---
 title: "How to guess a Kanji's on-yomi in 4 easy steps"
 date: 2018-06-25
-categories:
-    - Japanese
+tags:
     - language
+    - japanese
 ---
 Lately I have been putting a lot of effort into studying Japanese, to prepare for my upcoming trip to Japan at the end of summer 2018. While learning the readings for various kanji (Chinese character) words, I've noticed that a lot of their pronunciations (_on-yomi_) are related to the Chinese pronunciations in an interesting way. Let me explain my empirical theory about how to to convert Chinese pronunciations into Japanese ones:
 
