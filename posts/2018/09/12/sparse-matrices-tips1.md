@@ -10,6 +10,8 @@ mathjax: true
 Over the course of my internship at the online shopping company [Wish](https://www.wish.com/), I have dealt a lot with a lot of data in the form of sparse matrices, specificaly in the form of item interaction matrices for customer data. In doing so, I have made heavy use of [scipy's sparse matrices library](https://docs.scipy.org/doc/scipy/reference/sparse.html).
 Here are 5 tricks that I have learned.
 
+<!-- TEASER_END -->
+
 Note this post has an [associated Jupyter notebook](https://github.com/AustinT/sparse-matrices-tips/blob/master/Sparse%20Matrix%20Tips%20and%20Tricks-%20Part%201.ipynb) that contains example code.
 
 ## 1: Use a normal dict instead of a `dok_matrix` to construct sparse matrices incrementally

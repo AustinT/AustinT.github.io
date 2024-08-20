@@ -12,6 +12,8 @@ This strange question came up when working on a machine learning project to gene
 Working with the version of Pytorch available on our DGX (similar to version 0.3.1), I found there was an optimizer called _SparseAdam_ but not one called _SparseSGD_.
 Since what I really wanted to do was use SGD, I wondered: could I turn the Adam optimizer into an SGD optimizer by setting the hyperparameters \\(\beta_1\\), \\(\beta_2\\), and \\(\epsilon\\)?
 
+<!-- TEASER_END -->
+
 ## The Answer
 Probably not. Looking at the [original paper for Adam](https://arxiv.org/abs/1412.6980), the formula for the parameter updates is:
 

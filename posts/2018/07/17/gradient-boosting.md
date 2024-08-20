@@ -14,6 +14,8 @@ The aim of this blog article is the following:
 2. To compare/contrast boosting with other ensemble methods, such as _bagging_
 3. To explain and compare several popular gradient boosting frameworks, specifically _XGBoost_, _CatBoost_, and _LightGBM_.
 
+<!-- TEASER_END -->
+
 ## A brief introduction to ensemble models
 Machine learning tasks can be framed as a function approximation task, where the goal is to approximate a function \\(f(\vec{x})\\) given a set of observations 
 \\(\lbrace \left(\vec x_i, f(\vec x_i) \right)\rbrace _{i=1:N}\\).

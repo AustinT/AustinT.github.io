@@ -12,6 +12,8 @@ Ever since I've started doing internships, the concept of efficient organization
 
 Much of an organization's efficiency can be linked to its structure. Long, big meetings are usually a consequence of a strong _hierarchical_ organization, where work is done by employees, then synced to a centralized node (a boss), and then possibly recapitulated to the workers in a meeting. However, are there better ways to structure an organization that would save time?
 
+<!-- TEASER_END -->
+
 ## The Paper
 The paper [A Computational Approach to Organizational Structure](https://arxiv.org/abs/1806.05701) tries to address this problem from a fundamental perspective. They frame the problem as such:
 

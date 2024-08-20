@@ -7,6 +7,8 @@ categories:
 ---
 Lately I have been putting a lot of effort into studying Japanese, to prepare for my upcoming trip to Japan at the end of summer 2018. While learning the readings for various kanji (Chinese character) words, I've noticed that a lot of their pronunciations (_on-yomi_) are related to the Chinese pronunciations in an interesting way. Let me explain my empirical theory about how to to convert Chinese pronunciations into Japanese ones:
 
+<!-- TEASER_END -->
+
 1. <b>Say no:</b> No to too many letters. If the Chinese word has multiple consonants, or too many vowels, drop them.
 2. <b>Change the vowels (and sometimes the consonants:</b> Otherwise it would be too easy.
 3. <b>Go K-razy:</b> Find ways to put the letter K into the word as much as possible. For some reason it seems like all kanji have lots of k's in them.

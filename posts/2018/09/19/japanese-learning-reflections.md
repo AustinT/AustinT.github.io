@@ -9,6 +9,8 @@ One dream I have always had since I started learning languages is to be able to 
 This August I had the first opportunity to do that during a 2 week trip to Japan. 
 In this post, I will outline the preparation I did before going, where I was able to use it when I was there, and evaluate my success.
 
+<!-- TEASER_END -->
+
 ## Preparation
 Before starting university in 2014, I knew absolutely no Japanese. 
 In fact, the only foreign language I knew was a little bit of French.

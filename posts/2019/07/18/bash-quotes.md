@@ -11,6 +11,8 @@ Today I learned **way** more about quotations in bash than I ever thought I need
 I thought I would highlight the interesting use case that I discovered, which requires some special trickery to write a script that executes arbitrary commands.
 First, let's quickly review some facts about bash quotes.
 
+<!-- TEASER_END -->
+
 ## Quick review of bash quotes (skip this if you're an expert)
 When you type a command into bash, it evaluates any special characters or sequences before executing the command.
 As a basic example, consider the following commands[^1]:
