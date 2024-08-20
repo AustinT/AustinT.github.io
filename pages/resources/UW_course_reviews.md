@@ -7,6 +7,8 @@ Note that I have excluded project courses from this list, and a lot of the gener
 
 If you are interested in notes for any of these courses feel free to email me!
 
+[TOC]
+
 # ARTS
 ## ARTS 490: Global Engagement Seminar
 Very unique course; topic changes every year.

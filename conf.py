@@ -143,10 +143,9 @@ TRANSLATIONS_PATTERN = '{path}.{lang}.{ext}'
 NAVIGATION_LINKS = {
     DEFAULT_LANG: (
         ("/", "Home"),
-        ("/about/", "About"),
         ("/cv/", "CV"),
         ("/research/", "Research"),
-        ("/links/", "Resources"),
+        ("/resources/", "Resources"),
         ("/blog/", "Blog"),
     ),
 }
@@ -662,7 +661,10 @@ ATOM_FILENAME_BASE = "feed"
 # relative URL.
 #
 # If you don't need any of these, just set to []
-REDIRECTIONS = []
+REDIRECTIONS = [
+    ("/links/", "/resources/"),
+    ("/about/", "/"),
+]
 
 # Presets of commands to execute to deploy. Can be anything, for
 # example, you may use rsync:
@@ -1140,7 +1142,12 @@ PRETTY_URLS = True
 #       with the MarkdownExtension class and should not be added here.
 # Defaults are markdown.extensions.(fenced_code|codehilite|extra)
 # markdown.extensions.meta is required for Markdown metadata.
-MARKDOWN_EXTENSIONS = ['markdown.extensions.fenced_code', 'markdown.extensions.codehilite', 'markdown.extensions.extra']
+MARKDOWN_EXTENSIONS = [
+    'markdown.extensions.fenced_code',
+    'markdown.extensions.codehilite',
+    'markdown.extensions.extra',
+    'markdown.extensions.toc',
+]
 
 # Options to be passed to markdown extensions (See https://python-markdown.github.io/reference/)
 # Default is {DEFAULT_LANG: {}} (no config at all)
