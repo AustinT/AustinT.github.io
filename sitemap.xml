@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://austintripp.ca/</loc>
-  <lastmod>2024-08-20T12:43:00Z</lastmod>
+  <lastmod>2024-08-26T14:14:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/2018/</loc>
@@ -22,16 +22,20 @@
   <lastmod>2024-08-18T09:52:00Z</lastmod>
  </url>
  <url>
+  <loc>https://austintripp.ca/2024/</loc>
+  <lastmod>2024-08-26T14:14:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://austintripp.ca/about/</loc>
   <lastmod>2024-08-20T12:43:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/archive.html</loc>
-  <lastmod>2024-08-20T10:51:00Z</lastmod>
+  <lastmod>2024-08-26T14:14:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/</loc>
-  <lastmod>2024-08-18T11:05:00Z</lastmod>
+  <lastmod>2024-08-27T22:46:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/03/24/website-launch/</loc>
@@ -78,8 +82,12 @@
   <lastmod>2024-08-18T11:05:00Z</lastmod>
  </url>
  <url>
+  <loc>https://austintripp.ca/blog/2024-08-26-reasons-website/</loc>
+  <lastmod>2024-08-27T22:44:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://austintripp.ca/blog/index-1.html</loc>
-  <lastmod>2024-08-20T12:38:00Z</lastmod>
+  <lastmod>2024-08-26T14:14:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/</loc>
