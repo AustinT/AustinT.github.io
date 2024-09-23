@@ -990,11 +990,12 @@ LICENSE = "MIT License"
 # A small copyright notice for the page footer (in HTML).
 # (translatable)
 CONTENT_FOOTER = (
-    'Contents &copy; {date}         {author} ({license}). '
+    'Contents &copy; {date}         {author} ({license}). \n'
+    'All opinions and statements on this site are my own (ie not my employer\'s). \n'
     '<a href="mailto:{email}">Email</a> | '
     '<a href="https://github.com/AustinT">GitHub</a> | '
     '<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | '
-    '<a href="https://twitter.com/austinjtripp">Twitter/X</a> | '
+    '<a href="https://twitter.com/austinjtripp">Twitter/X</a> \n'
     '- Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>'
 )
 
