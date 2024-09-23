@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How I chose a static site generator | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2024-09-09-static-site-generators/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2024-08-26-reasons-website/" title="Reasons to have a website" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="How I chose a static site generator">
+<meta property="og:url" content="https://austintripp.ca/blog/2024-09-09-static-site-generators/">
+<meta property="og:description" content="Recently, I wanted to update my website to look a bit more polished (and
+support additional features such as automatically generating pages for my
+publications). In the end I decided to completely swi">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-09-09T00:00:00+01:00">
+<meta property="article:tag" content="website">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.rst" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">How I chose a static site generator</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2024-09-09T00:00:00+01:00" itemprop="datePublished" title="2024-09-09">2024-09-09</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.rst" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>Recently, I wanted to update my website to look a bit more polished (and
+support additional features such as automatically generating pages for my
+publications). In the end I decided to completely switch from building my
+website with Jekyll to <a class="reference external" href="https://getnikola.com/">nikola</a> instead. This post
+explains my thought process for this (in case anybody else is considering
+a similar switch).</p>
+<!-- TEASER_END -->
+<section id="main-findings"><h2>Main findings</h2>
+<p>My website is fairly simple, so I only considered static site generators.
+When choosing a generator, I considered:</p>
+<ul class="simple">
+<li><p>That my main programming language is python (and I have little knowledge of
+other languages)</p></li>
+<li><p>I only needed a basic static website</p></li>
+<li><p>I wanted to support a blog, a list of publications, a CV, and a few
+miscellaneous pages</p></li>
+</ul>
+<p>Here are my thoughts on the main static site generators I considered:</p>
+<section id="jekyll"><h3>Jekyll</h3>
+<p>Pros:</p>
+<ul class="simple">
+<li><p>Simple</p></li>
+<li><p>Supported out-of-the-box by GitHub pages</p></li>
+<li><p>My website was already in Jekyll</p></li>
+<li><p>Lots of nice themes, including a nice <a class="reference external" href="https://academicpages.github.io/">academic</a> one</p></li>
+</ul>
+<p>Cons:</p>
+<ul class="simple">
+<li><p>Some issues previewing locally: one needed a different version of ruby than
+the default version on Mac, and then needed to install a bunch of "gems".
+I remember this being a pain to set up.</p></li>
+<li><p>I don't know the ruby programming language so it's hard for me to interpret
+and modify the features of the website (for example to generate a publication
+page from a bibliography file). I would likely need to look everything up.</p></li>
+</ul></section><section id="hugo"><h3>Hugo</h3>
+<p>Pros:</p>
+<ul class="simple">
+<li><p>Lots of themes available</p></li>
+<li><p>Popular and well-supported</p></li>
+<li><p>Good GitHub pages support</p></li>
+</ul>
+<p>Cons:</p>
+<ul class="simple">
+<li><p>I don't know Go so it seemed like it might be hard to do anything custom</p></li>
+</ul></section><section id="pelican"><h3>Pelican</h3>
+<p>Pros:</p>
+<ul class="simple">
+<li><p>python-based</p></li>
+<li><p>Decent number of themes</p></li>
+</ul>
+<p>Cons:</p>
+<ul class="simple">
+<li><p>A few nice features (like multi-lingual pages and rendering jupyter
+notebooks) were apparently harder to set up than in Nikola</p></li>
+</ul>
+<p>NOTE: my consideration of Pelican was a bit superficial.</p>
+</section><section id="nikola-1"><h3>Nikola</h3>
+<p>Pros:</p>
+<ul class="simple">
+<li><p>python-based</p></li>
+<li><p>Package is very small: not too many hidden features</p></li>
+<li><p>There are a few pre-existing add-ons for publications</p></li>
+<li><p>Good multi-lingual support</p></li>
+<li><p>Decent documentation</p></li>
+<li><p>Out-of-the-box support for jupyter notebook pages</p></li>
+<li><p>Easy to run locally (just one python package)</p></li>
+</ul>
+<p>Cons:</p>
+<ul class="simple">
+<li><p>Limited selection of templates</p></li>
+<li><p>Default is for the site to just be a blog, so making a "website + blog"
+already required a bit of customization</p></li>
+<li><p>Templates themselves seem hard to customize</p></li>
+</ul></section></section><section id="conclusion"><h2>Conclusion</h2>
+<p>My impression was that all of the static site generators I considered were
+pretty good. In the end I chose Nikola. My main reason for this was that the
+out-of-the-box website looked decent and had the features I needed. My guess
+was that if in the future I needed to do anything fancier, it would be easier
+to inspect the package and figure out how to do it than if I used another
+framework (especially one that was not python-based). Hopefully my decision is
+vindicated in the future.</p>
+<p>If you find this list helpful, please do let me know!</p>
+</section>
+</div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/website/" rel="tag">website</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2024-08-26-reasons-website/" rel="prev" title="Reasons to have a website">Previous post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer">
+            Contents © 2024         Austin Tripp (MIT License). 
+All opinions and statements on this site are my own (ie not my employer's). 
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+- Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

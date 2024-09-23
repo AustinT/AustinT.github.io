@@ -38,3 +38,10 @@ obligation to produce and disseminate truth as much as possible. This means:
 - _Don't_ exaggerate claims to sound alarmist or make results seem more impactful.
 - _Don't_ mislead people so that they act in a certain way.
 - _Do_ focus your research on important and impactful problems whenever possible (not all truths are equally valuable).
+
+## Price gouging
+
+Even though price gouging may seem unfair,
+it can also encourage an increase in supply,
+and therefore is not a bad thing.
+I recommend reading [this essay](https://www.grumpy-economist.com/p/praise-for-price-gouging).

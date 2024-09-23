@@ -7,166 +7,170 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://austintripp.ca/</loc>
-  <lastmod>2024-08-26T14:14:00Z</lastmod>
+  <lastmod>2024-09-23T13:12:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/2018/</loc>
-  <lastmod>2024-08-18T09:52:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/2019/</loc>
-  <lastmod>2024-08-18T09:52:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/2020/</loc>
-  <lastmod>2024-08-18T09:52:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/2024/</loc>
-  <lastmod>2024-08-26T14:14:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/about/</loc>
-  <lastmod>2024-08-20T12:43:00Z</lastmod>
+  <lastmod>2024-09-13T16:56:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/archive.html</loc>
-  <lastmod>2024-08-26T14:14:00Z</lastmod>
+  <lastmod>2024-09-13T17:05:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/</loc>
-  <lastmod>2024-08-27T22:46:00Z</lastmod>
+  <lastmod>2024-09-23T13:12:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/03/24/website-launch/</loc>
-  <lastmod>2024-08-18T11:05:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/06/25/onyomi/</loc>
-  <lastmod>2024-08-18T11:05:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/07/01/organization_structure_paper/</loc>
-  <lastmod>2024-08-18T11:05:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/07/02/adam-to-sgd/</loc>
-  <lastmod>2024-08-18T11:05:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/07/17/gradient-boosting/</loc>
-  <lastmod>2024-08-18T11:05:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/08/21/bayes-no-certain-priors/</loc>
-  <lastmod>2024-08-18T11:05:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/09/12/sparse-matrices-tips1/</loc>
-  <lastmod>2024-08-18T11:05:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/09/19/japanese-learning-reflections/</loc>
-  <lastmod>2024-08-18T11:05:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/10/08/communal-fridge/</loc>
-  <lastmod>2024-08-18T11:05:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2019/07/18/bash-quotes/</loc>
-  <lastmod>2024-08-18T11:05:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2020/02/10/monty-hall/</loc>
-  <lastmod>2024-08-18T11:05:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2024-08-26-reasons-website/</loc>
-  <lastmod>2024-08-27T22:44:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/blog/2024-09-09-static-site-generators/</loc>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/index-1.html</loc>
-  <lastmod>2024-08-26T14:14:00Z</lastmod>
+  <lastmod>2024-09-13T17:05:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/</loc>
-  <lastmod>2024-08-20T12:38:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/frontpage/</loc>
-  <lastmod>2024-08-20T11:06:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/japanese/</loc>
-  <lastmod>2024-08-20T12:38:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/language/</loc>
-  <lastmod>2024-08-20T12:38:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/machine-learning/</loc>
-  <lastmod>2024-08-20T12:38:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/papers/</loc>
-  <lastmod>2024-08-20T12:38:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/programming/</loc>
-  <lastmod>2024-08-20T12:38:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/statistics/</loc>
-  <lastmod>2024-08-20T11:06:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/website/</loc>
-  <lastmod>2024-08-20T12:38:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/cv/</loc>
-  <lastmod>2024-08-18T09:52:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/links/</loc>
-  <lastmod>2024-08-20T12:43:00Z</lastmod>
+  <lastmod>2024-09-13T16:56:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/misc/beliefs/</loc>
-  <lastmod>2024-08-18T09:52:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/misc/paper-retrospectives/</loc>
-  <lastmod>2024-08-18T09:52:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/not-a-code-psychic/</loc>
-  <lastmod>2024-08-18T09:52:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/research/</loc>
-  <lastmod>2024-08-18T09:52:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/resources/</loc>
-  <lastmod>2024-08-20T10:10:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/resources/about/</loc>
-  <lastmod>2024-08-20T10:10:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/resources/anki/</loc>
-  <lastmod>2024-08-19T15:34:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/resources/language-learning/</loc>
-  <lastmod>2024-08-19T16:17:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/resources/uw_course_reviews/</loc>
-  <lastmod>2024-08-19T15:34:00Z</lastmod>
+  <lastmod>2024-09-13T16:57:00Z</lastmod>
  </url>
 </urlset>
