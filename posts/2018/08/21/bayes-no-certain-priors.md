@@ -3,6 +3,7 @@ title: "Why you should never be certain of your beliefs: a Bayesian perspective"
 date: 2018-08-21
 tags:
     - statistics
+    - decision making
     - frontpage
 has_math: true
 ---
