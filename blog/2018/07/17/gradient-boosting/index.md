@@ -4,7 +4,7 @@ date: 2018-07-17
 tags:
     - machine learning
     - frontpage
-mathjax: true
+has_math: true
 ---
 
 Everybody doing machine learning wants the best models possible. 

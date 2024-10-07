@@ -20,6 +20,7 @@ It is a difficult problem for the following reasons:
  These people shouldn't have equal fridge-cleaning obligations.
 
 Because of this, we thought that a solution to the fridge cleaning problem must have the following properties:
+
 1. Distribute the workload over a large number of people (i.e. don't assign a permanent fridge cleaner)
 2. Only obligate people who use the fridge
 3. Be decentralized (i.e. not rely on some sort of "leader" to assign the jobs and check to make sure it is done).

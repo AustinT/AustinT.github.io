@@ -77,7 +77,47 @@
     
         
     <div class="postindex">
-            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2024-09-09-static-site-generators/" class="u-url">How I chose a static site generator</a></h1>
+            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2024-10-07-problems-with-topk-diversity/" class="u-url">Problems with the top-k diversity metric for diverse optimization</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="2024-10-07-problems-with-topk-diversity/" rel="bookmark">
+            <time class="published dt-published" datetime="2024-10-07T00:00:00+01:00" itemprop="datePublished" title="2024-10-07">2024-10-07</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div class="cell border-box-sizing text_cell rendered" id="cell-id=b4485680-e872-4498-b53b-cfc0bcde2315">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="alert alert-block alert-info">
+<b>NOTE</b>
+    this blog post can be run as a jupyter notebook. I re-ordered the cells to make it easier to read; to re-produce all the plots see instructions at the end of the post.
+</div>
+<h3 id="Background">Background<a class="anchor-link" href="2024-10-07-problems-with-topk-diversity/#Background">¶</a>
+</h3>
+<p><em>"Diverse optimization"</em> has been a popular topic in machine learning conferences
+for a few years now, particularly in the "AI for drug discovery" sub-field.
+In this context, the goal of "optimization" algorithms is to suggest
+promising drug candidates,
+where "promising" means maximizing one (or more) objective functions.
+An example of an objective function could be a docking score
+(an approximate simulation of the interactions between a protein and a molecule).
+"Diverse" optimization further requires that an algorithm produce multiple
+distinct candidate solutions.
+This is typically desired when the objective functions don't fully capture
+everything we want (for example, a drug candidate also having low toxicity).
+The hope is that a diverse set of candidates will have a higher chance of
+one useful candidate compared to a non-diverse sets.</p>
+<p class="more"><a href="2024-10-07-problems-with-topk-diversity/">Read more…</a></p>
+</div>
+</div>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2024-09-09-static-site-generators/" class="u-url">How I chose a static site generator</a></h1>
                 <div class="metadata">
                     <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                         Austin Tripp
@@ -251,25 +291,6 @@ The aim of this blog article is the following:</p>
 <p class="more"><a href="2018/07/17/gradient-boosting/">Read more…</a></p>
 </div>
                 </div>
-            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/07/02/adam-to-sgd/" class="u-url">Turning Adam Optimization into SGD</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Austin Tripp
-                    </span></p>
-            <p class="dateline">
-            <a href="2018/07/02/adam-to-sgd/" rel="bookmark">
-            <time class="published dt-published" datetime="2018-07-02T00:00:00+01:00" itemprop="datePublished" title="2018-07-02">2018-07-02</time></a>
-            </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-                    <div>
-<h3 id="motivation">Motivation</h3>
-<p>This strange question came up when working on a machine learning project to generate embeddings. 
-Working with the version of Pytorch available on our DGX (similar to version 0.3.1), I found there was an optimizer called <em>SparseAdam</em> but not one called <em>SparseSGD</em>.
-Since what I really wanted to do was use SGD, I wondered: could I turn the Adam optimizer into an SGD optimizer by setting the hyperparameters \(\beta_1\), \(\beta_2\), and \(\epsilon\)?</p>
-<p class="more"><a href="2018/07/02/adam-to-sgd/">Read more…</a></p>
-</div>
-                </div>
             </article>
 </div>
     
@@ -277,8 +298,18 @@ Since what I really wanted to do was use SGD, I wondered: could I turn the Adam 
 <li class="next"><a href="index-1.html" rel="next">Older posts</a></li>
         </ul>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
-        MathJax.Hub.Config({tex2jax: {inlineMath: [['$latex ','$'], ['\\(','\\)']]}});
-        </script><!--End of body content--><footer id="footer">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--End of body content--><footer id="footer">
             Contents © 2024         Austin Tripp (MIT License). 
 All opinions and statements on this site are my own (ie not my employer's). 
 <a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a> 

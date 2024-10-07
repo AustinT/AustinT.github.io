@@ -77,7 +77,26 @@
     
         
     <div class="postindex">
-            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/07/01/organization_structure_paper/" class="u-url">Paper Review: A Computational Approach to Organizational Structure</a></h1>
+            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/07/02/adam-to-sgd/" class="u-url">Turning Adam Optimization into SGD</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="2018/07/02/adam-to-sgd/" rel="bookmark">
+            <time class="published dt-published" datetime="2018-07-02T00:00:00+01:00" itemprop="datePublished" title="2018-07-02">2018-07-02</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<h3 id="motivation">Motivation</h3>
+<p>This strange question came up when working on a machine learning project to generate embeddings. 
+Working with the version of Pytorch available on our DGX (similar to version 0.3.1), I found there was an optimizer called <em>SparseAdam</em> but not one called <em>SparseSGD</em>.
+Since what I really wanted to do was use SGD, I wondered: could I turn the Adam optimizer into an SGD optimizer by setting the hyperparameters \(\beta_1\), \(\beta_2\), and \(\epsilon\)?</p>
+<p class="more"><a href="2018/07/02/adam-to-sgd/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/07/01/organization_structure_paper/" class="u-url">Paper Review: A Computational Approach to Organizational Structure</a></h1>
                 <div class="metadata">
                     <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                         Austin Tripp

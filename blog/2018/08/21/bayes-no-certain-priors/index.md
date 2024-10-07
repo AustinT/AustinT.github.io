@@ -3,8 +3,9 @@ title: "Why you should never be certain of your beliefs: a Bayesian perspective"
 date: 2018-08-21
 tags:
     - statistics
+    - decision making
     - frontpage
-mathjax: true
+has_math: true
 ---
 
 People are notoriously bad at estimating their percent confidence in their beliefs, as explained further in this [Wikipedia article](https://en.wikipedia.org/wiki/Overconfidence_effect). 
