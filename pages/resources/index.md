@@ -39,6 +39,14 @@ for more.
   (before I started my PhD):
   <http://neuralnetworksanddeeplearning.com/index.html>.
 
+## Writing
+
+- [3 sins of technical writing](https://www.cs.cmu.edu/~jrs/sins.html):
+    1. Boring gibberish at beginning of introduction
+    2. A table of contents paragraph
+    3. "Conclusions" section without any actual conclusions (e.g., just a summary)
+- [Simon Peyton Jones' tips for writing a great research paper](https://www.microsoft.com/en-us/research/academic-program/write-great-research-paper/)
+
 ## Exercise
 
 Exercising is important!
