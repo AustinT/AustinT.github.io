@@ -3,6 +3,7 @@ title: "Being 'data-driven' does not mean that you should use bad data."
 date: 2024-10-09
 tags:
     - decision making
+    - speculation
 has_math: false
 ---
 
