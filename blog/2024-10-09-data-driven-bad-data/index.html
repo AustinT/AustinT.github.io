@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Being 'data-driven' does not mean that you should use bad data. | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2024-10-09-data-driven-bad-data/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2024-10-07-problems-with-topk-diversity/" title="Problems with the top-k diversity metric for diverse optimization" type="text/html">
+<link rel="next" href="../2024-10-13-vizier-bayesopt/" title="Thoughts on Google Vizier" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Being 'data-driven' does not mean that you should use bad data.">
+<meta property="og:url" content="https://austintripp.ca/blog/2024-10-09-data-driven-bad-data/">
+<meta property="og:description" content="Relying on data rather than intuitions to make decisions is usually a good thing,
+but is not always better.
+When one needs to make a decision about things for which there is no good data
+it might be b">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-10-09T00:00:00+01:00">
+<meta property="article:tag" content="decision making">
+<meta property="article:tag" content="speculation">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Being 'data-driven' does not mean that you should use bad data.</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2024-10-09T00:00:00+01:00" itemprop="datePublished" title="2024-10-09">2024-10-09</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>Relying on data rather than intuitions to make decisions is usually a good thing,
+but is not always better.
+When one needs to make a decision about things for which there is no good data
+it might be better to rely on intuition rather than the best proxy available.
+Here are some examples where I think an intuition-based approach can be better
+than a data-driven approach (but still worse than a data-driven approach with good data):</p>
+<!-- TEASER_END -->
+
+<h3 id="stock-market">Stock market</h3>
+<p>Bad intuition: "how good does company X seem"</p>
+<p>Bad data: "what were the returns on X's stock last year?" (remember: past performance does not predict future performance)</p>
+<p>Better intuition: "do I have a compelling narrative about company X and a reason why external investors might be mispricing it"</p>
+<p>Better data: complex quantitative model (the kind you might not create unless you work in finance though)</p>
+<h3 id="train-delay-in-the-uk">Train delay (in the UK)</h3>
+<p>Bad intuition: trains are usually on time (reason about the mode)</p>
+<p>Bad data: look at the currently published delays on National Rail's website (these tend to be overly optimistic)</p>
+<p>Better intuition: use "what fraction of times have I experienced a delay in the past" as the estimated probability of a future delay</p>
+<p>Better data: actually track and calculate this number (clearly doable but more work than most people would want to do)</p>
+<h3 id="accepting-a-job-offer">Accepting a job offer</h3>
+<p>Bad intuition: how good does field X seem.</p>
+<p>Bad data: look at average salary/work hours/satisfaction for people in field X.</p>
+<p>Better intuition: does the team/manager/work environment at the company that gave you an offer feel "right"?</p>
+<p>Better data: get data on salary/work hours/job satisfaction for your prospective company specifically (usually hard to get this data though).</p>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/decision-making/" rel="tag">decision making</a></li>
+            <li><a class="tag p-category" href="../../categories/speculation/" rel="tag">speculation</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2024-10-07-problems-with-topk-diversity/" rel="prev" title="Problems with the top-k diversity metric for diverse optimization">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../2024-10-13-vizier-bayesopt/" rel="next" title="Thoughts on Google Vizier">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer">
+            Contents © 2024         Austin Tripp (MIT License). 
+All opinions and statements on this site are my own (ie not my employer's). 
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+- Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

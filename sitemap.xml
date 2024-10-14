@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://austintripp.ca/</loc>
-  <lastmod>2024-10-07T10:34:00Z</lastmod>
+  <lastmod>2024-10-13T17:34:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/2018/</loc>
@@ -31,11 +31,11 @@
  </url>
  <url>
   <loc>https://austintripp.ca/archive.html</loc>
-  <lastmod>2024-10-07T11:18:00Z</lastmod>
+  <lastmod>2024-10-13T17:34:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/</loc>
-  <lastmod>2024-10-07T11:03:00Z</lastmod>
+  <lastmod>2024-10-13T17:34:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/03/24/website-launch/</loc>
@@ -94,12 +94,24 @@
   <lastmod>2024-10-07T10:21:00Z</lastmod>
  </url>
  <url>
+  <loc>https://austintripp.ca/blog/2024-10-09-data-driven-bad-data/</loc>
+  <lastmod>2024-10-13T17:34:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/blog/2024-10-13-vizier-bayesopt/</loc>
+  <lastmod>2024-10-13T17:34:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://austintripp.ca/blog/index-1.html</loc>
-  <lastmod>2024-10-07T11:18:00Z</lastmod>
+  <lastmod>2024-10-13T17:34:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/</loc>
-  <lastmod>2024-10-07T11:18:00Z</lastmod>
+  <lastmod>2024-10-13T17:34:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/bayesian-optimization/</loc>
+  <lastmod>2024-10-13T17:34:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/decision-making/</loc>
@@ -128,6 +140,10 @@
  <url>
   <loc>https://austintripp.ca/categories/programming/</loc>
   <lastmod>2024-10-07T10:21:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/speculation/</loc>
+  <lastmod>2024-10-13T17:34:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/statistics/</loc>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thoughts on Google Vizier | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2024-10-13-vizier-bayesopt/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2024-10-09-data-driven-bad-data/" title="Being 'data-driven' does not mean that you should use bad data." type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Thoughts on Google Vizier">
+<meta property="og:url" content="https://austintripp.ca/blog/2024-10-13-vizier-bayesopt/">
+<meta property="og:description" content='Vizier,
+described in a recent paper from Google,
+is a black-box optimization algorithm deployed
+for "numerous research and production systems at Google".
+Allegedly, this one algorithm works well on a '>
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-10-13T00:00:00+01:00">
+<meta property="article:tag" content="bayesian optimization">
+<meta property="article:tag" content="machine learning">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Thoughts on Google Vizier</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2024-10-13T00:00:00+01:00" itemprop="datePublished" title="2024-10-13">2024-10-13</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>Vizier,
+described in a <a href="http://arxiv.org/abs/2408.11527">recent paper from Google</a>,
+is a black-box optimization algorithm deployed
+for "numerous research and production systems at Google".
+Allegedly, this one algorithm works well on a wide range of settings
+(something which the "no-free-lunch-theorem" suggests might not be possible).
+In this post I provide my thoughts on what key design decisions likely make this
+algorithm work well.</p>
+<!-- TEASER_END -->
+
+<div class="alert alert-success">
+NOTE: throughout this post I use the following acronyms:
+
+<ul>
+<li>BO (Bayesian optimization)</li>
+<li>GP (Gaussian process)</li>
+<li>UCB (upper confidence bound)</li>
+<li>GA (genetic algorithm)</li>
+</ul>
+</div>
+
+<h3 id="summary-of-vizier">Summary of Vizier</h3>
+<p>Vizier is a Gaussian process Bayesan optimization (GP-BO) algorithm:
+a class of algorithms that I worked with a lot during my PhD.
+Formally, the algorithm seeks to optimize a function $f(x)$.
+At every step, it fits a GP surrogate model to the data,
+then chooses a new point (or set of points) to evaluate
+by maximizing an <em>acquisition function</em>.
+I won't give further details about GP-BO here,
+but if you are unfamiliar with this topic
+I suggest reading
+<a href="https://bayesoptbook.com/">Chapter 1 of Roman Garnett's textbook</a>
+for a high level overview.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<p>What's remarkable about Vizier is, frankly, how <em>unremarkable</em> it is.
+The algorithm does not depart from the general GP-BO paradigm.
+Furthermore, each part of the algorithm is pretty standard:
+for example, they use a GP with a Matern 5/2 kernel
+and the UCB acquisition function,
+rather than any of the fancy kernels or information-theoretic
+acquisition functions commonly seem in ML conference papers over the past decade.
+No individual component stands out as being particularly clever or groundbreaking.
+Instead, I think Vizier's success comes from <em>making standard parts work well together</em>
+and <em>using reasonable heuristics</em>.</p>
+<h3 id="walk-through-of-viziers-design">Walk-through of Vizier's design</h3>
+<h4 id="input-and-output-scaling-make-the-data-fit-the-model-rather-than-choosing-a-model-to-fit-the-data">Input and output scaling: make the data fit the model, rather than choosing a model to fit the data</h4>
+<p>First, the input data is all normalized to be in the interval $[0,1]$
+in every dimension, optionally with logarithmic scaling.
+This has the effect of:</p>
+<ol>
+<li>Ensuring distances between points are never <em>too close</em> or <em>too far</em>.</li>
+<li>Allowing categorical and continuous inputs to be handled in the same way.</li>
+</ol>
+<p>I think this is key to allow the Matern 5/2 kernel to be used for all problems.
+What is arguably more interesting however is their <em>output</em> scaling.
+They perform a series of transformations which:</p>
+<ul>
+<li>Center the outputs around the median</li>
+<li>Rescales the <em>below-median</em> points to have a more Gaussian distribution</li>
+<li>Slightly exaggerates differences between the best points</li>
+<li>Maps invalid/infeasible points to a negative value, but not <em>too</em> negative.</li>
+</ul>
+<p>Figure 2 from the paper (copied below) illustrates these transformations.
+Essentially, outliers are removed and the entire distribution looks
+Gaussian on the left, and something more heavy-tailed on the right.
+Invalid points are re-added as slightly outliers on the extreme left.</p>
+<p><img src="../../blog-images/2024-10-13-vizier-warping.png"></p>
+<p>I think this helps Vizier overcome one of the most significant limitations of GP models:
+difficulty predicting outliers.
+This difficulty arises because GPs always assume that output values are Gaussian distributed,
+making extreme deviations from the mean very unlikely.
+Vizier handles this by trying to make the data "look" more Gaussian.</p>
+<h4 id="pick-kernel-parameters-with-map">Pick kernel parameters with MAP</h4>
+<p>The amplitude, lengthscale, and noise parameters are all given an (approximately) log-normal prior.
+Then, a set of model parameters is chosen using <em>maximum a posteriori</em> (MAP) inference
+(ie the parameter values whose posterior probability is the highest).
+Using MAP inference to fit the parameters is a common strategy to reduce overfitting in GPs.
+However, what I imagine makes this work really nicely for Vizier is the fact
+that scaling the data allows them to set reasonably strong priors but still be confident that
+the data will be modelled well.
+This is the first example of good "synergy" from Vizier in my opinion.</p>
+<p>The actual maximization with done with Scipy's L-BFGS function, which is pretty standard.</p>
+<h4 id="ucb-acquisition-function-with-trust-regions">UCB acquisition function (with trust regions)</h4>
+<p>Vizier <em>essentially</em> uses the UCB acquisition function with an exploration constant $\sqrt{\beta}=1.8$.
+However, they modify UCB to use <em>trust regions</em>: if a point $x$ is a distance greater than $r_t$ away from the nearest previously evaluated input,
+the acquisition function is immediately set to $-10^{12} - d(x, x_{\text{trusted}})$.
+$r_t$ starts at 0.2 but grows over time (and all distances are calculated <em>after</em> rescaling).
+This choice has several advantages:</p>
+<ul>
+<li>UCB keeps the cost low because a point's acquisition function value can be calculated analytically and is independent of other points. This is not true for other acquisition functions like Thompson sampling.</li>
+<li>Unlike expected improvement (EI), UCB is very exploratory, preventing under-exploration.</li>
+<li>Over-exploration is addressed using trust regions, which are simple and likely effective.</li>
+</ul>
+<p>This choice also synergizes with their output scaling:
+because the distribution of above-median points is carefully controlled
+it makes sense to use a fixed choice of $\beta$ in all scenarios.</p>
+<h4 id="optimizing-the-acquisition-function-with-genetic-algorithms">Optimizing the acquisition function with genetic algorithms</h4>
+<p>They use a genetic algorithm (GA) called "Firefly" with a bit of tuning.
+The details of the GA did not seem particularly important to me,
+but does support my previous experience that GAs work well.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>
+Using a GA also allows them to leverage parallelism.</p>
+<h4 id="batched-setting-with-an-ignored-constant-liar">Batched setting with an (ignored) constant liar</h4>
+<p>Vizier can be used in both the synchronous and asynchronous batch settings.
+Its batch selection strategy is described in §3.6 of the arXiv paper.
+Overall, I would describe the batch construction process as "entirely heuristic",
+but also very reasonable.
+Batch BO methods tend to either be heuristic or intractable,
+so choosing "heuristic" for a practical system makes sense.</p>
+<p>In Vizier, batches are constructed <em>sequentially</em>
+(ie one point is chosen, then a second point, etc)
+instead of <em>simultaneously</em> (ie choosing all points together),
+so it suffices to just generally consider the acquisition function
+for the $b$th point in the batch.</p>
+<div class="alert alert-success">
+Before explaining the acquisition function choices, note that
+a GPs' predicted standard deviation
+for <it>never depends on the observed outputs</it>.
+This allows one to easily calculate what the standard deviation would be
+if the first $(b-1)$ points in the batch were observed,
+without making any assumptions about what is observed.
+</div>
+
+<p>Essentially, Vizier uses a mix of the following two acquisition functions:</p>
+<ol>
+<li>UCB, with the standard deviation adjusted to account for the $(b-1)$ points already chosen in the batch, but <em>no adjustment</em> to the mean.
+They describe this as the "constant liar" heuristic,<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup> but since it does not depend on the actual "value"
+of the constant I think of it as an "ignored" constant liar.</li>
+<li>"Pure exploration", ie just the predicted standard deviation conditioned on all other points in the batch. They add a moderate penalty for not having a "sufficiently promising" UCB value.</li>
+</ol>
+<p>In the <em>synchronous</em> case (where all previously chosen inputs have received an observation),
+they use UCB with high probability (and pure exploration with low probability).
+In the <em>asynchronous</em> case (where observations have not yet been received for previously chosen experiments)
+they always use pure exploration.
+Overall, this mixture of acquisition functions seems like a reasonable way of balancing exploration and exploitation within a batch.</p>
+<p>A point of synergy in this section is that the UCB acquisition function depends only on the predicted mean and standard deviation, the latter of which can be updated without knowing the observation values.</p>
+<h4 id="extension-to-multiple-objectives">Extension to multiple objectives</h4>
+<p>This is described in §3.7.
+When there are multiple objective, each objective is modelled independently using their standard GP model.</p>
+<p>They use an upper confidence bound on the hypervolume improvement as an acquisition function,
+which seems like a natural extension of scalar UCB.
+They estimate it using scalarizations with randomly selected weights
+(which, if drawn from the correct distribution, provably compute hypervolume).
+Using a Monte-Carlo estimate allows the objective function evaluations to be parallelized across many samples.</p>
+<p>Overall this seems like both the simplest modelling choice and a fairly simple acquisition function choice.
+I am surprised however that "hypervolume improvement UCB" is not a more commonly-seen acquisition function
+given its conceptual simplicity...</p>
+<h4 id="start-optimization-with-semi-random-selection">Start optimization with semi-random selection</h4>
+<p>The first trial is always the exact center of the search space.
+After that, a few trials are sampled quasi-randomly using Halton sequences to get a good diversity of points.<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup></p>
+<h3 id="conclusions">Conclusions</h3>
+<p>My main takeaway from this paper is that it might actually
+be possible to build black-box optimizers that work well for a diverse
+range of realistic problems
+(even though the no-free-lunch-theorem says this will be impossible for the set of <em>all</em> problems).
+Vizier specifically seemed to show that 
+that output scaling can resolve a lot of problems.
+This step seemed to be the key which allowed all of Vizier's design choices to work well together:
+mainly the use of a GP model at all, the GP's kernel and hyperparameters,
+and the acquisition function.</p>
+<p>This paper also served as a reminder that real-world BO systems are probably
+<em>not</em> going to be deployed in the standard sequential setting:
+algorithms should ideally handle both <em>batch</em> and <em>asynchronous</em> evaluations,
+since these are likely to come up in practice.</p>
+<p>However, there were a number of issues that don't seem to be addressed in Vizier.
+There is not a clear way to handle graph or sequence-structured inputs (necessary in AI for science problems).
+The acquisition function does not seem to account for non-uniform evaluation costs.
+Finally, some applications may benefit from a more complex noise model (eg if there is correlated noise between different observations).
+Extending Vizier to address these settings could be an interesting direction for future research!</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>and, if you have time, the whole first 7 chapters to get a much more thorough overview. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+<li id="fn:2">
+<p>see for example <a href="https://arxiv.org/abs/2310.09267">this paper</a> that I wrote in the last year of my PhD. <a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">↩</a></p>
+</li>
+<li id="fn:3">
+<p>"constant liar" is the name for the heuristic where the next point in the batch is chosen assuming that all previous points in the batch received the same constant observation $c$. <a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">↩</a></p>
+</li>
+<li id="fn:4">
+<p>the Halton sequences help ensure that no samples are "clumped" together, which often happens with larger numbers of i.i.d. samples. This is the same motivation behind quasi-Monte Carlo methods. <a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/bayesian-optimization/" rel="tag">bayesian optimization</a></li>
+            <li><a class="tag p-category" href="../../categories/machine-learning/" rel="tag">machine learning</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2024-10-09-data-driven-bad-data/" rel="prev" title="Being 'data-driven' does not mean that you should use bad data.">Previous post</a>
+            </li>
+        </ul></nav></aside><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article><!--End of body content--><footer id="footer">
+            Contents © 2024         Austin Tripp (MIT License). 
+All opinions and statements on this site are my own (ie not my employer's). 
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+- Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

@@ -77,7 +77,49 @@
     
         
     <div class="postindex">
-            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/07/02/adam-to-sgd/" class="u-url">Turning Adam Optimization into SGD</a></h1>
+            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/08/21/bayes-no-certain-priors/" class="u-url">Why you should never be certain of your beliefs: a Bayesian perspective</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="2018/08/21/bayes-no-certain-priors/" rel="bookmark">
+            <time class="published dt-published" datetime="2018-08-21T00:00:00+01:00" itemprop="datePublished" title="2018-08-21">2018-08-21</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>People are notoriously bad at estimating their percent confidence in their beliefs, as explained further in this <a href="https://en.wikipedia.org/wiki/Overconfidence_effect">Wikipedia article</a>. 
+Something I thought of recently is what effect this overconfidence has from a Bayesian perspective. 
+After a bit of math, I came to the conclusion that having extreme confidence in your beliefs (0% or 100% confidence) implies that you would be unable to change your beliefs if shown evidence to the contrary.
+I believe this simple argument suggests that it is very irrational to hold prior beliefs of 0 or 100%. If you do feel this way, then you should choose a very high value (99.99%) or a very low value (0.001%), but always leave some room for error.</p>
+<p class="more"><a href="2018/08/21/bayes-no-certain-priors/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/07/17/gradient-boosting/" class="u-url">An Overview of Gradient Boosting and Popular Libraries for it.</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="2018/07/17/gradient-boosting/" rel="bookmark">
+            <time class="published dt-published" datetime="2018-07-17T00:00:00+01:00" itemprop="datePublished" title="2018-07-17">2018-07-17</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>Everybody doing machine learning wants the best models possible. 
+The aim of this blog article is the following:</p>
+<ol>
+<li>To provide an introduction to the machine learning technique known as <em>boosting</em>, and specifically <em>gradient boosting</em>.</li>
+<li>To compare/contrast boosting with other ensemble methods, such as <em>bagging</em>
+</li>
+<li>To explain and compare several popular gradient boosting frameworks, specifically <em>XGBoost</em>, <em>CatBoost</em>, and <em>LightGBM</em>.</li>
+</ol>
+<p class="more"><a href="2018/07/17/gradient-boosting/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/07/02/adam-to-sgd/" class="u-url">Turning Adam Optimization into SGD</a></h1>
                 <div class="metadata">
                     <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                         Austin Tripp
@@ -149,7 +191,19 @@ Since what I really wanted to do was use SGD, I wondered: could I turn the Adam 
         <ul class="pager postindexpager clearfix">
 <li class="previous"><a href="." rel="prev">Newer posts</a></li>
         </ul>
-<!--End of body content--><footer id="footer">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--End of body content--><footer id="footer">
             Contents © 2024         Austin Tripp (MIT License). 
 All opinions and statements on this site are my own (ie not my employer's). 
 <a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a> 

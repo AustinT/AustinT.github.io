@@ -77,7 +77,51 @@
     
         
     <div class="postindex">
-            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2024-10-07-problems-with-topk-diversity/" class="u-url">Problems with the top-k diversity metric for diverse optimization</a></h1>
+            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2024-10-13-vizier-bayesopt/" class="u-url">Thoughts on Google Vizier</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="2024-10-13-vizier-bayesopt/" rel="bookmark">
+            <time class="published dt-published" datetime="2024-10-13T00:00:00+01:00" itemprop="datePublished" title="2024-10-13">2024-10-13</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>Vizier,
+described in a <a href="http://arxiv.org/abs/2408.11527">recent paper from Google</a>,
+is a black-box optimization algorithm deployed
+for "numerous research and production systems at Google".
+Allegedly, this one algorithm works well on a wide range of settings
+(something which the "no-free-lunch-theorem" suggests might not be possible).
+In this post I provide my thoughts on what key design decisions likely make this
+algorithm work well.</p>
+<p class="more"><a href="2024-10-13-vizier-bayesopt/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2024-10-09-data-driven-bad-data/" class="u-url">Being 'data-driven' does not mean that you should use bad data.</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="2024-10-09-data-driven-bad-data/" rel="bookmark">
+            <time class="published dt-published" datetime="2024-10-09T00:00:00+01:00" itemprop="datePublished" title="2024-10-09">2024-10-09</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>Relying on data rather than intuitions to make decisions is usually a good thing,
+but is not always better.
+When one needs to make a decision about things for which there is no good data
+it might be better to rely on intuition rather than the best proxy available.
+Here are some examples where I think an intuition-based approach can be better
+than a data-driven approach (but still worse than a data-driven approach with good data):</p>
+<p class="more"><a href="2024-10-09-data-driven-bad-data/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2024-10-07-problems-with-topk-diversity/" class="u-url">Problems with the top-k diversity metric for diverse optimization</a></h1>
                 <div class="metadata">
                     <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                         Austin Tripp
@@ -247,48 +291,6 @@ In this post, I will outline the preparation I did before going, where I was abl
 <p>Over the course of my internship at the online shopping company <a href="https://www.wish.com/">Wish</a>, I have dealt a lot with a lot of data in the form of sparse matrices, specificaly in the form of item interaction matrices for customer data. In doing so, I have made heavy use of <a href="https://docs.scipy.org/doc/scipy/reference/sparse.html">scipy's sparse matrices library</a>.
 Here are 5 tricks that I have learned.</p>
 <p class="more"><a href="2018/09/12/sparse-matrices-tips1/">Read more…</a></p>
-</div>
-                </div>
-            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/08/21/bayes-no-certain-priors/" class="u-url">Why you should never be certain of your beliefs: a Bayesian perspective</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Austin Tripp
-                    </span></p>
-            <p class="dateline">
-            <a href="2018/08/21/bayes-no-certain-priors/" rel="bookmark">
-            <time class="published dt-published" datetime="2018-08-21T00:00:00+01:00" itemprop="datePublished" title="2018-08-21">2018-08-21</time></a>
-            </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-                    <div>
-<p>People are notoriously bad at estimating their percent confidence in their beliefs, as explained further in this <a href="https://en.wikipedia.org/wiki/Overconfidence_effect">Wikipedia article</a>. 
-Something I thought of recently is what effect this overconfidence has from a Bayesian perspective. 
-After a bit of math, I came to the conclusion that having extreme confidence in your beliefs (0% or 100% confidence) implies that you would be unable to change your beliefs if shown evidence to the contrary.
-I believe this simple argument suggests that it is very irrational to hold prior beliefs of 0 or 100%. If you do feel this way, then you should choose a very high value (99.99%) or a very low value (0.001%), but always leave some room for error.</p>
-<p class="more"><a href="2018/08/21/bayes-no-certain-priors/">Read more…</a></p>
-</div>
-                </div>
-            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="2018/07/17/gradient-boosting/" class="u-url">An Overview of Gradient Boosting and Popular Libraries for it.</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Austin Tripp
-                    </span></p>
-            <p class="dateline">
-            <a href="2018/07/17/gradient-boosting/" rel="bookmark">
-            <time class="published dt-published" datetime="2018-07-17T00:00:00+01:00" itemprop="datePublished" title="2018-07-17">2018-07-17</time></a>
-            </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-                    <div>
-<p>Everybody doing machine learning wants the best models possible. 
-The aim of this blog article is the following:</p>
-<ol>
-<li>To provide an introduction to the machine learning technique known as <em>boosting</em>, and specifically <em>gradient boosting</em>.</li>
-<li>To compare/contrast boosting with other ensemble methods, such as <em>bagging</em>
-</li>
-<li>To explain and compare several popular gradient boosting frameworks, specifically <em>XGBoost</em>, <em>CatBoost</em>, and <em>LightGBM</em>.</li>
-</ol>
-<p class="more"><a href="2018/07/17/gradient-boosting/">Read more…</a></p>
 </div>
                 </div>
             </article>
