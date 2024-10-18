@@ -75,3 +75,23 @@ to be multi-tasking or otherwise not actively engaged for most of the meetings (
 then engage them when they are needed.
 I think this happens a lot in meetings anyway (especially online meetings),
 so I think it would be best to recognize and normalize this behavior.
+
+## Asymmetric meetings
+
+When there is a big disparity between the availability or priorities of the
+different attendees of a meeting, I think it can be sensible to schedule the
+meeting in an _asymmetric_ way: for example, calling spontaneously when one of
+the attendees has time, with the other attendees being effectively on standby.
+
+I prefer to avoid such asymmetric meetings when possible in the aim of treating
+people as equals. However, if I am in a position where my calendar is very full
+but still want to make time to meet, then I may propose such an asymmetric
+meeting. Please don't interpret this negatively: I am essentially offering the
+_option_ of meeting me earlier than I would otherwise be able to. It is merely
+an option: do not feel obligated to accept.
+
+Conversely, if you want to meet with my but feel you cannot clear a specific
+slot on your calendar, then feel free to offer an asymmetric meeting to me. I
+won't be offended by the proposal; if I think it is inappropriate or
+unwarranted I will just say no and propose a more "symmetric" meeting.
+
