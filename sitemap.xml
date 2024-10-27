@@ -31,11 +31,11 @@
  </url>
  <url>
   <loc>https://austintripp.ca/archive.html</loc>
-  <lastmod>2024-10-13T17:34:00Z</lastmod>
+  <lastmod>2024-10-27T22:23:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/</loc>
-  <lastmod>2024-10-13T17:34:00Z</lastmod>
+  <lastmod>2024-10-27T22:37:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/03/24/website-launch/</loc>
@@ -102,12 +102,20 @@
   <lastmod>2024-10-13T17:34:00Z</lastmod>
  </url>
  <url>
-  <loc>https://austintripp.ca/blog/index-1.html</loc>
-  <lastmod>2024-10-13T17:34:00Z</lastmod>
+  <loc>https://austintripp.ca/blog/2024-10-27-ai4sci-phi/</loc>
+  <lastmod>2024-10-27T22:14:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/blog/index/</loc>
+  <lastmod>2024-10-27T22:23:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/blog/index/index-1.html</loc>
+  <lastmod>2024-10-27T22:23:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/</loc>
-  <lastmod>2024-10-13T17:34:00Z</lastmod>
+  <lastmod>2024-10-27T22:06:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/bayesian-optimization/</loc>
@@ -136,6 +144,10 @@
  <url>
   <loc>https://austintripp.ca/categories/papers/</loc>
   <lastmod>2024-10-07T10:21:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/phd/</loc>
+  <lastmod>2024-10-27T22:06:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/programming/</loc>
