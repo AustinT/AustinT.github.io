@@ -4,6 +4,7 @@ date: 2024-10-13
 tags:
     - machine learning
     - bayesian optimization
+    - research papers
 has_math: true
 ---
 
