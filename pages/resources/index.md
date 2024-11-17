@@ -69,6 +69,7 @@ My "tech stack" is:
 - [VS code](https://code.visualstudio.com/) with vim extension for programming
 - [iTerm2](https://iterm2.com/) as my default terminal (note: only for Mac)
 - [Vim](https://www.vim.org/) for misc file editing
+- [mamba](https://mamba.readthedocs.io/en/latest/index.html) to manage python environments (switched from regular conda in 2024)
 - [Zotero](https://www.zotero.org/) to organize my research papers.
   I think Zotero is truly a "must have" for any student/researcher.
   Unlike other solutions, Zotero is free to use (for the full version),
@@ -108,6 +109,8 @@ Since podcasts change all the time, I have noted the year beside these recommend
   I listen to this podcast mostly for "breadth"
   and for the feeling of accessing an interesting conversation
   about an unfamiliar topic.
+- (2024) Dwarkesh ([link](https://www.dwarkeshpatel.com/about)) does a
+  lot of really good interviews.
 - (2024) Conflicted
   ([link](https://messageheard.com/podcasts/conflicted)).
   Introductions to various conflicts int the Middle East.
