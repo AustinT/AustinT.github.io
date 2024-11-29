@@ -4,7 +4,8 @@ title: Austin's Blog
 
 This blog mostly exists to help me clarify my own thoughts on various topics and practice writing.
 As such, the quality of posts is very mixed.
-Please don't come to my blog expecting publication-quality writing 😅
+Even when I do write about things which I have expertise in,
+please don't expect publication-quality writing or fact-checking 😅
 
 You can browse my blog by:
 
