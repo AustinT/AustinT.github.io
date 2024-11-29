@@ -995,6 +995,7 @@ CONTENT_FOOTER = (
     '<a href="mailto:{email}">Email</a> | '
     '<a href="https://github.com/AustinT">GitHub</a> | '
     '<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | '
+    '<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | '
     '<a href="https://twitter.com/austinjtripp">Twitter/X</a> \n'
     '- Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>'
 )
