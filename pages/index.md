@@ -18,19 +18,37 @@ or if you find any issues like broken links.
 Note that all opinions and content on this website is completely my own
 and does not in any way represent my employer.
 
-## Contact
+## Quick links for readers
+
+### Contacting me
 
 The best way to reach me is by email.
 My email can be found at the bottom of this page.
 
-## Collaboration
+### Collaboration with me
 
 I am happy to work together on academic collaborations
 (at least ones which are relevant to my work and research interests).
 Feel free to contact me.
 
-## Consulting / employment
+### Hiring me (for consulting or employment)
 
-I am not available for full-time employment now.
+I am currently _unavailable_ for full-time employment.
 If you are interested in hiring me for contract work please send me an email
-(but my availability for this will be limited, possibly non-existent).
+(but my availability for this will be limited due to my full-time employment).
+
+### "Assessing" me
+
+You can look at my [CV](/cv) to understand my accomplishments,
+my GitHub profile to look at my code (link below),
+my Google scholar to view my academic publications (link below),
+or my [blog](/blog) to learn about how I think.
+
+### Asking me to put a link to your website on my website
+
+I am happy to link to things which I think are high-quality,
+_if_ I can reasonably assess the page's quality.
+Please email me if you think this is the case.
+Note that if you email me about something completely irrelevant
+to my expertise and interests then I will _not_ link to it
+because I _cannot_ determine whether it is high-quality.
