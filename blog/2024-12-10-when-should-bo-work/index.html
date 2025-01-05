@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When should you expect Bayesian optimization to work well? | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2024-12-10-when-should-bo-work/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2024-12-01-eduroam/" title="What can eduroam teach us about building research infrastructure" type="text/html">
+<link rel="next" href="../2024-12-30-international-english/" title="Rules of scientific English writing for an international audience." type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="When should you expect Bayesian optimization to work well?">
+<meta property="og:url" content="https://austintripp.ca/blog/2024-12-10-when-should-bo-work/">
+<meta property="og:description" content="As much as I believe in the potential of Bayesian optimization (BO) to be
+useful for scientific discovery, after 4+ years I have seen many instances
+where BO does not work. In this post I explain a si">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-12-10T00:00:00Z">
+<meta property="article:tag" content="bayesian optimization">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="speculation">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">When should you expect Bayesian optimization to work well?</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2024-12-10T00:00:00Z" itemprop="datePublished" title="2024-12-10">2024-12-10</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>As much as I believe in the potential of Bayesian optimization (BO) to be
+useful for scientific discovery, after 4+ years I have seen many instances
+where BO <em>does not</em> work. In this post I explain a simple heuristic rule to
+decide whether you should expect BO to work well or not.</p>
+<!-- TEASER_END -->
+
+<p>For the purposes of this heuristic, I project BO algorithms onto two axes:</p>
+<ol>
+<li>
+<strong>Model flexibility</strong>: how many datasets can your model fit? Equivalently,
+   how "broad" is your model's prior? The broader, the more "flexible" the
+   model.</li>
+<li>
+<strong>Tractability</strong>: how tractable is exact Bayesian inference? The more
+   approximations that are used, the less tractable it us.</li>
+</ol>
+<p>My heuristic to answer "will BO work well" is then as follows:</p>
+<!-- NOTE: display options try to center the image and not make it too big. -->
+<p><img src="../../blog-images/2024-12-10-bo-grid.png" alt="2x2 grid of whether BO will work" style="display: block; margin: auto; max-width: 100%; height: auto; max-height: 50vh;"></p>
+<p>I'll walk through it below.</p>
+<h3 id="right-half-flexible-models-random-like-bo">Right half: flexible models =&gt; random-like BO</h3>
+<p>The more flexible a model is, the less that acquiring additional data will
+change the model's predictions. Because BO fundamentally exploits connections
+<em>between</em> data points to avoid redundant queries, the more "independent" each
+data point is, the more BO will probably behave like random search.</p>
+<p>Random search behavior is not inevitable, and quite a few methods try to avoid
+this behavior, most notably <em>trust region</em> methods. By restricting optimization
+to a small "trust region", the <em>effective</em> flexibility of a model may be
+reduced. In the absence of such corrective measures however, random-like
+behavior is likely to dominate.</p>
+<h3 id="bottom-left-intractable-models-might-work">Bottom-left: intractable models <em>might</em> work</h3>
+<p>In the bottom-left I've written "it depends" because the behavior of BO will be
+highly influenced by the kinds of approximate inference used. The effect of
+approximate inference techniques on BO behavior is not well-studied and will
+clearly depend on the approximation used. Two possible phenomena of concern
+are:</p>
+<ul>
+<li>
+<em>Ignoring</em> important observations, leading to redundant actions (in the worst
+  case, querying the same point repeatedly). This can clearly happen with
+  <em>dataset</em> approximations (eg core sets or inducing inputs) if important data
+  points are not included.</li>
+<li>
+<em>Over-updating</em> on observations, underestimating uncertainty near observed
+  data points (a potential failure mode of GPs with random Fourier features).
+  This could cause BO to prematurely dismiss certain regions of input space, or
+  not find the precise location of an optimum.</li>
+</ul>
+<p>In fact, both these phenomena could potentially occur in the same BO run. I
+have less experience with parametric models like BNNs, but my guess is that
+there are lots of other failure modes which are more complex and less
+well-documented.</p>
+<h3 id="top-left-safest-region-but-no-guarantees-even-then">Top-left: safest region, but no guarantees even then</h3>
+<p>With an inflexible model disincentivizing random behavior and tractable
+inference preventing failures due to weird predictions, things are in place to
+go well. But even then it's not guaranteed. The model could be a poor fit for
+the actual function. You could choose a poor acquisition function. You may fail
+to actually maximize the acquisition function properly in a prohibitively large
+search space.</p>
+<h3 id="conclusion-and-limitations">Conclusion and limitations</h3>
+<p>Overall, this post says:</p>
+<ol>
+<li>BO is unlikely to work well with a very flexible model because it
+   essentially degenerates into random search.</li>
+<li>Approximate inference can cause all kinds of problems whose effects are hard
+   to predict.</li>
+<li>Therefore, the best chance of BO success is when you have an inflexible
+   model and exact (or nearly exact) inference.</li>
+</ol>
+<p>I think the biggest limitation of this framework is that it neglects the effect
+of the acquisition function, which is quite large. A poorly-chosen acquisition
+function can ruin an otherwise great BO setup. Conversely, a well-chosen
+acquisition function could (in principle) save a poor BO setup.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> I may
+therefore revise this framework in the future.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>A potential example is using a "trust-region" acquisition function with approximate inference in such a way that regions with poor approximate inference are heavily penalized and therefore not chosen. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/bayesian-optimization/" rel="tag">bayesian optimization</a></li>
+            <li><a class="tag p-category" href="../../categories/machine-learning/" rel="tag">machine learning</a></li>
+            <li><a class="tag p-category" href="../../categories/speculation/" rel="tag">speculation</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2024-12-01-eduroam/" rel="prev" title="What can eduroam teach us about building research infrastructure">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../2024-12-30-international-english/" rel="next" title="Rules of scientific English writing for an international audience.">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2025-01-05.
+Contents © 2025         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

@@ -62,23 +62,32 @@ I have a GitHub repository with summaries of some books I have read:
 
 ## Software
 
-- [Git](https://git-scm.com/) is an essential program for version control (keeping track of different versions of files).
-- VLC Media player (for playing songs/videos). Great because it is minimalistic and open source.
-- [Anki](https://apps.ankiweb.net/) for memorization/studying.
-- [Audacity](https://www.audacityteam.org/) for editing sound files (NOTE: have no used in a while, but I found it very helpful in high school).
-- [Zotero](https://www.zotero.org/) is an amazing free program for organizing research papers.
-  A must have for any student/researcher.
+I do a decent amount of programming (as of 2024, ~half of my time).
+My "tech stack" is:
+
+- Hardware: Macbook 
+- [VS code](https://code.visualstudio.com/) with vim extension for programming
+- [iTerm2](https://iterm2.com/) as my default terminal (note: only for Mac)
+- [Vim](https://www.vim.org/) for misc file editing
+- [mamba](https://mamba.readthedocs.io/en/latest/index.html) to manage python environments (switched from regular conda in 2024)
+- [Zotero](https://www.zotero.org/) to organize my research papers.
+  I think Zotero is truly a "must have" for any student/researcher.
   Unlike other solutions, Zotero is free to use (for the full version),
   [open source](https://github.com/zotero), and comes with free online syncing of your notes. 
   The only catch is you have to pay for online storage, but you can get around that by using an [external web service](https://www.zotero.org/support/kb/webdav_services).
   Apparently google drive/Dropbox are supported now too!
-- [Vim](https://www.vim.org/) is currently my preferred text editor (definitely preferred terminal text editor)
+
+Aside form these, I have also found the following programs highly useful:
+
+- [Git](https://git-scm.com/) is an essential program for version control (keeping track of different versions of files).
+- VLC Media player (for playing songs/videos). Great because it is minimalistic and open source.
+- [Anki](https://apps.ankiweb.net/) for memorization/studying.
+- [Audacity](https://www.audacityteam.org/) for editing sound files (NOTE: have no used in a while, but I found it very helpful in high school).
 - [KeePassXC](https://keepassxc.org/) for storing passwords (free and open source)
 - [Pandoc](https://pandoc.org/) is a simple command line program that converts
  text files between different formats, such as LaTeX, markdown, and html.
  A sample use case is to write notes in a simple language (like markdown),
  then convert them to a tex-formatted pdf document or html webpage for better viewing.
-- On MacOS, I use [iTerm2](https://iterm2.com/) as my default terminal.
 - I have used various programs to reduce blue light in the evening.
   For Windows I previously used [f.lux](https://justgetflux.com/),
   and on Linux I used [Redshift](http://jonls.dk/redshift/).
@@ -100,6 +109,8 @@ Since podcasts change all the time, I have noted the year beside these recommend
   I listen to this podcast mostly for "breadth"
   and for the feeling of accessing an interesting conversation
   about an unfamiliar topic.
+- (2024) Dwarkesh ([link](https://www.dwarkeshpatel.com/about)) does a
+  lot of really good interviews.
 - (2024) Conflicted
   ([link](https://messageheard.com/podcasts/conflicted)).
   Introductions to various conflicts int the Middle East.

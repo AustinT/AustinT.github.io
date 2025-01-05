@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scientific conferences as approximate Bayesian inference | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2024-11-17-conference-bayes/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2024-11-04-nsga-ii/" title="Overview of the NSGA-II algorithm for multi-objective optimization" type="text/html">
+<link rel="next" href="../2024-12-01-eduroam/" title="What can eduroam teach us about building research infrastructure" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Scientific conferences as approximate Bayesian inference">
+<meta property="og:url" content="https://austintripp.ca/blog/2024-11-17-conference-bayes/">
+<meta property="og:description" content="Scientists should ideally form their beliefs based on evidence and update their
+beliefs as new evidence arrives. Unfortunately, humans are far from perfect
+Bayesian thinkers and therefore may struggle">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-11-17T00:00:00Z">
+<meta property="article:tag" content="speculation">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Scientific conferences as approximate Bayesian inference</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2024-11-17T00:00:00Z" itemprop="datePublished" title="2024-11-17">2024-11-17</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>Scientists should ideally form their beliefs based on evidence and update their
+beliefs as new evidence arrives. Unfortunately, humans are far from perfect
+Bayesian thinkers and therefore may struggle to do this properly. In this post
+I explain how conferences help scientists perform better Bayesian inference.</p>
+<!-- TEASER_END -->
+
+<h3 id="basic-model-of-the-perfect-bayesian-scientist-pbs">Basic model of the perfect Bayesian scientist (PBS)</h3>
+<p>Let $x$ be a potential fact about the world like "Amyloid plaques cause
+Alzheimer's disease",<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> and $y_1,\ldots,y_N$ denote individual observations
+from scientific studies, such as "in a study of X Alzheimer's patients in
+hospital Y, amyloid plaques were observed in Z patients". A PBS would have a
+prior $p(x)$ about the validity of $x$, and a model $p(y_1,\ldots,y_N|x)$ of
+how likely different observations are for all possible values of $x$. They
+would hold probabilistic, data-driven beliefs given by the posterior
+distribution</p>
+<p>$$p(x|y_1,\ldots,y_N) \propto p(x) p(y_1,\ldots,y_N|x)\ .$$</p>
+<h3 id="how-do-conferences-help">How do conferences help?</h3>
+<p>Real scientists are very different than PBSs, and generally perform sub-optimal
+belief updates. Several factors of conferences can make these updates less
+sub-optimal.</p>
+<h4 id="factor-1-batch-update-instead-of-sequential-update">Factor 1: batch update instead of sequential update</h4>
+<p>For a PBS, it should not matter whether they observe $y_1,\ldots,y_N$
+simultaneously or one by one in an arbitrary order: their resulting posterior
+will be the same. Real humans do not work this way. If data points are observed
+one at a time, unless people make an explicit effort to track or count things,
+it is very easy to over or under update based on a single observation.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></p>
+<p>Conferences present a lot of research simultaneously, instead of the constant
+trickle in scientists' day-to-day lives. This probably allows for a belief
+update closer to that of a PBS.</p>
+<h4 id="factor-2-lower-selection-bias">Factor 2: lower selection bias</h4>
+<p>There is far too much literature for scientists to actually read everything,
+and many scientists will choose a reading list from a <em>biased</em> source (eg
+papers from specific scientists). This could result in a belief update which
+ignores a lot of evidence in a non-random way: for example, reading only about
+amyloid plaques may leave one unaware of possible alternative causes for
+Alzheimer's. Sufficiently large/diverse conferences will expose scientists to a
+less biased pool of evidence, thereby potentially allowing for a less biased
+update.</p>
+<p>Mathematically, this is equivalent to</p>
+<p>$$\tilde p(x|y_1,\ldots,y_N)\propto p(x) p(y_{i_1},\ldots,y_{i_k}|x)$$</p>
+<p>being a better approximation when $i_1,\ldots,i_k$ are sampled independently
+instead of non-independently.<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup></p>
+<h4 id="factor-3-updates-for-distributed-inference-across-scientists">Factor 3: updates for distributed inference across scientists</h4>
+<p>Even if conferences present a less biased selection of the available evidence,
+individual scientists can still only read a small fraction of all papers.
+Conferences provide a good venue for scientists to directly update their
+beliefs based on the beliefs of other scientists. If those other scientists
+have read a different subset of papers, this is essentially the same as
+<em>distributed</em> Bayesian inference (where different "workers" see different
+subsets of the data).</p>
+<h3 id="conclusions">Conclusions</h3>
+<p>For me, thinking about conferences as a form of Bayesian updating suggests:</p>
+<ol>
+<li>Conferences are most worth attending when attended by people outside your
+   usual "niche" as a scientist (factor 2)</li>
+<li>Bigger conferences will be more useful than smaller ones (factor 1)</li>
+<li>Talking to people who work in different sub-fields will help gain
+   perspective (factor 3)</li>
+</ol>
+<p>Of course, there are reasons to attend a conference besides forming accurate
+beliefs, such as finding collaborators, getting a job, or learning more about a
+specific topic. For these goals, the opposite advice might apply (small focused
+conferences could be better).</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>This is just an example topic: I'm not a biologist and this is definitely not something that I have an informed opinion on. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+<li id="fn:2">
+<p>If this doesn't intuitively seem true to you, a useful intuition pump is to imagine estimating $P(\mathrm{heads})$ for a (potentially) biased coin. If $N=1000$ observations are made simultaneously, people will probably update their beliefs to closely match the empirical distribution of heads. If instead people see 1 observation per day for 1000 days, they probably won't arrive at the same estimate unless they explicitly track outcomes. <a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">↩</a></p>
+</li>
+<li id="fn:3">
+<p>Both are arguably bad approximations though. <a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/speculation/" rel="tag">speculation</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2024-11-04-nsga-ii/" rel="prev" title="Overview of the NSGA-II algorithm for multi-objective optimization">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../2024-12-01-eduroam/" rel="next" title="What can eduroam teach us about building research infrastructure">Next post</a>
+            </li>
+        </ul></nav></aside><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2025-01-05.
+Contents © 2025         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>
