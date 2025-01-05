@@ -6,3 +6,5 @@ Now it uses [nikola](https://getnikola.com/).
 Thanks to the developers of nikola for producing such a useful package.
 
 For instructions on how to add to the website, see the file `DEVELOPMENT.md`.
+
+You are free to use contents from my website to help with the design of your own website.
