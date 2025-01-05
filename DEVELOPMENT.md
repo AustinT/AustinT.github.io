@@ -40,3 +40,9 @@ pip install "Nikola[extras]"
 ## re-directing old links
 
 <https://getnikola.com/handbook.html#redirections>
+
+## My thoughts on some design choices
+
+(A reminder to my future self)
+
+- KaTeX for math: apparently faster, but does not support all of LaTeX. Decided not to use (2025-01-05)
