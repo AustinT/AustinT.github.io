@@ -8,6 +8,8 @@ has_math: false
 
 Happy 2025! Here are a few goals I am setting for myself this year!
 
+<!-- TEASER_END -->
+
 1. Do amazing work at Valence.
 2. More writing. Want to average 1 blog post every 2 weeks (= total of 26 blog
    posts in 2025).
