@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import datetime
 import time
 
 # !! This is the configuration of Nikola. !! #
@@ -261,7 +262,7 @@ PAGES = (
 # (e.g. 'Europe/Zurich')
 # Also, if you want to use a different time zone in some of your posts,
 # you can use the ISO 8601/RFC 3339 format (ex. 2012-03-30T23:00:00+02:00)
-TIMEZONE = "Europe/London"
+TIMEZONE = "Etc/GMT"  # Should equal UTC
 
 # If you want to use ISO 8601 (also valid RFC 3339) throughout Nikola
 # (especially in new_post), set this to True.
@@ -989,16 +990,21 @@ LICENSE = "MIT License"
 
 # A small copyright notice for the page footer (in HTML).
 # (translatable)
-CONTENT_FOOTER = (
-    'Contents &copy; {date}         {author} ({license}). \n'
-    'All opinions and statements on this site are my own (ie not my employer\'s). \n'
-    '<a href="mailto:{email}">Email</a> | '
-    '<a href="https://github.com/AustinT">GitHub</a> | '
-    '<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | '
-    '<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | '
-    '<a href="https://twitter.com/austinjtripp">Twitter/X</a> \n'
-    '- Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>'
-)
+CONTENT_FOOTER = """
+<div style="text-align: center;">
+<a href="mailto:{email}">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated {current_date}.
+Contents &copy; {current_year}         {author} ({license}). <br>
+All opinions and statements on this site are my own (ie not my employer\'s).
+<br>
+"""
 
 # Things that will be passed to CONTENT_FOOTER.format().  This is done
 # for translatability, as dicts are not formattable.  Nikola will
@@ -1019,7 +1025,8 @@ CONTENT_FOOTER_FORMATS = {
         {
             "email": BLOG_EMAIL,
             "author": BLOG_AUTHOR,
-            "date": time.gmtime().tm_year,
+            "current_year": time.gmtime().tm_year,
+            "current_date": datetime.datetime.now().strftime("%Y-%m-%d"),
             "license": LICENSE
         }
     )
@@ -1027,8 +1034,8 @@ CONTENT_FOOTER_FORMATS = {
 
 # A simple copyright tag for inclusion in RSS feeds that works just
 # like CONTENT_FOOTER and CONTENT_FOOTER_FORMATS
-RSS_COPYRIGHT = 'Contents © {date} <a href="mailto:{email}">{author}</a> {license}'
-RSS_COPYRIGHT_PLAIN = 'Contents © {date} {author} {license}'
+RSS_COPYRIGHT = 'Contents © {current_year} <a href="mailto:{email}">{author}</a> {license}'
+RSS_COPYRIGHT_PLAIN = 'Contents © {current_year} {author} {license}'
 RSS_COPYRIGHT_FORMATS = CONTENT_FOOTER_FORMATS
 
 # To use comments, you can choose between different third party comment
