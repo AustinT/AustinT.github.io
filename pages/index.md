@@ -42,7 +42,7 @@ I am currently _unavailable_ for full-time employment.
 If you are interested in hiring me for contract work please send me an email
 (but my availability for this will be limited due to my full-time employment).
 
-### "Assessing" me
+### Learning more about me
 
 You can look at my [CV](/cv) to understand my accomplishments,
 my GitHub profile to look at my code (link below),
