@@ -9,7 +9,7 @@ please don't expect publication-quality writing or fact-checking 😅
 
 You can browse my blog by:
 
-- Its [feed](/blog/index)
+- Its [feed](/blog/index/index.html)
 - By [category](/categories/)
 
 Sometimes I write about topics which I know more about. You may find posts with the following tags to be interesting:

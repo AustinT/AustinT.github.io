@@ -154,7 +154,7 @@ without producing a compelling solution).
 **2025 predictions**
 
 - Field still feels "stalled", though papers will still be published at NeurIPS
-  + similar conferences
+  \+ similar conferences
 - More serious efforts in industry to deploy these techniques, with some
   success
 - Best places to look for innovation will be in the methods section of
