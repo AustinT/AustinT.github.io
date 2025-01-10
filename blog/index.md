@@ -9,6 +9,7 @@ please don't expect publication-quality writing or fact-checking 😅
 
 You can browse my blog by:
 
+<!-- NOTE: manually specifying .html extension because the link was broken online -->
 - Its [feed](/blog/index/index.html)
 - By [category](/categories/)
 
