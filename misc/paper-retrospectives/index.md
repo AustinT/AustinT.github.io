@@ -69,11 +69,12 @@ Papers are listed in reverse chronological order.
 - **Authoritative link:** unclear, but here is the arXiv link: <https://arxiv.org/abs/2212.04450>
 - **Summary:** paper accompanying software library for GPs on molecules
 - **My contribution:** I contributed an implementation of the Tanimoto kernel.
-- **Thoughts (as of 2023-11-24):**
+- **Thoughts (as of 2025-01-12):**
   I have not really used this library (I mostly just use my own GP code).
-  Last time I tried to install the library the recommended environment
-  had conflicting dependencies that could not be resolved.
-  I hope this is fixed...
+  Although in the past installation with `pip` failed for me,
+  this seems to have been resolved now.
+  However, I did find a significant [bug](https://github.com/leojklarner/gauche/issues/74)
+  last time I looked at the code, which is a bit frustrating.
 
 ## Meta-learning adaptive deep kernel gaussian processes for molecular property prediction
 

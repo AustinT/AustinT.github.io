@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Double checking that Gauche's fingerprint kernels are positive definite. | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2025-01-09-optimistic-ml-assumptions/" title="What ML researchers and users get wrong: optimistic assumptions" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Double checking that Gauche's fingerprint kernels are positive definit">
+<meta property="og:url" content="https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/">
+<meta property="og:description" content="GAUCHE is a library for Gaussian
+processes in chemistry. I contributed a small amount to GAUCHE several years
+ago but am not an active developer. I recently learned that some new
+fingerprint kernels w">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-01-12T00:00:00Z">
+<meta property="article:tag" content="machine learning">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Double checking that Gauche's fingerprint kernels are positive definite.</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2025-01-12T00:00:00Z" itemprop="datePublished" title="2025-01-12">2025-01-12</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p><a href="https://github.com/leojklarner/gauche">GAUCHE</a> is a library for Gaussian
+processes in chemistry. I contributed a small amount to GAUCHE several years
+ago but am not an active developer. I recently learned that some new
+fingerprint kernels were added. In this post I examine whether these kernels
+are positive definite (PD), and if there are any restrictions attached.</p>
+<p>Using a small set of lemmas (of which two were new to me), I am convinced that
+all but two of the kernels are PD, <em>without being restricted to binary
+vectors</em>. The remaining 2 I am unsure of, but don't claim that they are <em>not</em>
+PD.</p>
+<!-- TEASER_END -->
+
+<p>I decided to examine this because:</p>
+<ol>
+<li>I was not aware of proofs for all of the kernels.</li>
+<li>For kernels with proofs, it is not clear that PDness would still hold if the
+   inputs were not binary vectors (eg the count fingerprints, or the
+   "fragprint" features sometimes used in GAUCHE)</li>
+</ol>
+<p>NOTE: during my research for this blog post, I found a publication <em>On the
+positive semi-definite property of similarity matrices</em><sup id="fnref:paper"><a class="footnote-ref" href="#fn:paper">1</a></sup> which seems to
+support my results.</p>
+<h3 id="lemmas-about-pd-kernels">Lemmas about PD kernels</h3>
+<p>A PD kernel $k(x,x')$ is a function such that no kernel matrix formed with $k$
+will have a negative eigenvalue. In the next section, we will use the following
+lemmas to show positive definiteness:</p>
+<ol>
+<li>The <em>inner product kernel</em> $k(x,x') = x \cdot x'$ is PD.<sup id="fnref:innerprod"><a class="footnote-ref" href="#fn:innerprod">2</a></sup>
+</li>
+<li>If $\alpha&gt;0$ is a scalar and $k$ is any kernel, then $k'(x,x') = \alpha
+   k(x,x')$ is also a kernel (ie multiplying by a positive scalar preserves
+   PDness)</li>
+<li>The sum of two PD kernels is a PD kernel.</li>
+<li>The product of two PD kernels is a PD kernel.</li>
+<li>Replacing inputs with arbitrary functions does not break PDness. Explicitly,
+   if $k$ is a PD kernel, and $f$ is any function, then $k'(x,x') = k\left(
+   f(x), f(x')\right)$ is a PD kernel.</li>
+<li>Let $a,b&gt; 0$. If $r&gt;0$, then $$\frac{1}{(a+b)^r}$$ is a PD kernel.</li>
+<li>$k(x,x') = \frac{1}{\max(x,x')}$ is a kernel for scalars $x,x'&gt;0$</li>
+</ol>
+<p>Lemmas 1-5 are "classic" lemmas in kernel construction so I won't give a proof
+here. Lemmas 6-7 were new to me, so I've tried to provide proofs below.</p>
+<h4 id="almost-proof-of-lemma-6">(Almost) proof of lemma 6</h4>
+<p>This theorem was exercise 1.6.4 in the book <em>Positive Definite Matrices</em> by
+Rajendra Bhatia.<sup id="fnref:pdbook"><a class="footnote-ref" href="#fn:pdbook">3</a></sup> The (almost) proof below is my<sup id="fnref:claudehelped"><a class="footnote-ref" href="#fn:claudehelped">4</a></sup>
+solution to the exercise, along with my own explanations. There is a step I am
+not 100% sure of, hence the term (almost) proof.</p>
+<p>First, note that for any fixed $r&gt;0$ and $t&gt;0$, $e^{-t(x+x')} t^{r-1}$ is a PD
+kernel of $x,x'$ because, by lemmas 1 and 5, it equals $f_t(x)\cdot f_t(x')$
+where $f_t(z)=e^{-tz} t^{(r-1)/2}$.</p>
+<p>Now for the step I am unsure of: that the integral of this kernel
+$$\int_0^\infty f_t(x)\cdot f_t(x') dt$$ is also a kernel. This seems to be a
+known result, and allegedly follows from theorems about multiple integration
+(like Fubini's theorem). However, I don't totally understand the conditions for
+this theorem. Claude told me that if $|f_t(x)\cdot f_t(x')|\leq g(t)$ holds for
+all $x,x'$, <em>locally</em> for each $t$, then it should hold. I couldn't find a
+reference for it though. Anyway, we will proceed <em>as if</em> that is true. <strong>Please
+don't cite or rely on this result without checking it though!!</strong></p>
+<p>The integral above can be completed analytically. Let $u=t(x+x')$, so
+$dt=\frac{du}{x+x'}$. We write: $$\int_0^\infty e^{-t(x+x')} t^{r-1} dt =
+\int_0^\infty e^{-u} \frac{u^{r-1}}{(x+x')^{r-1}} \frac{du}{x+x'} =
+\frac{1}{(x+x')^r} \int_0^\infty e^{-u} u^{r-1} du\ .$$ The final integral is
+the <a href="https://en.wikipedia.org/wiki/Gamma_function">Gamma function</a> $\Gamma(r)$,
+which is a finite real number if $r&gt;0$. This shows that the function $k(x,x') =
+\frac{\Gamma(r)}{(x+x')^r}$ is PD. Then, apply lemma 2 and multiply by the
+scalar $\frac{1}{\Gamma(r)}$ to show that $\frac{1}{(x+x')^r}$ is PD. This
+completes the (almost) proof. Again, recall that I'm not totally sure how the
+integral step holds.</p>
+<h3 id="almost-proof-of-lemma-7">(Almost) proof of lemma 7</h3>
+<p>Note that
+$$\frac{1}{\max(x,x')} = \lim_{n\to\infty} \frac{1}{\left[x^n + (x')^n\right]^{1/n}}\ .$$</p>
+<p>The function in the limit can be re-written as
+$\frac{1}{(f_n(x)+f_n(x'))^{1/n}}$, which is PD for all $n$ by lemmas 5-6 (note
+that lemma 6 applies because $1/n&gt;0$). The remaining question is whether the
+limit will be PD (since, for example, pointwise convergence is not enough to
+guarantee PDness). Again, I am not 100% sure about sufficient/necessary
+conditions for this. Claude tells me that uniform convergence should be
+sufficient, although I don't think this function does converge uniformly. Nader
+et al<sup id="fnref2:paper"><a class="footnote-ref" href="#fn:paper">1</a></sup> claim that this lemma is true in their Lemma 2, so I will proceed
+under the assumption that this is true.</p>
+<h3 id="examining-the-kernels">Examining the kernels</h3>
+<p>Below is my analysis for all fingerprint kernels present on the main branch on
+2025-01-12. All definitions are copied from there.</p>
+<h4 id="braun-blanquet">Braun-Blanquet</h4>
+<p>Stated definition: <code>&lt;x1, x2&gt; / max(|x1|, |x2|)</code>
+(<a href="https://github.com/leojklarner/gauche/blob/3380401387873e826a81454ab22ab452dca41ae9/gauche/kernels/fingerprint_kernels/braun_blanquet_kernel.py#L12-L44">source code</a>).</p>
+<p>This kernel is PD because it is the product (lemma 4) of an inner product
+kernel (lemma 1) and the 1/max kernel (lemma 7) on the norm function of the
+inputs (lemma 5).</p>
+<p>NOTE: found an implementation issue.</p>
+<h4 id="dice-kernel">Dice kernel</h4>
+<p>Stated definition: <code>(2 * &lt;x1, x2&gt;) / (|x1| + |x2|)</code>
+(<a href="https://github.com/leojklarner/gauche/blob/3380401387873e826a81454ab22ab452dca41ae9/gauche/kernels/fingerprint_kernels/dice_kernel.py#L10-L43">source code</a>).</p>
+<p>This kernel is PD. It is a scalar multiple (lemma 2) of the inner product
+kernel (lemma 1) a reciprocal norm kernel (PD by lemmas 5-6).</p>
+<h4 id="faith-kernel">Faith kernel</h4>
+<p>Stated definition: <code>(2 * &lt;x1, x2&gt;) + d / 2n, where &lt;.&gt; is the inner product, d is the number of common zeros and n is the dimension of the input vectors</code>
+(<a href="https://github.com/leojklarner/gauche/blob/3380401387873e826a81454ab22ab452dca41ae9/gauche/kernels/fingerprint_kernels/faith_kernel.py#L12-L42">source code</a>).</p>
+<p>Should be PD. Denominator is a scalar so can be ignored (lemma 2),
+numerator is a sum (lemma 3) of a scaled inner product (lemmas 1-2) and "the number of common zeros", which can be re-phrased as the inner product of an indicator function $f_i(x) = \mathbb I [ x_i = 0]$.</p>
+<p>NOTE: found an implementation issue.</p>
+<h4 id="forbes-kernel">Forbes kernel</h4>
+<p>Stated definition: <code>n * &lt;x1, x2&gt; / (|x1| + |x2|)</code>
+(<a href="https://github.com/leojklarner/gauche/blob/3380401387873e826a81454ab22ab452dca41ae9/gauche/kernels/fingerprint_kernels/forbes_kernel.py#L12-L47">source code</a>).</p>
+<p>This is just a scaled version of the Dice kernel.</p>
+<p>NOTE: this does not match definitions given elsewhere.</p>
+<h4 id="inner-product">Inner product</h4>
+<p>This is PD by lemma 1. <a href="https://github.com/leojklarner/gauche/blob/3380401387873e826a81454ab22ab452dca41ae9/gauche/kernels/fingerprint_kernels/inner_product_kernel.py#L12-L40">Source code</a>.</p>
+<h4 id="intersection-kernel">Intersection kernel</h4>
+<p>Stated definition: <code>&lt;x1, x2&gt; + &lt;x1', x2'&gt; Where &lt;.&gt; is the inner product and x1' and x2' denote the bit flipped vectors such that ones and zeros are interchangedthe inner product, d is the number of common zeros and n is the dimension of the input vectors</code>
+(<a href="https://github.com/leojklarner/gauche/blob/3380401387873e826a81454ab22ab452dca41ae9/gauche/kernels/fingerprint_kernels/intersection_kernel.py#L12-L45">source code</a>).</p>
+<p>This is the sum (lemma 3) of inner produt (lemma 1) and inner product of a
+transformed vector (lemmas 1,5).</p>
+<p>NOTE: found an implementation issue.</p>
+<h4 id="minmax">MinMax</h4>
+<p>The PDness of this kernel does not follow straightforwardly from my lemmas.
+However, Ioffe 2010<sup id="fnref:ioffe"><a class="footnote-ref" href="#fn:ioffe">5</a></sup> produce a random hash for this function,
+effectively proving that it is an infinite sum of identity functions, and
+therefore must be PD. There are other proofs elsewhere which I am too lazy to
+dig up right now.</p>
+<h4 id="otsuka-kernel">Otsuka kernel</h4>
+<p>Stated definition: <code>&lt;x1, x2&gt; / sqrt(|x1| + |x2|)</code>
+(<a href="https://github.com/leojklarner/gauche/blob/3380401387873e826a81454ab22ab452dca41ae9/gauche/kernels/fingerprint_kernels/otsuka_kernel.py#L12-L45">source code</a>).</p>
+<p>Should be PD as the product (lemma 4) of inner product (lemma 1) and reciprocal
+kernel on norm function with $r=0.5$ (lemma 5,6).</p>
+<p>NOTE: this does not match definitions given elsewhere.</p>
+<h4 id="rand-kernel">Rand kernel</h4>
+<p>Stated definition: <code>&lt;x1, x2&gt; + d / n where &lt;.&gt; is the inner product, d is the number of common zeros and n is the dimensionality</code>
+(<a href="https://github.com/leojklarner/gauche/blob/3380401387873e826a81454ab22ab452dca41ae9/gauche/kernels/fingerprint_kernels/rand_kernel.py#L12-L42">source code</a>).</p>
+<p>PD for same reason as Faith kernel.</p>
+<p>NOTE: found an implementation issue.</p>
+<h4 id="rogers-tanimoto">Rogers-Tanimoto</h4>
+<p>Not sure about this one...</p>
+<p>NOTE: found an implementation issue.</p>
+<h4 id="russel-rao">Russel-Rao</h4>
+<p>Stated definition: <code>&lt;x1, x2&gt; / n</code>
+(<a href="https://github.com/leojklarner/gauche/blob/3380401387873e826a81454ab22ab452dca41ae9/gauche/kernels/fingerprint_kernels/russell_rao_kernel.py#L12-L42">source code</a>).</p>
+<p>It is just a scaled inner product kernel.</p>
+<h4 id="sorgenfrei">Sorgenfrei</h4>
+<p>Stated definition: <code>&lt;x1, x2&gt;**2 / (|x1| + |x2|)</code>
+(<a href="https://github.com/leojklarner/gauche/blob/3380401387873e826a81454ab22ab452dca41ae9/gauche/kernels/fingerprint_kernels/sogenfrei_kernel.py#L12-L45">source code</a>).</p>
+<p>This is essentially the Dice kernel multiplied by another inner product kernel,
+and is PD by lemma 1,4.</p>
+<p>NOTE: this does not match definitions given elsewhere.</p>
+<h4 id="sokal-sneath">Sokal-Sneath</h4>
+<p>Not sure about this one...</p>
+<h4 id="tanimoto">Tanimoto</h4>
+<p>PD by the same argument as MinMax. There are many classical proofs for this.
+Sergio Bacallado came up with one for our Tanimoto random features
+paper.<sup id="fnref:trfpaper"><a class="footnote-ref" href="#fn:trfpaper">6</a></sup></p>
+<h3 id="errors">Errors</h3>
+<p>While I did not find any errors about PDness, I did notice:</p>
+<ul>
+<li>Gauche seems to define some kernels differently than other sources
+  (<a href="https://github.com/leojklarner/gauche/issues/73">73</a>)</li>
+<li>An indexing error makes many kernels incorrect
+  (<a href="https://github.com/leojklarner/gauche/issues/74">74</a>)</li>
+</ul>
+<p>I opened GitHub issues for both of these. Hopefully they can be fixed quickly.</p>
+<h3 id="summary">Summary</h3>
+<p>In this post I gave a succinct (almost) proof of the PDness of all of Gauche's
+kernels, except for "Rogers-Tanimoto" and "Sokal-Sneath". These proofs <em>do not</em>
+require the inputs to be binary vectors. The "almost" qualifier is because my
+proof assumes PDness of integrals and limits of functions, where I could not
+find a satisfactory proof within a reasonable amount of time. The proofs for
+Braun-Blanquet, Dice, Forbes, and Otsuka were interesting because they required
+lemmas 6-7, which were new claims to me.</p>
+<p>While writing this post, I did find some errors, and opened two GitHub issues.</p>
+<p>Overall lesson: check things carefully!</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:paper">
+<p>DOI <a href="https://doi.org/10.1016/j.tcs.2018.06.052">https://doi.org/10.1016/j.tcs.2018.06.052</a> <a class="footnote-backref" href="#fnref:paper" title="Jump back to footnote 1 in the text">↩</a><a class="footnote-backref" href="#fnref2:paper" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+<li id="fn:innerprod">
+<p>this is the most classic kernel! Simple proof of PDness: if $X$ is a dataset, then $v^T X  X^T  v = (X^T  v)^T \cdot (X^T  v) = |X^T v|_2^2\geq 0$. <a class="footnote-backref" href="#fnref:innerprod" title="Jump back to footnote 2 in the text">↩</a></p>
+</li>
+<li id="fn:pdbook">
+<p>DOI: <a href="https://doi.org/10.1515/9781400827787">https://doi.org/10.1515/9781400827787</a> <a class="footnote-backref" href="#fnref:pdbook" title="Jump back to footnote 3 in the text">↩</a></p>
+</li>
+<li id="fn:claudehelped">
+<p>I'll be honest: I actually asked Claude for help. Clearly I've forgotten the tricks I used in high school / undergrad to solve these kinds of questions. <a class="footnote-backref" href="#fnref:claudehelped" title="Jump back to footnote 4 in the text">↩</a></p>
+</li>
+<li id="fn:ioffe">
+<p><a href="https://ieeexplore.ieee.org/document/5693978">https://ieeexplore.ieee.org/document/5693978</a> <a class="footnote-backref" href="#fnref:ioffe" title="Jump back to footnote 5 in the text">↩</a></p>
+</li>
+<li id="fn:trfpaper">
+<p><a href="https://arxiv.org/abs/2306.14809">https://arxiv.org/abs/2306.14809</a> <a class="footnote-backref" href="#fnref:trfpaper" title="Jump back to footnote 6 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/machine-learning/" rel="tag">machine learning</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2025-01-09-optimistic-ml-assumptions/" rel="prev" title="What ML researchers and users get wrong: optimistic assumptions">Previous post</a>
+            </li>
+        </ul></nav></aside><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2025-01-12.
+Contents © 2025         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

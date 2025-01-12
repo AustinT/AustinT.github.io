@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website</title><link>https://austintripp.ca/</link><description>Austin Tripp's personal website</description><atom:link href="https://austintripp.ca/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Fri, 10 Jan 2025 08:02:32 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>What ML researchers and users get wrong: optimistic assumptions</title><link>https://austintripp.ca/blog/2025-01-09-optimistic-ml-assumptions/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;ML is often done poorly, both by "ML experts" (by which I mean people who
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website</title><link>https://austintripp.ca/</link><description>Austin Tripp's personal website</description><atom:link href="https://austintripp.ca/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Sun, 12 Jan 2025 15:27:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Double checking that Gauche's fingerprint kernels are positive definite.</title><link>https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;&lt;a href="https://github.com/leojklarner/gauche"&gt;GAUCHE&lt;/a&gt; is a library for Gaussian
+processes in chemistry. I contributed a small amount to GAUCHE several years
+ago but am not an active developer. I recently learned that some new
+fingerprint kernels were added. In this post I examine whether these kernels
+are positive definite (PD), and if there are any restrictions attached.&lt;/p&gt;
+&lt;p&gt;Using a small set of lemmas (of which two were new to me), I am convinced that
+all but two of the kernels are PD, &lt;em&gt;without being restricted to binary
+vectors&lt;/em&gt;. The remaining 2 I am unsure of, but don't claim that they are &lt;em&gt;not&lt;/em&gt;
+PD.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/"&gt;Read more…&lt;/a&gt; (6 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><guid>https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/</guid><pubDate>Sun, 12 Jan 2025 00:00:00 GMT</pubDate></item><item><title>What ML researchers and users get wrong: optimistic assumptions</title><link>https://austintripp.ca/blog/2025-01-09-optimistic-ml-assumptions/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;ML is often done poorly, both by "ML experts" (by which I mean people who
 understand the algorithms but not the data) and "ML users" (by which I mean
 people who understand their data, but not the algorithms). I think the cause is
 often over-optimism, although about different things:&lt;/p&gt;
@@ -35,12 +44,4 @@ In this post I try to extract the key insights/lessons from this paper.&lt;/p&gt
 younger students are considering applying for PhDs in AI for science in this
 application cycle. This post is my attempt to turn my 5 years of experience in
 AI4sci into actionable advice for prospective PhD students.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-10-27-ai4sci-phi/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>PhD</category><category>speculation</category><guid>https://austintripp.ca/blog/2024-10-27-ai4sci-phi/</guid><pubDate>Sun, 27 Oct 2024 00:00:00 GMT</pubDate></item><item><title>Thoughts on Google Vizier</title><link>https://austintripp.ca/blog/2024-10-13-vizier-bayesopt/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Vizier,
-described in a &lt;a href="http://arxiv.org/abs/2408.11527"&gt;recent paper from Google&lt;/a&gt;,
-is a black-box optimization algorithm deployed
-for "numerous research and production systems at Google".
-Allegedly, this one algorithm works well on a wide range of settings
-(something which the "no-free-lunch-theorem" suggests might not be possible).
-In this post I provide my thoughts on what key design decisions likely make this
-algorithm work well.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-10-13-vizier-bayesopt/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>bayesian optimization</category><category>machine learning</category><category>research papers</category><guid>https://austintripp.ca/blog/2024-10-13-vizier-bayesopt/</guid><pubDate>Sun, 13 Oct 2024 00:00:00 GMT</pubDate></item></channel></rss>
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-10-27-ai4sci-phi/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>PhD</category><category>speculation</category><guid>https://austintripp.ca/blog/2024-10-27-ai4sci-phi/</guid><pubDate>Sun, 27 Oct 2024 00:00:00 GMT</pubDate></item></channel></rss>
