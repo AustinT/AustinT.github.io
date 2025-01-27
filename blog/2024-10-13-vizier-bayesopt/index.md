@@ -19,7 +19,7 @@ algorithm work well.
 
 <!-- TEASER_END -->
 
-<div class="alert alert-success">
+<div class="alert alert-info">
 NOTE: throughout this post I use the following acronyms:
 
 <ul>
@@ -139,7 +139,7 @@ instead of _simultaneously_ (ie choosing all points together),
 so it suffices to just generally consider the acquisition function
 for the $b$th point in the batch.
 
-<div class="alert alert-success">
+<div class="alert alert-info">
 Before explaining the acquisition function choices, note that
 a GPs' predicted standard deviation
 for <it>never depends on the observed outputs</it>.

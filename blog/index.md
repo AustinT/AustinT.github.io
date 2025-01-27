@@ -17,5 +17,6 @@ Sometimes I write about topics which I know more about. You may find posts with 
 
 - [Bayesian optimization](/categories/bayesian-optimization/), which was essentially my PhD topic.
 - [Machine learning](/categories/machine-learning/)
+- [Retrosynthesis](/categories/retrosynthesis/), which I also worked on during my PhD.
 - [PhD](/categories/phd/) (since I completed a PhD)
 - [Websites](/categories/website/), since I created and continue to maintain this website.
