@@ -6,12 +6,24 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
+  <loc>https://austintripp.ca/categories/announcement.xml</loc>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>https://austintripp.ca/categories/bayesian-optimization.xml</loc>
   <lastmod>2025-01-27T11:40:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>https://austintripp.ca/categories/blog.xml</loc>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>https://austintripp.ca/categories/decision-making.xml</loc>
   <lastmod>2025-01-27T11:40:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://austintripp.ca/categories/employment.xml</loc>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/frontpage.xml</loc>
@@ -27,7 +39,11 @@
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/machine-learning.xml</loc>
-  <lastmod>2025-01-27T11:40:00Z</lastmod>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://austintripp.ca/categories/peer-review.xml</loc>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/personal-development.xml</loc>
@@ -67,10 +83,10 @@
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/rss.xml</loc>
-  <lastmod>2025-01-27T11:40:00Z</lastmod>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/sitemap.xml</loc>
-  <lastmod>2025-01-27T11:40:00Z</lastmod>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
  </sitemap>
 </sitemapindex>

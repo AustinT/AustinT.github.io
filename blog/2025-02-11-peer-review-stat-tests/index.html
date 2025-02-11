@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock responses about statistical significance for reviewing machine learning papers | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2025-02-11-peer-review-stat-tests/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2025-02-09-hiring-is-hard/" title="Hiring is hard: why good applicants without connections can get overlooked." type="text/html">
+<link rel="next" href="../2025-02-11-lowering-quality/" title="Experiment: more posts, lower quality" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Stock responses about statistical significance for reviewing machine l">
+<meta property="og:url" content="https://austintripp.ca/blog/2025-02-11-peer-review-stat-tests/">
+<meta property="og:description" content='So many ML papers contain tables like
+
+
+
+Method
+Score(↑)
+
+
+
+
+Baseline 1
+49.9%
+
+
+Baseline 2
+49.8%
+
+
+Baseline 3
+50.0%
+
+
+Our super fancy SOTA method
+50.1%
+
+
+
+then say "results on the benchmark show that '>
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-02-11T00:00:00Z">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="peer review">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Stock responses about statistical significance for reviewing machine learning papers</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2025-02-11T00:00:00Z" itemprop="datePublished" title="2025-02-11">2025-02-11</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>So many ML papers contain tables like</p>
+<table>
+<thead><tr>
+<th>Method</th>
+<th>Score(↑)</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Baseline 1</td>
+<td>49.9%</td>
+</tr>
+<tr>
+<td>Baseline 2</td>
+<td>49.8%</td>
+</tr>
+<tr>
+<td>Baseline 3</td>
+<td>50.0%</td>
+</tr>
+<tr>
+<td><strong>Our super fancy SOTA method</strong></td>
+<td><strong>50.1%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>then say "results on the benchmark show that our method is state-of-the-art for task X."</p>
+<!-- TEASER_END -->
+
+<p>When I encounter this as a ML paper reviewer, my first response is usually
+something to the effect of "The entries in your table are random and the
+differences are low, I think you need error bars and a statistical test result
+to support claims about significance". Occasionally the authors do follow up
+with test results which show significance, but more often they do not. I've
+seen many different reasons. Here I will go through a bunch of examples and
+give my recommendations for what to say to authors.</p>
+<h3 id="author-responses-and-my-suggested-follow-up-responses">Author responses and my suggested follow up responses</h3>
+<h4 id="clearly-not-significant">"Clearly not significant"</h4>
+<p>Authors:</p>
+<blockquote>
+<p>We are happy to provided error bars. Please see updated table. Error bars are computed over 3 samples.</p>
+<table>
+<thead><tr>
+<th>Method</th>
+<th>Score(↑)</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Baseline 1</td>
+<td>49.9±10%</td>
+</tr>
+<tr>
+<td>Baseline 2</td>
+<td>49.8±10%</td>
+</tr>
+<tr>
+<td>Baseline 3</td>
+<td>50.0±10%</td>
+</tr>
+<tr>
+<td><strong>Our super fancy SOTA method</strong></td>
+<td><strong>50.1±10%</strong></td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>(Translation: their results are very clearly not statistically significant)</p>
+<p><strong>My suggested response (honest)</strong>: this is obviously not significant you
+idiots.</p>
+<p><strong>My suggested response (diplomatic)</strong>: I don't think these results support the
+claim of "state-of-the-art performance over baselines". The error bars suggest
+that the result is not statistically significant (although it would be
+appreciated if the authors could provide the results of a statistical test to
+confirm this).</p>
+<h4 id="expensive-experiments">EXPENSIVE experiments</h4>
+<p>Authors:</p>
+<blockquote>
+<p>My dear reviewer, you don't understand: my experiments are ExPeNsIvE, I
+cannot simply ReRuN tHeM.</p>
+</blockquote>
+<p>(Translation: they cannot gather more observations, and want reviewers to just
+say "ah I see, never mind then, your results are great")</p>
+<p><strong>My suggested response (honest)</strong>: ... excuse me, how exactly is this an
+argument to not think about statistical significance?</p>
+<p><strong>My suggested response (diplomatic)</strong>: I understand that experiments are
+expensive, but in situations where statistical significance cannot be tested
+with repeat experiments, I think it would be appropriate to revise claims of
+"state-of-the-art performance" to just be "competitive performance".</p>
+<h4 id="the-poor-academic">The poor academic</h4>
+<p>Authors:</p>
+<blockquote>
+<p>Please sir, I'm a poor academic with half a GPU. I'd be happy to re-run them
+but it would take 6 months and we only have 1 week for the rebuttal.</p>
+</blockquote>
+<p><strong>My suggested response (honest)</strong>: I'm truly sorry for you, but this isn't
+really my problem? I'm just the reviewer and it's my job to hold this work to
+actual scrutiny!</p>
+<p><strong>My suggested response (diplomatic)</strong>: I understand that the conference review
+timeline does not leave time to run additional experiments. Given that, I think
+the appropriate action is to revise the claims about "state-of-the-art
+performance". If you would like to keep these claims, I still believe
+additional experiments are required to support them.</p>
+<h4 id="appeal-to-tradition">Appeal to tradition</h4>
+<p>Authors:</p>
+<blockquote>
+<p>We totally agree this is bad practice, but we were merely following the
+experimental procedure of the previous paper.</p>
+</blockquote>
+<p>(Translation: other people did this and that makes it ok)</p>
+<p><strong>My suggested response (honest)</strong>: Gah, I do feel this one. Seeing bad
+practice get published makes you learn bad practices. Also, even if you know it
+is bad practice, it does make developing new methods easier if you build on
+code from previous work. That all being said, I cannot with good conscience let
+this stand.</p>
+<p><strong>My suggested response (diplomatic)</strong>: (basically like above but said less
+informally)</p>
+<h4 id="you-asked-for-a-test-ill-give-you-a-test">You asked for a test? I'LL GIVE YOU A TEST!</h4>
+<p>Authors:</p>
+<blockquote>
+<p>We re-ran experiments and performed the "5-sided bias-corrected Smith-Li
+non-parametric test" and achieved a significance value of <code>p=1e-7</code></p>
+</blockquote>
+<p>(Translation: we tried every possible statistical test until we got a good
+significance result)</p>
+<p><strong>My suggested response (honest)</strong>: I wish I knew enough about statistical
+testing to say what's wrong here, but I just find this very suspicious.</p>
+<p><strong>My suggested response (diplomatic)</strong>: Thank you for performing this test. Can
+you please explain why the above test was used instead of a more common test
+like a t-test? If possible, could the authors also provide the results of a
+t-test (even if they think it is not the most appropriate test)?</p>
+<h3 id="conclusions">Conclusions</h3>
+<p>Paper authors: if you can't give a 1 minute explanation of why statistical
+tests are important in machine learning, you should not be doing machine
+learning research. Drop whatever you are doing and spend 1h reading about
+statistical tests. The basic concepts are not particularly difficult, and you
+don't need to be an expert (I'm certainly not). You can come back to your
+normal research after 1h.</p>
+<p>Paper reviewers: please don't let these bad practices slide through the review
+process without criticism! It really isn't difficult to ask for significance
+tests, or push back against authors (I hope my responses help a bit with this).
+However, please don't default to thinking "significant results are needed for
+me to accept the paper". There are lots of contributions which are interesting,
+even if they don't achieve statistically significant results.<sup id="fnref:examples"><a class="footnote-ref" href="#fn:examples">1</a></sup>
+Notice that most of my responses are not "aha, found a flaw, your paper gets
+rejected"- I usually just suggest revising the claims (although with the
+revised claims that may be a good reason to reject the paper).</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:examples">
+<p>Example include methods which are faster/cheaper but give the same performance, improving a method which usually underperforms (even if the improved version is still beaten by another method), or simplified methods (even if the simplification causes a slight performance drop). <a class="footnote-backref" href="#fnref:examples" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/machine-learning/" rel="tag">machine learning</a></li>
+            <li><a class="tag p-category" href="../../categories/peer-review/" rel="tag">peer review</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2025-02-09-hiring-is-hard/" rel="prev" title="Hiring is hard: why good applicants without connections can get overlooked.">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../2025-02-11-lowering-quality/" rel="next" title="Experiment: more posts, lower quality">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2025-02-11.
+Contents © 2025         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

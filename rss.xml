@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website</title><link>https://austintripp.ca/</link><description>Austin Tripp's personal website</description><atom:link href="https://austintripp.ca/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Mon, 27 Jan 2025 11:40:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Reaction model scores are CRITICAL to multi-step retrosynthesis.</title><link>https://austintripp.ca/blog/2025-01-26-reaction-model-scores/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Machine-learning for retrosynthesis is a popular research topic. Popular
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website</title><link>https://austintripp.ca/</link><description>Austin Tripp's personal website</description><atom:link href="https://austintripp.ca/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Tue, 11 Feb 2025 21:14:38 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Experiment: more posts, lower quality</title><link>https://austintripp.ca/blog/2025-02-11-lowering-quality/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Since starting my new position at Valence, my efforts to write more on my blog have clearly been successful.&lt;sup id="fnref:4years"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-02-11-lowering-quality/#fn:4years"&gt;1&lt;/a&gt;&lt;/sup&gt;
+However, my internal list of "things I would like to write a blog post about" is growing far faster than I am actually
+able to write blog posts about things where I do think it is worth putting an opinion online.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-02-11-lowering-quality/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>announcement</category><category>blog</category><guid>https://austintripp.ca/blog/2025-02-11-lowering-quality/</guid><pubDate>Tue, 11 Feb 2025 00:00:00 GMT</pubDate></item><item><title>Stock responses about statistical significance for reviewing machine learning papers</title><link>https://austintripp.ca/blog/2025-02-11-peer-review-stat-tests/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;So many ML papers contain tables like&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Method&lt;/th&gt;
+&lt;th&gt;Score(↑)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Baseline 1&lt;/td&gt;
+&lt;td&gt;49.9%&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Baseline 2&lt;/td&gt;
+&lt;td&gt;49.8%&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Baseline 3&lt;/td&gt;
+&lt;td&gt;50.0%&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Our super fancy SOTA method&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;50.1%&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;then say "results on the benchmark show that our method is state-of-the-art for task X."&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-02-11-peer-review-stat-tests/"&gt;Read more…&lt;/a&gt; (4 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>peer review</category><guid>https://austintripp.ca/blog/2025-02-11-peer-review-stat-tests/</guid><pubDate>Tue, 11 Feb 2025 00:00:00 GMT</pubDate></item><item><title>Hiring is hard: why good applicants without connections can get overlooked.</title><link>https://austintripp.ca/blog/2025-02-09-hiring-is-hard/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Knowing people is a great way to get hired. Nepotism is one obvious explanation
+(aka people hire you because they like you, or to gain favors from people who
+like you). I (along with most other people) think that nepotism is bad: it's
+unfair, and gives jobs to people who are probably not that good at them.
+However, it is a mistake to think that nepotism is the only reason why people
+who are known get hired, and that this practice is always bad. Some better
+reasons are:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-02-09-hiring-is-hard/"&gt;Read more…&lt;/a&gt; (4 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>employment</category><guid>https://austintripp.ca/blog/2025-02-09-hiring-is-hard/</guid><pubDate>Sun, 09 Feb 2025 00:00:00 GMT</pubDate></item><item><title>Reaction model scores are CRITICAL to multi-step retrosynthesis.</title><link>https://austintripp.ca/blog/2025-01-26-reaction-model-scores/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Machine-learning for retrosynthesis is a popular research topic. Popular
 sub-topics include:&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-01-26-reaction-model-scores/"&gt;Read more…&lt;/a&gt; (4 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>retrosynthesis</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-01-26-reaction-model-scores/</guid><pubDate>Sun, 26 Jan 2025 00:00:00 GMT</pubDate></item><item><title>Double checking that Gauche's fingerprint kernels are positive definite.</title><link>https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;&lt;a href="https://github.com/leojklarner/gauche"&gt;GAUCHE&lt;/a&gt; is a library for Gaussian
 processes in chemistry. I contributed a small amount to GAUCHE several years
@@ -28,18 +66,4 @@ following rules for this:&lt;/p&gt;
 useful for scientific discovery, after 4+ years I have seen many instances
 where BO &lt;em&gt;does not&lt;/em&gt; work. In this post I explain a simple heuristic rule to
 decide whether you should expect BO to work well or not.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-12-10-when-should-bo-work/"&gt;Read more…&lt;/a&gt; (3 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>bayesian optimization</category><category>machine learning</category><category>speculation</category><guid>https://austintripp.ca/blog/2024-12-10-when-should-bo-work/</guid><pubDate>Tue, 10 Dec 2024 00:00:00 GMT</pubDate></item><item><title>What can eduroam teach us about building research infrastructure</title><link>https://austintripp.ca/blog/2024-12-01-eduroam/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Eduroam is a fantastic piece of academic infrastructure: students/researchers
-from thousands of universities around the world can &lt;em&gt;automatically&lt;/em&gt; connect to
-WiFi and any partner institutions using login details from their home
-institution. To me it's surprising that it exists, given that it has many
-characteristics of projects which academia is &lt;em&gt;terrible&lt;/em&gt; at accomplishing:&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-12-01-eduroam/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>speculation</category><guid>https://austintripp.ca/blog/2024-12-01-eduroam/</guid><pubDate>Sun, 01 Dec 2024 00:00:00 GMT</pubDate></item><item><title>Scientific conferences as approximate Bayesian inference</title><link>https://austintripp.ca/blog/2024-11-17-conference-bayes/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Scientists should ideally form their beliefs based on evidence and update their
-beliefs as new evidence arrives. Unfortunately, humans are far from perfect
-Bayesian thinkers and therefore may struggle to do this properly. In this post
-I explain how conferences help scientists perform better Bayesian inference.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-11-17-conference-bayes/"&gt;Read more…&lt;/a&gt; (2 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>speculation</category><guid>https://austintripp.ca/blog/2024-11-17-conference-bayes/</guid><pubDate>Sun, 17 Nov 2024 00:00:00 GMT</pubDate></item><item><title>Overview of the NSGA-II algorithm for multi-objective optimization</title><link>https://austintripp.ca/blog/2024-11-04-nsga-ii/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Nondominated sorting genetic algorithm version 2,
-more commonly called NSGA-II, is a well-established genetic algorithm
-(aka evolutionary algorithm)
-for multi-objective optimization (MOO).
-In this post I try to extract the key insights/lessons from this paper.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-11-04-nsga-ii/"&gt;Read more…&lt;/a&gt; (4 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>research papers</category><guid>https://austintripp.ca/blog/2024-11-04-nsga-ii/</guid><pubDate>Mon, 04 Nov 2024 00:00:00 GMT</pubDate></item></channel></rss>
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-12-10-when-should-bo-work/"&gt;Read more…&lt;/a&gt; (3 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>bayesian optimization</category><category>machine learning</category><category>speculation</category><guid>https://austintripp.ca/blog/2024-12-10-when-should-bo-work/</guid><pubDate>Tue, 10 Dec 2024 00:00:00 GMT</pubDate></item></channel></rss>

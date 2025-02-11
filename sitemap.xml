@@ -35,11 +35,11 @@
  </url>
  <url>
   <loc>https://austintripp.ca/archive.html</loc>
-  <lastmod>2025-01-27T11:40:00Z</lastmod>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/</loc>
-  <lastmod>2025-01-27T11:40:00Z</lastmod>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/03/24/website-launch/</loc>
@@ -150,28 +150,52 @@
   <lastmod>2025-01-27T11:40:00Z</lastmod>
  </url>
  <url>
+  <loc>https://austintripp.ca/blog/2025-02-09-hiring-is-hard/</loc>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/blog/2025-02-11-lowering-quality/</loc>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/blog/2025-02-11-peer-review-stat-tests/</loc>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://austintripp.ca/blog/index/</loc>
   <lastmod>2025-01-27T11:40:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/index/index-1.html</loc>
-  <lastmod>2025-01-27T11:40:00Z</lastmod>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/index/index-2.html</loc>
-  <lastmod>2025-01-27T11:40:00Z</lastmod>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/</loc>
-  <lastmod>2025-01-27T11:40:00Z</lastmod>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/announcement/</loc>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/bayesian-optimization/</loc>
   <lastmod>2025-01-27T11:40:00Z</lastmod>
  </url>
  <url>
+  <loc>https://austintripp.ca/categories/blog/</loc>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://austintripp.ca/categories/decision-making/</loc>
   <lastmod>2025-01-27T11:40:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/employment/</loc>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/frontpage/</loc>
@@ -188,6 +212,10 @@
  <url>
   <loc>https://austintripp.ca/categories/machine-learning/</loc>
   <lastmod>2025-01-27T11:40:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/peer-review/</loc>
+  <lastmod>2025-02-11T21:14:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/personal-development/</loc>
