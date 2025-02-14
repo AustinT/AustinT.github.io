@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is offline model-based optimization a realistic problem? (I'm not convinced) | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2025-02-11-lowering-quality/" title="Experiment: more posts, lower quality" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Is offline model-based optimization a realistic problem? (I'm not conv">
+<meta property="og:url" content="https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/">
+<meta property="og:description" content='This is a "quickpost": a post which I have tried to write quickly, without very much editing/polishing.
+For more details on quickposts, see
+this blog post.
+
+
+Offline model-based optimization (OMBO in '>
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-02-14T00:00:00Z">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="speculation">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Is offline model-based optimization a realistic problem? (I'm not convinced)</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2025-02-14T00:00:00Z" itemprop="datePublished" title="2025-02-14">2025-02-14</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div class="alert alert-info">
+This is a "quickpost": a post which I have tried to write quickly, without very much editing/polishing.
+For more details on quickposts, see
+<a href="../2025-02-11-lowering-quality/">this blog post</a>.
+</div>
+
+<p>Offline model-based optimization (OMBO in this post) is essentially 1-shot
+optimization using a fixed dataset. You see data, do whatever you want, then
+propose a batch of query points, which are then evaluated. Hopefully, one (or
+most) of the query points are optimal (or near optimal). End of task.</p>
+<!-- TEASER_END -->
+
+<p>I see lots of machine learning papers about OMBO at top conferences.
+Unfortunately, I'm not convinced that OMBO actually is a real problem. This
+post is my attempt to explain why.</p>
+<h3 id="main-reason-do-you-ever-have-one-attempt">Main reason: do you ever have "one attempt"?</h3>
+<p>When papers do motivate OMBO, the motivation is usually something like "many
+domains have expensive or dangerous experiments and can't be trained online
+reasonably, meaning that no feedback is given during optimization". Put another
+way: the algorithm has only <em>one attempt</em> to propose solutions. Unfortunately,
+none of the common example domains given in papers actually seem to have this
+restriction:</p>
+<ul>
+<li>
+<strong>Chemistry/drug design/protein design</strong>: yes, experiments are expensive
+  here. That being said, drugs are <em>never</em> designed in one shot. Projects
+  include many iterations, even though the number of compounds tested is small
+  by ML standards (hundreds to thousands, but never millions or billions).</li>
+<li>
+<strong>Materials</strong>: same as chemistry: expensive experiments, multiple design
+  iterations.</li>
+<li>
+<strong>Robotics</strong>: yes, practical safety considerations mean you will probably
+  never do real-world RL from scratch, and will try to learn a policy using
+  offline data. But this policy probably <em>will not</em> be learned purely offline
+  (at the very least, people would test it online).</li>
+</ul>
+<p>Assuming OMBO researchers agree with this, the best argument I can think of for
+studying offline optimization is something like:</p>
+<blockquote>
+<p>Yes, real world problems are not exactly "offline", but an optimization task
+with lots of offline data and only ~10 batches for evaluation is much closer
+to the offline than to the online + on-policy setting often studied in RL
+(with millions of online optimization steps). We would also like to see
+progress in each batch. By studying the one-batch setting, we can develop
+policies which can then be applied repeatedly ~10 times in real world
+problems.</p>
+</blockquote>
+<p>However, this argument has an important flaw: <strong>optimal N-step policies are
+usually very different than optimal 1-step policies applied N times</strong>! This has
+been worked out repeatedly in Bayesian optimization, bandits, RL, and probably
+lots of other subfields which I am not aware of (more in
+footnote<sup id="fnref:myopicintuition"><a class="footnote-ref" href="#fn:myopicintuition">1</a></sup>). Therefore, studying offline optimization is
+<em>probably not</em> a good way to build up to online optimization.</p>
+<p>Another possible argument for offline optimization is:</p>
+<blockquote>
+<p>Batch optimization algorithms usually attempt to approximate an optimal
+N-step policy <em>without</em> observing rewards for intermediate actions. This
+becomes harder and harder as the batch size grows. Therefore, for a
+sufficiently large batch size, online optimization is effectively the same as
+offline optimization.</p>
+</blockquote>
+<p>I am also not convinced by this argument for two main reasons:</p>
+<ol>
+<li>Nobody is forcing you to approximate N-step policies when choosing a batch.
+   If anything, heuristics often seem to work well in practice.</li>
+<li>In problems whose search space is much larger than the batch size (eg
+   molecules), the "explore then exploit" strategy described in the previous
+   footnote<sup id="fnref2:myopicintuition"><a class="footnote-ref" href="#fn:myopicintuition">1</a></sup> is still possible, because one can explore almost
+   infinitely.</li>
+</ol>
+<p>So, after really trying to "steelman" the applicability of offline
+optimization, I can't find a good argument for it.</p>
+<h3 id="secondary-reason-why-model-based">Secondary reason: why "model-based"?</h3>
+<p>This is much less substantial than the previous reason, but it seems like a lot
+of this literature assumes that the only plausible way to solve OMBO problems
+is to train a surrogate model on existing data, then optimize with respect to
+that surrogate model (using regularization of some kind to avoid crazy
+solutions and surrogate model "hallucinations"). Hence, "model-based" goes into
+the problem name. Of course, this is not true: one could also use model-free
+methods like genetic algorithms (essentially proposing small variants of the
+best points in the dataset). Yet, most papers don't really consider such
+methods?</p>
+<p>This could be resolved by papers simply calling it "offline optimization"
+instead of OMBO.</p>
+<h3 id="final-aside-design-bench">Final aside: design bench</h3>
+<p>This is a bit separate from my skepticism of the OMBO problem setting, but it
+seems to me that most papers in this field use just a single benchmark with ~8
+tasks: <a href="https://proceedings.mlr.press/v162/trabucco22a.html">Design Bench by Trabucco et
+al.</a> This does not seem
+like a healthy focus for a subfield that has gotten as big as OMBO, especially
+when all of the problems in the benchmark seem a bit contrived. If people in
+this field are serious about making progress (and I'm wrong about the overall
+setup being unrealistic), I think it's time for somebody to make an improved
+benchmark.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>In this post, I basically said:</p>
+<ul>
+<li>OMBO assumes just one shot for optimization, which is <em>not</em> a common setup in
+  chemistry/materials/robotics (at least not to my knowledge).</li>
+<li>OMBO is poorly named because model-free approaches are also valid.</li>
+<li>OMBO could benefit from more benchmarks.</li>
+</ul>
+<p>I plan to post this to Twitter/Bluesky. If you disagree with anything in this
+post, please do comment! I would love to learn why I am wrong about this.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:myopicintuition">
+<p>If you have not come across this conclusion seems odd to you, consider why an optimal 2-step optimization policy might differ from the optimal 1-step policy applied twice. A 2 step policy could, in the first step, explore widely to find potential new optima, then in the second step choose a less diverse query set around a narrow set of optima. However, this initial "exploration" step is likely not an optimal 1-step policy, and so the optimal 1-step policy applied twice will probably look like exploitation (twice). Note that these behaviors can vary hugely in different problem settings. <a class="footnote-backref" href="#fnref:myopicintuition" title="Jump back to footnote 1 in the text">↩</a><a class="footnote-backref" href="#fnref2:myopicintuition" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/machine-learning/" rel="tag">machine learning</a></li>
+            <li><a class="tag p-category" href="../../categories/speculation/" rel="tag">speculation</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2025-02-11-lowering-quality/" rel="prev" title="Experiment: more posts, lower quality">Previous post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2025-02-14.
+Contents © 2025         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

@@ -25,7 +25,7 @@ I think these things are important, but given the amount of time I have to spend
 At the start, I will mark quick posts with a disclaimer like so:
 
 <div class="alert alert-info">
-This is a "quickpost": a post which I have tried to write it quickly, without so much editing/polishing.
+This is a "quickpost": a post which I have tried to write quickly, without very much editing/polishing.
 For more details on quickposts, see
 <a href="/blog/2025-02-11-lowering-quality/">this blog post</a>.
 </div>
