@@ -4,6 +4,8 @@ Session.vim
 
 # Nikola stuff
 .doit.db.db
+.doit.db
+*.doit.db*
 .cache/
 output/
 cache/
