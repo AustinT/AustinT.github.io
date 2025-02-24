@@ -123,3 +123,16 @@ In this post, I basically said:
 I plan to post this to Twitter/Bluesky. If you disagree with anything in this
 post, please do comment! I would love to learn why I am wrong about this.
 
+---
+
+## Addendum: responses to my Twitter post
+
+The best counter-arguments I heard after sharing this post were:
+
+- It could be useful for people who want to try ML out a little bit without
+  committing to multiple rounds of optimization.
+- It could be useful for the last round of optimization.
+
+I don't disagree with either of these reasons, but they seem sufficiently niche
+that I would not want an entire subfield to be based around them...
+
