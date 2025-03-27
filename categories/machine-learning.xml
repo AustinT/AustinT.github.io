@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website (Posts about machine learning)</title><link>https://austintripp.ca/</link><description></description><atom:link href="https://austintripp.ca/categories/machine-learning.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Fri, 14 Feb 2025 09:37:58 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Is offline model-based optimization a realistic problem? (I'm not convinced)</title><link>https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;div class="alert alert-info"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website (Posts about machine learning)</title><link>https://austintripp.ca/</link><description></description><atom:link href="https://austintripp.ca/categories/machine-learning.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Thu, 27 Mar 2025 11:01:16 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Conceptual confusion about desirable outputs of reaction prediction models.</title><link>https://austintripp.ca/blog/2025-03-27-reaction-correctness/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;In the literature about machine learning for retrosynthesis, one line of work
+tries to predict chemical reactions, either in the &lt;em&gt;forward direction&lt;/em&gt; (ie what
+products will A + B form) or in the &lt;em&gt;backward direction&lt;/em&gt; (ie what reactants
+could react to produce molecule C). Such models are often trained on datasets
+of known reactions like Pistachio or USPTO, with the hope of generalizing to
+new "correct" reactions. However, this formulation of the problem overlooks a
+lot of subtleties about what makes a reaction "correct". In this post I will
+present a more nuanced mental model which (hopefully) clarifies some
+ambiguities.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-03-27-reaction-correctness/"&gt;Read more…&lt;/a&gt; (3 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>retrosynthesis</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-03-27-reaction-correctness/</guid><pubDate>Thu, 27 Mar 2025 00:00:00 GMT</pubDate></item><item><title>Punishing poor reviewers at CVPR</title><link>https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;p&gt;This year &lt;a href="https://cvpr.thecvf.com/"&gt;CVPR&lt;/a&gt; pledged to make all authors
+participate in peer review, and reject papers from authors who wrote
+low-quality reviews.&lt;sup id="fnref:ref"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/#fn:ref"&gt;1&lt;/a&gt;&lt;/sup&gt; Last week they &lt;a href="https://x.com/CVPR/status/1894853624200863958"&gt;confirmed on
+Twitter&lt;/a&gt; that they followed
+through with this and rejected 19 papers. Presumably this is a tiny fraction of
+the overall papers submitted, but I hope this is an effective deterrent for
+future authors. At the very least, I'm glad that &lt;em&gt;some&lt;/em&gt; major conference tried
+something like this!&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:ref"&gt;
+&lt;p&gt;&lt;a href="https://cvpr.thecvf.com/Conferences/2025/CVPRChanges"&gt;https://cvpr.thecvf.com/Conferences/2025/CVPRChanges&lt;/a&gt; &lt;a class="footnote-backref" href="https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/#fnref:ref" title="Jump back to footnote 1 in the text"&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description><category>machine learning</category><category>opinion</category><category>peer review</category><guid>https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/</guid><pubDate>Tue, 04 Mar 2025 00:00:00 GMT</pubDate></item><item><title>Why don't ML conferences provide reviewer instructions?</title><link>https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I remember when I first received an invitation to review papers for an ML
+conference in late 2020. What surprised me most was &lt;em&gt;not&lt;/em&gt; that I was being
+invited (even though that was a surprise, since I was just a second year PhD
+student who had only just completed writing a paper myself). Instead, it was
+the lack of instruction of how to assess the papers: essentially just "write
+your reviews by date X", and "evaluate novelty, significance, soundness, etc".
+In fact, in all the years since, I think I have &lt;em&gt;never&lt;/em&gt; received explicit
+instructions for reviewing ML conference papers.&lt;sup id="fnref:instructions"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/#fn:instructions"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>peer review</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/</guid><pubDate>Tue, 25 Feb 2025 00:00:00 GMT</pubDate></item><item><title>Is offline model-based optimization a realistic problem? (I'm not convinced)</title><link>https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;div class="alert alert-info"&gt;
 This is a "quickpost": a post which I have tried to write quickly, without very much editing/polishing.
 For more details on quickposts, see
 &lt;a href="https://austintripp.ca/blog/2025-02-11-lowering-quality/"&gt;this blog post&lt;/a&gt;.
@@ -64,33 +96,4 @@ Allegedly, this one algorithm works well on a wide range of settings
 (something which the "no-free-lunch-theorem" suggests might not be possible).
 In this post I provide my thoughts on what key design decisions likely make this
 algorithm work well.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-10-13-vizier-bayesopt/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>bayesian optimization</category><category>machine learning</category><category>research papers</category><guid>https://austintripp.ca/blog/2024-10-13-vizier-bayesopt/</guid><pubDate>Sun, 13 Oct 2024 00:00:00 GMT</pubDate></item><item><title>Problems with the top-k diversity metric for diverse optimization</title><link>https://austintripp.ca/blog/2024-10-07-problems-with-topk-diversity/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=b4485680-e872-4498-b53b-cfc0bcde2315"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;div class="alert alert-block alert-info"&gt;
-&lt;b&gt;NOTE&lt;/b&gt;
-    this blog post can be run as a jupyter notebook. I re-ordered the cells to make it easier to read; to re-produce all the plots see instructions at the end of the post.
-&lt;/div&gt;
-&lt;h3 id="Background"&gt;Background&lt;a class="anchor-link" href="https://austintripp.ca/blog/2024-10-07-problems-with-topk-diversity/#Background"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;em&gt;"Diverse optimization"&lt;/em&gt; has been a popular topic in machine learning conferences
-for a few years now, particularly in the "AI for drug discovery" sub-field.
-In this context, the goal of "optimization" algorithms is to suggest
-promising drug candidates,
-where "promising" means maximizing one (or more) objective functions.
-An example of an objective function could be a docking score
-(an approximate simulation of the interactions between a protein and a molecule).
-"Diverse" optimization further requires that an algorithm produce multiple
-distinct candidate solutions.
-This is typically desired when the objective functions don't fully capture
-everything we want (for example, a drug candidate also having low toxicity).
-The hope is that a diverse set of candidates will have a higher chance of
-one useful candidate compared to a non-diverse sets.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-10-07-problems-with-topk-diversity/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description><category>machine learning</category><category>statistics</category><guid>https://austintripp.ca/blog/2024-10-07-problems-with-topk-diversity/</guid><pubDate>Mon, 07 Oct 2024 00:00:00 GMT</pubDate></item><item><title>Sparse Matrices: 5 Tips and Tricks</title><link>https://austintripp.ca/blog/2018/09/12/sparse-matrices-tips1/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Over the course of my internship at the online shopping company &lt;a href="https://www.wish.com/"&gt;Wish&lt;/a&gt;, I have dealt a lot with a lot of data in the form of sparse matrices, specificaly in the form of item interaction matrices for customer data. In doing so, I have made heavy use of &lt;a href="https://docs.scipy.org/doc/scipy/reference/sparse.html"&gt;scipy's sparse matrices library&lt;/a&gt;.
-Here are 5 tricks that I have learned.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2018/09/12/sparse-matrices-tips1/"&gt;Read more…&lt;/a&gt; (2 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>frontpage</category><category>machine learning</category><guid>https://austintripp.ca/blog/2018/09/12/sparse-matrices-tips1/</guid><pubDate>Wed, 12 Sep 2018 00:00:00 GMT</pubDate></item><item><title>An Overview of Gradient Boosting and Popular Libraries for it.</title><link>https://austintripp.ca/blog/2018/07/17/gradient-boosting/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Everybody doing machine learning wants the best models possible. 
-The aim of this blog article is the following:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;To provide an introduction to the machine learning technique known as &lt;em&gt;boosting&lt;/em&gt;, and specifically &lt;em&gt;gradient boosting&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;To compare/contrast boosting with other ensemble methods, such as &lt;em&gt;bagging&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;To explain and compare several popular gradient boosting frameworks, specifically &lt;em&gt;XGBoost&lt;/em&gt;, &lt;em&gt;CatBoost&lt;/em&gt;, and &lt;em&gt;LightGBM&lt;/em&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2018/07/17/gradient-boosting/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>frontpage</category><category>machine learning</category><guid>https://austintripp.ca/blog/2018/07/17/gradient-boosting/</guid><pubDate>Tue, 17 Jul 2018 00:00:00 GMT</pubDate></item></channel></rss>
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-10-13-vizier-bayesopt/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>bayesian optimization</category><category>machine learning</category><category>research papers</category><guid>https://austintripp.ca/blog/2024-10-13-vizier-bayesopt/</guid><pubDate>Sun, 13 Oct 2024 00:00:00 GMT</pubDate></item></channel></rss>

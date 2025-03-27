@@ -1,5 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website</title><link>https://austintripp.ca/</link><description>Austin Tripp's personal website</description><atom:link href="https://austintripp.ca/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Fri, 14 Feb 2025 09:37:58 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Is offline model-based optimization a realistic problem? (I'm not convinced)</title><link>https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;div class="alert alert-info"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website</title><link>https://austintripp.ca/</link><description>Austin Tripp's personal website</description><atom:link href="https://austintripp.ca/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Thu, 27 Mar 2025 11:01:16 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Conceptual confusion about desirable outputs of reaction prediction models.</title><link>https://austintripp.ca/blog/2025-03-27-reaction-correctness/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;In the literature about machine learning for retrosynthesis, one line of work
+tries to predict chemical reactions, either in the &lt;em&gt;forward direction&lt;/em&gt; (ie what
+products will A + B form) or in the &lt;em&gt;backward direction&lt;/em&gt; (ie what reactants
+could react to produce molecule C). Such models are often trained on datasets
+of known reactions like Pistachio or USPTO, with the hope of generalizing to
+new "correct" reactions. However, this formulation of the problem overlooks a
+lot of subtleties about what makes a reaction "correct". In this post I will
+present a more nuanced mental model which (hopefully) clarifies some
+ambiguities.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-03-27-reaction-correctness/"&gt;Read more…&lt;/a&gt; (3 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>retrosynthesis</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-03-27-reaction-correctness/</guid><pubDate>Thu, 27 Mar 2025 00:00:00 GMT</pubDate></item><item><title>Punishing poor reviewers at CVPR</title><link>https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;p&gt;This year &lt;a href="https://cvpr.thecvf.com/"&gt;CVPR&lt;/a&gt; pledged to make all authors
+participate in peer review, and reject papers from authors who wrote
+low-quality reviews.&lt;sup id="fnref:ref"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/#fn:ref"&gt;1&lt;/a&gt;&lt;/sup&gt; Last week they &lt;a href="https://x.com/CVPR/status/1894853624200863958"&gt;confirmed on
+Twitter&lt;/a&gt; that they followed
+through with this and rejected 19 papers. Presumably this is a tiny fraction of
+the overall papers submitted, but I hope this is an effective deterrent for
+future authors. At the very least, I'm glad that &lt;em&gt;some&lt;/em&gt; major conference tried
+something like this!&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:ref"&gt;
+&lt;p&gt;&lt;a href="https://cvpr.thecvf.com/Conferences/2025/CVPRChanges"&gt;https://cvpr.thecvf.com/Conferences/2025/CVPRChanges&lt;/a&gt; &lt;a class="footnote-backref" href="https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/#fnref:ref" title="Jump back to footnote 1 in the text"&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description><category>machine learning</category><category>opinion</category><category>peer review</category><guid>https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/</guid><pubDate>Tue, 04 Mar 2025 00:00:00 GMT</pubDate></item><item><title>Why don't ML conferences provide reviewer instructions?</title><link>https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I remember when I first received an invitation to review papers for an ML
+conference in late 2020. What surprised me most was &lt;em&gt;not&lt;/em&gt; that I was being
+invited (even though that was a surprise, since I was just a second year PhD
+student who had only just completed writing a paper myself). Instead, it was
+the lack of instruction of how to assess the papers: essentially just "write
+your reviews by date X", and "evaluate novelty, significance, soundness, etc".
+In fact, in all the years since, I think I have &lt;em&gt;never&lt;/em&gt; received explicit
+instructions for reviewing ML conference papers.&lt;sup id="fnref:instructions"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/#fn:instructions"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>peer review</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/</guid><pubDate>Tue, 25 Feb 2025 00:00:00 GMT</pubDate></item><item><title>Alpha over LLMs</title><link>https://austintripp.ca/blog/2025-02-24-llm-alpha/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;p&gt;On a recent podcast, &lt;a href="https://www.kalzumeus.com/about/"&gt;Patrick McKenzie&lt;/a&gt;
+mentioned the idea of "alpha over LLMs": does a publisher produce text with any
+meaningful advantage over asking an LLM? I think this is an important question
+for anybody trying to regularly write, even if the readership is small (eg this
+blog). I interpret this as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;People should not put out content which is obviously wrong and can be
+  corrected by an LLM (eg "I have theory X" where asking an LLM provides clear
+  and convincing counter-arguments to X).&lt;/li&gt;
+&lt;li&gt;People should also not put out content which is worse than the answer you get
+  from asking an LLM (eg the same content but explained less clearly).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I will generally try to uphold this principle in future blog posts.&lt;/p&gt;</description><category>announcement</category><category>blog</category><category>using large language models</category><guid>https://austintripp.ca/blog/2025-02-24-llm-alpha/</guid><pubDate>Mon, 24 Feb 2025 00:00:00 GMT</pubDate></item><item><title>Is offline model-based optimization a realistic problem? (I'm not convinced)</title><link>https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;div class="alert alert-info"&gt;
 This is a "quickpost": a post which I have tried to write quickly, without very much editing/polishing.
 For more details on quickposts, see
 &lt;a href="https://austintripp.ca/blog/2025-02-11-lowering-quality/"&gt;this blog post&lt;/a&gt;.
@@ -58,18 +102,4 @@ are positive definite (PD), and if there are any restrictions attached.&lt;/p&gt
 all but two of the kernels are PD, &lt;em&gt;without being restricted to binary
 vectors&lt;/em&gt;. The remaining 2 I am unsure of, but don't claim that they are &lt;em&gt;not&lt;/em&gt;
 PD.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/"&gt;Read more…&lt;/a&gt; (6 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><guid>https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/</guid><pubDate>Sun, 12 Jan 2025 00:00:00 GMT</pubDate></item><item><title>What ML researchers and users get wrong: optimistic assumptions</title><link>https://austintripp.ca/blog/2025-01-09-optimistic-ml-assumptions/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;ML is often done poorly, both by "ML experts" (by which I mean people who
-understand the algorithms but not the data) and "ML users" (by which I mean
-people who understand their data, but not the algorithms). I think the cause is
-often over-optimism, although about different things:&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-01-09-optimistic-ml-assumptions/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>speculation</category><guid>https://austintripp.ca/blog/2025-01-09-optimistic-ml-assumptions/</guid><pubDate>Thu, 09 Jan 2025 00:00:00 GMT</pubDate></item><item><title>New Year's Resolutions for 2025</title><link>https://austintripp.ca/blog/2025-01-05-resolutions25/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Happy 2025! Here are a few goals I am setting for myself this year!&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-01-05-resolutions25/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>personal development</category><guid>https://austintripp.ca/blog/2025-01-05-resolutions25/</guid><pubDate>Sun, 05 Jan 2025 00:00:00 GMT</pubDate></item><item><title>Review of NeurIPS 2024 and predictions for ML in 2025</title><link>https://austintripp.ca/blog/2025-01-01-neurips24-and-trends25/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I was fortunate to attend NeurIPS 2024, arguably the largest and most
-influential machine learning conference in the world (thanks Valence for
-sponsoring my trip 🙏). In this post I will try to summarize what I learned at
-NeurIPS, and cautiously make some predictions for the year ahead.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-01-01-neurips24-and-trends25/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-01-01-neurips24-and-trends25/</guid><pubDate>Wed, 01 Jan 2025 00:00:00 GMT</pubDate></item><item><title>Rules of scientific English writing for an international audience.</title><link>https://austintripp.ca/blog/2024-12-30-international-english/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Although English is the common language for international scientific
-communication, most scientists are not native English speakers. To account for
-this, I think that all scientists (especially native English speakers) should
-try to write text which is easy to read for non-native speakers. I propose the
-following rules for this:&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-12-30-international-english/"&gt;Read more…&lt;/a&gt; (11 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>language</category><category>speculation</category><category>writing</category><guid>https://austintripp.ca/blog/2024-12-30-international-english/</guid><pubDate>Mon, 30 Dec 2024 00:00:00 GMT</pubDate></item></channel></rss>
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/"&gt;Read more…&lt;/a&gt; (6 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><guid>https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/</guid><pubDate>Sun, 12 Jan 2025 00:00:00 GMT</pubDate></item></channel></rss>

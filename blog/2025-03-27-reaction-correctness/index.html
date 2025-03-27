@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conceptual confusion about desirable outputs of reaction prediction models. | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2025-03-27-reaction-correctness/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2025-03-04-punish-bad-reviewers/" title="Punishing poor reviewers at CVPR" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Conceptual confusion about desirable outputs of reaction prediction mo">
+<meta property="og:url" content="https://austintripp.ca/blog/2025-03-27-reaction-correctness/">
+<meta property="og:description" content="In the literature about machine learning for retrosynthesis, one line of work
+tries to predict chemical reactions, either in the forward direction (ie what
+products will A + B form) or in the backward">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-03-27T00:00:00Z">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="retrosynthesis">
+<meta property="article:tag" content="speculation">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Conceptual confusion about desirable outputs of reaction prediction models.</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2025-03-27T00:00:00Z" itemprop="datePublished" title="2025-03-27">2025-03-27</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>In the literature about machine learning for retrosynthesis, one line of work
+tries to predict chemical reactions, either in the <em>forward direction</em> (ie what
+products will A + B form) or in the <em>backward direction</em> (ie what reactants
+could react to produce molecule C). Such models are often trained on datasets
+of known reactions like Pistachio or USPTO, with the hope of generalizing to
+new "correct" reactions. However, this formulation of the problem overlooks a
+lot of subtleties about what makes a reaction "correct". In this post I will
+present a more nuanced mental model which (hopefully) clarifies some
+ambiguities.</p>
+<!-- TEASER_END -->
+
+<div class="alert alert-info">
+This is a "quickpost": a post which I have tried to write quickly, without very much editing/polishing.
+For more details on quickposts, see
+<a href="../2025-02-11-lowering-quality/">this blog post</a>.
+</div>
+
+<h3 id="my-model-of-correctness">My model of correctness</h3>
+<p>Importantly (but somewhat pedantically), there is arguably no such thing as an
+"absolutely correct" reaction prediction in ML. Because conditions and minor
+products are not reported, ML reaction predictions are <em>underspecified</em> and
+therefore somewhat "unfalsifiable".<sup id="fnref:unfalsifiable"><a class="footnote-ref" href="#fn:unfalsifiable">1</a></sup> That aside, there are at
+least 3 separate kinds of reaction correctness:</p>
+<ol>
+<li>
+<strong>Feasibility</strong>: the reaction <em>could</em> succeed (under <em>some</em> set of
+   conditions and other minor products).</li>
+<li>
+<strong>Desirability</strong>: the reaction is one you would actually want to perform.</li>
+<li>
+<strong>Reasonability</strong>: the reaction is a good choice among comparable
+   alternatives.</li>
+</ol>
+<p>These criteria may not agree. For example, the reaction <code>Pb -&gt; Au</code> (lead
+becomes gold) is highly desirable and very reasonable over alternative
+reactions like <code>Ag -&gt; Au</code> (silver to gold), but is not <em>feasible</em>. The reaction
+<code>H2 + O2 -&gt; H2O</code> is both feasible and reasonable (compared with other ways of
+making water), but not very desirable if your goal is small molecule drug
+discovery (because you are interested in different reactions). The reaction
+<code>C6H6 + O2 -&gt; CO2 + H2O</code> (combustion of benzene) is feasible and desirable if
+your goal is to make carbon dioxide, but if carbon dioxide is your goal then
+burning methane (<code>CH4 + O2 -&gt; CO2 + H2O</code>) is probably cheaper and easier,
+making this not the most reasonable choice.</p>
+<p>Feasibility is essentially a consequence of physics and is arguably universal.
+However, desirability and reasonability are both highly dependent on
+"contextual factors", for example:</p>
+<ul>
+<li>Which reactions are "desirable" for a synthesis routes depends on the set of
+  starting molecules that you have, or the kinds of molecules you want to make.</li>
+<li>Which reactions are "reasonable" depends on what equipment and inventory you
+  have. It may normally be preferable to use an inexpensive reactant over an
+  expensive one, but if you have already purchased a jar of the expensive
+  reactant then the marginal cost of using it is effectively zero.</li>
+</ul>
+<h3 id="why-is-this-important">Why is this important?</h3>
+<p>Reactions from datasets like USPTO and Pistachio tend to satisfy all 3 notions
+of correctness:</p>
+<ul>
+<li>They should be feasible, since they are extracted from papers and patents and
+  were therefore successfully performed once.<sup id="fnref:errors"><a class="footnote-ref" href="#fn:errors">2</a></sup>
+</li>
+<li>Desirable, since somebody chose to do them for something.</li>
+<li>Reasonable, since they were chosen over other alternatives.</li>
+</ul>
+<p>Because of this, I think it is easy for people in ML to conflate these kinds of
+correctness or simply not care about the distinction between them. However,
+when actually applying these methods, one's "contextual factors" can be a lot
+different than the contextual factors used to generate these datasets, which
+can cause reaction models to fail in "unexpected"<sup id="fnref:unexpected"><a class="footnote-ref" href="#fn:unexpected">3</a></sup> ways, for
+example:</p>
+<ul>
+<li>A model may not output reactions which use the reagents you have in stock
+  (because how would the model know what you have in stock).</li>
+<li>A model may not distinguish between cheap and expensive reactants because
+  patents may preferentially show routes with expensive alternatives (since
+  patents try to make the invention hard to replicate).</li>
+</ul>
+<h3 id="the-way-forward">The way forward</h3>
+<p>Practitioners want reaction models which output feasible reactions, and
+desirable/reasonable reactions according to <em>their own</em> contextual factors.
+Therefore, they should rely on training datasets as correctness labels only
+insofar as the contextual factors of the training datasets match their own.
+Unfortunately, <em>I am not sure how to do this more precisely.</em> Probably you
+would need some kind of additional training signal about "contextual factors"
+besides the public datasets, or you would need to add your own training data
+into the public datasets.</p>
+<p>At the very least, I hope that posts like this reduce the <em>conceptual
+confusion</em> about different types of reaction correctness.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:unfalsifiable">
+<p>As in, there is no experiment that could falsify the predictions, since, for example, a failed reaction at one set of reaction conditions does not preclude the reaction succeeding for another set of conditions. <a class="footnote-backref" href="#fnref:unfalsifiable" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+<li id="fn:errors">
+<p>Except for many errors / "annotation quirks" in these datasets. <a class="footnote-backref" href="#fnref:errors" title="Jump back to footnote 2 in the text">↩</a></p>
+</li>
+<li id="fn:unexpected">
+<p>These failures are unexpected <em>if</em> you do not distinguish between these different notions of correctness. <a class="footnote-backref" href="#fnref:unexpected" title="Jump back to footnote 3 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/machine-learning/" rel="tag">machine learning</a></li>
+            <li><a class="tag p-category" href="../../categories/retrosynthesis/" rel="tag">retrosynthesis</a></li>
+            <li><a class="tag p-category" href="../../categories/speculation/" rel="tag">speculation</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2025-03-04-punish-bad-reviewers/" rel="prev" title="Punishing poor reviewers at CVPR">Previous post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2025-03-27.
+Contents © 2025         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

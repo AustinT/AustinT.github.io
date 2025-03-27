@@ -77,7 +77,107 @@
     
         
     <div class="postindex">
-            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-02-14-is-offline-mbo-realistic/" class="u-url">Is offline model-based optimization a realistic problem? (I'm not convinced)</a></h1>
+            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-03-27-reaction-correctness/" class="u-url">Conceptual confusion about desirable outputs of reaction prediction models.</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2025-03-27-reaction-correctness/" rel="bookmark">
+            <time class="published dt-published" datetime="2025-03-27T00:00:00Z" itemprop="datePublished" title="2025-03-27">2025-03-27</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>In the literature about machine learning for retrosynthesis, one line of work
+tries to predict chemical reactions, either in the <em>forward direction</em> (ie what
+products will A + B form) or in the <em>backward direction</em> (ie what reactants
+could react to produce molecule C). Such models are often trained on datasets
+of known reactions like Pistachio or USPTO, with the hope of generalizing to
+new "correct" reactions. However, this formulation of the problem overlooks a
+lot of subtleties about what makes a reaction "correct". In this post I will
+present a more nuanced mental model which (hopefully) clarifies some
+ambiguities.</p>
+<p class="more"><a href="../2025-03-27-reaction-correctness/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-03-04-punish-bad-reviewers/" class="u-url">Punishing poor reviewers at CVPR</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2025-03-04-punish-bad-reviewers/" rel="bookmark">
+            <time class="published dt-published" datetime="2025-03-04T00:00:00Z" itemprop="datePublished" title="2025-03-04">2025-03-04</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <p>This year <a href="https://cvpr.thecvf.com/">CVPR</a> pledged to make all authors
+participate in peer review, and reject papers from authors who wrote
+low-quality reviews.<sup id="fnref:ref"><a class="footnote-ref" href="../2025-03-04-punish-bad-reviewers/#fn:ref">1</a></sup> Last week they <a href="https://x.com/CVPR/status/1894853624200863958">confirmed on
+Twitter</a> that they followed
+through with this and rejected 19 papers. Presumably this is a tiny fraction of
+the overall papers submitted, but I hope this is an effective deterrent for
+future authors. At the very least, I'm glad that <em>some</em> major conference tried
+something like this!</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:ref">
+<p><a href="https://cvpr.thecvf.com/Conferences/2025/CVPRChanges">https://cvpr.thecvf.com/Conferences/2025/CVPRChanges</a> <a class="footnote-backref" href="../2025-03-04-punish-bad-reviewers/#fnref:ref" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-02-25-no-reviewer-instructions/" class="u-url">Why don't ML conferences provide reviewer instructions?</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2025-02-25-no-reviewer-instructions/" rel="bookmark">
+            <time class="published dt-published" datetime="2025-02-25T00:00:00Z" itemprop="datePublished" title="2025-02-25">2025-02-25</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>I remember when I first received an invitation to review papers for an ML
+conference in late 2020. What surprised me most was <em>not</em> that I was being
+invited (even though that was a surprise, since I was just a second year PhD
+student who had only just completed writing a paper myself). Instead, it was
+the lack of instruction of how to assess the papers: essentially just "write
+your reviews by date X", and "evaluate novelty, significance, soundness, etc".
+In fact, in all the years since, I think I have <em>never</em> received explicit
+instructions for reviewing ML conference papers.<sup id="fnref:instructions"><a class="footnote-ref" href="../2025-02-25-no-reviewer-instructions/#fn:instructions">1</a></sup></p>
+<p class="more"><a href="../2025-02-25-no-reviewer-instructions/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-02-24-llm-alpha/" class="u-url">Alpha over LLMs</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2025-02-24-llm-alpha/" rel="bookmark">
+            <time class="published dt-published" datetime="2025-02-24T00:00:00Z" itemprop="datePublished" title="2025-02-24">2025-02-24</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <p>On a recent podcast, <a href="https://www.kalzumeus.com/about/">Patrick McKenzie</a>
+mentioned the idea of "alpha over LLMs": does a publisher produce text with any
+meaningful advantage over asking an LLM? I think this is an important question
+for anybody trying to regularly write, even if the readership is small (eg this
+blog). I interpret this as:</p>
+<ul>
+<li>People should not put out content which is obviously wrong and can be
+  corrected by an LLM (eg "I have theory X" where asking an LLM provides clear
+  and convincing counter-arguments to X).</li>
+<li>People should also not put out content which is worse than the answer you get
+  from asking an LLM (eg the same content but explained less clearly).</li>
+</ul>
+<p>I will generally try to uphold this principle in future blog posts.</p>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-02-14-is-offline-mbo-realistic/" class="u-url">Is offline model-based optimization a realistic problem? (I'm not convinced)</a></h1>
                 <div class="metadata">
                     <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                         Austin Tripp
@@ -224,80 +324,6 @@ PD.</p>
 <p class="more"><a href="../2025-01-12-gauche-kernels-pd/">Read more…</a></p>
 </div>
                 </div>
-            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-01-09-optimistic-ml-assumptions/" class="u-url">What ML researchers and users get wrong: optimistic assumptions</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Austin Tripp
-                    </span></p>
-            <p class="dateline">
-            <a href="../2025-01-09-optimistic-ml-assumptions/" rel="bookmark">
-            <time class="published dt-published" datetime="2025-01-09T00:00:00Z" itemprop="datePublished" title="2025-01-09">2025-01-09</time></a>
-            </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-                    <div>
-<p>ML is often done poorly, both by "ML experts" (by which I mean people who
-understand the algorithms but not the data) and "ML users" (by which I mean
-people who understand their data, but not the algorithms). I think the cause is
-often over-optimism, although about different things:</p>
-<p class="more"><a href="../2025-01-09-optimistic-ml-assumptions/">Read more…</a></p>
-</div>
-                </div>
-            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-01-05-resolutions25/" class="u-url">New Year's Resolutions for 2025</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Austin Tripp
-                    </span></p>
-            <p class="dateline">
-            <a href="../2025-01-05-resolutions25/" rel="bookmark">
-            <time class="published dt-published" datetime="2025-01-05T00:00:00Z" itemprop="datePublished" title="2025-01-05">2025-01-05</time></a>
-            </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-                    <div>
-<p>Happy 2025! Here are a few goals I am setting for myself this year!</p>
-<p class="more"><a href="../2025-01-05-resolutions25/">Read more…</a></p>
-</div>
-                </div>
-            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-01-01-neurips24-and-trends25/" class="u-url">Review of NeurIPS 2024 and predictions for ML in 2025</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Austin Tripp
-                    </span></p>
-            <p class="dateline">
-            <a href="../2025-01-01-neurips24-and-trends25/" rel="bookmark">
-            <time class="published dt-published" datetime="2025-01-01T00:00:00Z" itemprop="datePublished" title="2025-01-01">2025-01-01</time></a>
-            </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-                    <div>
-<p>I was fortunate to attend NeurIPS 2024, arguably the largest and most
-influential machine learning conference in the world (thanks Valence for
-sponsoring my trip 🙏). In this post I will try to summarize what I learned at
-NeurIPS, and cautiously make some predictions for the year ahead.</p>
-<p class="more"><a href="../2025-01-01-neurips24-and-trends25/">Read more…</a></p>
-</div>
-                </div>
-            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2024-12-30-international-english/" class="u-url">Rules of scientific English writing for an international audience.</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Austin Tripp
-                    </span></p>
-            <p class="dateline">
-            <a href="../2024-12-30-international-english/" rel="bookmark">
-            <time class="published dt-published" datetime="2024-12-30T00:00:00Z" itemprop="datePublished" title="2024-12-30">2024-12-30</time></a>
-            </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-                    <div>
-<p>Although English is the common language for international scientific
-communication, most scientists are not native English speakers. To account for
-this, I think that all scientists (especially native English speakers) should
-try to write text which is easy to read for non-native speakers. I propose the
-following rules for this:</p>
-<p class="more"><a href="../2024-12-30-international-english/">Read more…</a></p>
-</div>
-                </div>
             </article>
 </div>
     
@@ -325,7 +351,7 @@ MathJax.Hub.Config({
 </div>
 <br>
 Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
-Last updated 2025-02-14.
+Last updated 2025-03-27.
 Contents © 2025         Austin Tripp (MIT License). <br>
 All opinions and statements on this site are my own (ie not my employer's).
 <br></footer>
