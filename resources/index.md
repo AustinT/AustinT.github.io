@@ -129,9 +129,11 @@ Since podcasts change all the time, I have noted the year beside these recommend
 
 ## Miscellaneous
 
-- [80000 hours](https://80000hours.org) is a website to help you choose a career that will do good.
-  In the past I found their career guide helpful:
+- [80000 hours](https://80000hours.org) is a website to help you choose a
+  career that will do good. In the past I found their career guide helpful:
   <https://80000hours.org/career-guide/>.
+- Good blog post about choosing colors:
+  <https://www.datawrapper.de/blog/beautifulcolors>
 
 ## More about me
 

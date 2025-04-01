@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Using LLMs to improve my Chinese | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2025-03-30-llms-improve-chinese/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2025-03-27-reaction-correctness/" title="Conceptual confusion about desirable outputs of reaction prediction models." type="text/html">
+<link rel="next" href="../2025-04-01-cheminformatics-model-qa/" title="Generic recommendations for cheminformatics models." type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Using LLMs to improve my Chinese">
+<meta property="og:url" content="https://austintripp.ca/blog/2025-03-30-llms-improve-chinese/">
+<meta property="og:description" content="I've been learning Chinese for almost 10 years now, but still make
+awkward-sounding sentences when I speak. A few months ago I thought &quot;why not
+use LLMs to help me speak more naturally&quot;, and found tha">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-03-30T00:00:00Z">
+<meta property="article:tag" content="chinese">
+<meta property="article:tag" content="language">
+<meta property="article:tag" content="using large language models">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Using LLMs to improve my Chinese</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2025-03-30T00:00:00Z" itemprop="datePublished" title="2025-03-30">2025-03-30</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>I've been learning Chinese for almost 10 years now, but still make
+awkward-sounding sentences when I speak. A few months ago I thought "why not
+use LLMs to help me speak more naturally", and found that it does not take much
+prompting to get useful feedback. Here is a conversation with Claude 3.5 from a
+few months ago:</p>
+<!-- TEASER_END -->
+
+<p><strong>Prompt</strong>:</p>
+<blockquote>
+<p>I am trying to improve my Chinese. I often say things in an unnatural way,
+even though no individual word is incorrect. I want you to critique my
+writing below. Please point out any grammar mistakes or phrases that would
+sound unnatural to a native Mandarin speaker. Please provide a critique
+sentence by sentence. If there are no issues then say so.</p>
+<p>There were some places where I am not sure of my own translation, and put an
+English phrase in brackets. If my Chinese does not match the English please
+correct it. Example: 我走路狗(walk the dog). You should point out that I
+should say 遛狗.</p>
+<p>我需要做一个很难的决定(need to make a hard
+decision)。我写文章，要对每年发表两本的杂志(want to submit to a magazine
+which publishes twice per year)。我差不多写完了一个文章，但是还没完成了(still
+not
+complete)。我可以很快写完，可是质量可能没那么好。我也可以拖延，几个月后提交。质量会好一点，但是我害怕如果给自己太多时间，写文章的时间增加了(~worry
+that if I give myself more time then writing the article will just take way
+longer)。我爱人不知道什么是最好的。</p>
+</blockquote>
+<p><strong>Response</strong>:</p>
+<blockquote>
+<p>I'll analyze your Chinese writing sentence by sentence:</p>
+<ol>
+<li>我需要做一个很难的决定</li>
+<li>
+<p>This is grammatically correct but would sound more natural as
+  我需要做一个艰难的决定 or 我面临一个艰难的抉择</p>
+</li>
+<li>
+<p>我写文章，要对每年发表两本的杂志</p>
+</li>
+<li>The structure is unnatural. Better: 我想投稿到一本每年出版两期的杂志 </li>
+<li>投稿 is the standard term for submitting to a publication</li>
+<li>
+<p>期 is more appropriate than 本 for magazine issues</p>
+</li>
+<li>
+<p>我差不多写完了一个文章，但是还没完成了</p>
+</li>
+<li>Grammar error: Double completion marker (了...了)</li>
+<li>"还没完成" already implies negativity, so no 了 needed</li>
+<li>
+<p>Better: 我的文章差不多写完了，但还没有完全完成</p>
+</li>
+<li>
+<p>我可以很快写完，可是质量可能没那么好</p>
+</li>
+<li>
+<p>This is natural and correct</p>
+</li>
+<li>
+<p>我也可以拖延，几个月后提交</p>
+</li>
+<li>
+<p>This is grammatically correct but could be more natural as:
+  我也可以延后几个月再提交</p>
+</li>
+<li>
+<p>质量会好一点，但是我害怕如果给自己太多时间，写文章的时间增加了</p>
+</li>
+<li>The structure is a bit unnatural</li>
+<li>Better:
+  质量可能会好一些，但我担心如果给自己太多时间，写作过程反而会拖得更长</li>
+<li>写作过程 sounds more natural than 写文章的时间</li>
+<li>
+<p>担心 is more appropriate here than 害怕</p>
+</li>
+<li>
+<p>我爱人不知道什么是最好的</p>
+</li>
+<li>While grammatically correct, 我爱人 sounds slightly dated/formal</li>
+<li>More natural: 我老公/我丈夫/我妻子 (depending on spouse's gender)
+  也不知道怎么选择比较好</li>
+</ol>
+<p>Overall, your Chinese is quite comprehensible, with only minor grammar
+issues. The main areas for improvement are word choice and making expressions
+sound more natural. You have a good grasp of basic sentence structure, but
+some phrases could be more idiomatic.</p>
+</blockquote>
+<p>Overall this feedback is very good! I assume this will work well for other
+languages too.</p>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/chinese/" rel="tag">chinese</a></li>
+            <li><a class="tag p-category" href="../../categories/language/" rel="tag">language</a></li>
+            <li><a class="tag p-category" href="../../categories/using-large-language-models/" rel="tag">using large language models</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2025-03-27-reaction-correctness/" rel="prev" title="Conceptual confusion about desirable outputs of reaction prediction models.">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../2025-04-01-cheminformatics-model-qa/" rel="next" title="Generic recommendations for cheminformatics models.">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2025-04-01.
+Contents © 2025         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>
