@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why your active learning algorithm may not do better than random | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2025-04-02-active-learning-random/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2025-04-01-cheminformatics-model-qa/" title="Generic recommendations for cheminformatics models." type="text/html">
+<link rel="next" href="../2025-04-12-ai-coding-python-package/" title="Coding python packages with AI" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Why your active learning algorithm may not do better than random">
+<meta property="og:url" content="https://austintripp.ca/blog/2025-04-02-active-learning-random/">
+<meta property="og:description" content='I am a big fan of active learning, but I am also acutely aware of its potential
+failure modes. A common failure mode is random-like performance: achieving no
+better "success"1 in picking points than a'>
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-04-02T00:00:00Z">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="speculation">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Why your active learning algorithm may not do better than random</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2025-04-02T00:00:00Z" itemprop="datePublished" title="2025-04-02">2025-04-02</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>I am a big fan of active learning, but I am also acutely aware of its potential
+failure modes. A common failure mode is <em>random-like</em> performance: achieving no
+better "success"<sup id="fnref:success"><a class="footnote-ref" href="#fn:success">1</a></sup> in picking points than a <em>random</em> policy. Indeed, it
+is possible to experience this when the implementation is flawed.<sup id="fnref:wrong"><a class="footnote-ref" href="#fn:wrong">2</a></sup>
+However, in some problems it <em>may not be possible</em> to beat random-like
+performance. In this post I try to explain why.</p>
+<!-- TEASER_END -->
+
+<div class="alert alert-info">
+This is a "quickpost": a post which I have tried to write quickly, without very much editing/polishing.
+For more details on quickposts, see
+<a href="../2025-02-11-lowering-quality/">this blog post</a>.
+</div>
+
+<h3 id="why-would-you-expect-active-learning-to-be-better-than-random">Why would you expect active learning to be BETTER than random?</h3>
+<p>The general premise of active learning is that you can use a model to select
+the most "informative" data points to label. For this strategy to be better
+than random, you would need:</p>
+<ul>
+<li>High <em>variation</em> in the "informativeness" of potential data points (if all
+  points are equally informative then no policy will be better than random).</li>
+<li>A model which can judge "informativeness" (e.g. by having well-calibrated
+  uncertainty).</li>
+<li>Agreement between "informativeness" and "performance".<sup id="fnref:agreement"><a class="footnote-ref" href="#fn:agreement">3</a></sup>
+</li>
+</ul>
+<p>These tend to all be true in the "toy" problems studied in active learning
+papers, but may be <em>completely false</em> in practice.</p>
+<ul>
+<li>Data pools may be very homogeneous and full of similar points.</li>
+<li>Neural networks are often overconfident in their own predictions.</li>
+<li>There are many different notions of "information" and many different metrics,
+  and they can't all match each other...</li>
+</ul>
+<h3 id="practical-example-molecule-design">Practical example: molecule design</h3>
+<p>I focused on molecule design in my PhD and saw many papers use active learning
+to select promising molecules, but achieve poor performance. This is probably
+because:</p>
+<ul>
+<li>The space of all small molecules is ENORMOUS (maybe <code>1e60</code>). For any
+  realistic training set, there is always an infinite supply of molecules
+  dissimilar to <em>every</em> molecule in the training set, and are therefore highly
+  informative.</li>
+<li>Getting uncertainty estimates is hard, and many papers use questionable
+  techniques like "approximate Bayesian neural networks with variational
+  inference", which may not work well.</li>
+<li>Often what people want from active learning is "find the best molecules" or
+  "train a very accurate model over a narrow region of chemical space", but the
+  model just picks "outlier" points from the vastness of molecule space.</li>
+</ul>
+<h3 id="will-active-learning-be-better-than-random-on-my-problem">Will active learning be better than random on <em>my</em> problem?</h3>
+<p>Obviously I can't say without knowing what your problem is. My general checklist would be:</p>
+<ol>
+<li>
+<strong>What is the space of points you are choosing from?</strong> The smaller the set,
+   the stronger a random policy will be in general. Large sets with many
+   similar data points and a small number of "outlier" points will make a
+   random policy perform worse, but <em>only</em> if the optimal policy is to <em>pick</em>
+   the outlier points. If the outlier points are, not helpful then they might
+   just "distract" an active learning algorithm.</li>
+<li>
+<strong>What model will be used to make decisions?</strong> Active learning is very
+   sensitive to the model. If your model generally <em>underfits</em> the data (eg a
+   Bayesian model with a strong prior), then most data points will probably be
+   similarly "informative". If your model <em>overfits</em> the data, then it might
+   not provide reliable uncertainty estimates. If your model is some kind of
+   "local" model (eg a kernel method or k-nearest neighbors) then the model
+   will be prone to picking "distant" data points (and may possibly fall into
+   the trap of querying an endless supply of "distant" data points). My overall
+   recommendation is to have a model with a fairly <em>good</em> fit, erring on the
+   side of underfitting if possible.</li>
+<li>
+<strong>What is your objective?</strong> The objectives "improve model accuracy" and
+   "optimize a black-box function" are well-studied. Other objectives are much
+   less well-studied. If the goal is "improve model accuracy", ensure that the
+   pool set is not <em>too</em> different from the test set.</li>
+</ol>
+<p>Remember that these are just my guesses; your mileage may vary.</p>
+<h3 id="conclusions">Conclusions</h3>
+<p>Although there are many cases when active learning might not be better than
+random, I am still enthusiastic about it because I think many problems <em>are</em>
+amenable to active learning, or <em>can be modified</em> to be more amenable.
+Nonetheless, I hope this post explains why not all active learning projects
+might be successful.</p>
+<div class="alert alert-success">
+
+This post was checked for LLM alpha (see <a href="../2025-02-24-llm-alpha/">this blog post</a> for details). I asked
+Claude Sonnet 3.7 about why active learning may be no better than random
+and it only said:
+
+<ul>
+<li>In the very early stages with extremely few labeled examples, random sampling might occasionally outperform active learning</li>
+Active learning can sometimes focus too narrowly on certain patterns and miss important outliers
+<li>The effectiveness depends on the quality of the informativeness measure used (uncertainty sampling, query-by-committee, expected model change, etc.)</li>
+<li>Performance advantage varies by dataset complexity and model type</li>
+</ul>
+</div>
+
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:success">
+<p>This could be model accuracy, regret of the points chosen, or something else. <a class="footnote-backref" href="#fnref:success" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+<li id="fn:wrong">
+<p>E.g., a bug in the code, or poorly tuned parameters. <a class="footnote-backref" href="#fnref:wrong" title="Jump back to footnote 2 in the text">↩</a></p>
+</li>
+<li id="fn:agreement">
+<p>For example, in an active learning classification task, if "informativeness" is a model's predicted uncertainty, and "performance" is the classification accuracy of the model trained on all data so far, it is possible that the most "informative" examples to label are outliers, and labelling them does not meaningfully increase the performance on the test set. <a class="footnote-backref" href="#fnref:agreement" title="Jump back to footnote 3 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/machine-learning/" rel="tag">machine learning</a></li>
+            <li><a class="tag p-category" href="../../categories/speculation/" rel="tag">speculation</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2025-04-01-cheminformatics-model-qa/" rel="prev" title="Generic recommendations for cheminformatics models.">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../2025-04-12-ai-coding-python-package/" rel="next" title="Coding python packages with AI">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2025-04-14.
+Contents © 2025         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>
