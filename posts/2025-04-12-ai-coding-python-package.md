@@ -15,7 +15,7 @@ well! These tools are not perfect, but they are useful!
 
 ---
 
-## Package 1: "safe gpytorch defaults" using cursor
+## Package 1: "actually exact GPyTorch" using cursor
 
 The Gaussian Process package `gpytorch` uses a bunch of linear algebra
 approximations by default to run faster. I often write code to turn them off
@@ -37,7 +37,8 @@ I put the following prompt into cursor's AI tab, using the "Claude" model:
 > Please write a full package with documentation and a simple test with pytest
 > where a basic gpytorch GP is initialized with and without safe_defaults.
 
-I had *never* written a context manager in python before so I didn't know how to do this.
+I had *never* written a context manager in python before so I didn't know how
+to do this.
 
 The results were ok.
 
@@ -49,10 +50,11 @@ The results were ok.
 - My email / GitHub were hallucinated so I needed to replace that
 - Package version numbers and some pre-commit config names needed to be changed
 
-After fixing and checking the package, it now lives here:
-<https://github.com/AustinT/gpytorch-safe-defaults>. At the time of writing of
+After fixing and checking the package (and changing the name from
+`gpytorch_safe_defaults` to `actually_exact_gpytorch`), it now lives here:
+<https://github.com/AustinT/actually_exact_gpytorch>. At the time of writing of
 this blog post, the latest commit hash is
-`3ee617f31a0f23a7a8908da8f04734598a30937a`.
+`483954ed86de6d701a6d1b8250ff9d87f18b8591`.
 
 ## Package 2: "Tanimoto kernel for scikit-learn" using Gemini / Claude
 
