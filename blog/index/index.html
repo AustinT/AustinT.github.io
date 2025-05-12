@@ -13,7 +13,7 @@
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
 <link rel="canonical" href="https://austintripp.ca/blog/index/">
-<link rel="next" href="index-3.html" type="text/html">
+<link rel="next" href="index-4.html" type="text/html">
 <!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]-->
 </head>
 <body>
@@ -77,7 +77,92 @@
     
         
     <div class="postindex">
-            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-04-12-ai-coding-python-package/" class="u-url">Coding python packages with AI</a></h1>
+            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-05-12-chebyshev-scalarization/" class="u-url">Chebyshev Scalarization Explained</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2025-05-12-chebyshev-scalarization/" rel="bookmark">
+            <time class="published dt-published" datetime="2025-05-12T00:00:00Z" itemprop="datePublished" title="2025-05-12">2025-05-12</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>I've been reading about multi-objective optimization recently.<sup id="fnref:surprise"><a class="footnote-ref" href="../2025-05-12-chebyshev-scalarization/#fn:surprise">1</a></sup>
+Many papers state limitations of "linear scalarization" approaches,
+mainly that it might not be able to represent all Pareto-optimal solutions
+(if this sentence does not make sense to you, see <a href="../2025-05-12-chebyshev-scalarization/#background-to-multi-objective-optimization">background</a>).
+Chebyshev scalarization is sometimes mentioned as an alternative which <em>can</em> represent all solutions.
+However, these papers mention it in passing without a proper explanation,
+and I did not find a good explanation of it online.<sup id="fnref:online"><a class="footnote-ref" href="../2025-05-12-chebyshev-scalarization/#fn:online">2</a></sup></p>
+<p>After doing a bit of my own research,<sup id="fnref:gemini"><a class="footnote-ref" href="../2025-05-12-chebyshev-scalarization/#fn:gemini">3</a></sup> I found that Chebyshev scalarization is actually not too complicated, so I thought <em>I</em> would explain it online.
+In this post, I:</p>
+<ul>
+<li>Give definitions for Chebyshev scalarization (for both maximization and minimization)</li>
+<li>Give a simple proof that it can represent all Pareto-optimal solutions</li>
+<li>Explain its relationship to linear scalarization via $\ell_p$ norms.</li>
+<li>Give a geometric interpretation via an interactive visualization</li>
+</ul>
+<p class="more"><a href="../2025-05-12-chebyshev-scalarization/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-05-08-claude-chinese-grammar/" class="u-url">Reminder that Claude is really good for Chinese grammar</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2025-05-08-claude-chinese-grammar/" rel="bookmark">
+            <time class="published dt-published" datetime="2025-05-08T00:00:00Z" itemprop="datePublished" title="2025-05-08">2025-05-08</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>This shouldn't surprise anybody who uses LLMs a lot, but LLMs are <em>really</em> good
+at common languages and translation. When practising Chinese today, a sentence
+which confused me was:</p>
+<p class="more"><a href="../2025-05-08-claude-chinese-grammar/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-04-28-beijing-travel/" class="u-url">Some Beijing travel tips</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2025-04-28-beijing-travel/" rel="bookmark">
+            <time class="published dt-published" datetime="2025-04-28T00:00:00Z" itemprop="datePublished" title="2025-04-28">2025-04-28</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>Earlier this year I went to Beijing. Here are some miscellaneous travel tips.
+What I am writing here is probably not unique or original, treat this just as
+my personal emphasis / endorsement.</p>
+<p class="more"><a href="../2025-04-28-beijing-travel/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-04-24-v-out-of-vae/" class="u-url">Taking the V out of VAEs: long live KL-regularized autoencoders!</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2025-04-24-v-out-of-vae/" rel="bookmark">
+            <time class="published dt-published" datetime="2025-04-24T00:00:00Z" itemprop="datePublished" title="2025-04-24">2025-04-24</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>I recently read <a href="https://sander.ai/2025/04/15/latents.html#">this post about generative modelling in latent
+space</a> by Sander Dieleman and
+agreed strongly with the following quote (copied verbatim except for typo
+correction):</p>
+<p class="more"><a href="../2025-04-24-v-out-of-vae/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-04-12-ai-coding-python-package/" class="u-url">Coding python packages with AI</a></h1>
                 <div class="metadata">
                     <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                         Austin Tripp
@@ -206,104 +291,25 @@ something like this!</p>
 </ol>
 </div>
                 </div>
-            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-02-25-no-reviewer-instructions/" class="u-url">Why don't ML conferences provide reviewer instructions?</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Austin Tripp
-                    </span></p>
-            <p class="dateline">
-            <a href="../2025-02-25-no-reviewer-instructions/" rel="bookmark">
-            <time class="published dt-published" datetime="2025-02-25T00:00:00Z" itemprop="datePublished" title="2025-02-25">2025-02-25</time></a>
-            </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-                    <div>
-<p>I remember when I first received an invitation to review papers for an ML
-conference in late 2020. What surprised me most was <em>not</em> that I was being
-invited (even though that was a surprise, since I was just a second year PhD
-student who had only just completed writing a paper myself). Instead, it was
-the lack of instruction of how to assess the papers: essentially just "write
-your reviews by date X", and "evaluate novelty, significance, soundness, etc".
-In fact, in all the years since, I think I have <em>never</em> received explicit
-instructions for reviewing ML conference papers.<sup id="fnref:instructions"><a class="footnote-ref" href="../2025-02-25-no-reviewer-instructions/#fn:instructions">1</a></sup></p>
-<p class="more"><a href="../2025-02-25-no-reviewer-instructions/">Read more…</a></p>
-</div>
-                </div>
-            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-02-24-llm-alpha/" class="u-url">Alpha over LLMs</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Austin Tripp
-                    </span></p>
-            <p class="dateline">
-            <a href="../2025-02-24-llm-alpha/" rel="bookmark">
-            <time class="published dt-published" datetime="2025-02-24T00:00:00Z" itemprop="datePublished" title="2025-02-24">2025-02-24</time></a>
-            </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-                    <p>On a recent podcast, <a href="https://www.kalzumeus.com/about/">Patrick McKenzie</a>
-mentioned the idea of "alpha over LLMs": does a publisher produce text with any
-meaningful advantage over asking an LLM? I think this is an important question
-for anybody trying to regularly write, even if the readership is small (eg this
-blog). I interpret this as:</p>
-<ul>
-<li>People should not put out content which is obviously wrong and can be
-  corrected by an LLM (eg "I have theory X" where asking an LLM provides clear
-  and convincing counter-arguments to X).</li>
-<li>People should also not put out content which is worse than the answer you get
-  from asking an LLM (eg the same content but explained less clearly).</li>
-</ul>
-<p>I will generally try to uphold this principle in future blog posts.</p>
-                </div>
-            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-02-14-is-offline-mbo-realistic/" class="u-url">Is offline model-based optimization a realistic problem? (I'm not convinced)</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Austin Tripp
-                    </span></p>
-            <p class="dateline">
-            <a href="../2025-02-14-is-offline-mbo-realistic/" rel="bookmark">
-            <time class="published dt-published" datetime="2025-02-14T00:00:00Z" itemprop="datePublished" title="2025-02-14">2025-02-14</time></a>
-            </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-                    <div>
-<div class="alert alert-info">
-This is a "quickpost": a post which I have tried to write quickly, without very much editing/polishing.
-For more details on quickposts, see
-<a href="../2025-02-11-lowering-quality/">this blog post</a>.
-</div>
-
-<p>Offline model-based optimization (OMBO in this post) is essentially 1-shot
-optimization using a fixed dataset. You see data, do whatever you want, then
-propose a batch of query points, which are then evaluated. Hopefully, one (or
-most) of the query points are optimal (or near optimal). End of task.</p>
-<p class="more"><a href="../2025-02-14-is-offline-mbo-realistic/">Read more…</a></p>
-</div>
-                </div>
-            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2025-02-11-lowering-quality/" class="u-url">Experiment: more posts, lower quality</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Austin Tripp
-                    </span></p>
-            <p class="dateline">
-            <a href="../2025-02-11-lowering-quality/" rel="bookmark">
-            <time class="published dt-published" datetime="2025-02-11T00:00:00Z" itemprop="datePublished" title="2025-02-11">2025-02-11</time></a>
-            </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-                    <div>
-<p>Since starting my new position at Valence, my efforts to write more on my blog have clearly been successful.<sup id="fnref:4years"><a class="footnote-ref" href="../2025-02-11-lowering-quality/#fn:4years">1</a></sup>
-However, my internal list of "things I would like to write a blog post about" is growing far faster than I am actually
-able to write blog posts about things where I do think it is worth putting an opinion online.</p>
-<p class="more"><a href="../2025-02-11-lowering-quality/">Read more…</a></p>
-</div>
-                </div>
             </article>
 </div>
     
         <ul class="pager postindexpager clearfix">
-<li class="next"><a href="index-3.html" rel="next">Older posts</a></li>
+<li class="next"><a href="index-4.html" rel="next">Older posts</a></li>
         </ul>
-<!--End of body content--><footer id="footer"><div style="text-align: center;">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--End of body content--><footer id="footer"><div style="text-align: center;">
 <a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
 <a href="https://github.com/AustinT">GitHub</a> | 
 <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
@@ -312,7 +318,7 @@ able to write blog posts about things where I do think it is worth putting an op
 </div>
 <br>
 Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
-Last updated 2025-04-14.
+Last updated 2025-05-12.
 Contents © 2025         Austin Tripp (MIT License). <br>
 All opinions and statements on this site are my own (ie not my employer's).
 <br></footer>

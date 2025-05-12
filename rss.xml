@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website</title><link>https://austintripp.ca/</link><description>Austin Tripp's personal website</description><atom:link href="https://austintripp.ca/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Mon, 14 Apr 2025 08:35:16 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Coding python packages with AI</title><link>https://austintripp.ca/blog/2025-04-12-ai-coding-python-package/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I tried using some new LLM tools to code 2 entire python packages (instead of
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website</title><link>https://austintripp.ca/</link><description>Austin Tripp's personal website</description><atom:link href="https://austintripp.ca/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Mon, 12 May 2025 08:59:57 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Chebyshev Scalarization Explained</title><link>https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I've been reading about multi-objective optimization recently.&lt;sup id="fnref:surprise"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/#fn:surprise"&gt;1&lt;/a&gt;&lt;/sup&gt;
+Many papers state limitations of "linear scalarization" approaches,
+mainly that it might not be able to represent all Pareto-optimal solutions
+(if this sentence does not make sense to you, see &lt;a href="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/#background-to-multi-objective-optimization"&gt;background&lt;/a&gt;).
+Chebyshev scalarization is sometimes mentioned as an alternative which &lt;em&gt;can&lt;/em&gt; represent all solutions.
+However, these papers mention it in passing without a proper explanation,
+and I did not find a good explanation of it online.&lt;sup id="fnref:online"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/#fn:online"&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;After doing a bit of my own research,&lt;sup id="fnref:gemini"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/#fn:gemini"&gt;3&lt;/a&gt;&lt;/sup&gt; I found that Chebyshev scalarization is actually not too complicated, so I thought &lt;em&gt;I&lt;/em&gt; would explain it online.
+In this post, I:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Give definitions for Chebyshev scalarization (for both maximization and minimization)&lt;/li&gt;
+&lt;li&gt;Give a simple proof that it can represent all Pareto-optimal solutions&lt;/li&gt;
+&lt;li&gt;Explain its relationship to linear scalarization via $\ell_p$ norms.&lt;/li&gt;
+&lt;li&gt;Give a geometric interpretation via an interactive visualization&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/"&gt;Read more…&lt;/a&gt; (13 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>bayesian optimization</category><category>machine learning</category><guid>https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/</guid><pubDate>Mon, 12 May 2025 00:00:00 GMT</pubDate></item><item><title>Reminder that Claude is really good for Chinese grammar</title><link>https://austintripp.ca/blog/2025-05-08-claude-chinese-grammar/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;This shouldn't surprise anybody who uses LLMs a lot, but LLMs are &lt;em&gt;really&lt;/em&gt; good
+at common languages and translation. When practising Chinese today, a sentence
+which confused me was:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-05-08-claude-chinese-grammar/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>chinese</category><category>language</category><category>using large language models</category><guid>https://austintripp.ca/blog/2025-05-08-claude-chinese-grammar/</guid><pubDate>Thu, 08 May 2025 00:00:00 GMT</pubDate></item><item><title>Some Beijing travel tips</title><link>https://austintripp.ca/blog/2025-04-28-beijing-travel/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Earlier this year I went to Beijing. Here are some miscellaneous travel tips.
+What I am writing here is probably not unique or original, treat this just as
+my personal emphasis / endorsement.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-04-28-beijing-travel/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>travel</category><guid>https://austintripp.ca/blog/2025-04-28-beijing-travel/</guid><pubDate>Mon, 28 Apr 2025 00:00:00 GMT</pubDate></item><item><title>Taking the V out of VAEs: long live KL-regularized autoencoders!</title><link>https://austintripp.ca/blog/2025-04-24-v-out-of-vae/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I recently read &lt;a href="https://sander.ai/2025/04/15/latents.html#"&gt;this post about generative modelling in latent
+space&lt;/a&gt; by Sander Dieleman and
+agreed strongly with the following quote (copied verbatim except for typo
+correction):&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-04-24-v-out-of-vae/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><guid>https://austintripp.ca/blog/2025-04-24-v-out-of-vae/</guid><pubDate>Thu, 24 Apr 2025 00:00:00 GMT</pubDate></item><item><title>Coding python packages with AI</title><link>https://austintripp.ca/blog/2025-04-12-ai-coding-python-package/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I tried using some new LLM tools to code 2 entire python packages (instead of
 editing a handful of lines at a time, which is what I did previously). It went
 well! These tools are not perfect, but they are useful!&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-04-12-ai-coding-python-package/"&gt;Read more…&lt;/a&gt; (3 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>using large language models</category><guid>https://austintripp.ca/blog/2025-04-12-ai-coding-python-package/</guid><pubDate>Sat, 12 Apr 2025 00:00:00 GMT</pubDate></item><item><title>Why your active learning algorithm may not do better than random</title><link>https://austintripp.ca/blog/2025-04-02-active-learning-random/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I am a big fan of active learning, but I am also acutely aware of its potential
@@ -40,37 +65,4 @@ something like this!&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://cvpr.thecvf.com/Conferences/2025/CVPRChanges"&gt;https://cvpr.thecvf.com/Conferences/2025/CVPRChanges&lt;/a&gt; &lt;a class="footnote-backref" href="https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/#fnref:ref" title="Jump back to footnote 1 in the text"&gt;↩&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</description><category>machine learning</category><category>opinion</category><category>peer review</category><guid>https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/</guid><pubDate>Tue, 04 Mar 2025 00:00:00 GMT</pubDate></item><item><title>Why don't ML conferences provide reviewer instructions?</title><link>https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I remember when I first received an invitation to review papers for an ML
-conference in late 2020. What surprised me most was &lt;em&gt;not&lt;/em&gt; that I was being
-invited (even though that was a surprise, since I was just a second year PhD
-student who had only just completed writing a paper myself). Instead, it was
-the lack of instruction of how to assess the papers: essentially just "write
-your reviews by date X", and "evaluate novelty, significance, soundness, etc".
-In fact, in all the years since, I think I have &lt;em&gt;never&lt;/em&gt; received explicit
-instructions for reviewing ML conference papers.&lt;sup id="fnref:instructions"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/#fn:instructions"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>peer review</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/</guid><pubDate>Tue, 25 Feb 2025 00:00:00 GMT</pubDate></item><item><title>Alpha over LLMs</title><link>https://austintripp.ca/blog/2025-02-24-llm-alpha/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;p&gt;On a recent podcast, &lt;a href="https://www.kalzumeus.com/about/"&gt;Patrick McKenzie&lt;/a&gt;
-mentioned the idea of "alpha over LLMs": does a publisher produce text with any
-meaningful advantage over asking an LLM? I think this is an important question
-for anybody trying to regularly write, even if the readership is small (eg this
-blog). I interpret this as:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;People should not put out content which is obviously wrong and can be
-  corrected by an LLM (eg "I have theory X" where asking an LLM provides clear
-  and convincing counter-arguments to X).&lt;/li&gt;
-&lt;li&gt;People should also not put out content which is worse than the answer you get
-  from asking an LLM (eg the same content but explained less clearly).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I will generally try to uphold this principle in future blog posts.&lt;/p&gt;</description><category>announcement</category><category>blog</category><category>using large language models</category><guid>https://austintripp.ca/blog/2025-02-24-llm-alpha/</guid><pubDate>Mon, 24 Feb 2025 00:00:00 GMT</pubDate></item><item><title>Is offline model-based optimization a realistic problem? (I'm not convinced)</title><link>https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;div class="alert alert-info"&gt;
-This is a "quickpost": a post which I have tried to write quickly, without very much editing/polishing.
-For more details on quickposts, see
-&lt;a href="https://austintripp.ca/blog/2025-02-11-lowering-quality/"&gt;this blog post&lt;/a&gt;.
-&lt;/div&gt;
-
-&lt;p&gt;Offline model-based optimization (OMBO in this post) is essentially 1-shot
-optimization using a fixed dataset. You see data, do whatever you want, then
-propose a batch of query points, which are then evaluated. Hopefully, one (or
-most) of the query points are optimal (or near optimal). End of task.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/"&gt;Read more…&lt;/a&gt; (4 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/</guid><pubDate>Fri, 14 Feb 2025 00:00:00 GMT</pubDate></item><item><title>Experiment: more posts, lower quality</title><link>https://austintripp.ca/blog/2025-02-11-lowering-quality/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Since starting my new position at Valence, my efforts to write more on my blog have clearly been successful.&lt;sup id="fnref:4years"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-02-11-lowering-quality/#fn:4years"&gt;1&lt;/a&gt;&lt;/sup&gt;
-However, my internal list of "things I would like to write a blog post about" is growing far faster than I am actually
-able to write blog posts about things where I do think it is worth putting an opinion online.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-02-11-lowering-quality/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>announcement</category><category>blog</category><guid>https://austintripp.ca/blog/2025-02-11-lowering-quality/</guid><pubDate>Tue, 11 Feb 2025 00:00:00 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;</description><category>machine learning</category><category>opinion</category><category>peer review</category><guid>https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/</guid><pubDate>Tue, 04 Mar 2025 00:00:00 GMT</pubDate></item></channel></rss>

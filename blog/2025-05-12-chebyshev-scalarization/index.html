@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chebyshev Scalarization Explained | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2025-05-08-claude-chinese-grammar/" title="Reminder that Claude is really good for Chinese grammar" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Chebyshev Scalarization Explained">
+<meta property="og:url" content="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/">
+<meta property="og:description" content="I've been reading about multi-objective optimization recently.1
+Many papers state limitations of &quot;linear scalarization&quot; approaches,
+mainly that it might not be able to represent all Pareto-optimal sol">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-05-12T00:00:00Z">
+<meta property="article:tag" content="bayesian optimization">
+<meta property="article:tag" content="machine learning">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Chebyshev Scalarization Explained</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2025-05-12T00:00:00Z" itemprop="datePublished" title="2025-05-12">2025-05-12</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>I've been reading about multi-objective optimization recently.<sup id="fnref:surprise"><a class="footnote-ref" href="#fn:surprise">1</a></sup>
+Many papers state limitations of "linear scalarization" approaches,
+mainly that it might not be able to represent all Pareto-optimal solutions
+(if this sentence does not make sense to you, see <a href="#background-to-multi-objective-optimization">background</a>).
+Chebyshev scalarization is sometimes mentioned as an alternative which <em>can</em> represent all solutions.
+However, these papers mention it in passing without a proper explanation,
+and I did not find a good explanation of it online.<sup id="fnref:online"><a class="footnote-ref" href="#fn:online">2</a></sup></p>
+<p>After doing a bit of my own research,<sup id="fnref:gemini"><a class="footnote-ref" href="#fn:gemini">3</a></sup> I found that Chebyshev scalarization is actually not too complicated, so I thought <em>I</em> would explain it online.
+In this post, I:</p>
+<ul>
+<li>Give definitions for Chebyshev scalarization (for both maximization and minimization)</li>
+<li>Give a simple proof that it can represent all Pareto-optimal solutions</li>
+<li>Explain its relationship to linear scalarization via $\ell_p$ norms.</li>
+<li>Give a geometric interpretation via an interactive visualization</li>
+</ul>
+<!-- TEASER_END --><div class="alert alert-info">
+  <h5>Notation and Acronyms</h5>
+  <ul>
+<li>
+<strong>MOO</strong>: multi-objective optimization</li>
+    <li>Bold denotes vectors (eg $\mathbf{f}$), $f_i$ is element of a vector</li>
+  </ul>
+</div>
+
+<h3 id="background-to-multi-objective-optimization">Background to multi-objective optimization</h3>
+<p><em>Feel free to skip to <a href="#chebyshev-scalarization">the next section</a> if you are familiar with this field, my notation and definitions are fairly standard</em>.</p>
+<h4 id="multi-objective-optimization-moo">Multi-objective optimization (MOO)</h4>
+<p>The goal of <em>multi</em>-objective optimization is to optimize a k-dimensional vector-valued function
+$\mathbf{f}: \mathcal{X} \mapsto \mathbb{R}^k$ ($\mathcal{X}$ is an arbitrary input space).
+<em>Optimize</em> can mean maximize or minimize. In this post I will generally assume <em>maximization</em>.
+This means we want to find a <em>single</em> point $x\in\mathcal{X}$ where $\mathbf{f}(x)$ is
+as large as possible in each dimension.<sup id="fnref:max"><a class="footnote-ref" href="#fn:max">4</a></sup></p>
+<h4 id="pareto-optimality-and-non-domination">Pareto optimality and non-domination</h4>
+<p>Although MOO is a problem in $\mathcal{X}$ space,
+the remainder of this post will only discriminate between points
+$x$ via their values of $\mathbf{f}(x)$.
+Therefore we will drop the dependence on $x$ and simply write $\mathbf{f}$
+for the remainder of the post (and always assume there is a point $x$ attached to $\mathbf{f}$).
+This should not cause any ambiguity.</p>
+<p>If a point $\mathbf{f}$ is at least as large as a point $\mathbf{f}'$ in <em>every</em> dimension
+and exceeds $\mathbf{f}'$ in <em>at least one</em> dimension,
+we say that $\mathbf{f}$ <em>dominates</em> $\mathbf{f}'$
+and write<sup id="fnref:succ"><a class="footnote-ref" href="#fn:succ">5</a></sup> $\mathbf{f}\succ \mathbf{f}'$.</p>
+<p>Unlike in single-objective optimization,
+there may not be a single dominant point $\mathbf{f}^\ast$.
+For example, in the set $\{[0, 1], [1, 0]\}$, neither point dominates the other: they are both better in one dimension and worse in the other.
+Therefore, MOO generally seeks points
+$\mathbf{f}^*$ which are <em>not dominated</em> by any other vector $\mathbf{f}$.
+Such vectors are called <em>Pareto optimal</em>,
+and the collection of all such vectors is called the <em>Pareto set</em>.</p>
+<p>For a more precise definition, see this footnote.<sup id="fnref:paretodefn"><a class="footnote-ref" href="#fn:paretodefn">6</a></sup></p>
+<h4 id="scalarization-turning-multi-objective-optimization-into-single-objective-optimization">Scalarization: turning multi-objective optimization into single-objective optimization</h4>
+<p>Optimization algorithms which are <em>truly</em> multi-objective will look very different from single-objective optimization algorithms because they need to find a Pareto set and explore different trade-offs between the k objectives.
+This is a shame, since single-objective optimization is well-studied and many useful algorithms have been developed.
+<em>Scalarization</em> is essentially an attempt to turn a MOO problem into a <em>set</em> of single-objective problems via a set of <em>scalarization functions</em>
+$$\{s_\theta: \mathbb{R}^k\mapsto \mathbb{R}\}_{\theta\in\Theta}\ .$$</p>
+<p>Each scalarization function assigns a single (scalar) score to the vector-valued output of $\mathbf{f}$.
+The most common type of scalarization is <em>linear scalarization</em>, aka "weighted sum":
+$$s_{\mathbf{w}}(\mathbf{f}) = \sum_i w_i f_i$$
+where $\mathbf{w}=[w_1,\ldots,w_k]$ is a vector of positive weights.</p>
+<p>One would hope to find Pareto optimal points by optimizing $s_\theta(\mathbf{f}(x))$ for various values of $\theta$.
+Clearly this will not actually produce Pareto optimal points for <em>any</em> functions $s_\theta$.
+However:</p>
+<ul>
+<li>If the scalarization functions are are <em>strictly monotonically increasing</em> in all of their inputs, then the <em>maximizer(s)</em> of the scalarization function must all be Pareto optimal.</li>
+<li>If the scalarization functions are <em>non-decreasing</em> (ie non-strictly monotonically increasing), then the set of maximizers will <em>contain</em> Pareto optimal points, but may also include sub-optimal points.</li>
+</ul>
+<p>Hopefully this makes intuitive sense, otherwise see <a href="#a-scalarization-and-monotonicity">these theorems</a>.</p>
+<h3 id="chebyshev-scalarization">Chebyshev scalarization</h3>
+<h4 id="definition">Definition</h4>
+<p>Chebyshev scalarization<sup id="fnref:spelling"><a class="footnote-ref" href="#fn:spelling">7</a></sup> functions take two parameters:</p>
+<ol>
+<li>A vector of positive weights $\mathbf{w}$ (like linear scalarization)</li>
+<li>A <em>reference point</em> $\mathbf{z}\in\mathbb{R}^k$, interpreted as the <em>ideal value</em> for $\mathbf{f}$.</li>
+</ol>
+<p>Scalarization was introduced previously as a set of functions $s_\theta$ to be <em>maximized</em>.
+In this form, the function is:</p>
+<p>$$s_{\mathbf{w}, \mathbf{z}}(\mathbf{f}) = s_{\mathrm{Cheby(max)},\mathbf{w}, \mathbf{z}}(\mathbf{f}) = - \max_i \left[ w_i|f_i - z_i|\right]\ .$$</p>
+<p>Note that by maximization, I mean that $s$ is to be maximized, not $\mathbf{f}$.
+The form is <em>the same</em> regardless of whether $\mathbf{f}$ is to be maximized or minimized- that information
+is encoded by the <em>reference point</em> $\mathbf{z}$.</p>
+<p>Importantly, notice the <em>negative sign</em>: it means that this function is always <em>negative</em>.
+This is because Chebyshev scalarization is normally defined as a scalar to be <em>minimized</em>.
+This alternative (and more natural) definition is:</p>
+<p>$$ s_{\mathrm{Cheby(min)},\mathbf{w}, \mathbf{z}}(\mathbf{f}) = \max_i \left[ w_i|f_i - z_i|\right]\ .$$</p>
+<p>$s_{\mathrm{Cheby(min)},\mathbf{w}, \mathbf{z}}(\mathbf{f})$ and
+$s_{\mathrm{Cheby(max)},\mathbf{w}, \mathbf{z}}(\mathbf{f})$
+differ only by a negative sign.
+I will mainly use the (max) variant in this post for consistency.</p>
+<h4 id="interpretation">Interpretation</h4>
+<p>Chebyshev scalarization is essentially a <em>penalty</em> equal to the largest deviation
+between $\mathbf{f}$ and the reference point $\mathbf{z}$ across any dimension,
+with all deviations re-scaled by the weight vector $\mathbf{w}$.
+It is optimized when this penalty is <em>smallest</em> (hence the negative sign when it is maximized).</p>
+<p>Dimension-wise maximum is essentially the definition of the $\ell_\infty$ norm,
+also called the Chebyshev norm. This is actually where Chebyshev scalarization gets its name.<sup id="fnref:name"><a class="footnote-ref" href="#fn:name">8</a></sup>
+In this form, it is:</p>
+<p>$$s_{\mathbf{w}, \mathbf{z}}(\mathbf{f}) = -\left| \mathbf{w}\odot \left(\mathbf{f} - \mathbf{z} \right) \right|_\infty \ .$$</p>
+<p>Therefore, think of Chebyshev scalarization as "distance to reference point in a different norm."</p>
+<h4 id="pareto-coverage-property">Pareto coverage property</h4>
+<p>This is the most important property of Chebyshev scalarization.</p>
+<p><em><strong>IF</strong> $\mathbf{z} &gt; \mathbf{f}$ in each dimension for all achievable points $\mathbf{f}$</em>, then:</p>
+<ol>
+<li>All Pareto-optimal points maximize 
+  $s_{\mathbf{w}, \mathbf{z}}(\cdot)$ for some positive weight vector $\mathbf{w}$.</li>
+<li>For any positive weight vector $\mathbf{w}$, maximizing 
+  $s_{\mathbf{w}, \mathbf{z}}(\cdot)$ will produce at least one Pareto-optimal point.</li>
+</ol>
+<p>This means:</p>
+<ol>
+<li>Picking a weight vector $\mathbf{w}$ and maximizing $s_{\mathbf{w}, \mathbf{z}}(\cdot)$ will produce a Pareto optimal point (although it may also produce additional maximums for sub-optimal points). Useful, but this is not surprising since, if $\mathbf{z} &gt; \mathbf{f}$ element-wise, then the function is non-decreasing and <a href="#a-scalarization-and-monotonicity">proposition A.2</a> applies.</li>
+<li>
+<strong>ALL</strong> Pareto-optimal points can be produced by picking a suitable vector $\mathbf{w}$.</li>
+<li>These properties <strong>do not</strong> depend on a specific value of the reference point $\mathbf{z}$ (as long as it is an unachievable high value).</li>
+</ol>
+<p>Property 2 is what distinguishes Chebyshev scalarization from linear scalarization
+(which can only find points on the convex hull of the Pareto frontier).
+<a href="#b-chebyshev-coverage-of-pareto-front">At the end of this post</a>
+I give a simple proof by construction of point 2,
+which essentially amounts to setting $w_i = 1/\left(z_i-f_i\right)$.</p>
+<p><em>(NOTE: for minimization of $\mathbf{f}$, simply replace the condition $\mathbf{z} &gt; \mathbf{f}$ with $\mathbf{z} &lt; \mathbf{f}$) and the same result will hold.</em></p>
+<h4 id="note-about-the-weights">Note about the weights</h4>
+<p>Because one can factor a multiplicative constant out of the weights, it suffices to consider only weights which sum up to 1:
+$$\mathbf{w}: \sum_i w_i = 1\ .$$
+This is true for Chebyshev <em>and</em> linear scalarization.</p>
+<h3 id="comparison-with-linear-scalarization">Comparison with linear scalarization</h3>
+<p><a href="#interpretation">Earlier</a> I stated that Chebyshev scalarization is essentially minimizing the $\ell_\infty$
+norm between $\mathbf{f}$ and $\mathbf{z}$.
+Linear scalarization actually has a close connection to the $\ell_1$ distance between
+$\mathbf{f}$ and $\mathbf{z}$.</p>
+<p>Assume that we have a reference $\mathbf{z}$ where $\mathbf{z} &gt; \mathbf{f}$ element-wise
+(just as <a href="#pareto-coverage-property">done previously</a> to get Pareto coverage for Chebyshev scalarization).
+Then, we write</p>
+<p>$$-\left| \mathbf{w}\odot \left(\mathbf{f} - \mathbf{z} \right) \right|_1  = -\sum_i w_i \left|f_i - z_i \right| =\sum_i w_i f_i - \sum_i w_i z_i$$</p>
+<p>(Step-by-step explanations in footnote<sup id="fnref:stepbystep"><a class="footnote-ref" href="#fn:stepbystep">9</a></sup>)
+The first time is linear scalarization. The second term is <em>constant</em> with respect to the input vector $\mathbf{f}$,
+and therefore will not change which inputs <em>maximize</em> the scalarization.
+This allows the reference point to be <em>excluded</em> from the scalarization without consequence,
+but also allows us to <em>include</em> a reference point in linear scalarization without consequence.</p>
+<p><em>Summary: Chebyshev and linear scalarization can both by interpreted as $\ell_p$ distances between objectives
+and an unattainable reference point.
+Linear scalarization uses $p=1$, and you can manipulate the expression to put the reference point in an additive constant.
+Chebyshev scalarization uses $p=\infty$ and does not allow you to separate
+out the reference point.</em></p>
+<h3 id="augmented-chebyshev">Augmented Chebyshev</h3>
+<p>Because Chebyshev scalarization is not <em>strictly</em> monotonic,
+there may be some maximizers which are not Pareto optimal.
+This can be fixed by <em>augmenting</em> it with a linear scalarization term,
+weighted by a factor $\rho &gt; 0$:
+$$s_{\mathrm{Cheby(aug)},\mathbf w, \mathbf z, \rho} = - \max_i \left[ w_i|f_i - z_i|\right] + \rho\sum_i w_i f_i \ .$$</p>
+<p>This <em>augmented Chebyshev</em> function is <em>strictly</em> monotonic, and therefore all maximizers will be Pareto optimal.
+Unfortunately, this function <em>does not</em> guarantee that all Pareto optimal points can be found,
+although a sufficiently small value of $\rho$ makes this likely in practice.</p>
+<h3 id="geometric-interpretation">Geometric interpretation</h3>
+<p>To build understanding, I made an interactive visualization comparing linear, Chebyshev, and augmented Chebyshev scalarization.
+<strong>Disclaimer</strong>: this was vibe-coded with Cursor and definitely isn't perfect;
+I just had no experience using plotly before.
+The visualization will probably work much better on desktop compared to mobile (apologies 🙏).
+If you want to modify / improve the visualization,
+check out the source code 
+<a href="https://github.com/AustinT/2025-chebyshev-scalarization">here</a>.</p>
+<p>The visualization shows 3 types of Pareto fronts in $\mathbf{f}$ space:
+convex (default), concave, and mixed.
+The feasible region is marked in blue.
+You can switch between Pareto front types using the drop-down menu.</p>
+<p>Because this is a 2D problem, we can set $w_2=1-w_1$ and just look at the scalarizations as a function of $w_1$.
+The bottom slider controls $w_1$ for all scalarizations simultaneously.
+All scalarizations use the reference point $\mathbf{z} = [1.1, 1.1]$ (which dominates all points in the feasible region for all examples).</p>
+<p>The feasible point which maximizes the scalarization is marked with a black dot
+(if several points are tied then there may be multiple black dots).
+The level sets of the scalarizations are shown with contour lines (hopefully making it clear where the maximum comes from).</p>
+<p>I suggest you take some time to play around with the visualization now
+(otherwise I provide a summary below).</p>
+<!-- Include visualization div directly -->
+<div class="visualization-container">
+    <div class="visualization-container">
+      <object type="text/html" data="../../blog-images/2025-chebyshev/multi_objective_scalarization.html" width="100%" height="700px"></object>
+  </div>
+</div>
+
+<h4 id="my-analysis-of-visualization">My analysis of visualization</h4>
+<p>First, note the shapes of the level sets. For "Linear" they are parallel lines.
+For Chebyshev they are square-like (which should not be surprising since the $\ell_\infty$ unit ball is a square).
+For augmented Chebyshev they are <em>almost</em> square, except the angle is a bit larger than 90°.</p>
+<p>Now, let's compare the behavior as $w_1$ ranges from 0 to 1:</p>
+<ul>
+<li>For the "convex" Pareto front, all 3 functions sweep across the entire front. The maximum point is always tangent<sup id="fnref:tangent"><a class="footnote-ref" href="#fn:tangent">10</a></sup> to a level set.</li>
+<li>For the "concave" Pareto front:<ul>
+<li>Linear scalarization completely fails. For $w_1&lt;0.5$ the maximum is near the top left, and for $w_1&gt;0.5$ it suddenly shifts to the bottom right.<sup id="fnref:half"><a class="footnote-ref" href="#fn:half">11</a></sup> This is a well-understood limitation of linear scalarization.</li>
+<li>Chebyshev scalarization nicely sweeps across the entire front. However, note that for very small or very large values of $w_1$ there is a tie and a small number of dominated points also maximize the objective.</li>
+<li>Augmented Chebyshev also covers the entire front, but does not include duplicate points at the end (NOTE: at $w_1=0.5$ 2 points appear, but this is just an artifact of the maximization being done on a finite grid, the true maximum should be between those two points).</li>
+</ul>
+</li>
+<li>For the "mixed" Pareto front:<ul>
+<li>Linear scalarization finds the two convex sections, but completely skips the concave part (looking at the level sets should make it clear why this is).</li>
+<li>Chebyshev scalarization sweeps across the entire front, but for several values of $w_1$ around 0.25 and 0.75 a few dominated points are included (see small vertical or horizontal lines of black dots).</li>
+<li>Augmented Chebyshev scalarization sweeps across <em>most</em> of the front, but if you look carefully, some parts of the concave region are actually skipped (look for a big jump around $w_1\approx 0.45$ which does not appear for Chebyshev). It should be clear that this is caused by the level sets not being "pointy" enough to reach into all parts of the concavity. If $\rho$ were decreased then this problem would be reduced.</li>
+</ul>
+</li>
+</ul>
+<h3 id="conclusion">Conclusion</h3>
+<p>This post explained Chebyshev scalarization, which is essentially a weighted $\ell_\infty$ distance
+to a reference point.
+Its main advantage is its ability to cover <em>every</em> point on a Pareto front,
+while its main disadvantage is that it can be maximized by some dominated points.
+Another potential disadvantage is that it requires specifying a reference point which is guaranteed
+to dominate all other points.
+Its Pareto coverage property does not depend on the exact <em>value</em> of this reference point,
+but it <em>must</em> dominate all points, and it does affect which point(s) are optimal for
+a given value of $\mathbf{w}$.</p>
+<p>Augmented Chebyshev has properties in between that of Chebyshev and linear scalarization:
+it may not cover <em>every</em> point on a Pareto front, but will likely cover <em>most</em> points,
+especially when $\rho$ is small.
+However, dominated points will <em>not</em> maximize augmented Chebyshev.</p>
+<p>Perhaps another middle ground is the
+$\ell_p$ distance with large $p$.
+The level sets would be "pointier", but the function would still be strictly monotonic in all its inputs.</p>
+<p>Ultimately, I think Chebyshev scalarization is a good idea and people should try to use it!</p>
+<hr>
+<h3 id="theorems-and-proofs">Theorems and proofs</h3>
+<h4 id="a-scalarization-and-monotonicity">A: Scalarization and monotonicity</h4>
+<p>The following propositions show that strictly monotonic functions are only maximized by Pareto-optimal points,
+and that non-strictly monotonic functions are <em>at least</em> maximized by Pareto-optimal points
+(although other maximizers may not be Pareto optimal).</p>
+<p><strong>Proposition A.1</strong>:
+if $s: \mathbb{R}^k\mapsto\mathbb{R}$ is strictly monotonically increasing,
+then all maximizers
+$$\mathbf f^\ast\in\arg\max_{\mathbf{f} \in \mathbf{f}(\mathcal{X})} s(\mathbf{f})$$
+must be Pareto optimal.</p>
+<p><strong>Proof</strong>:
+Assume a $\mathbf f^\ast$ is <em>not</em> Pareto optimal,
+then there is another point $\mathbf f ' \succ\mathbf f^\ast$.
+By monotonicity, $s(\mathbf f') &gt; s(\mathbf f)$,
+because $f'_i \geq f_i$ in all dimensions
+(showing $s(\mathbf f') \geq s(\mathbf f)$),
+and $f'_i &gt; f_i$ in at least 1 dimension,
+thereby getting strict inequality.
+Therefore, $s(\mathbf{f}^\ast)$ must not actually be a maximizer: a contradiction.</p>
+<p><strong>Proposition A.2</strong>:
+if $s: \mathbb{R}^k\mapsto\mathbb{R}$ is non-strictly monotonically increasing,
+then the set
+$$M=\arg\max_{\mathbf{f} \in \mathbf{f}(\mathcal{X})} s(\mathbf{f})$$
+must contain at least one non-dominated point.</p>
+<p><strong>Proof</strong>:
+Similar to above. Assume it <em>does not</em> contain a non-dominated point,
+and let $\mathbf{f}^\ast\not\in M$ be a point which dominates at least one
+point in $M$ (call it $\mathbf{f}$).
+By monotonicity, we must have that $s(\mathbf{f}^\ast) \geq s(\mathbf{f})$,
+and therefore it should be that $\mathbf{f}^\ast\in M$: a contradiction.</p>
+<h4 id="b-chebyshev-coverage-of-pareto-front">B: Chebyshev coverage of Pareto front</h4>
+<p>Here I provide a simple proof by construction for Pareto front coverage.
+Note that this is not my original proof.</p>
+<p><strong>Proposition B.1</strong>:
+If $\mathbf{z} &gt; \mathbf{f}$ in each dimension,
+then 
+all Pareto-optimal points maximize 
+$s_{\mathbf{w}, \mathbf{z}}(\cdot)$ for some positive weight vector $\mathbf{w}$.</p>
+<p><strong>Proof</strong>:
+Let $\mathbf f^\ast$ be a Pareto optimal point, and construct $\mathbf w$ by
+$$w_i = \frac{1}{z_i - f^\ast_i}\ .$$
+Note that $w_i&gt;0$ for all $i$ because $z_i&gt;f_i^\ast$ by assumption.
+Then
+$$s_{\mathbf{w}, \mathbf{z}}(\mathbf f ^\ast) = - \max_i \left[ w_i|f_i^\ast - z_i|\right]=-\max_i \left[ \frac{z_i-f_i^\ast}{z_i-f_i^\ast} \right] = -1\ .$$</p>
+<p>Now, assume that for some other $\mathbf{f}$, 
+$s_{\mathbf{w}, \mathbf{z}}(\mathbf f) &gt; -1$.
+For this to happen, for <em>all</em> $0\leq i \leq k$
+$$\frac{z_i-f_i}{z_i - f_i^\ast} &lt; 1 \Rightarrow f_i^\ast &lt; f_i\ .$$
+This would imply $\mathbf f \succ \mathbf f^\ast$, contradicting the assumption that
+$\mathbf f^\ast$ is Pareto optimal!</p>
+<hr>
+<h3 id="some-references">Some references</h3>
+<p>Here are some references which I relied on to write this post:</p>
+<ul>
+<li>Wikipedia has a page (<a href="https://en.wikipedia.org/wiki/Chebyshev_function">link</a>),
+  but it describes 2 different kinds of function, and only describes the function for minimizing $\mathbf{f}$.</li>
+<li>An <a href="https://link.springer.com/article/10.1007/BF02591870">old paper by Steuer &amp; Choo (1983)</a>
+  describes random Chebyshev scalarization and basically covers the same material as this post,
+  but with denser notation and more theorems (such that the key points are harder to ascertain).</li>
+<li>
+<a href="https://proceedings.neurips.cc/paper_files/paper/2022/hash/7a583691ccfcf8945ab714b677ccbf0b-Abstract-Conference.html">This NeurIPS paper by Lin et al</a>
+  re-states some of this content more clearly,
+  but jumps to augmented Chebyshev scalarization without fully explaining its consequences.</li>
+</ul>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:surprise">
+<p>Since real-world drug design problems are always multi-objective (e.g. potency, toxicity, cost), this shouldn't be very surprising! <a class="footnote-backref" href="#fnref:surprise" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+<li id="fn:online">
+<p>More information about my sources is in the <a href="#some-references">references section</a>. <a class="footnote-backref" href="#fnref:online" title="Jump back to footnote 2 in the text">↩</a></p>
+</li>
+<li id="fn:gemini">
+<p>Aided by Gemini 2.5, which was surprisingly helpful! <a class="footnote-backref" href="#fnref:gemini" title="Jump back to footnote 3 in the text">↩</a></p>
+</li>
+<li id="fn:max">
+<p>Some papers write $\max_{x\in\mathcal{X}} \mathbf{f}(x)$. This captures the <em>spirit</em> of the problem, but is not a well-defined mathematical expression. I always cringe when I see this 😬 <a class="footnote-backref" href="#fnref:max" title="Jump back to footnote 4 in the text">↩</a></p>
+</li>
+<li id="fn:succ">
+<p>We use $\succ$ instead of $&gt;$ because "domination" is only a partial ordering. <a class="footnote-backref" href="#fnref:succ" title="Jump back to footnote 5 in the text">↩</a></p>
+</li>
+<li id="fn:paretodefn">
+<p>Is the Pareto set a subset of $\mathcal{X}$ or $\mathbb{R}^k$? It can be both depending on the context. For this post I will define the Pareto set to be a subset of $\mathbb{R}^k$, specifically the set of all non-dominated vectors in the image of $\mathcal{X}$ under $\mathbf{f}$. $$\{\mathbf{f}(x)| x\in\mathcal{X} \text{ and } \not\exists y\in\mathcal{X} : \mathbf{f}(y)\succ \mathbf{f}(x)\}$$ However, in the broader context of MOO I think the Pareto set should <em>really</em> be the set of all inputs $x$ which achieve these Pareto optimal values. I've mainly chosen the first definition for simplicity in this post. <a class="footnote-backref" href="#fnref:paretodefn" title="Jump back to footnote 6 in the text">↩</a></p>
+</li>
+<li id="fn:spelling">
+<p>Sometimes also spelled Tschebyschev or Tchebycheff, but I will just use Chebyshev. <a class="footnote-backref" href="#fnref:spelling" title="Jump back to footnote 7 in the text">↩</a></p>
+</li>
+<li id="fn:name">
+<p>I think "$\ell_\infty$-scalarization" would be a better name than Chebyshev scalarization, but it's hard to change an established name 🫠 <a class="footnote-backref" href="#fnref:name" title="Jump back to footnote 8 in the text">↩</a></p>
+</li>
+<li id="fn:stepbystep">
+<p>First use definition of $\ell_1$ norm, then note that $f_i-z_i$ always negative by the assumption that $\mathbf{z} &gt; \mathbf{f}$ in every dimension, then cancel with minus sign at front and distribute the product. <a class="footnote-backref" href="#fnref:stepbystep" title="Jump back to footnote 9 in the text">↩</a></p>
+</li>
+<li id="fn:tangent">
+<p>I'm counting points on a corner as "tangent" too. <a class="footnote-backref" href="#fnref:tangent" title="Jump back to footnote 10 in the text">↩</a></p>
+</li>
+<li id="fn:half">
+<p>Note that nothing is <em>intrinsically</em> special about the value 0.5, the switch only happens here because the feasible region is symmetric between $f_1$ and $f_2$. For other concave objectives the critical value might be different. <a class="footnote-backref" href="#fnref:half" title="Jump back to footnote 11 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/bayesian-optimization/" rel="tag">bayesian optimization</a></li>
+            <li><a class="tag p-category" href="../../categories/machine-learning/" rel="tag">machine learning</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2025-05-08-claude-chinese-grammar/" rel="prev" title="Reminder that Claude is really good for Chinese grammar">Previous post</a>
+            </li>
+        </ul></nav></aside><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2025-05-12.
+Contents © 2025         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>
