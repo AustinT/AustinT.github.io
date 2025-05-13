@@ -3,6 +3,7 @@ title: "Generic recommendations for cheminformatics models."
 date: 2025-04-01
 tags:
     - machine learning
+    - chemistry
     - speculation
 has_math: false
 ---
