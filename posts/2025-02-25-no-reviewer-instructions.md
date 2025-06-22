@@ -42,6 +42,10 @@ same kind of shared experience and common standards that were probably present
 ~10 years ago. As a starting point, I will try to write up my own personal
 guidelines in the coming ~1 week. Stay tuned!
 
+---
+
+**Update 2025-06-22**: see initial review guideline [here](/blog/2025-06-22-ml-conference-review-guide)!
+
 <div class="alert alert-success">
 
 This post was checked for LLM alpha (see <a
