@@ -21,4 +21,12 @@ Sometimes I write about topics which I know more about. You may find posts with 
 - [Retrosynthesis](/categories/retrosynthesis/), which I also worked on during my PhD.
 - [PhD](/categories/phd/) (since I completed a PhD)
 - [Websites](/categories/website/), since I created and continue to maintain this website.
+- [Blog](/categories/blog/), since this website contains a blog where I am trying to write more frequently.
 - [Announcements](/categories/announcement) about me and/or this website.
+
+## Why is my blog _here_ (and not somewhere else)
+
+Good question. For now, 2 reasons:
+
+1. My blog started on my website when I first made a website and I've never been motivated enough to move it.
+2. A general desire to avoid "[building my castle in someone else's kingdom](https://howtomarketagame.com/2021/11/01/dont-build-your-castle-in-other-peoples-kingdoms/)."
