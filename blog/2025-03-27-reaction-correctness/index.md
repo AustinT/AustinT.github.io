@@ -3,6 +3,7 @@ title: "Conceptual confusion about desirable outputs of reaction prediction mode
 date: 2025-03-27
 tags:
     - retrosynthesis
+    - chemistry
     - machine learning
     - speculation
 has_math: false

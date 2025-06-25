@@ -43,7 +43,11 @@
  </url>
  <url>
   <loc>https://austintripp.ca/blog/</loc>
-  <lastmod>2025-05-12T08:59:00Z</lastmod>
+  <lastmod>2025-06-25T08:01:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/blog/2018/</loc>
+  <lastmod>2025-06-25T08:01:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2018/03/24/website-launch/</loc>
@@ -82,8 +86,16 @@
   <lastmod>2025-05-12T08:59:00Z</lastmod>
  </url>
  <url>
+  <loc>https://austintripp.ca/blog/2019/</loc>
+  <lastmod>2025-06-25T08:01:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://austintripp.ca/blog/2019/07/18/bash-quotes/</loc>
   <lastmod>2025-05-12T08:59:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/blog/2020/</loc>
+  <lastmod>2025-06-25T08:01:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2020/02/10/monty-hall/</loc>
@@ -132,6 +144,10 @@
  <url>
   <loc>https://austintripp.ca/blog/2024-12-30-international-english/</loc>
   <lastmod>2025-05-12T08:59:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/blog/2024/</loc>
+  <lastmod>2025-06-25T08:01:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/blog/2025-01-01-neurips24-and-trends25/</loc>
@@ -218,6 +234,26 @@
   <lastmod>2025-05-12T08:59:00Z</lastmod>
  </url>
  <url>
+  <loc>https://austintripp.ca/blog/2025-05-13-ml-toxicity-pred/</loc>
+  <lastmod>2025-06-25T08:01:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/blog/2025-06-22-ml-conference-review-guide/</loc>
+  <lastmod>2025-06-25T08:01:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/blog/2025-06-23-blog-in-llm-age/</loc>
+  <lastmod>2025-06-25T08:01:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/blog/2025/</loc>
+  <lastmod>2025-06-25T08:01:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/blog/archive.html</loc>
+  <lastmod>2025-06-25T08:01:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://austintripp.ca/blog/index/</loc>
   <lastmod>2025-05-12T08:59:00Z</lastmod>
  </url>
@@ -239,7 +275,7 @@
  </url>
  <url>
   <loc>https://austintripp.ca/categories/</loc>
-  <lastmod>2025-05-12T08:59:00Z</lastmod>
+  <lastmod>2025-06-25T08:01:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/announcement/</loc>
@@ -252,6 +288,10 @@
  <url>
   <loc>https://austintripp.ca/categories/blog/</loc>
   <lastmod>2025-05-12T08:59:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/chemistry/</loc>
+  <lastmod>2025-06-25T08:01:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/chinese/</loc>
@@ -280,6 +320,10 @@
  <url>
   <loc>https://austintripp.ca/categories/machine-learning/</loc>
   <lastmod>2025-05-12T08:59:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://austintripp.ca/categories/medicine/</loc>
+  <lastmod>2025-06-25T08:01:00Z</lastmod>
  </url>
  <url>
   <loc>https://austintripp.ca/categories/opinion/</loc>
