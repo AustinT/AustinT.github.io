@@ -4,6 +4,7 @@ date: 2024-10-27
 tags:
     - PhD
     - speculation
+    - frontpage
 has_math: false
 ---
 

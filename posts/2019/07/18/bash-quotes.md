@@ -3,7 +3,6 @@ title: "A Quick Tutorial on Bash Quotes"
 date: 2019-07-18
 tags:
      - programming
-     - frontpage
 mathjax: true
 ---
 

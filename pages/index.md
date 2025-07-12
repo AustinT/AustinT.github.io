@@ -18,12 +18,15 @@ or if you find any issues like broken links.
 Note that all opinions and content on this website is completely my own
 and does not in any way represent my employer.
 
-<div style="text-align: center;">
-    <hr>
-    <br>
-    <h2>Quick start</h2>
-    <p><i>What brings you to my website?</i></p>
-</div>
+---
+
+## Highlighted blog posts
+
+{{% post_list tags="frontpage" %}}
+
+---
+
+## Quick answers to common questions
 
 ### Contacting me
 

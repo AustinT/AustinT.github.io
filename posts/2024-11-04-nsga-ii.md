@@ -3,6 +3,7 @@ title: "Overview of the NSGA-II algorithm for multi-objective optimization"
 date: 2024-11-04
 tags:
     - research papers
+    - frontpage
 has_math: true
 ---
 

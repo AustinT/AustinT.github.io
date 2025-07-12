@@ -3,7 +3,6 @@ title: "Turning Adam Optimization into SGD"
 date: 2018-07-02
 tags:
     - machine learning
-    - frontpage
 mathjax: true
 ---
 
