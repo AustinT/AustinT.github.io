@@ -1,5 +1,5 @@
 ---
-title: "Reaction model scores are CRITICAL to multi-step retrosynthesis."
+title: "Reaction model scores are CRITICAL to multi-step retrosynthesis"
 date: 2025-01-26
 tags:
     - retrosynthesis

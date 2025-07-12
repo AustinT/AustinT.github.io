@@ -1,5 +1,5 @@
 ---
-title: "Hiring is hard: why good applicants without connections can get overlooked."
+title: "Hiring is hard: why good applicants without connections can get overlooked"
 date: 2025-02-09
 tags:
     - employment
