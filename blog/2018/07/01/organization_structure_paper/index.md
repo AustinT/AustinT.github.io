@@ -3,7 +3,6 @@ title: "Paper Review: A Computational Approach to Organizational Structure"
 date: 2018-07-01
 tags:
     - research papers
-    - frontpage
 mathjax: true
 ---
 

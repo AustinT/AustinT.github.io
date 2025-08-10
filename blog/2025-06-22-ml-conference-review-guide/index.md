@@ -1,9 +1,10 @@
 ---
-title: "My review guide for machine learning conference papers."
+title: "My review guide for machine learning conference papers"
 date: 2025-06-22
 tags:
     - machine learning
     - peer review
+    - frontpage
 has_math: false
 ---
 

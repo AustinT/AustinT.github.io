@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website (Posts about opinion)</title><link>https://austintripp.ca/</link><description></description><atom:link href="https://austintripp.ca/categories/opinion.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Wed, 25 Jun 2025 08:02:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Punishing poor reviewers at CVPR</title><link>https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;p&gt;This year &lt;a href="https://cvpr.thecvf.com/"&gt;CVPR&lt;/a&gt; pledged to make all authors
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website (Posts about opinion)</title><link>https://austintripp.ca/</link><description></description><atom:link href="https://austintripp.ca/categories/opinion.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Sun, 10 Aug 2025 15:45:56 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>The case for public Slack channels only (no DMs).</title><link>https://austintripp.ca/blog/2025-07-27-public-slack-channels/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Working at a company with a distributed team and hybrid work, a lot of work
+gets done on Slack. Slack can be very noisy, and I used to wish that fewer
+people would post in public channels, instead using direct messages (DMs).
+However, I am starting to think that over the long run, defaulting to public
+channels instead of DMs is best. Here, I try to explain why.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-07-27-public-slack-channels/"&gt;Read more…&lt;/a&gt; (2 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>opinion</category><guid>https://austintripp.ca/blog/2025-07-27-public-slack-channels/</guid><pubDate>Sun, 27 Jul 2025 00:00:00 GMT</pubDate></item><item><title>Punishing poor reviewers at CVPR</title><link>https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;p&gt;This year &lt;a href="https://cvpr.thecvf.com/"&gt;CVPR&lt;/a&gt; pledged to make all authors
 participate in peer review, and reject papers from authors who wrote
 low-quality reviews.&lt;sup id="fnref:ref"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/#fn:ref"&gt;1&lt;/a&gt;&lt;/sup&gt; Last week they &lt;a href="https://x.com/CVPR/status/1894853624200863958"&gt;confirmed on
 Twitter&lt;/a&gt; that they followed
@@ -7,6 +12,19 @@ through with this and rejected 19 papers. Presumably this is a tiny fraction of
 the overall papers submitted, but I hope this is an effective deterrent for
 future authors. At the very least, I'm glad that &lt;em&gt;some&lt;/em&gt; major conference tried
 something like this!&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Update 2025-06-25&lt;/strong&gt;: NeurIPS is trying something similar now, see
+&lt;a href="https://blog.neurips.cc/2025/05/02/responsible-reviewing-initiative-for-neurips-2025/"&gt;https://blog.neurips.cc/2025/05/02/responsible-reviewing-initiative-for-neurips-2025/&lt;/a&gt;.
+In particular:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Reviewers who are also authors &lt;em&gt;will not be able to see their own papers'
+  reviews until they submit their own reviews&lt;/em&gt;. This also extends to their
+  co-authors.&lt;/li&gt;
+&lt;li&gt;Once again, authors who are alos reviewers can have their own papers
+  desk-rejected if they submit poor reviews.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Overall this seems like a good initiative, but I hope this doesn't cause people
+to simply not review at all...&lt;/p&gt;
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;

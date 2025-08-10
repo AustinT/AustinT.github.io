@@ -4,6 +4,7 @@ date: 2025-05-12
 tags:
     - machine learning
     - bayesian optimization
+    - frontpage
 has_math: true
 ---
 

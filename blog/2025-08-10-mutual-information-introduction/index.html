@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>An accessible introduction to mutual information using a d20 | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2025-07-27-public-slack-channels/" title="The case for public Slack channels only (no DMs)." type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="An accessible introduction to mutual information using a d20">
+<meta property="og:url" content="https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/">
+<meta property="og:description" content="Scientists want to do &quot;informative&quot; experiments. What makes an experiment informative? I believe that information theory has a lot of answers. In this post I will try to explain information theory's d">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-08-10T00:00:00Z">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="statistics">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.ipynb" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">An accessible introduction to mutual information using a d20</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2025-08-10T00:00:00Z" itemprop="datePublished" title="2025-08-10">2025-08-10</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.ipynb" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div class="cell border-box-sizing text_cell rendered" id="cell-id=8c7d68eb-f957-4e21-8632-74b01147a07c">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Scientists want to do "informative" experiments. What makes an experiment informative? I believe that information theory has a lot of answers. In this post I will try to explain information theory's definition of "how much information you get from an experiment" using d20 dice, assuming no previous knowledge of information theory.</p>
+<!-- TEASER_END -->
+<div class="alert alert-info">
+A tutorial like this has been on my writing list for a while now,
+and today I decided to just GET IT DONE, so I made it into a "quickpost".
+The quality is not quite as good as I hoped, but I think it is still better than nothing.
+For more details on quickposts, see <a href="../2025-02-11-lowering-quality/">this blog post</a>.
+</div>
+<h3 id="Intuition-pump:-a-hidden-d20-dice">Intuition pump: a hidden d20 dice<a class="anchor-link" href="#Intuition-pump:-a-hidden-d20-dice">¶</a>
+</h3>
+<p>The running scenario in this post will be a d20 (aka a fair 20-sided dice) which is rolled in secret (so you do not know the number).
+We are trying to learn about the outcome of the dice.</p>
+<p>Suppose I told you that this number is odd. Does that provide information?
+Even though you still don't "know" the value of the dice with certainty,
+your intuitive answer is probably "yes".
+For example, you now know that the number is not "2", which you didn't know before.</p>
+<p>Now for a more complex scenario. A second d20 is rolled. If the number is a "20",
+this second d20 is rolled <em>again</em> and you are told <em>that</em> number.
+Otherwise, you are told the number from the original dice.
+Essentially this means you are told the secret number with 95% probability,
+but with 5% probability you are told a random number. Is this informative?</p>
+<p>Here I expect intuitions to be more mixed. On the one hand,
+you are 95% certain to learn the true outcome of the dice.
+On the other hand, you can never <em>eliminate</em> any number:
+if you hear the number "15" the true number could still be <em>anything</em>.</p>
+<p><strong>By the end of this post</strong> you will know that <em>both</em> of these experiments <em>do</em> provide
+information, and in fact the second experiment is <em>more</em> informative than the first one.</p>
+<hr>
+<p>Below is some code which will be used to define the "experiments" on dice.</p>
+<p><strong>NOTE</strong>: this blog post is a runnable jupyter notebook.
+Even though the text in this notebook assumes a d20,
+you can change the size of the dice freely by setting the <code>D</code> variable below!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=3e4ae50b-c489-407f-bb05-6d618e7a367a">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># Change as desired, but D ≠ 20 will mean the numbers in text won't match the numbers from the code</span>
+<span class="n">DICE_OUTCOMES</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">D</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># Some useful functions for later</span>
+<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span> <span class="p">(</span><span class="n">n</span><span class="o">%</span><span class="k">i</span>) == 0 for i in range(2, int(n/2 + 1)))
+
+<span class="k">def</span> <span class="nf">is_even</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">n</span><span class="o">%</span><span class="k">2</span>) == 0
+
+<span class="k">def</span> <span class="nf">prior_prob</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">DICE_OUTCOMES</span> <span class="k">if</span> <span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">DICE_OUTCOMES</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=9c57fe8b-3a36-44cd-ad5d-252e37fb2885">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Definition-information">Definition information<a class="anchor-link" href="#Definition-information">¶</a>
+</h3>
+<p>The "information" of a random outcome is defined as the (base 2) logarithm of its probability of occuring.</p>
+<p>$$I(X=x) = -\log_2 P(X=x)$$</p>
+<p>Information is measured in <em>bits</em>. Here are some examples:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=fc9d5a37-daf2-4763-8858-ea30bf633569">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">information</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>  <span class="c1"># this is just for numerical errors</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"1. I(x is even): -log2(1/2) = </span><span class="si">{</span><span class="n">information</span><span class="p">(</span><span class="n">prior_prob</span><span class="p">(</span><span class="n">is_even</span><span class="p">))</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"2. I(x is prime): there are 8 primes in [1, 20] -log2(8/20) ≈ </span><span class="si">{</span><span class="n">information</span><span class="p">(</span><span class="n">prior_prob</span><span class="p">(</span><span class="n">is_prime</span><span class="p">))</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"3. I(x is between 1 and 20): -log2(1) = </span><span class="si">{</span><span class="n">information</span><span class="p">(</span><span class="n">prior_prob</span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">20</span><span class="p">))</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"4. I(dice is 20): -log2(1/20) ≈ </span><span class="si">{</span><span class="n">information</span><span class="p">(</span><span class="n">prior_prob</span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">20</span><span class="p">))</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1. I(x is even): -log2(1/2) = 1.0 bits
+2. I(x is prime): there are 8 primes in [1, 20] -log2(8/20) ≈ 1.32 bits
+3. I(x is between 1 and 20): -log2(1) = 0.00 bits
+4. I(dice is 20): -log2(1/20) ≈ 4.32 bits
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=7661d853-7da9-41af-abd2-f45bde955e01">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Hopefully these examples make a few things clear:</p>
+<ul>
+<li>Rarer outcomes contain a higher amount of information</li>
+<li>Because probabilities are always ≤ 1, $I(x)$ is never negative</li>
+<li>The smallest amount of information is 0, which occurs for a <em>certain</em> outcome (hopefully this makes intuitive sense)</li>
+</ul>
+<h3 id="Some-statistical-definitions-and-notation">Some statistical definitions and notation<a class="anchor-link" href="#Some-statistical-definitions-and-notation">¶</a>
+</h3>
+<p>Unfortunately, before proceeding any further it is necessary to clarify some notation and definitions. Please bear with me:
+as you will see below, information depends on exactly what you know, don't know, and want to know. These are easily confused, and to reduce confusion I will stick to some very standard terms.</p>
+<ul>
+<li>
+<strong>Random variables</strong>: capital letters like $X,Y,Z$ will be used for <em>random variables</em>: variables which do not have a particular value.</li>
+<li>
+<strong>The dice variable N</strong>: from now on, the random variable $N$ will denote the <em>number on the dice</em> (a value between 1 and 20).</li>
+<li>
+<strong>Outcomes vs events</strong>: an <em>outcome</em> is a particular value of a random variable, and an <em>event</em> is a <em>set</em> of outcomes. These are not the same. In this post we will frequently learn about <em>events</em>. For example, learning that "the dice is even" means $N$ is in the set {2, 4, 6, 8, 10, 12, 14, 16, 18, 20}.</li>
+<li>
+<strong>Other random variables</strong>: information is a function of <em>outcomes</em> only, <em>not</em> events. To represent events like "the dice is even", we will define a <em>new</em> random variable with a name like $X$ with a different set of possible outcomes (like {True, False} instead of {1, 2, ..., 20}. In most cases $X$ will be a deterministic function of $N$, but not always. In these cases, an <em>outcome</em> of $X$ is equivalent to an <em>event</em> in $N$.</li>
+</ul>
+<h3 id="Entropy-is-average-information">Entropy is <em>average</em> information<a class="anchor-link" href="#Entropy-is-average-information">¶</a>
+</h3>
+<p>The definition above allows you to quantify the information of an outcome <em>once you have learned it</em>.
+The natural extension of information to <em>unknown</em> outcomes is entropy, which is just the average amount of information you expect to obtain by observing a random variable $X$.</p>
+<p>$$H(X) = \sum_{\text{outcomes }x} P(X=x) I(X=x) = -\sum_x P(X=x)\log_2{P(X=x)}$$</p>
+<p>Notice that $H$ is a function of <em>a random variable</em> (capital $X$), rather than a particular outcome. This is because all outcomes of $X$ (denoted with lowercase $x$) are <em>summed</em>.
+Let's revisit the same examples as above.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=5d664a31-7fa8-4b10-b135-639e6988e93a">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">entropy</span><span class="p">(</span><span class="n">prob_dist</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compute entropy of a probability distribution"""</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">prob_dist</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">probs</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">probs</span><span class="p">[</span><span class="n">probs</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># Remove zero probabilities</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">probs</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">probs</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>  <span class="c1"># for numerical errors</span>
+
+<span class="k">def</span> <span class="nf">function_to_prob_dict</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">DICE_OUTCOMES</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">outcome</span><span class="p">:</span> <span class="n">count</span><span class="o">/</span><span class="n">D</span> <span class="k">for</span> <span class="n">outcome</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"1. H(x is even): -P(even)log2(P(even) - P(odd)log2(P(odd)) = -log2(1/2) = </span><span class="si">{</span><span class="n">entropy</span><span class="p">(</span><span class="n">function_to_prob_dict</span><span class="p">(</span><span class="n">is_even</span><span class="p">))</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"2. H(x is prime):                -(8/20)log2(8/20) - (12/20)log2(12/20) ≈ </span><span class="si">{</span><span class="n">entropy</span><span class="p">(</span><span class="n">function_to_prob_dict</span><span class="p">(</span><span class="n">is_prime</span><span class="p">))</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"3. H(x is between 1 and 20):                                 = -log2(1) = </span><span class="si">{</span><span class="n">entropy</span><span class="p">(</span><span class="n">function_to_prob_dict</span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">20</span><span class="p">))</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1. H(x is even): -P(even)log2(P(even) - P(odd)log2(P(odd)) = -log2(1/2) = 1.0 bits
+2. H(x is prime):                -(8/20)log2(8/20) - (12/20)log2(12/20) ≈ 0.97 bits
+3. H(x is between 1 and 20):                                 = -log2(1) = 0.00 bits
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=d67988a4-06b2-4fde-888b-decb2ae1246c">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>However, example #4 ("dice is 20") is more subtle because it can be interpreted as the outcome of multiple different random variables.
+The choice of variable will give different entropy values.
+Here are some examples:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=1797757e-47bd-4dd3-846a-7f85b5722d96">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"4. H(x = 20)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    a: X=N (the exact value of the dice):   H(X) ≈ </span><span class="si">{</span><span class="n">entropy</span><span class="p">(</span><span class="n">function_to_prob_dict</span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="p">))</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    b: X=1 if N=20, otherwise 0:            H(X) ≈ </span><span class="si">{</span><span class="n">entropy</span><span class="p">(</span><span class="n">function_to_prob_dict</span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    c: X=1 if N=20, 2 if N=10, otherwise 0: H(X) ≈ </span><span class="si">{</span><span class="n">entropy</span><span class="p">(</span><span class="n">function_to_prob_dict</span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="mi">20</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)))</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"    d: ..."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>4. H(x = 20)
+    a: X=N (the exact value of the dice):   H(X) ≈ 4.32 bits
+    b: X=1 if N=20, otherwise 0:            H(X) ≈ 0.29 bits
+    c: X=1 if N=20, 2 if N=10, otherwise 0: H(X) ≈ 0.57 bits
+    d: ...
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=897b9f2b-d3fd-43bf-a17e-7ece060b238e">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This might feel counter-intuitive, since observing a value of 20 is the same in all cases.
+The difference in entropy values is because <em>you do not know in advance whether you will observe a value of 20</em>!
+Other observations will rule out this outcome. For example, in 4b you have a 19/20 chance of observing $X=0$ (aka "the dice is any value besides 20"). This is a very low-information outcome (≈0.07 bits), but is sufficient to deduce that the value is not 20.
+In the other scenarios (4a or 4c) the other outcomes also rule out a value of 20, but are higher-information outcomes.</p>
+<h3 id="Intuitively,-entropy-an-information-%22requirement%22">Intuitively, entropy an information "requirement"<a class="anchor-link" href="#Intuitively,-entropy-an-information-%22requirement%22">¶</a>
+</h3>
+<p>I've introduced entropy as an "average amount of information",
+but intuitively it is a measure of <em>uncertainty</em> about a variable.
+The higher the entropy is, the more uncertain you are about a variable,
+and therefore the more information you will <em>need</em> to determine its value.
+If you want to know something, high entropy is <em>bad</em>.</p>
+<h3 id="Observations-can-change-entropy">Observations can change entropy<a class="anchor-link" href="#Observations-can-change-entropy">¶</a>
+</h3>
+<p>Let's re-use the random variable X from example 4b: $X=1$ if $N=20$, otherwise $X=0$.
+We will introduce a <em>second</em> random variable $Y$ to represent if $N$ is even: $Y=1$ if $N$ is even, otherwise $Y=0$.
+Suppose we observe $Y=1$. How much information do we <em>gain</em> about $X$?</p>
+<p>We previously established that, without knowing $Y$, $H(X)\approx 0.29$ bits.
+This value comes from the formula:</p>
+<p>$$-P(X=1)\log_2{P(X=1)} - P(X=0)\log_2{P(X=0)} = -\frac{1}{20}\log_2{\frac{1}{20}} -\frac{19}{20}\log_2{\frac{19}{20}}\approx 0.29$$</p>
+<p>Observing $Y=1$ rules out all odd values, of which there are 10. Therefore, <em>conditioned</em> on this outcome, the probability of $N=20$ rises from 1/20 to 1/10. Hence, the new entropy of $X$ is:</p>
+<p>$$H(X|Y=1) = -P(X=1|Y=1)\log_2{P(X=1|Y=1)} - P(X=0|Y=1)\log_2{P(X=0|Y=1)} = -\frac{1}{10}\log_2{\frac{1}{10}} -\frac{9}{10}\log_2{\frac{9}{10}}\approx 0.47$$</p>
+<p>This is <em>higher</em> than before: after this observation we are <em>more</em> uncertain about the value of X.
+This is reflected by the "uncertainty reduction" quantity:</p>
+<p>$$H(X) - H(X|Y=1) \approx -0.18 \ ,$$</p>
+<p>whose negative value means we have become ≈0.18 bits <em>less</em> certain about X.</p>
+<p>Consider however the other case, where we observe $Y=0$. In this case, $N$ is odd, so we know $N\neq 20$, implying $P(X=1)=0$. This means $X$ is known with certainty. In this case:</p>
+<p>$$H(X|Y=0)= -0\times\log_2{0} -1\times\log_2{1}=0 \ , $$</p>
+<p>so $H(X) - H(X|Y=0) = H(X) \approx 0.29$, implying <em>complete elimination of uncertainty in X</em>.</p>
+<h3 id="Mutual-information:-the-main-measure-of-uncertainty-reduction-and-information-gain">Mutual information: the main measure of uncertainty reduction and information gain<a class="anchor-link" href="#Mutual-information:-the-main-measure-of-uncertainty-reduction-and-information-gain">¶</a>
+</h3>
+<p>Both the measurements above are <em>ex-post</em> values: the change in uncertainty after a particular observation.
+If we are choosing whether to observe $Y$, we do not know what we will observe!
+Similar to the definition of entropy, we will define an <em>average</em> value of uncertainty reduction.</p>
+<p>$$I(X;Y) = \mathbb E_{y\sim P(Y)} \left [ H(X) - H(X|Y=y) \right]$$</p>
+<p>Since $H(X)$ does not depend on $Y$, this can be simplified to</p>
+<p>$$H(X) - \mathbb E_{y\sim P(Y)} \left [ H(X|Y=y) \right]\ .$$</p>
+<p>This quantity is called <em>mutual information</em>. It turns out that mutual information is <em>never</em> negative, which we can verify for the example above:</p>
+<p>$$I(X;Y) = H(X) - \left[P(Y=1) H(X|Y=1) + P(Y=0) H(X|Y=0) \right] \approx 0.29 - 0.5\times (0.47) - 0.5\times 0 \approx 0.05$$</p>
+<p>Because of this, mutual information can be viewed as both an amount of "uncertainty reduction" or an amount of "information gain".</p>
+<h3 id="Exploring-mutual-information">Exploring mutual information<a class="anchor-link" href="#Exploring-mutual-information">¶</a>
+</h3>
+<p>The remainder of this notebook will go through a bunch of case studies of mutual information using code.
+The function below implements mutual information in a slightly more complex way than what I explained above,
+allowing for random functions (eg observe the dice with 95% probability, otherwise a random value).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=58c3355f-9586-4630-afec-2015c37223ce">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">dice_mutual_information</span><span class="p">(</span>
+    <span class="n">f1</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+    <span class="n">f2</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+    <span class="n">dice_prob_dist</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">explain</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Mutual information for two probabilistic functions of the dice value</span>
+<span class="sd">    (ie functions returning dict of outcome to probability dict).</span>
+
+<span class="sd">    dice_prob_dist is the probability of observing different dice values</span>
+<span class="sd">    (defaults to uniform).</span>
+
+<span class="sd">    NOTE: the implementation is different than the H(X) - H(X|Y) description above.</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># Call function and check values</span>
+    <span class="n">f1_calls</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="n">f1</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">DICE_OUTCOMES</span><span class="p">}</span>
+    <span class="n">f2_calls</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="n">f2</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">DICE_OUTCOMES</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">(</span><span class="n">f1_calls</span><span class="p">,</span> <span class="n">f2_calls</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">outcome_to_probs</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">outcome_to_probs</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Impute default dice probability distribution</span>
+    <span class="k">if</span> <span class="n">dice_prob_dist</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dice_prob_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">DICE_OUTCOMES</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">DICE_OUTCOMES</span><span class="p">}</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">dice_prob_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="c1"># Get set of unique outcomes to index the joint distribution</span>
+    <span class="n">f1_outcomes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">({</span><span class="n">outcome</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">f1_calls</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">outcome</span> <span class="ow">in</span> <span class="n">d</span><span class="p">})</span>
+    <span class="n">f2_outcomes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">({</span><span class="n">outcome</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">f2_calls</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">outcome</span> <span class="ow">in</span> <span class="n">d</span><span class="p">})</span>
+
+    <span class="c1"># Built full joint distribution over f1 and f2 outcomes</span>
+    <span class="n">joint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">f1_outcomes</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">f2_outcomes</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">DICE_OUTCOMES</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i1</span><span class="p">,</span> <span class="n">x1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f1_outcomes</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i2</span><span class="p">,</span> <span class="n">x2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f2_outcomes</span><span class="p">):</span>
+                <span class="n">joint</span><span class="p">[</span><span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="n">dice_prob_dict</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> 
+                    <span class="n">f1_calls</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">*</span>
+                    <span class="n">f2_calls</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+                <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">joint</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="c1"># Get marginals</span>
+    <span class="n">marginal_f1</span> <span class="o">=</span> <span class="n">joint</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">marginal_f2</span> <span class="o">=</span> <span class="n">joint</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">prod_of_marginals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">marginal_f1</span><span class="p">,</span> <span class="n">marginal_f2</span><span class="p">)</span>
+
+    <span class="c1"># Compute KL-divergence</span>
+    <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">):</span>
+        <span class="n">log_term</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">joint</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">prod_of_marginals</span><span class="p">)</span>
+        <span class="n">log_term</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">log_term</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">posinf</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">neginf</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">kl_terms</span> <span class="o">=</span> <span class="n">joint</span> <span class="o">*</span> <span class="n">log_term</span>
+
+    <span class="c1"># Overall MI</span>
+    <span class="n">MI_value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">kl_terms</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
+        <span class="mf">0.0</span>   <span class="c1"># handle numerical errors</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">explain</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">_arr_entropy</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+            <span class="c1"># Entropy of an array</span>
+            <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">arr</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">arr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">arr</span><span class="p">)),</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">marginal_entropy</span> <span class="o">=</span> <span class="n">_arr_entropy</span><span class="p">(</span><span class="n">marginal_f1</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Entropy of X1: </span><span class="si">{</span><span class="n">marginal_entropy</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+        <span class="n">mi_contribs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f2_outcome</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f2_outcomes</span><span class="p">):</span>
+            <span class="n">p_f2</span> <span class="o">=</span> <span class="n">joint</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">Case X2=</span><span class="si">{</span><span class="n">f2_outcome</span><span class="si">}</span><span class="s2">:</span><span class="se">\n\t</span><span class="s2">  Prob:      </span><span class="si">{</span><span class="n">p_f2</span><span class="si">:</span><span class="s2">+.4g</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">p_f2</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">h_f1_given_f2</span> <span class="o">=</span> <span class="n">_arr_entropy</span><span class="p">(</span><span class="n">joint</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">p_f2</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">  H(X1|X2):  </span><span class="si">{</span><span class="n">h_f1_given_f2</span><span class="si">:</span><span class="s2">+.4g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">  Info gain: </span><span class="si">{</span><span class="n">marginal_entropy</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h_f1_given_f2</span><span class="si">:</span><span class="s2">+.4g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+                <span class="n">mi_contrib</span> <span class="o">=</span> <span class="p">(</span><span class="n">marginal_entropy</span> <span class="o">-</span> <span class="n">h_f1_given_f2</span><span class="p">)</span> <span class="o">*</span> <span class="n">p_f2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="s2">  Conditional entropy undefined for 0 probability event"</span><span class="p">)</span>
+                <span class="n">mi_contrib</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">mi_contribs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mi_contrib</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">MI_value</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=4845a2a7-7c03-4e01-8417-fcd2beb2f3e6">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Scenario-1:-which-variables-produce-most-information-about-the-value-of-a-dice">Scenario 1: which variables produce most information about the value of a dice<a class="anchor-link" href="#Scenario-1:-which-variables-produce-most-information-about-the-value-of-a-dice">¶</a>
+</h4>
+<p>We will look at the MI between $N$ and various other variables $X$.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=945dee8d-0eb1-42e5-889c-759fdf0664ed">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">dice_value</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI between dice value and itself:          </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">dice_value</span><span class="p">,</span><span class="w"> </span><span class="n">dice_value</span><span class="p">)</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI between dice value and even/odd:        </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">dice_value</span><span class="p">,</span><span class="w"> </span><span class="k">lambda</span><span class="w"> </span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="n">is_even</span><span class="p">(</span><span class="n">n</span><span class="p">):</span><span class="w"> </span><span class="mf">1.0</span><span class="p">})</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI between dice value and prime/not prime: </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">dice_value</span><span class="p">,</span><span class="w"> </span><span class="k">lambda</span><span class="w"> </span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="n">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span><span class="w"> </span><span class="mf">1.0</span><span class="p">})</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI between dice value and constant:        </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">dice_value</span><span class="p">,</span><span class="w"> </span><span class="k">lambda</span><span class="w"> </span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"A"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">})</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI between dice value and other dice:      </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">dice_value</span><span class="p">,</span><span class="w"> </span><span class="k">lambda</span><span class="w"> </span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="n">m</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">DICE_OUTCOMES</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">DICE_OUTCOMES</span><span class="p">})</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>MI between dice value and itself:          4.32
+MI between dice value and even/odd:        1
+MI between dice value and prime/not prime: 0.971
+MI between dice value and constant:        0
+MI between dice value and other dice:      0
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=3f7bf87f-9663-41ea-9014-bc1ef9f4f419">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Perhaps unsurprisingly, observing the value of the dice gives the most information about the value of the dice (and the mutual information of a variable with itself always equals the entropy).
+Observing whether it is even or odd gives 1 bit of information.
+Observing whether it is prime gives slightly less information.
+Observing a constant gives no information.
+Observing the roll of another dice also gives no information (since the probability distribution of outcomes is the same no matter what).</p>
+<p>Now we will examine the question posed at the start of this post: how much information does "true value with probability p, random value with (1-p)" give?
+Even though this is a random quantity, by Bayesian inference it will always result in a non-uniform distribution of belief over dice values, which will always have less entropy than a uniform distribuion.
+The plot below compares this strategy to asking whether the dice is even or odd:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=1502d888-9514-4b2c-aae5-db4629041c7b">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">show_value_with_prob_p</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="n">outcomes</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">DICE_OUTCOMES</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">DICE_OUTCOMES</span><span class="p">}</span>
+    <span class="n">outcomes</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+=</span> <span class="n">p</span>
+    <span class="k">return</span> <span class="n">outcomes</span>
+
+<span class="n">p_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">p_arr</span><span class="p">,</span>
+    <span class="p">[</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">dice_value</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">show_value_with_prob_p</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">p_arr</span><span class="p">],</span>
+    <span class="s2">".-"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"p"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Mutual information"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Mutual information between dice value and random reveal</span><span class="se">\n</span><span class="s2">as function of reveal probability p"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"orange"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"MI of even/odd"</span><span class="p">)</span>
+<span class="n">p095_val</span> <span class="o">=</span> <span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">dice_value</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">show_value_with_prob_p</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">p095_val</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"p=0.95 (MI=</span><span class="si">{</span><span class="n">p095_val</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_png output_subarea">
+<img alt="No description has been provided for this image" src="data:image/png;base64,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toeEhODGjRvo3LlzoWN9kXI/ud9n69atSE5OLrL3Uerduzfu3bsHR0dHNG/eXOPnxXlulE0gf/31F06ePInz589r/Lfdu3dvxMbGQqFQaN1f7dq1AfyXJOS+3n766aeXPqb169erPd6wYQMA5DtKxsbGBq1atcK2bdvUrons7GysW7cOHh4eqFWrVp7vdfr0aTx48ED1XoU5ztz73LJlC7KysvKNvyDyu+bfe+89xMTEYODAgYiPj9dr6Pv169dx+fJltW0bNmyAra0tmjZtWvigyWixRoVKXO/evREYGAhfX180bNgQ//zzD7766iuNGoQ+ffqgfv36aN68OZydnfHgwQN899138PLyQs2aNfV+3549e8LBwQHjxo3D/PnzIZPJEBgYiEePHhX6WObPn499+/bhlVdewSeffIIGDRogPj4e+/fvx5QpU+Dr64vq1avDysoK69evR506dVChQgVUqVJFVc3/otq1a+Ott97C0qVLYWJigh49eiA8PByzZs2Cp6cnPvzww0LH+qIuXbqgW7du+Pjjj5GQkIC2bdviypUrmDNnDpo0aYKRI0cWyfsoffDBB9i6dSteeeUVfPjhh2jYsCGys7Px8OFDHDx4EFOnTkWrVq1U5QMCAvDll19i2LBhsLKywpAhQ9T298Ybb2D9+vXo2bMn3n//fbRs2RJmZmZ4/Pgxjh49itdeew39+/dHmzZtUKlSJUyYMAFz5syBmZkZ1q9fr/FFpy9zc3N88803SEpKQosWLXD69GksWLAAPXr0QLt27fJ9/aJFi9ClSxd07NgR06ZNg7m5OZYvX45r165h48aNGrUw58+fx/jx4zFo0CA8evQIn376Kdzd3TFp0iQAUF1n06dPhxACDg4O2LVrl6r5TJtt27ZBJpOhS5cuuH79OmbNmoVGjRph8ODBL3VuAKBBgwYAgC+//BI9evSAqakpGjZsCHNzcwBArVq10L17d+zbtw/t2rXT6HOSlypVqqBv376YO3cu3NzcsG7dOgQFBeHLL7/kfD1llWH78lJ59Pz5czFu3Djh4uIirK2tRbt27cTJkyc1Rhh88803ok2bNsLJyUk1HHTcuHEiPDw83/eAllE/Qghx7tw50aZNG2FjYyPc3d3FnDlzxK+//qp11E+vXr00Xq9tFMSjR49EQECAcHV1FWZmZqJKlSpi8ODB4unTp6oyGzduFL6+vsLMzExt1IS2kSYKhUJ8+eWXolatWsLMzEw4OTmJESNGqIY0vxhLvXr1NGIcPXq08PLyyucM5Yxi+vjjj4WXl5cwMzMTbm5uYuLEiWpDXpX702fUj7aYhBAiKSlJzJw5U9SuXVuYm5sLe3t70aBBA/Hhhx+KqKgojfJt2rQRAMTw4cO17i8zM1N8/fXXolGjRsLS0lJUqFBB+Pr6irffflvcuXNHVe706dPCz89PWFtbC2dnZzF+/Hhx4cIFjZFY+oz6sbGxEVeuXBEdOnQQVlZWwsHBQUycOFEkJSWpldV1HQohxMmTJ0WnTp2EjY2NsLKyEq1btxa7du1SK6Mc9XPw4EExcuRIUbFiRWFlZSV69uypdoxCCBEaGiq6dOkibG1tRaVKlcSgQYPEw4cPNUbpKI/zn3/+EX369BEVKlQQtra2YujQoWrXrBCFH/WTnp4uxo8fL5ydnYUkSRqfLyGECAwMFADUhmPnR/m5/PPPP0W9evWEubm58Pb2FkuWLCnwPqj0kYTINfMOERHpNGbMGPz5559ISkoydCil2uuvv44zZ84gPDwcZmZmBXqNt7c36tevj927dxdzdGRM2PRDREQlIj09HRcuXMC5c+ewfft2LFmypMBJCpVfTFSIiKhEREZGok2bNrCzs8Pbb7+Nd99919AhUSnAph8iIiIyWhyeTEREREaLiQoREREZLSYqREREZLRKdWfa7OxsREREwNbWtkCLWREREZHhCSGQmJiIKlWqwMQk7zqTUp2oREREwNPT09BhEBERUSE8evQo34VdS3Wiolx47NGjR7CzszNwNERERFQQCQkJ8PT0VH2P56VUJyrK5h47OzsmKkRERKVMQbptsDMtERERGS0mKkRERGS0mKgQERGR0SrVfVQKSqFQIDMz09BhEBWImZkZTE1NDR0GEZFRKNOJihACUVFRiI+PN3QoRHqpWLEiXF1dOT8QEZV7ZTpRUSYpLi4usLa25k2fjJ4QAikpKYiOjgYAuLm5GTgiIiLDKrOJikKhUCUpjo6Ohg6HqMCsrKwAANHR0XBxcWEzEBGVa2W2M62yT4q1tbWBIyHSn/K6Zd8qIirvymyiosTmHiqNeN0SEeUo84kKERERlV5MVIiIiMhoMVEhAEBKSgpef/112NnZQZKkcjGkOzAwEBUrVsyzzNy5c9G4ceMSiYeIyNhEylNx+l4MIuWpBouBiYoRGjNmDCRJwoQJEzSemzRpEiRJwpgxY9TK9+vX76Xec+3atTh58iROnz6NyMhI2Nvbv9T+SkJgYCBat25t6DCIiMqkjeceos0XRzDsl7No+8URbA55aJA4mKgYKU9PT2zatAmpqf9lsWlpadi4cSOqVq1a5O9379491KlTB/Xr1y81E43t3LkTr732mqHDICIqcyLlqfhk21UIkfM4WwCfbLtmkJqV8pmoZCXr/lGkFbxsVmr+ZQupadOmqFq1KrZt26batm3bNnh6eqJJkyZ672/r1q2oV68eLCws4O3tjW+++Ub1XIcOHfDNN9/gxIkTkCQJHTp00LmfXbt2oVmzZrC0tISPjw/mzZuHrKwsAMDQoUPxxhtvqJXPzMyEk5MT1qxZAyBnQrPFixfDx8cHVlZWaNSoEf78809V+WPHjkGSJBw+fBjNmzeHtbU12rRpg1u3bqntNy0tDQcPHkTfvn0BAM+fP8eoUaNQqVIlWFtbo0ePHrhz547aawIDA1G1alVYW1ujf//+iI2N1Ti+L774ApUrV4atrS3GjRuHtLQ0jTJERGXdvehkiFzbFEIgPCalxGMpn4nKlgq6f06+rl52q4vussd6qJfd4a1Z5iWMHTtW9QUPAKtXr0ZAQIDe+/nnn38wePBgvPHGG7h69Srmzp2LWbNmITAwEEBOAvTmm2/Cz88PkZGRasnRiw4cOIARI0bgvffeQ2hoKH766ScEBgZi4cKFAIDhw4dj586dSEpKUntNcnIyXn8957zOnDkTa9aswYoVK3D9+nV8+OGHGDFiBI4fP672Xp9++im++eYbnD9/HjKZTOO4Dx8+DFdXV9SrVw9ATvPX+fPnsXPnTgQHB0MIgZ49e6rmITl79iwCAgIwadIkXLp0CR07dsSCBQvU9rllyxbMmTMHCxcuxPnz5+Hm5obly5frfb6JiEq7O9EJGttMJQneTiU/N1mZnZm2LBg5ciRmzJiB8PBwSJKEv//+G5s2bcKxY8f02s+SJUvQuXNnzJo1CwBQq1YthIaG4quvvsKYMWPg4OAAa2trmJubw9XVVed+Fi5ciOnTp2P06NEAAB8fH3z22Wf43//+hzlz5qBbt26wsbHB9u3bMXLkSADAhg0b0KdPH9jZ2SE5ORlLlizBkSNH4Ofnp9rHqVOn8NNPP8Hf31/tvZSPp0+fjl69eiEtLQ2WlpYAgB07dqiafe7cuYOdO3fi77//Rps2bQAA69evh6enJ/766y8MGjQI33//Pbp164bp06erzsHp06exf/9+1Xt+9913CAgIwPjx4wEACxYswKFDh1irQkTlSpYiG2tPPwAASAAEcpKUzwfUh5u9VYnHUz4TlcFJup+Tck1X/np0HjvKVSH1WnhhI9LKyckJvXr1wtq1ayGEQK9eveDk5KT3fm7cuKHRl6Nt27b47rvvoFAoCjxF+z///IOQkBBVDQqQs1RBWloaUlJSYG1tjUGDBmH9+vUYOXIkkpOTsWPHDmzYsAEAEBoairS0NHTp0kVtvxkZGRrNWQ0bNlT9rlzvJjo6GlWrVoUQArt27cKmTZtUxyeTydCqVSvVaxwdHVG7dm3cuHFDVaZ///5q7+Hn56eWqNy4cUOjA7Ofnx+OHj1aoPNDRFQWbL/4BOGxKXCwMccfb/shOjEd3k7WBklSgPKaqMhsDF+2gAICAjB58mQAwLJlywq1DyGERudYIXK3PuYvOzsb8+bNw4ABAzSeU9Z0DB8+HP7+/oiOjkZQUBAsLS3Ro0cP1esBYM+ePXB3d1d7vYWFhdpjMzMz1e/K2JWvP3fuHDIyMtCuXbs8j+XF4y7M8RIRlTeZimwsPXIXAPD2Kz6o7lIB1V1erhvDyyqfiUop0r17d2RkZAAAunXrVqh91K1bF6dOnVLbdvr0adSqVUuvBe+aNm2KW7duoUaNGjrLtGnTBp6enti8eTP27duHQYMGwdzcXBWHhYUFHj58qNbMo68dO3agV69eqtjr1q2LrKwsnD17VtX0Exsbi9u3b6NOnTqqMmfOnFHbT+7HderUwZkzZzBq1CidZYiIyrJtFx7jYVwKnCqYY6Sfl6HDAcBExeiZmpqqmi8Ku4ru1KlT0aJFC3z22WcYMmQIgoOD8eOPP+rdUXT27Nno3bs3PD09MWjQIJiYmODKlSu4evWqqmOqJEkYNmwYVq5cidu3b6s1m9ja2mLatGn48MMPkZ2djXbt2iEhIQGnT59GhQoVVH1f8rNz507MmzdP9bhmzZp47bXX8Oabb+Knn36Cra0tpk+fDnd3d1WT13vvvYc2bdpg8eLF6NevHw4ePKjW7AMA77//PkaPHo3mzZujXbt2WL9+Pa5fvw4fHx+9zhMRUWmUkfVfbcoE/+qwNjeOFKF8jvopZezs7GBnZ1fo1zdt2hRbtmzBpk2bUL9+fcyePRvz589XmzSuILp164bdu3cjKCgILVq0QOvWrbFkyRJ4ealn3cOHD0doaCjc3d3Rtm1btec+++wzzJ49G4sWLUKdOnXQrVs37Nq1C9WqVStQDPfu3cPdu3c1apfWrFmDZs2aoXfv3vDz84MQAnv37lU1IbVu3Rq//vorli5disaNG+PgwYOYOXOm2j6GDBmC2bNn4+OPP0azZs3w4MEDTJw4Ua9zRERUWv35z2M8fp4KZ1sLDG9lHLUpACCJUtx4n5CQAHt7e8jlco0v8rS0NISFhaFatWqq/hNU+i1ZsgSHDh3C3r17DR1KseL1S0Ql6UFsMgYs/xuxyZmY3bsuAtoV7J/Hwsrr+zs346jXISogDw8PzJgxw9BhEBGVGZtDHmL61quqCd7MZcbV2MJEhUqVwYMHGzoEIqIyI1KeihnbrqrNQjtnx3V0ruNisOHIuRlX2kREREQlJiwmGdm5OoAYaqp8XZioEBERlVMyE80FaA01Vb4uTFSIiIjKISGEajiykiGnyteFfVSIiIjKoX3XonDyTgzMZSZYN64lFNkw6FT5ujBRISIiKmeS0rMwf1coAGCif3W0rOZo4Ih0Y9MPERFROfP9oduISkiDl6M1Jnaobuhw8sREhQwiNjYWLi4uCA8PN3QoJe7HH39E3759DR0GEZVTt6ISsfrvcADA3L71YGlWuOVZSgoTlXLi+fPnGDlyJOzt7WFvb4+RI0ciPj4+z9c8ffoUY8aMQZUqVWBtbY3u3bvjzp07amU6dOgASZLUft54441841m0aBH69OkDb29vAEB4eDgkSYJMJsOTJ0/UykZGRkImk0GSJFVioyx/6dKlgp4CNadOnULbtm3h6OgIKysr+Pr64ttvv833dSEhIejcuTMqVqyISpUqoWvXrjpjuHv3LmxtbVGxYkW17W+++SZCQkI0FookIipuEfEpeG/jBSiyBbrXc0XH2i6GDilfTFTKiWHDhuHSpUvYv38/9u/fj0uXLmHkyJE6ywsh0K9fP9y/fx87duzAxYsX4eXlhVdffRXJyclqZd98801ERkaqfn766ac8Y0lNTcWqVaswfvx4jeeqVKmC3377TW3b2rVr4e7ursfR5s/GxgaTJ0/GiRMncOPGDcycORMzZ87Ezz//rPM1iYmJ6NatG6pWrYqzZ8/i1KlTsLOzQ7du3ZCZmalWNjMzE0OHDkX79u019mNhYYFhw4Zh6dKlRXpMRER52RzyEG2/OIpbT5MAAE2qVjRsQAXERMUIdejQAZMnT8bkyZNRsWJFODo6YubMmSjsskw3btzA/v378euvv8LPzw9+fn745ZdfsHv3bty6dUvra+7cuYMzZ85gxYoVaNGiBWrXro3ly5cjKSkJGzduVCtrbW0NV1dX1Y+9vX2e8ezbtw8ymQx+fn4az40ePRpr1qxR2xYYGFjglZULqkmTJhg6dCjq1asHb29vjBgxAt26dcPJkyd1vubWrVt4/vw55s+fj9q1a6NevXqYM2cOoqOj8fDhQ7WyM2fOhK+vr86ZdPv27Yu//voLqampRXpcRETaaJuBdvH+W4iUG/89yGgSlUWLFkGSJHzwwQfF/l7Jyck6f9LS0gpcNveXjLYyhbV27VrIZDKcPXsWP/zwA7799lv8+uuvqucnTJiAChUq5Pmj/PIMDg6Gvb09WrVqpXp969atYW9vj9OnT2t9//T0dABQWxDP1NQU5ubmGk0W69evh5OTE+rVq4dp06YhMTExz2M7ceIEmjdvrvW5vn374vnz56r3OHXqFOLi4tCnT5889wkg3/PRo0cPna+9ePEiTp8+DX9/f51lateuDScnJ6xatQoZGRmqmqF69eqprSB95MgR/PHHH1i2bJnOfTVv3hyZmZk4d+5cvsdFRPSySsMMtLoYxfDkkJAQ/Pzzz2jYsGGJvF+FChV0PtezZ0/s2bNH9djFxQUpKdr/kP7+/jh27Jjqsbe3N2JiYtTKFLYWxNPTE99++y0kSULt2rVx9epVfPvtt3jzzTcBAPPnz8e0adPy3EeVKlUAAFFRUXBx0WyHdHFxQVRUlNbX+vr6wsvLCzNmzMBPP/0EGxsbLFmyBFFRUYiMjFSVGz58OKpVqwZXV1dcu3YNM2bMwOXLlxEUFKQzrvDwcFVsuZmZmWHEiBFYvXo12rVrh9WrV2PEiBEwMzPL81gB5NtfxcpKc24ADw8PPHv2DFlZWZg7d67W5iglW1tbHDt2DK+99ho+++wzAECtWrVw4MAByGQ5H6XY2FiMGTMG69aty3NFUBsbG1SsWBHh4eF5JkdEREXhQYzmP87GNgOtLgZPVJKSkjB8+HD88ssvWLBggaHDMRqtW7eGJP03tbGfnx+++eYbKBQKmJqawsXFRWvyocuL+1ISQmjdDuQkDFu3bsW4cePg4OAAU1NTvPrqqxq1EsrECQDq16+PmjVronnz5rhw4QKaNm2qdd+pqalqNTW5jRs3Dn5+fvj888/xxx9/IDg4GFlZWfkeY40aNfItk9vJkyeRlJSEM2fOYPr06ahRowaGDh2qM+6AgAC0bdsWGzduhEKhwNdff42ePXsiJCQEVlZWePPNNzFs2DC88sor+b63lZWVziSYiKioPE/OwDdBOQMhJAACxjkDrS4GT1Teeecd9OrVC6+++mq+iUp6erqqSQIAEhISCvWeSUlJOp8zNVUfphUdHa2zrImJestZSQ61nTBhAtatW5dnmdDQUFStWhWurq54+vSpxvPPnj1D5cqVdb6+WbNmuHTpEuRyOTIyMuDs7IxWrVrpbLYBgKZNm8LMzAx37tzRmag4OTnh+fPnOvdRv359+Pr6YujQoahTpw7q169foNE9edWUAUD79u2xb98+tW3VqlUDADRo0ABPnz7F3LlzdSYqGzZsQHh4OIKDg1V/+w0bNqBSpUrYsWMH3njjDRw5cgQ7d+7E119/DSAnGczOzoZMJsPPP/+MgIAA1f7i4uLg7Oyc73EREb2M+btDEZOUjpouFfDr6OaIiE8zyhlodTFoorJp0yZcuHABISEhBSq/aNEizJs376Xf18bGxuBl83PmzBmNxzVr1lQlUvo0/fj5+UEul+PcuXNo2bIlAODs2bOQy+Vo06ZNvrEoO8feuXMH58+fVzV7aHP9+nVkZmbCzc1NZ5kmTZrkm2QFBARg0qRJWLFiRb7xKRWm6edFQgi1RDi3lJQUmJiYqNVCKR9nZ2cDyOkPpFAoVM/v2LEDX375JU6fPq02cunevXtIS0tDkyZN8oyJiOhlHL7xFNsvPoGJBCwe2BBejjbwciy676oSIQzk4cOHwsXFRVy6dEm1zd/fX7z//vs6X5OWlibkcrnq59GjRwKAkMvlGmVTU1NFaGioSE1NLY7wi5W/v7+oUKGC+PDDD8XNmzfFhg0bhI2NjVi5cmWh99m9e3fRsGFDERwcLIKDg0WDBg1E79691crUrl1bbNu2TfV4y5Yt4ujRo+LevXvir7/+El5eXmLAgAGq5+/evSvmzZsnQkJCRFhYmNizZ4/w9fUVTZo0EVlZWTpjuXLlipDJZCIuLk61LSwsTAAQFy9eFEIIkZmZKZ49eyYyMzOFEEJcvHhRABBhYWFay+vrxx9/FDt37hS3b98Wt2/fFqtXrxZ2dnbi008/VZXZtm2bqF27turxjRs3hIWFhZg4caIIDQ0V165dEyNGjBD29vYiIiJC6/usWbNG2Nvba93u4+OjM77SfP0SkeFFxKeIg9ejRLPPDgqvj3eLhXtCDR2SGrlcrvP7OzeD1aj8888/iI6ORrNmzVTbFAoFTpw4gR9//BHp6ekazTAWFhawsLAo6VANYtSoUUhNTUXLli1hamqKd999F2+99Vah97d+/Xq899576Nq1K4Cc0TU//vijWplbt25BLperHkdGRmLKlCl4+vQp3NzcMGrUKMyaNUv1vLm5OQ4fPozvv/8eSUlJ8PT0RK9evTBnzhyNv92LGjRogObNm2PLli14++23tZaRyWRwcnIq9PHmJzs7GzNmzEBYWBhkMhmqV6+OL774Qi0euVyuNnzb19cXu3btwrx58+Dn5wcTExM0adIE+/fvz7MGSZuNGzeq9e8hIioqm0MeYsa2q6pRPk4VzDGlSy3DBvUSJCEKOSzlJSUmJuLBgwdq28aOHQtfX198/PHHqF+/fr77SEhIgL29PeRyucYIi7S0NISFhaFatWp5dtw0Rh06dEDjxo3x3XffGTqUYrN3715MmzYN165d0+jrU9Zdu3YNnTt3xu3bt3XOOVOar18iMpxIeSrafnFEbSiyiQT8Pb2TUfVJyev7OzeD1ajY2tpqJCM2NjZwdHQsUJJCpVvPnj1x584dPHnyBJ6enoYOp0RFRETgt99+y3diPCIifWmbLyVbAOExKUaVqOjD4KN+qPx6//33DR2CQSib34iIipq3o+a8KKVlvhRdjCpReXHytPKM54GIiArjXJj61A+lab4UXYwqUSEiIqLCeRKfilk7rgEA3mxfDZ18K5eq+VJ0KfOJioH6ChO9FF63RKSP7GyBaVsuIzEtC409K+Lj7r6QmZaNgQplNlFRrg2TkpKS70RfRMZGObV+QdY4IqLyLVKeimVH7iL4fiyszEzx7ZDGZSZJAcpIopKcnKx13o4KFSqopsC3trZWzR6qjSRJasNkX5xd9GXKAurT8utTNjs7O8//rI2h7IsztbKs/mXFv1PsKwkhkJqaimfPnsHGxgbZ2dmqv0dWVlaeM+eam5urEhuFQqGxEviLzMzMYG5urnfZ7OxsjVXDC1tWJpOp5kUSQuS57pE+ZU1NTdWGdOe1irk+ZU1MTNT+6dGnbEpKis5rQpIkWFtbF6psampqnve1F2fL1qdsWlpanvcqfcpaW1urrvf09PQ81+3Sp6yVlZXqPpyRkYHMzMwiKWtpaan6zOlTNjMzExkZGTrLWlhYqBYv1adsfp/7v65EYdbOm8gWgMhW4NUaDnCx0n59Gts9oqAMNo9KUVCOw9alV69e+OWXXxAfHw8AePjwoc4bgIWFBVxdXVWPHz16pPNDbW5urjbB1+PHj3V+UM3MzNRWCo6IiNB54ZuamsLDw0P1ODIyUufFbGJiojasNyoqSufFLEkSqlatqnocHR2d54Xk5eWl+v3Zs2d5fil4enqqbgAxMTF53rw9PDxUH+q4uDgkJibqLOvu7q76oD5//jzPdZ2qVKmi+vDFx8erTVqXm6urq+oLTy6Xq64NbSpXrqz6EktMTERcXJzOsi4uLqovpqSkJMTGxuos6+TkpLrRJycnq624LYRARkYGdu7ciTVr1mD16tUYM2YMAGDPnj3o3bu3zv3++OOPeOeddwDkdMju2LGjzrKLFy/GRx99BCBn9XLl0grazJkzB3PnzgWQs0RCXtMHTJs2DV999RWAnLWvlGspaTNp0iQsW7YMQM51ltcim6NHj0ZgYCCAnHOW17pOAwcOxB9//KF6rGvhTUBztXQbG5sCr5bu7OyssVq6UvPmzdWWBvH29taYN0qpbt26uH79uupxvXr1EBoaqrWsl5eX2ppiLVq0wPnz57WWdXJywrNnz1SPO3TogOPHj2sta21trfbZ7dWrF/bu3au1LKDeNDlo0CD8+eefOssmJSWprvcxY8Zg7dq1OstGR0er1r965513sHz5cp1lw8LC4O3tDQD46KOPVOtraXPt2jXUq1cPADB37tw8l2I5d+4cWrRoAQD46quv8L///U9n2aNHj6JDhw4AgGXLlmHy5Mk6y+7evRu9evUCAAQGBmLs2LE6y27ZsgWDBg0CAPzxxx8YPHiwzrJOPT+ATYNXAQAp90Lw7E/dx2ZM94hSMY9KSRBCwM3NDS4uLsjMzMSAAQN0fkG3bNkSv/32m+rxsGHDdC6cV79+fbUP5vjx4/HkyROtZWvUqIHdu3erHr/77ru4e/eu1rLu7u44fPiw6vFHH32Ea9euaS1bqVIlBAcHqx7PmTMH586d01rWysoKFy9eVD3+4osvdN6wAODmzZuq37/77jscOHBAZ9kLFy6o/sP7+eefsX37dp1lT58+DQcHBwDA77//jg0bNugse/jwYdXaOH/88QdWr16ts+yuXbtUX4g//vijxoy7L/rjjz/g6+sLAFi1apXqS1Wb3377DXXq1AGQM7NvXmscrVy5UnXD2r59O2bMmKGz7HfffYfu3bsDAPbv348PPvhA9ZwQAjExMVxVmYgKpNTWNOihTNSoREREaM3IWK2rvSyrdUtPte6LVbVs+mHTD+8R/+E9Ath+8TE+3XETkmlOWZGtgIkiC4emvgJXLSN9jOkeoU+NSplIVApyoERERGXF04Q09Pj+JOKSMyAhp2ZFOWfKkBZV83u5wbHph4iIqIxSZAt8uPkS4pIzUNfNDitGNEVEfFqZmDNFGyYqREREpcjK4/dw+l7OUOSlw5rAy9EGXo42+b+wlGKiQkREVApEylNx4PpTfHPwFgBg3mv1UN1Z9wi4soKJChERkZHbHPIQM7ZdVa2M3MjDHoOaeeT9ojKi7ExdR0REVAZFylPVkhQAuPpEjqgE3SNxyhImKkREREYsLCZZLUkBgGwBhMeUj/mWmKgQEREZsfRMzflvTCUJ3k7WWkqXPUxUiIiIjJQ8NROzd6rPUK6cL6UsDkXWhp1piYiIjJAQAv/78zIexaXCo5IVVo9ugdjkjDI7X4ouTFSIiIiM0Oq/w3Hg+lOYm5pg+fCmqOVqa+iQDIKJChERkRGJlKfiYOhTfL4nZxXtT3vVQUOPioYNyoCYqBARERmJ3POlNHC3xyg/L8MGZWDsTEtERGQEtM2Xcj2i/MyXogsTFSIiIiNQ3udL0YWJChERkRGIjNesOSlP86XowkSFiIjIwB7GpmDerusAAOnfbeVtvhRd2JmWiIjIgFIzFJiw7h8kpGWhsWdFfP9GY0TEp5W7+VJ0YaJCRERkIBHxKfh461WERibA0cYcK0Y0hZu9FbwcbQwdmtFgokJERGQAm0MeYvrWq1D2nx3Q1J01KFqwjwoREVEJi5SnYvq2/5IUAFh9KhyR8lSDxWSsmKgQERGVsIsPnkPkGoqsEKLcD0XWhokKERFRCUrPUmD5sXsa2zkUWTsmKkRERCVECIE5O67jWkQCLGUmMPl3LDKHIuvGzrREREQlZN3Zh9gU8ggmEvDTqOaoVbkCwmNSOBQ5D0xUiIiIilmkPBX7rkZh4b8rIv+vuy/8azkDABOUfDBRISIiKka5V0Ru6GGPt1/xMWxQpQj7qBARERUTbSsiX3vCFZH1wUSFiIiomIQ944rIL4uJChERUTE5ceeZxjYOQ9YPExUiIqJisP9aFFYevw8AkDgMudDYmZaIiKiIhUYkYMqWSwCA0X5emNChOochFxITFSIioiISKU/F5UfxmLszFCkZCrSr4YRZvetCZmrCBKWQmKgQEREVgdzDkB1tzPHjsCaQmbKXxcvg2SMiInpJ2oYhP0/JQGqmwnBBlRFMVIiIiF5SWAyHIRcXJipEREQv6UFMssY2DkMuGkxUiIiIXsLVx3LM252zhs+/o5A5DLkIsTMtERFRIUXKUzFubQjSMrPhX8sZC/rVw+PnaRyGXISYqBARERXCvegkBASGIDoxHbUqV8DSYU1gZ2kGTwcbQ4dWpjBRISIi0tPGczlDkZX6N3GHnaWZASMqu9hHhYiISA+R8lR88kKSAgBfH7iNSHmqgSIq25ioEBER6eGn4/eRayQyFEJwKHIxYaJCRERUQIdCn2Lt6XCN7RyKXHyYqBARERXA1cdyvLvxIgSAFt6VYMoVkUsEO9MSERHlIVKeipCwOMzdFYrUTAXa13TC6jEtEJOUzhWRSwATFSIiIh1yLzToameB5cObwuzf1ZCZoBQ/Nv0QERFpoW2hwejEdCSlZxkuqHKIiQoREZEWYc+40KAxYKJCRESkxf5rURrbOLqn5DFRISIiyuX3Mw/w25kHAACJo3sMip1piYiIXnDwehTm7LgGAJjSpRYGNffg6B4DYqJCRESEnM6zB64/xed7QpEtgKEtPfFupxqQJIkJigExUSEionIv9zBkX1dbfPZafUjKdh8yGPZRISKick3bMOTbTxPxLCndcEGRChMVIiIq165HJHAYshFjokJEROVWWqYCy47e1djOYcjGg4kKERGVS4psgSlbLuHiw3hYyExgwmHIRomdaYmIqFyJlKci7Fky/vznMfZejYK5qQnWjGmBas42HIZshJioEBFRuZF7dA8ALBnSCG1qOAEAExQjZNCmnxUrVqBhw4aws7ODnZ0d/Pz8sG/fPkOGREREZZS20T2SBDTzqmS4oChfBk1UPDw88MUXX+D8+fM4f/48OnXqhNdeew3Xr183ZFhERFQGhcVoLjIoOLrH6Bm06adPnz5qjxcuXIgVK1bgzJkzqFevnoGiIiKisuhZoua8KBzdY/yMpo+KQqHAH3/8geTkZPj5+Wktk56ejvT0/y60hISEkgqPiIhKsUuP4jFj21W1bRzdUzoYPFG5evUq/Pz8kJaWhgoVKmD79u2oW7eu1rKLFi3CvHnzSjhCIiIqrSLlqfj7Tgzm7w5FSoYC7Wo4YWH/+oiIT+PonlJCEkKI/ItpysjIQHR0NLKzs9W2V61aVe/9PHz4EPHx8di6dSt+/fVXHD9+XGuyoq1GxdPTE3K5HHZ2doU5DCIiKqNyj/DxqGSFAx+8AhsLg/+PXu4lJCTA3t6+QN/fev+17ty5g4CAAJw+fVptuxACkiRBoVDotT9zc3PUqFEDANC8eXOEhITg+++/x08//aRR1sLCAhYWFvqGTERE5Yy2ET4R8alISMtkolLK6P3XGjNmDGQyGXbv3g03N7ciX1lSCKFWa0JERKSva090r9/D5p7SRe9E5dKlS/jnn3/g6+v70m/+ySefoEePHvD09ERiYiI2bdqEY8eOYf/+/S+9byIiKp9SMrLww+E7Gts5wqd00jtRqVu3LmJiYorkzZ8+fYqRI0ciMjIS9vb2aNiwIfbv348uXboUyf6JiKh8Sc9S4O3f/8HVJ3JYykyQochGtuAIn9JM7860R44cwcyZM/H555+jQYMGMDMzU3u+JDu16tMZh4iIyq5IeSruRidh1ckwHLv9DNbmpvh9XCtUqWjJ9XuMkD7f33onKiYmOZPZ5u6bUtjOtC+DiQoREeUe3WMqSVgb0BLtajoZNjDSqVhH/Rw9erTQgRERERUlbaN7BASqu9gYLigqUnonKv7+/sURBxERkd60rd/D0T1lS6EGk8fHx2PVqlW4ceMGJElC3bp1ERAQAHt7+6KOj4iISKfjt6I1tnF0T9mi9+rJ58+fR/Xq1fHtt98iLi4OMTExWLJkCapXr44LFy4UR4xEREQafj15Hz+dCAMAKLtNcnRP2aN3Z9r27dujRo0a+OWXXyCT5VTIZGVlYfz48bh//z5OnDhRLIFqw860RETlS6Q8FWExybj0KB6L998CAEzpUguDmntwdE8pUqyjfqysrHDx4kWNCd9CQ0PRvHlzpKSk6B9xITFRISIqP3KP7gGACf7V8XH32kU+SzoVL32+v/Vu+rGzs8PDhw81tj969Ai2trb67o6IiChf2kb3SABG+VVlklLG6Z2oDBkyBOPGjcPmzZvx6NEjPH78GJs2bcL48eMxdOjQ4oiRiIjKOW2jewSAB7GpBomHSo7eo36+/vprSJKEUaNGISsrCwBgZmaGiRMn4osvvijyAImIiCLj0zS2cXRP+aB3HxWllJQU3Lt3D0II1KhRA9bWJX+xsI8KEVHZd/LOM4xbex4ZWdmQkFOTohzdM6RFVUOHR4VQrDPTKllbW6NBgwaFfTkREVGeIuWp2HMlEl8duImMLIGudStjZu86ePI8jaN7ypECJSoDBgxAYGAg7OzsMGDAgDzLbtu2rUgCIyKi8mtzyENM33YVyjp/X1dbLB3WBBYyU1R14PT45UmBEhV7e3tVr2o7Ozv2sCYiomITKU9VS1IA4PbTRMQlZ7AWpRwqUKKyZs0a1e+BgYHFFQsREREOhT5F7t6TXL+n/NJ7eHKnTp0QHx+vsT0hIQGdOnUqipiIiKicuvwoHl/sv6mxnSN8yi+9E5Vjx44hIyNDY3taWhpOnjxZJEEREVH5c+VxPEasOovkdAW8Ha1hwvV7CHqM+rly5Yrq99DQUERFRakeKxQK7N+/H+7u7kUbHRERlXmR8lQcvRmNz/feQFK6As29KiEwoCUS0zK5fg8VPFFp3LgxJEmCJElam3isrKywdOnSIg2OiIjKttyje7wcrBEY0BIVLGSoYCFjgkIFT1TCwsIghICPjw/OnTsHZ2dn1XPm5uZwcXGBqalpsQRJRERlj7bRPY+epyAxLRMVLAo9zReVMQW+Ery8vAAA2dnZxRYMERGVH0dvRnN0D+Wr0ClraGgoHj58qNGxtm/fvi8dFBERlW1XH8vx+d4bGts5uody0ztRuX//Pvr374+rV69CkiQolwpSTgKnUCiKNkIiIipTLj+Kx8hVZ5GUroCXgzUePU9BtuDoHtJO70Tl/fffR7Vq1XDo0CFVf5XY2FhMnToVX3/9dXHESEREZUCkPBWHQp/ii/03kczRPVRAeicqwcHBOHLkCJydnWFiYgITExO0a9cOixYtwnvvvYeLFy8WR5xERFSK5R7dU83RhqN7qED0nvBNoVCgQoUKAAAnJydEREQAyOlse+vWraKNjoiISj1to3sexCUjMS3TcEFRqaF3jUr9+vVx5coV+Pj4oFWrVli8eDHMzc3x888/w8fHpzhiJCKiUmzPlUiO7qFC0ztRmTlzJpKTkwEACxYsQO/evdG+fXs4Ojpi8+bNRR4gERGVXqfuxOCrA1y7hwpP70SlW7duqt99fHwQGhqKuLg4VKpUSTXyh4iIyq9IeSrCYpIRKU/DjG1XkZElULtyBdyJTuLoHtJbkUz95+DgUBS7ISKiUm5zyEPM2HYV2S809XSpWxk/DmuCuOQMju4hvemdqKSlpWHp0qU4evQooqOjNWaqvXDhQpEFR0REpUekPFUjSZEAzOpdBxYyU7jZWzFBIb3pnagEBAQgKCgIAwcORMuWLdncQ0REAICwmGS1JAUABIAnz9NQ1cHGIDFR6ad3orJnzx7s3bsXbdu2LY54iIiolLr8SK6xjZ1m6WXpPY+Ku7s7bG1tiyMWIiIqpVafCsOX+3NG9yjr2dlploqC3jUq33zzDT7++GOsXLlStaIyERGVT5HyVHwXdAebzz8CALz9ig9Gt/HCg9hUdpqlIqF3otK8eXOkpaXBx8cH1tbWMDMzU3s+Li6uyIIjIiLjtelczggfZbeUznVcML2HLyRJQpWKbO6hoqF3ojJ06FA8efIEn3/+OSpXrszOtERE5VBEfIpakgIAx24+Q1RCGmtRqEjpnaicPn0awcHBaNSoUXHEQ0RERk6RLfDJtmsQubcLwWnxqcjp3ZnW19cXqampxRELEREZuYysbLy36SKO3X6m8RxH+FBx0DtR+eKLLzB16lQcO3YMsbGxSEhIUPshIqKyJ1KeimO3ojF69VnsuRIJM1MJI1pVhem/zf8c4UPFRRIi95qWeTMxycltcvdNEUJAkiQoFIqiiy4fCQkJsLe3h1wuh52dXYm9LxFReZJ7WnyZqYRfRzVHh9ouiJSnclp80ps+399691E5evRooQMjIqLSRdu0+NnZArVdc+bT4rT4VNz0SlQyMzMxd+5c/PTTT6hVq1ZxxUREREbiwoPnGtPiZwuw0yyVGL36qJiZmeHatWsckkxEVA6ExyTjsz03NLaz0yyVJL07044aNQqrVq0qjliIiMjAIuWpOH0vBiduP8PAlcGIkqfB0cYcJv/+f8pOs1TS9O6jkpGRgV9//RVBQUFo3rw5bGzUV8RcsmRJkQVHREQlJ3enWQDwdbXFb+NaQpEt2GmWDELvROXatWto2rQpAOD27dtqz7FJiIiodNLWaRYAfhjaBC62lgDABIUMgqN+iIgIYTHJGkkKAMQmZQCVSz4eIiW9+6i86PHjx3jy5ElRxUJERAZyPvy5xjZ2miVjoHeikp2djfnz58Pe3h5eXl6oWrUqKlasiM8++wzZ2dnFESMRERUTIQSWBN3GkqCcpnxlAz47zZKx0Lvp59NPP8WqVavwxRdfoG3bthBC4O+//8bcuXORlpaGhQsXFkecRERUxB4/T8GcHddx+GY0AGBKl1oY2MwdD2JT2WmWjIbeU+hXqVIFK1euRN++fdW279ixA5MmTSrRpiBOoU9EVDjrzjzAzL+uqR73a1wF373RxIARUXmiz/e33k0/cXFx8PX11dju6+uLuLg4fXdHREQl7M7TRLUkBQB2XY5EpDzVQBER6aZ3otKoUSP8+OOPGtt//PFHNGrUqEiCIiKi4hGdmIbxa89rbFeInHlSiIyN3n1UFi9ejF69euHQoUPw8/ODJEk4ffo0Hj16hL179xZHjEREVATCYpIxavVZPIrTrDnhCB8yVnrXqPj7++P27dvo378/4uPjERcXhwEDBuDWrVto3759ccRIREQvIVKeit+Dw9F/2d94FJcKL0dr/K9bbZj+O0knR/iQMStQZ9oBAwYgMDAQdnZ2+O233zBkyBBYWFiURHx5YmdaIqK8bQ55iOnbrkJ5p69S0RI73mkHZ1sLRMpTOS0+GUSRd6bdvXs3kpOTAQBjx46FXC5/+SiJiKhYRcpTMX3rf0kKAETJ05D175xXbvZW8KvuyCSFjFqB+qj4+vpixowZ6NixI4QQ2LJli84MaNSoUUUaIBER6U8Ige+C7iB3lXm2AMJjUpicUKlRoKaf06dPY8qUKbh37x7i4uJga2urdQFCSZJKdIgym36IiDQpsgXm7ryO38880HjOVJJwanpHJipkUPp8fxeoRqVNmzY4c+YMAMDExAS3b9+Gi4vLy0dKRERFJlKeiltRiVh9Kgwn7sRAkoDeDd2w90oUFEKw0yyVSnoPTw4LC4Ozs3NxxEJERIW0OeQhZmy7qloB2dREwo9Dm6BHAzd80pOdZqn00jtR8fLyQnx8PM6dO4fo6GiNhQjZR4WIqGRFylPVkhQgp49K46oVAeR0mmWCQqWV3onKrl27MHz4cCQnJ2v0VZEkiYkKEVEJOxT6VC1JAdhplsoOvSd8mzp1KgICApCYmIj4+Hg8f/5c9cO1foiISlZQ6FMs2BOqsZ0zzVJZoXeNypMnT/Dee+/B2pofACIiQ4iUpyIsJhn/PHiOb4NuI1sAtSpXwN3oJGQLzjRLZYveiUq3bt1w/vx5+Pj4FEc8RESUh9ydZgHgjRaeWNCvPp4lpbPTLJU5eicqvXr1wkcffYTQ0FA0aNAAZmZmas/37du3wPtatGgRtm3bhps3b8LKygpt2rTBl19+idq1a+sbFhFRmaet06wE4L3ONSAzNWGnWSqT9E5U3nzzTQDA/PnzNZ6TJAkKhaLA+zp+/DjeeecdtGjRAllZWfj000/RtWtXhIaGwsbGRt/QiIjKtMuP4jU6zQoAD2JTUaUim+OpbNI7Uck9HPll7N+/X+3xmjVr4OLign/++QevvPKKRvn09HSkp6erHickJBRZLERExuxudBLm72anWSp/9B71U5yUix06ODhofX7RokWwt7dX/Xh6epZkeEREJS5SnopVp+6j//K/ERGfBgcbc5j8OysEO81SeVCgtX5++OEHvPXWW7C0tMQPP/yQZ9n33nuvUIEIIfDaa6/h+fPnOHnypNYy2mpUPD09udYPEZVJm0Me5qx+/O/jqg5W2D6pLTIU2ew0S6WaPmv9FChRqVatGs6fPw9HR0dUq1ZN984kCffv39c/YgDvvPMO9uzZg1OnTsHDw6NAr+GihERUVkXEp6DtF0fVVj82kYC/p3dickKlXpEvShgWFqb196Ly7rvvYufOnThx4kSBkxQiorIqLVOBaX9cQe7/IjnbLJVHenemLUpCCLz77rvYvn07jh07lmdtDRFReRCTlI63fjuPCw/jNZ5jx1kqjwyaqLzzzjvYsGEDduzYAVtbW0RFRQEA7O3tYWXF/xiIqPyIlKfi1J0YfBN0G1HyNNhbmWFwcw+sPhUOhRDsOEvlVoH6qBTbm7+woOGL1qxZgzFjxuT7evZRIaKyYHPIQ0zfdhXKu7GDjTn+mOCH6s4VEClPZcdZKnOKvI9KcTFgjkREZBQi5alqI3sAID4lA9bmpgDA2Wap3DOqeVSIiMqTLEU25uy4rrPTLBEVsEblypUrBd5hw4YNCx0MEVFZp1z52KmCBT7bHYqTd2I0yrDTLNF/CpSoNG7cGJIk6WyqUT6n71o/RETlibaVj63NTfF6Uw9sOPuQnWaJtNB7HhUiItKftpWPAWDF8Kbwr+2CSR2rs9MskRYFSlS8vLyKOw4iojItLCZZI0kBAHMZO80S5aXQo35CQ0Px8OFDZGRkqG3v27fvSwdFRFSWZCqy8ef5xxrb2ReFKH96Jyr3799H//79cfXqVbV+K8o5UdhHhYgoR6Q8FVcfy7Hy+D3VTLMSAAGufExUUHonKu+//z6qVauGQ4cOwcfHB+fOnUNsbCymTp2Kr7/+ujhiJCIqdXJ3nDU3lbB8eDPUc7djXxQiPeidqAQHB+PIkSNwdnaGiYkJTExM0K5dOyxatAjvvfceLl68WBxxEhGVGpHyVLWZZgEgK1ugnrsd+6IQ6UnvCd8UCgUqVKgAAHByckJERASAnA63t27dKtroiIhKGSEEvgu6g9yzOXASN6LC0btGpX79+rhy5Qp8fHzQqlUrLF68GObm5vj555/h4+NTHDESEZUKKRlZ+OiPK9hzNVLjOXacJSocvROVmTNnIjk5GQCwYMEC9O7dG+3bt4ejoyM2b95c5AESERm7SHkqzt2Pw9Kjd3E3OglmphL6NKqCHRcjOIkb0UsqktWT4+LiUKlSJZ2rIRcXrp5MRIaWe+XjChamCBzbEs29HbjyMZEOJb56soODQ1HshoioVImIT9FY+TglQwH3SjlJCTvOEr08vROVjh075llzcuTIkZcKiIioNEjLVODjXEkK8F+nWSYoREVD70SlcePGao8zMzNx6dIlXLt2DaNHjy6quIiIjI5y5WNrM1PM3nkdVx7LNcqw0yxR0dI7Ufn222+1bp87dy6SkpJeOiAiImOkbeXjStZmGNjMA6tPhbPTLFExKZLOtABw9+5dtGzZEnFxcUWxuwJhZ1oiKgmR8lS0/eKIxqKCWyf6oZkXO80S6avEO9MCOTPWWlpaFtXuiIiMxq3IRK0rH2dk5Wxkp1mi4qN3ojJgwAC1x0IIREZG4vz585g1a1aRBUZEZAwexaVg4d4bGtvZF4WoZOidqNjZ2amN+jExMUHt2rUxf/58dO3atUiDIyIylEh5KnZcisCyo3eRmJYFG3NTpGYqkC248jFRSdI7UQkMDCyGMIiIjMfGcw/xybb/hh57VLLCHxP8AIB9UYhKmN6LEvr4+CA2NlZje3x8PNf6IaJS7/bTRMzYpj4/SkR8KoCcvih+1R2ZpBCVIL0TlfDwcCgUCo3t6enpePLkSZEERURkCDciEzBy1VmN7Vz5mMhwCtz0s3PnTtXvBw4cgL29veqxQqHA4cOH4e3tXaTBEREVN+UkbjciEvDVwVtIy8zWKMOOs0SGU+BEpV+/fgAASZI0ZqA1MzODt7c3vvnmmyINjoioOGmbxM2/ljP8azlj4Z4bnMSNyAgUOFHJzs75L6NatWoICQmBk5NTsQVFRFTcIuWpGkmKBGBh//rwqGSNHg1c2XGWyAjoPeonLCysOOIgIipRf118ojGJmwDwKC4VHpWsOYkbkZHQO1GZP39+ns/Pnj270MEQERU3RbbAd4duY+mRuxrPsS8KkfHRO1HZvn272uPMzEyEhYVBJpOhevXqTFSIyChFylNx+VE8fj11H+fD4wEArX0ccC4sjpO4ERkxvROVixcvamxLSEjAmDFj0L9//yIJioioKG0OeYjp265CuQSrmamErwc1wmuN3bmgIJGRK7LVk69du4bevXsjPDy8KHZXIFw9mYjy8+R5Ctp9eVRtAjcTCfh7eicmJkQGos/3t94TvukSHx8PuVxeVLsjInppz5MzMHnDReT+b4wTuBGVHno3/fzwww9qj5WrJ//+++/o3r17kQVGRFQYygncktKzMHfHdUTI0zTKsNMsUemhd6Ly7bffqj02MTGBs7MzRo8ejRkzZhRZYERE+tI2gZu3ozX6Nq6CZUfucQI3olKI86gQUZmgawK3X0Y1R83Kthjasio7zRKVQnonKkRExujA9SitE7jFJGWgZmVwAjeiUqrAiUpAQECByq1evbrQwRAR6SNSnor70ck4dS8GPx2/p/E8+6IQlX4FTlQCAwPh5eWFJk2aoIhGNBMRFZq2/iiNPOxx9YmcE7gRlSEFTlQmTJiATZs24f79+wgICMCIESPg4OBQnLEREWkVKU9Vm8ANACQJWDGiKSRJYl8UojKkwPOoLF++HJGRkfj444+xa9cueHp6YvDgwThw4ABrWIioxGQpsvHFvpvIfdsRAngQmwo3eyv4VXdkkkJURug14ZuFhQWGDh2KoKAghIaGol69epg0aRK8vLyQlJRUXDESUTkXKU/F6XsxuPAgDkN+PoMdlyI0yrA/ClHZVOhRP5IkQZIkCCGQnZ1dlDEREalo64tiayFDn0ZVsDnkEedGISrj9EpU0tPTsW3bNqxevRqnTp1C79698eOPP6J79+4wMSmy2fiJiABonxsFAAIDWqCZlwPe7VyD/VGIyrgCJyqTJk3Cpk2bULVqVYwdOxabNm2Co6NjccZGROXcsZvPNJIUAMjIytnIuVGIyr4Cr55sYmKCqlWrokmTJpAkSWe5bdu2FVlw+eHqyURli3KdHm9Ha+y/9hSL9t5AZq5MxVSScGp6RyYoRKWYPt/fBa5RGTVqVJ4JChHRy9DWFwUA6rjZ4lZUIudGISqn9JrwjYioOOjqizKtay2807EGohLS2BeFqJziWj9EZHDKGpPcmnk5QJIk9kUhKseYqBCRQSj7o2RlCczbdV3jec6LQkQAExUiMgBt/VEqWMiQkpHFvihEpIaJChGVKF39Uba83RqVbMzZF4WI1DBRIaISteHsQ639UeSpWahbxZ4JChGpYaJCRMVK2RfFqYIFlh+9i7+4Tg8R6YGJChEVG219UUwkoGNtFxy9Fc3+KESULyYqRFQsdPVFWTmyGbrWdUWkPJX9UYgoX0xUiKhYHLkRrbUviq2FGQCu00NEBcNEhYiKhLIvikclK2y/EIEfDt/WKMO+KESkLyYqRPTSdK3T08DdDtcjEtgXhYgKjYkKEb0UXX1R5vWti1F+3lynh4heChMVInopZ+7Hau2LUquyHdfpIaKXxkSFiPSi7Ivi5WCNIzejsXDPDY0y7ItCREWFiQoRFZiuvig+TjYIj01mXxQiKnJMVIioQHT1RZnSpRYmd6yBp4nsi0JERY+JChEVyLn7cVr7orTwdoCJCfuiEFHxYKJCRDpFylNxPzoZFx/HY9mROxrPsy8KERU3E0O++YkTJ9CnTx9UqVIFkiThr7/+MmQ4RPSCzSEP0faLIxi+6iy+PnALqZnZqOZoAxMp53n2RSGikmDQGpXk5GQ0atQIY8eOxeuvv27IUIjoBY+fp2D61qt4saVHkoB141vCxERiXxQiKjEGTVR69OiBHj16vPyOspKBLFPN7ZIpYGqpXk4nE0D2wk1Xr7IpALQ03ucEAcisC1k2FUC27jBkNoUrq0gDhKJoyppa53yDAYAiHRBZRVTWCpD+rfBTZAAis2jKmlgCJqb6l83OBLIz8ihrAZjIClE2C8hOz6OsOWBiVoiyCiA7TXdZyQwwNdda9t6zRHyw6SIspZxtWTBFpjCDEMDD2GT4eVvDzcYSQLbm5+TF/YpsQJGaRwwywNTi37ICUKQUUVk9Pve8R2gvy3uE/mXL0T0iz7L5fu5fKFtApaqPSnp6OtLT//sjJCQk5PyyrQqgrZm8Sk+gw57/Hm910X2Dc/EHXj323+Md3kB6jPayDs2B7iH/Pd5TF0h+oL2sfV2g1/X/Hh9oAchDtZe18QJeC//v8aFXgLjz2staOAGvP/vv8bEeQPRx7WVNrYEhL9xUT74OROzVXhYAhr1wkzw9Enj0p+6yg5P+u2mdexsIW6u77IBowNI55/cLU4A7y3WX7RsGVPDO+f3Kp8CNr3WX7XkNqFgv5/frnwPX5uku2+0c4Ngi5/db3wOX/qe7bOejQOUOOb/f/Rk4P1l3Wf/dgHuvnN/D1wNnxuou224LUHVQzu+PtwOnBusu23oN4DMm5/fIA8Dx3rrLNv8RqPVOzu/PTgKHO+ou23gxUPejnN+fXwAOtFQ9VR3ArsoAKuc8/u7pUHz3dDhMJQk1LB8CW5rr3m+daUCTr3J+T34I7Kymu2zNSUCLZTm/p8cA21x0l602GvALzPldkQJsqaC7rOdAoP0f/z3OqyzvETl4j/gP7xE58rhHaKg/B2g4N+d3+Q1gb33dZV+8RxSQQfuo6GvRokWwt7dX/Xh6eho6JKJSLyg0Kt8yyv4ozhUs8y1LRFSUJCGErjrGEiVJErZv345+/frpLKOtRsXT0xPy2AjY2dlp2SmrdbWWZbWu/mXLaLVu2LNkvPrNYZhL/50HSQIOT3kFbhWtESVPRXhcJrxcKub0R9GnWpdNPy+U5T0ipyzvEfqXLZtNPwkJCbC3t4dcLtf+/f2CUtX0Y2FhAQsLC80nZDbqHxxdClKmUGX1GJ6pV1k9OirqU9ZUj/+K9SprAUDL3+ely5oDKGCbZnGVNTH77wNepGVl/92QirSsKWCieQ0rp7+v5mSC+89i8OHmS1DAFKnihT5eAgiXm8DNyQaujjZwdXxhB5JJwT8bepWViqcsYCRleY/IKct7hP5lS/Ye8dJl9fncF1CpSlSIqPB0TX+fG+dGISJjYtBEJSkpCXfv3lU9DgsLw6VLl+Dg4ICqVasaMDKiskXX9PevN3VHQw97zN91AwohODcKERkdgyYq58+fR8eO//U6njJlCgBg9OjRCAwMNFBURGWPrunvBzbzhF91R3St58q5UYjIKBk0UenQoQOMpC8vUZkTKU/F3egknLkXi19P3dd4/sUmHq7TQ0TGin1UiMqgzSEPMX3bVbz4f4CPkw3CY5ORLTj9PRGVHkxUiMqY208TdU5/L0mc/p6IShcmKkSlnHLIsbejNULCn2PWX9c1ZuEQAngQmwq/6o5MUIioVGGiQlSKccgxEZV1pWoKfSL6j64hx2+1r4YF/erD9N8ZPtkfhYhKM9aoEJVS2y880VqT0tG3MvyqO6JzHRf2RyGiUo+JClEpoeyLYikzwcrj93Ew9KlGGQ45JqKyhokKUSmgrS+KzERCm+qOOHU3hkOOiajMYqJCZOQi5akac6IAwNqAlmhbwwmR8lQ28RBRmcVEhcgIKZt5LGQm+HzvTY0kBQBM/u0syyYeIirLmKgQGZmCDDnmcGMiKi84PJnIiETEp2D6Vs0k5c321TjcmIjKJdaoEBmJm1EJmLrlssassgDQybcyAtpVY18UIip3mKgQGVCkPBXXHsux/3oUtl/UPi+KspmHfVGIqDxiokJkIBvOPsCn26+p1aD0qO+Khh72+PrAbSiEYDMPEZV7TFSIDGD7xSf4ZPs1tW0mEjC7T1242VuhXxN3NvMQEYGJClGJUA43liDh5xP3cPTWM40y2QIIj0lRNfEwQSEiYqJCVOy0zyoLKLKh1uzDIcdERJo4PJmoGD2ITdY63HjDm63xxesNOOSYiCgfrFEhKkLKJh5vR2tcfCjHvF3XtQ43VmQDQ1pUxSu1nNkXhYgoD0xUiIpIQWaUBbjCMRGRPtj0Q1QEIuWpWpOUce288dlr9djEQ0RUSKxRISokZTOPnaUZvj90R2tNyqt1XOFX3RGv1q3MJh4iokJgokJUCPouHMgmHiKiwmHTD5GeHuoYyTOsZVU28RARFTHWqBDlQ9nE4+VgjfMPnmPhnhtaR/L0aVQF73auwSYeIqIixESFKA/6juRhEw8RUdFi0w+RDpHyVEzXkqRM8PfhSB4iohLCGhWifymbeKo52SA6IR0z/7oKoaUmxb+WC0fyEBGVECYqROBkbURExopNP1Tu6ZqsrUd9V3zcvTabeIiIDIg1KlQuKZt5TCQJPxzWPlnbKD9v+FV3RL8m7mziISIyECYqVO5wsjYiotKDTT9Urpy5H4uPtUzWNratN5t4iIiMEGtUqExTNvEIAWwOeYSdlyO0luta1xVvveLDJh4iIiPDRIXKrM0hDzF9m/Yhxi/iZG1ERMaLTT9UJh0MjcLHWzWTlMCxLfDl6w3YzENEVEqwRoXKhEh5KsKeJSMmOR2bzj3C6XuxWstZyEwxpEVVvFLLmc08RESlABMVKvU2nnuIT7ZdVVso0FQCFLlqUziSh4io9GHTD5UqkfJUnL4Xg0h5KjKysvHz8XuYkStJkQD8ObENm3iIiMoA1qhQqfHi/CcSAFtLGRLSsjTKCQBpmdls4iEiKgOYqFCpkHuaewEgIS0LFa3MIE/NzNXswyYeIqKygokKGS3lHChZWQK/nLyvdSbZH4Y2RqQ8DZ9suwaFEGziISIqY5iokFHaeO4hPtme9xwoppKEmpVt8UotFzbxEBGVUUxUyOCUNSfVnGxgZ2mGNX+H4euDt9XKSABGt/HC78EPtdacsImHiKhsYqJCBpW7g6y5zATpWdka5QSAbvXc8LZ/ddacEBGVI0xUyGAi4lPUprgXANKzsuFmb4koeZrWDrKsOSEiKl+YqFCJUTbxOFewwN93Y/Dzifta+6B8M6gRHj1PYQdZIiJiokIlQ58FAqs526BNDSd2kCUiIiYqVDyUtSdV7K1w6MZTLNhzQ6PM1K61YGcpw/xdN9hBloiItGKiQkXuxQ6yeWnu5QC/6o7oWs+VNSdERKQVExV6KS8OLba1NMP6Mw+waN9NjXISwNljiYhIb0xUqNBy15yYm0rIyL1k8b/ebO+DVafC2DmWiIj0wkSFCuTFmhM3eytcevgc07eqr1qcoRCoYm+JSC1Di8e288bYdt5s4iEiIr0wUaF85Z6UrbqLDe5GJ2st+83gRngYp3toMRMUIiLSBxMVUpO75uRhXLLGpGy6kpScfic28KvOocVERFQ0mKiQilrNiQS0quaA6xEJWuc++eGNxkjNVORZc8IEhYiIXhYTlXLsxdoTIYR6zYkAztyP0/o6U0lCi2oOcLO3Ys0JEREVKyYq5VTufifW5iZaa05m9PCFraUMs/66zpoTIiIqcUxUyoEXa06cKlhg79VItRE7AkByhuaKxaaShL6Nq8DN3godfV1Yc0JERCWOiUoZl3uuE0uZCdKyNJMSAAho5421fz9gzQkRERkNJipliLLmxNvRGikZ2dh56Ql+OHJXrUxaVjbsLWWQp2WpbTeVJLzZ3gdvtvdhzQkRERkNJiqlVO5hxGtPh2HurtB8VycGgOUjmuHxc851QkRExo+JipHLnZAAmh1hq1S0xJP4NI3XNvawx+XHco1ZYn2cbdC2Buc6ISIi48dExYi9mJCYSMBbr/gAAFYev68qIwCtSQoAfNyjDh7GJXOuEyIiKrWYqBiJ3DUnoRFytXlNsoV6gpKbrtWJ/ao7suaEiIhKLSYqBqDZvyQcc3ddVyUlDjbmiEvO0Praxp72uPxIsznnfz1qY/G+W6w5ISKiMsXgicry5cvx1VdfITIyEvXq1cN3332H9u3bGzosvWjrR6JtuyJb4Kfj9/DVwVuqpKSilRniUzPV9qcrSTGVgBUjmuHE7WcazTlDWlRF30ZVWHNCRERlikETlc2bN+ODDz7A8uXL0bZtW/z000/o0aMHQkNDUbVqVUOGpjX5yK9jq4kEfPZafbSv6Yx1Zx7gl5P3VTUfle0sEJeUgcxs9WE5uZMUpV9HN0dsUrrW/iVDWlTV2pzDmhMiIiprJCEKMqC1eLRq1QpNmzbFihUrVNvq1KmDfv36YdGiRfm+PiEhAfb29pDL5bCzsyuyuH4PfoA5O6+pko9JHWtAocjGyhP3If4dadOzgRscbczx25kHL/1+2vqXnJreEW72VoiUp7KWhIiIyhR9vr9NSigmDRkZGfjnn3/QtWtXte1du3bF6dOntb4mPT0dCQkJaj9FLVKeitk7rqlmcs0WwI9H7mLF8fv/LdgHYM/VSJ1Jiomkfd/z+tbVeM5UkjC9py9MJUn1OHf/Er/qjkxSiIioXDJY009MTAwUCgUqV66str1y5cqIiorS+ppFixZh3rx5xRpXWEwyClrF5F/LCSdux6iVN5GAbRP9MGBFMF5s5TGVJHSt5wpLM1P2LyEiIiogg3emlST1KgYhhMY2pRkzZmDKlCmqxwkJCfD09CzSeKo52cBEglqSYQIAubaZShK+eL2h1o6tjas6YNGABuxfQkRE9JIMlqg4OTnB1NRUo/YkOjpao5ZFycLCAhYWFsUal5u9ldYkA4BeiYeu7cr3YFJCRESUP4MlKubm5mjWrBmCgoLQv39/1fagoCC89tprhgoLgO4kQ9/EgwkJERHRyzFo08+UKVMwcuRING/eHH5+fvj555/x8OFDTJgwwZBhAdCeZDDxICIiKlkGTVSGDBmC2NhYzJ8/H5GRkahfvz727t0LLy8vQ4ZFRERERsKg86i8rOKaR4WIiIiKT6mYR4WIiIgoP0xUiIiIyGgxUSEiIiKjxUSFiIiIjBYTFSIiIjJaTFSIiIjIaDFRISIiIqPFRIWIiIiMFhMVIiIiMloGnUL/ZSkn1U1ISDBwJERERFRQyu/tgkyOX6oTlcTERACAp6engSMhIiIifSUmJsLe3j7PMqV6rZ/s7GxERETA1tYWkiQV6b4TEhLg6emJR48ecR2hYsTzXDJ4nksGz3PJ4HkuOcV1roUQSExMRJUqVWBikncvlFJdo2JiYgIPD49ifQ87Ozt+EEoAz3PJ4HkuGTzPJYPnueQUx7nOryZFiZ1piYiIyGgxUSEiIiKjxURFBwsLC8yZMwcWFhaGDqVM43kuGTzPJYPnuWTwPJccYzjXpbozLREREZVtrFEhIiIio8VEhYiIiIwWExUiIiIyWkxUiIiIyGiV60Rl+fLlqFatGiwtLdGsWTOcPHkyz/LHjx9Hs2bNYGlpCR8fH6xcubKEIi3d9DnP27ZtQ5cuXeDs7Aw7Ozv4+fnhwIEDJRht6aXv9az0999/QyaToXHjxsUbYBmh73lOT0/Hp59+Ci8vL1hYWKB69epYvXp1CUVbeul7ntevX49GjRrB2toabm5uGDt2LGJjY0so2tLpxIkT6NOnD6pUqQJJkvDXX3/l+xqDfA+KcmrTpk3CzMxM/PLLLyI0NFS8//77wsbGRjx48EBr+fv37wtra2vx/vvvi9DQUPHLL78IMzMz8eeff5Zw5KWLvuf5/fffF19++aU4d+6cuH37tpgxY4YwMzMTFy5cKOHISxd9z7NSfHy88PHxEV27dhWNGjUqmWBLscKc5759+4pWrVqJoKAgERYWJs6ePSv+/vvvEoy69NH3PJ88eVKYmJiI77//Xty/f1+cPHlS1KtXT/Tr16+EIy9d9u7dKz799FOxdetWAUBs3749z/KG+h4st4lKy5YtxYQJE9S2+fr6iunTp2st/7///U/4+vqqbXv77bdF69atiy3GskDf86xN3bp1xbx584o6tDKlsOd5yJAhYubMmWLOnDlMVApA3/O8b98+YW9vL2JjY0sivDJD3/P81VdfCR8fH7VtP/zwg/Dw8Ci2GMuagiQqhvoeLJdNPxkZGfjnn3/QtWtXte1du3bF6dOntb4mODhYo3y3bt1w/vx5ZGZmFluspVlhznNu2dnZSExMhIODQ3GEWCYU9jyvWbMG9+7dw5w5c4o7xDKhMOd5586daN68ORYvXgx3d3fUqlUL06ZNQ2pqakmEXCoV5jy3adMGjx8/xt69eyGEwNOnT/Hnn3+iV69eJRFyuWGo78FSvShhYcXExEChUKBy5cpq2ytXroyoqCitr4mKitJaPisrCzExMXBzcyu2eEurwpzn3L755hskJydj8ODBxRFimVCY83znzh1Mnz4dJ0+ehExWLm8DeivMeb5//z5OnToFS0tLbN++HTExMZg0aRLi4uLYT0WHwpznNm3aYP369RgyZAjS0tKQlZWFvn37YunSpSURcrlhqO/BclmjoiRJktpjIYTGtvzKa9tO6vQ9z0obN27E3LlzsXnzZri4uBRXeGVGQc+zQqHAsGHDMG/ePNSqVaukwisz9Lmes7OzIUkS1q9fj5YtW6Jnz55YsmQJAgMDWauSD33Oc2hoKN577z3Mnj0b//zzD/bv34+wsDBMmDChJEItVwzxPVgu/5VycnKCqampRnYeHR2tkS0qubq6ai0vk8ng6OhYbLGWZoU5z0qbN2/GuHHj8Mcff+DVV18tzjBLPX3Pc2JiIs6fP4+LFy9i8uTJAHK+UIUQkMlkOHjwIDp16lQisZcmhbme3dzc4O7urracfZ06dSCEwOPHj1GzZs1ijbk0Ksx5XrRoEdq2bYuPPvoIANCwYUPY2Nigffv2WLBgAWu8i4ihvgfLZY2Kubk5mjVrhqCgILXtQUFBaNOmjdbX+Pn5aZQ/ePAgmjdvDjMzs2KLtTQrzHkGcmpSxowZgw0bNrCNuQD0Pc92dna4evUqLl26pPqZMGECateujUuXLqFVq1YlFXqpUpjruW3btoiIiEBSUpJq2+3bt2FiYgIPD49ijbe0Ksx5TklJgYmJ+teZqakpgP/+46eXZ7DvwWLtqmvElMPfVq1aJUJDQ8UHH3wgbGxsRHh4uBBCiOnTp4uRI0eqyiuHZX344YciNDRUrFq1isOTC0Df87xhwwYhk8nEsmXLRGRkpOonPj7eUIdQKuh7nnPjqJ+C0fc8JyYmCg8PDzFw4EBx/fp1cfz4cVGzZk0xfvx4Qx1CqaDveV6zZo2QyWRi+fLl4t69e+LUqVOiefPmomXLloY6hFIhMTFRXLx4UVy8eFEAEEuWLBEXL15UDQM3lu/BcpuoCCHEsmXLhJeXlzA3NxdNmzYVx48fVz03evRo4e/vr1b+2LFjokmTJsLc3Fx4e3uLFStWlHDEpZM+59nf318A0PgZPXp0yQdeyuh7Pb+IiUrB6Xueb9y4IV599VVhZWUlPDw8xJQpU0RKSkoJR1366Huef/jhB1G3bl1hZWUl3NzcxPDhw8Xjx49LOOrS5ejRo3neb43le1ASgvViREREZJzKZR8VIiIiKh2YqBAREZHRYqJCRERERouJChERERktJipERERktJioEBERkdFiokJERERGi4kKERERGS0mKkRERGS0mKgQERGR0WKiQkREREZLZugAiIhe1KFDB9SvXx8AsG7dOpiammLixIn47LPPIEmSgaMjopLGGhUiMjpr166FTCbD2bNn8cMPP+Dbb7/Fr7/+auiwiMgAuHoyERmVDh06IDo6GtevX1fVoEyfPh07d+5EaGiogaMjopLGGhUiMjqtW7dWa+bx8/PDnTt3oFAoDBgVERkCExUiIiIyWkxUiMjonDlzRuNxzZo1YWpqaqCIiMhQmKgQkdF59OgRpkyZglu3bmHjxo1YunQp3n//fUOHRUQGwOHJRGR0Ro0ahdTUVLRs2RKmpqZ499138dZbbxk6LCIyACYqRGR0zMzM8N1332HFihWGDoWIDIxNP0RERGS0mKgQERGR0eKEb0RERGS0WKNCRERERouJChERERktJipERERktJioEBERkdFiokJERERGi4kKERERGS0mKkRERGS0mKgQERGR0fo/0K17RkeO2i4AAAAASUVORK5CYII=">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fcc92eb7-a659-4bcb-ae33-857ceda1a88f">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So, the answer to the question from the beginning of the post is that learning the dice value with 95% probability provides <em>dramatically</em> more information than whether it is even or odd.
+In fact, even if you only learned the dice value with <em>50%</em> probability it would still give more.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=05fb9525-915e-4bb9-982c-48965fccfb2f">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Scenario-2:-testing-for-extreme-values">Scenario 2: testing for extreme values<a class="anchor-link" href="#Scenario-2:-testing-for-extreme-values">¶</a>
+</h4>
+<p>A value will be considered "extreme" if N≤3 or N≥18. The probability of getting an extreme value
+is 6/20, so its entropy will be fairly low. Let's see how different observations inform us about extreme outcomes.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=0921025e-20de-40a9-b746-4dafeac49794">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">outcome_is_extreme</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">is_extreme</span> <span class="o">=</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">18</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">is_extreme</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Entropy of extreme outcome:       </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span><span class="w"> </span><span class="n">outcome_is_extreme</span><span class="p">)</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI from exact dice value:         </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span><span class="w"> </span><span class="n">dice_value</span><span class="p">)</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI from learning even/odd:        </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span><span class="w"> </span><span class="k">lambda</span><span class="w"> </span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="n">is_even</span><span class="p">(</span><span class="n">n</span><span class="p">):</span><span class="w"> </span><span class="mf">1.0</span><span class="p">})</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI from learning prime/not prime: </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span><span class="w"> </span><span class="k">lambda</span><span class="w"> </span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="n">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span><span class="w"> </span><span class="mf">1.0</span><span class="p">})</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI from learning ≤10:             </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span><span class="w"> </span><span class="k">lambda</span><span class="w"> </span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">10</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">})</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">random_plus_minus_1</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">D</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">D</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">}</span>
+
+    <span class="c1"># Handle wrap-around case well</span>
+    <span class="k">if</span> <span class="mi">0</span> <span class="ow">in</span> <span class="n">out</span><span class="p">:</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">D</span><span class="p">]</span> <span class="o">=</span> <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI from learning value ±1:        </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span><span class="w"> </span><span class="n">random_plus_minus_1</span><span class="p">)</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">19</span><span class="p">):</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI from learning value mod </span><span class="si">{</span><span class="n">m</span><span class="si">:</span><span class="s2">&gt;2d</span><span class="si">}</span><span class="s2">:    </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span><span class="w"> </span><span class="k">lambda</span><span class="w"> </span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="n">n</span><span class="o">%</span><span class="n">m</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">})</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Entropy of extreme outcome:       0.881 bits
+
+MI from exact dice value:         0.881 bits
+
+MI from learning even/odd:        0 bits
+MI from learning prime/not prime: 0.0128 bits
+MI from learning ≤10:             0 bits
+
+MI from learning value ±1:        0.698 bits
+
+MI from learning value mod  3:    0.00162 bits
+MI from learning value mod  4:    0.0349 bits
+MI from learning value mod  5:    0.0323 bits
+MI from learning value mod  6:    0.206 bits
+MI from learning value mod  7:    0.0548 bits
+MI from learning value mod  8:    0.33 bits
+MI from learning value mod  9:    0.406 bits
+MI from learning value mod 10:    0.281 bits
+MI from learning value mod 11:    0.281 bits
+MI from learning value mod 12:    0.281 bits
+MI from learning value mod 13:    0.281 bits
+MI from learning value mod 14:    0.281 bits
+MI from learning value mod 15:    0.481 bits
+MI from learning value mod 16:    0.681 bits
+MI from learning value mod 17:    0.881 bits
+MI from learning value mod 18:    0.881 bits
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=1ba08700-cd3b-4644-b710-040cc295463e">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This variable has much lower entropy than the dice value itself (≈0.9 bits instead of ≈4.3).
+Of course, learning the dice value also tells you whether it is extreme.</p>
+<p>Interestingly, while learning even/odd and prime/not prime gave ≈1 bit of information for the dice value,
+they give almost no information about whether the value is extreme. Why is this?
+In both cases, it is because the ratio of extreme : non-extreme values is similar regardless of the outcome.
+For even:odd exactly 3:7 values are extreme for both even or odd numbers.
+3/8 primes are extreme values while 3/12 non-primes are exteme.
+Learning whether N≤10 is the same.</p>
+<p>A noisy measurement of the dice value which has a 1/3 chance of being 1 too high and 1/3 chance of being 1 too low also provides almost all information:
+this is not surprising, since only values of 3, 4, 17 or 18 will be uncertain.</p>
+<p>Finally, modulo provides a lot of information depending on the modulo value.
+Any value above 17 provides complete information (which should be clear if you think about it).
+Intermediate values provide an intermediate value of information.
+9 is an interesting local optimum which provides more value than learning the value mod 8 or mod 10.
+Let's look into it with the <code>explain=True</code> kwarg:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=b27d8c16-12fe-4ae3-a26d-83432972deaa">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="p">{</span><span class="n">n</span><span class="o">%</span><span class="k">9</span>: 1.0}, explain=True)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Entropy of X1: 0.8813 bits
+	Case X2=0:
+	  Prob:      +0.1
+	  H(X1|X2):  +1 bits
+	  Info gain: -0.1187 bits
+	Case X2=1:
+	  Prob:      +0.15
+	  H(X1|X2):  +0.9183 bits
+	  Info gain: -0.037 bits
+	Case X2=2:
+	  Prob:      +0.15
+	  H(X1|X2):  +0.9183 bits
+	  Info gain: -0.037 bits
+	Case X2=3:
+	  Prob:      +0.1
+	  H(X1|X2):  +1 bits
+	  Info gain: -0.1187 bits
+	Case X2=4:
+	  Prob:      +0.1
+	  H(X1|X2):  +0 bits
+	  Info gain: +0.8813 bits
+	Case X2=5:
+	  Prob:      +0.1
+	  H(X1|X2):  +0 bits
+	  Info gain: +0.8813 bits
+	Case X2=6:
+	  Prob:      +0.1
+	  H(X1|X2):  +0 bits
+	  Info gain: +0.8813 bits
+	Case X2=7:
+	  Prob:      +0.1
+	  H(X1|X2):  +0 bits
+	  Info gain: +0.8813 bits
+	Case X2=8:
+	  Prob:      +0.1
+	  H(X1|X2):  +0 bits
+	  Info gain: +0.8813 bits
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[9]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>0.40580214901434575</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=4f024c0b-6afc-460c-9e91-39d3d82188ff">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here, 5/9 values (cumulative probability 0.5) completely rule out any extreme value.
+The other values (0 to 4) slightly <em>increase</em> the probability of a value being extreme, but overall the information gain works out to be large.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=632fc6a8-1efd-4bef-b239-872f8e30195d">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Scenario-3:-multi-stage-tests">Scenario 3: multi-stage tests<a class="anchor-link" href="#Scenario-3:-multi-stage-tests">¶</a>
+</h4>
+<p>We will still try to determine whether a value is "extreme". However, instead of doing a single test, we will now perform a <em>series</em> of tests,
+represented by tuple values in code.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=f1eabbde-8d14-4a73-9817-78053a352e9f">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Entropy of extreme outcome: </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span><span class="w"> </span><span class="n">outcome_is_extreme</span><span class="p">)</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI of even/odd AND ≤10:     </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span><span class="w"> </span><span class="k">lambda</span><span class="w"> </span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="p">{(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">is_even</span><span class="p">(</span><span class="n">n</span><span class="p">)):</span><span class="w"> </span><span class="mf">1.0</span><span class="p">})</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI of n%5 and n%6:          </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span><span class="w"> </span><span class="k">lambda</span><span class="w"> </span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="p">{(</span><span class="n">n</span><span class="o">%</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="o">%</span><span class="mi">6</span><span class="p">):</span><span class="w"> </span><span class="mf">1.0</span><span class="p">})</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI of n%3 and random ±1:    </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span><span class="w"> </span><span class="k">lambda</span><span class="w"> </span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="p">{(</span><span class="n">n</span><span class="o">%</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">):</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">random_plus_minus_1</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Entropy of extreme outcome: 0.881 bits
+
+MI of even/odd AND ≤10:     0.0349 bits
+MI of n%5 and n%6:          0.881 bits
+MI of n%3 and random ±1:    0.881 bits
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=62e07ee0-bf0e-417a-beda-5ffdb306bde2">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>All of these cases show that information is <em>non-additive</em>. The most obvious case is learning even/odd and ≤10.
+Independently these both give ZERO information (shown in the previous subsection).
+However, together they provide a small amount of information.
+This is just because of the relative ratios of different outcomes changes.
+To give an example, if the outcome <code>False, False</code> is observed,
+the only extreme value is 19, whereas the non-extreme values are 11, 13, 15, 17.
+The ratio of extreme values changes from 3/10 to 1/5, thereby providing an information gain.
+The full table of outcomes is below.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=6bdd1b73-7e5e-4ef0-be75-28f4a79b66df">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="p">{(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">is_even</span><span class="p">(</span><span class="n">n</span><span class="p">)):</span> <span class="mf">1.0</span><span class="p">},</span> <span class="n">explain</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Entropy of X1: 0.8813 bits
+	Case X2=(False, False):
+	  Prob:      +0.25
+	  H(X1|X2):  +0.7219 bits
+	  Info gain: +0.1594 bits
+	Case X2=(False, True):
+	  Prob:      +0.25
+	  H(X1|X2):  +0.971 bits
+	  Info gain: -0.08966 bits
+	Case X2=(True, False):
+	  Prob:      +0.25
+	  H(X1|X2):  +0.971 bits
+	  Info gain: -0.08966 bits
+	Case X2=(True, True):
+	  Prob:      +0.25
+	  H(X1|X2):  +0.7219 bits
+	  Info gain: +0.1594 bits
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[11]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>0.034851554559677346</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=976e89d6-310a-4bb7-a8df-cabf1c330b52">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The last two examples show non-additivity. Firstly, even though learning n%5 and n%6 provides only
+0.0323 bits and 0.206 bits respectively,
+when observed together the number can be completely deduced.
+This is because all numbers in 1 to 20 have a unique (n%5, n%6) tuple.
+Similarly, even though n%3 provides only 0.00162 bits,
+when combined with the noisy ±1 measurement it completely disambiguates the "boundary"
+measurements of 3, 4, 17, and 18.</p>
+<h3 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a>
+</h3>
+<p>This is the end of the tutorial, but please do play around with the notebook and write your own functions!</p>
+</div>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/machine-learning/" rel="tag">machine learning</a></li>
+            <li><a class="tag p-category" href="../../categories/statistics/" rel="tag">statistics</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2025-07-27-public-slack-channels/" rel="prev" title="The case for public Slack channels only (no DMs).">Previous post</a>
+            </li>
+        </ul></nav></aside><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2025-08-10.
+Contents © 2025         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

@@ -7,7 +7,11 @@ As such, the quality of posts is very mixed.
 Even when I do write about things which I have expertise in,
 please don't expect publication-quality writing or fact-checking 😅
 
-You can browse my blog by:
+Some highlighted posts:
+
+{{% post_list tags="frontpage" %}}
+
+You can browse all posts by:
 
 <!-- NOTE: manually specifying .html extension because the link was broken online -->
 - [Per-year archive](/blog/archive.html)

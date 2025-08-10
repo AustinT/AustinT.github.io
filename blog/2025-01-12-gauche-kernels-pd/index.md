@@ -1,8 +1,9 @@
 ---
-title: "Double checking that Gauche's fingerprint kernels are positive definite."
+title: "Double checking that Gauche's fingerprint kernels are positive definite"
 date: 2025-01-12
 tags:
     - machine learning
+    - frontpage
 has_math: true
 ---
 

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website (Posts about machine learning)</title><link>https://austintripp.ca/</link><description></description><atom:link href="https://austintripp.ca/categories/machine-learning.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Wed, 25 Jun 2025 08:02:16 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>My review guide for machine learning conference papers.</title><link>https://austintripp.ca/blog/2025-06-22-ml-conference-review-guide/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;There is no official step by step guide for how to review ML conference papers
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website (Posts about machine learning)</title><link>https://austintripp.ca/</link><description></description><atom:link href="https://austintripp.ca/categories/machine-learning.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Sun, 10 Aug 2025 15:45:56 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>An accessible introduction to mutual information using a d20</title><link>https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=8c7d68eb-f957-4e21-8632-74b01147a07c"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Scientists want to do "informative" experiments. What makes an experiment informative? I believe that information theory has a lot of answers. In this post I will try to explain information theory's definition of "how much information you get from an experiment" using d20 dice, assuming no previous knowledge of information theory.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/"&gt;Read more…&lt;/a&gt; (16 min remaining to read)&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description><category>machine learning</category><category>statistics</category><guid>https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/</guid><pubDate>Sun, 10 Aug 2025 00:00:00 GMT</pubDate></item><item><title>My review guide for machine learning conference papers</title><link>https://austintripp.ca/blog/2025-06-22-ml-conference-review-guide/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;There is no official step by step guide for how to review ML conference papers
 at venues like NeurIPS/ICML/ICLR.&lt;sup id="fnref:prev"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-06-22-ml-conference-review-guide/#fn:prev"&gt;1&lt;/a&gt;&lt;/sup&gt; In this post, I try to explain &lt;em&gt;my
 guide&lt;/em&gt;. It is not official, endorsed, or necessarily good, but I have been
 reviewing for 4+ years with this (implicitly) in mind already.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-06-22-ml-conference-review-guide/"&gt;Read more…&lt;/a&gt; (6 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>peer review</category><guid>https://austintripp.ca/blog/2025-06-22-ml-conference-review-guide/</guid><pubDate>Sun, 22 Jun 2025 00:00:00 GMT</pubDate></item><item><title>Problems with ML for toxicity prediction.</title><link>https://austintripp.ca/blog/2025-05-13-ml-toxicity-pred/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I recently read &lt;a href="https://pubs.acs.org/doi/10.1021/acs.chemrestox.5c00033"&gt;a review paper by Seal et
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-06-22-ml-conference-review-guide/"&gt;Read more…&lt;/a&gt; (6 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>frontpage</category><category>machine learning</category><category>peer review</category><guid>https://austintripp.ca/blog/2025-06-22-ml-conference-review-guide/</guid><pubDate>Sun, 22 Jun 2025 00:00:00 GMT</pubDate></item><item><title>Problems with ML for toxicity prediction.</title><link>https://austintripp.ca/blog/2025-05-13-ml-toxicity-pred/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I recently read &lt;a href="https://pubs.acs.org/doi/10.1021/acs.chemrestox.5c00033"&gt;a review paper by Seal et
 al&lt;/a&gt; about machine
 learning for toxicity prediction. Given the length of the paper I thought I
 would share my important takeaways. Disclaimer: not everything in this post was
@@ -23,7 +27,7 @@ In this post, I:&lt;/p&gt;
 &lt;li&gt;Explain its relationship to linear scalarization via $\ell_p$ norms.&lt;/li&gt;
 &lt;li&gt;Give a geometric interpretation via an interactive visualization&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/"&gt;Read more…&lt;/a&gt; (13 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>bayesian optimization</category><category>machine learning</category><guid>https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/</guid><pubDate>Mon, 12 May 2025 00:00:00 GMT</pubDate></item><item><title>Taking the V out of VAEs: long live KL-regularized autoencoders!</title><link>https://austintripp.ca/blog/2025-04-24-v-out-of-vae/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I recently read &lt;a href="https://sander.ai/2025/04/15/latents.html#"&gt;this post about generative modelling in latent
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/"&gt;Read more…&lt;/a&gt; (13 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>bayesian optimization</category><category>frontpage</category><category>machine learning</category><guid>https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/</guid><pubDate>Mon, 12 May 2025 00:00:00 GMT</pubDate></item><item><title>Taking the V out of VAEs: long live KL-regularized autoencoders!</title><link>https://austintripp.ca/blog/2025-04-24-v-out-of-vae/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I recently read &lt;a href="https://sander.ai/2025/04/15/latents.html#"&gt;this post about generative modelling in latent
 space&lt;/a&gt; by Sander Dieleman and
 agreed strongly with the following quote (copied verbatim except for typo
 correction):&lt;/p&gt;
@@ -36,7 +40,7 @@ better "success"&lt;sup id="fnref:success"&gt;&lt;a class="footnote-ref" href="h
 is possible to experience this when the implementation is flawed.&lt;sup id="fnref:wrong"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-04-02-active-learning-random/#fn:wrong"&gt;2&lt;/a&gt;&lt;/sup&gt;
 However, in some problems it &lt;em&gt;may not be possible&lt;/em&gt; to beat random-like
 performance. In this post I try to explain why.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-04-02-active-learning-random/"&gt;Read more…&lt;/a&gt; (3 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-04-02-active-learning-random/</guid><pubDate>Wed, 02 Apr 2025 00:00:00 GMT</pubDate></item><item><title>Generic recommendations for cheminformatics models.</title><link>https://austintripp.ca/blog/2025-04-01-cheminformatics-model-qa/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I was recently asked via email for my thoughts on which models to use &lt;em&gt;in
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-04-02-active-learning-random/"&gt;Read more…&lt;/a&gt; (3 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-04-02-active-learning-random/</guid><pubDate>Wed, 02 Apr 2025 00:00:00 GMT</pubDate></item><item><title>Generic recommendations for cheminformatics models</title><link>https://austintripp.ca/blog/2025-04-01-cheminformatics-model-qa/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I was recently asked via email for my thoughts on which models to use &lt;em&gt;in
 general&lt;/em&gt; for molecular property prediction. I'm sharing my responses publicly
 in case they are useful.&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-04-01-cheminformatics-model-qa/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>chemistry</category><category>machine learning</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-04-01-cheminformatics-model-qa/</guid><pubDate>Tue, 01 Apr 2025 00:00:00 GMT</pubDate></item><item><title>Conceptual confusion about desirable outputs of reaction prediction models.</title><link>https://austintripp.ca/blog/2025-03-27-reaction-correctness/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;In the literature about machine learning for retrosynthesis, one line of work
@@ -56,6 +60,19 @@ through with this and rejected 19 papers. Presumably this is a tiny fraction of
 the overall papers submitted, but I hope this is an effective deterrent for
 future authors. At the very least, I'm glad that &lt;em&gt;some&lt;/em&gt; major conference tried
 something like this!&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Update 2025-06-25&lt;/strong&gt;: NeurIPS is trying something similar now, see
+&lt;a href="https://blog.neurips.cc/2025/05/02/responsible-reviewing-initiative-for-neurips-2025/"&gt;https://blog.neurips.cc/2025/05/02/responsible-reviewing-initiative-for-neurips-2025/&lt;/a&gt;.
+In particular:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Reviewers who are also authors &lt;em&gt;will not be able to see their own papers'
+  reviews until they submit their own reviews&lt;/em&gt;. This also extends to their
+  co-authors.&lt;/li&gt;
+&lt;li&gt;Once again, authors who are alos reviewers can have their own papers
+  desk-rejected if they submit poor reviews.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Overall this seems like a good initiative, but I hope this doesn't cause people
+to simply not review at all...&lt;/p&gt;
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
@@ -63,12 +80,4 @@ something like this!&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://cvpr.thecvf.com/Conferences/2025/CVPRChanges"&gt;https://cvpr.thecvf.com/Conferences/2025/CVPRChanges&lt;/a&gt; &lt;a class="footnote-backref" href="https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/#fnref:ref" title="Jump back to footnote 1 in the text"&gt;↩&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</description><category>machine learning</category><category>opinion</category><category>peer review</category><guid>https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/</guid><pubDate>Tue, 04 Mar 2025 00:00:00 GMT</pubDate></item><item><title>Why don't ML conferences provide reviewer instructions?</title><link>https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I remember when I first received an invitation to review papers for an ML
-conference in late 2020. What surprised me most was &lt;em&gt;not&lt;/em&gt; that I was being
-invited (even though that was a surprise, since I was just a second year PhD
-student who had only just completed writing a paper myself). Instead, it was
-the lack of instruction of how to assess the papers: essentially just "write
-your reviews by date X", and "evaluate novelty, significance, soundness, etc".
-In fact, in all the years since, I think I have &lt;em&gt;never&lt;/em&gt; received explicit
-instructions for reviewing ML conference papers.&lt;sup id="fnref:instructions"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/#fn:instructions"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>peer review</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-02-25-no-reviewer-instructions/</guid><pubDate>Tue, 25 Feb 2025 00:00:00 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;</description><category>machine learning</category><category>opinion</category><category>peer review</category><guid>https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/</guid><pubDate>Tue, 04 Mar 2025 00:00:00 GMT</pubDate></item></channel></rss>
