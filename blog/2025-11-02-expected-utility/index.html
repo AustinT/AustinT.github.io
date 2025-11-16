@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Justifying expected utility maximization from first principles (Von Neumann–Morgenstern). | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2025-11-02-expected-utility/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2025-10-05-latent-space-cowboys/" title="Latent Space COWBOYS: a VAE-BO method I can actually buy into!" type="text/html">
+<link rel="next" href="../2025-11-04-finally-a-reviewer-guide/" title="Finally, an ML conference review guide!" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Justifying expected utility maximization from first principles (Von Ne">
+<meta property="og:url" content="https://austintripp.ca/blog/2025-11-02-expected-utility/">
+<meta property="og:description" content="I've recently found myself arguing for expected utility maximization as an
+approach to practical decision making problems at work (mostly regarding
+molecule selection). This post is my attempt to writ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-11-02T00:00:00Z">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="opinion">
+<meta property="article:tag" content="statistics">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Justifying expected utility maximization from first principles (Von Neumann–Morgenstern).</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2025-11-02T00:00:00Z" itemprop="datePublished" title="2025-11-02">2025-11-02</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>I've recently found myself arguing for expected utility maximization as an
+approach to practical decision making problems at work (mostly regarding
+molecule selection). This post is my attempt to write out an argument for using
+expected utility, targeted at non-mathematical (but still technical) readers.</p>
+<!-- TEASER_END -->
+
+<div class="alert alert-warning">
+<p>
+<b>Disclaimer</b>:
+No technical content in this post is original (I bet LLMs
+can explain the same content just as well).
+</p>
+</div>
+
+<h3 id="starter-the-von-neumannmorgenstern-utility-theorem">Starter: the Von Neumann–Morgenstern utility theorem</h3>
+<p>I think the simplest path to expected utility is the Von Neumann–Morgenstern
+(VNM) utility theorem. The VNM utility theorem essentially states that if you
+have <em>preferences</em> over uncertain outcomes, and these preferences obey a set of
+axioms (aka rules), then there exists a utility function where maximizing
+expected utility will always choose your most preferred option. My argument
+will be to go through the axioms, and if you accept the axioms then expected
+utility is the natural conclusion.</p>
+<p>VNM operates specifically on preferences over "lotteries": essentially a
+distribution over outcomes with known probabilities. Think of it like a
+"mystery box" from a video game: you are given the odds of different boxes, but
+must choose a box <em>without</em> knowing exactly which outcome you will get.
+Examples of a lunch lottery could be:</p>
+<ul>
+<li>A: 50% chance of hamburger, 50% pizza</li>
+<li>B: 25% dumplings, 25% bread, 50% sushi</li>
+</ul>
+<p>We'll come back to framing other things as lotteries at the end of the post.</p>
+<h3 id="the-vnm-axioms">The VNM axioms</h3>
+<p>The first axiom is <strong>completeness</strong>: for any lotteries A and B, you will either
+prefer A, prefer B, or be indifferent between the options. I.e.: you can always
+make a choice. This seems reasonable.</p>
+<p>The second axiom of <strong>transitivity</strong>: if you prefer A to B, and B to C, then
+you also prefer A to C. Hopefully this also seems reasonable.</p>
+<p>The third axiom is <strong>continuity</strong>: if you prefer A &gt; B &gt; C, there is some
+probability p (between 0 and 1) where the "nested" lottery "A with probability
+p, C with probability (1-p)" is equally good as lottery B. This essentially
+says that you are always willing to risk getting a worse option in exchange for
+a chance at the best option at <em>some</em> level of risk. For example, if you like
+hamburger &gt; pizza &gt; sushi, for some level of risk p you would think "p chance
+of hamburger, (1-p) chance of sushi)" is as good as 100% chance of pizza.
+Hopefully this also seems reasonable.</p>
+<p>The final axiom is <strong>independence</strong>: if you prefer A &gt; B, then adding an
+"irrelevant" nested lottery C should not change this preference, so pC + (1-p)A
+&gt; pC + (1-p)B. For example, if you prefer hamburgers to pizza, then you should
+prefer "95% chance getting hamburger, 5% salad" to "95% of getting pizza, 5%
+salad" because the "5% salad" is the same on both sides. Hopefully this seems
+reasonable.</p>
+<h3 id="possible-objections-to-these-axioms">Possible objections to these axioms</h3>
+<p>I am the type of person who reads these axioms and happily accepts them all as
+intuitively. For readers who don't have this reaction, or who have some
+objections in mind, let me try to go through common critiques.</p>
+<p>One possible critique comes from over-interpreting the goals or scope of these
+axioms. These axioms are:</p>
+<ul>
+<li>
+<strong>NOT</strong> claims about how humans make decisions in the real world (humans can
+  violate these, although it isn't a <em>terrible</em> model either)</li>
+<li>
+<strong>NOT</strong> claiming that you must have a fixed set of preferences which does not
+  change with time (a common but oversimplified model used in economics)</li>
+<li>
+<strong>NOT</strong> claiming that all <em>computer</em> algorithms must follow these guidelines</li>
+</ul>
+<p>All these axioms <strong>are</strong> is a description of preferences which (hopefully)
+seems "reasonable". Here are responses to some individual sets of critiques
+(click to open).</p>
+<details closed><summary><b>Objections to completeness</b></summary><ul>
+<li>
+<b>I don't always seem to have preferences (eg: choosing what to order at a
+restaurant feels hard).</b> I think situations like this are an example of
+<i>very weak</i> preferences (or pure indifference between different
+options).</li>
+
+<li>
+<b>Some things seem undecidable (eg choosing between two bad options, like
+"lose an arm or lose a leg").</b> I think these situations are overshadowed by
+the unpleasantness of the choices, and the preference of "neither option".</li>
+
+<li>
+<b>Preferences change with time (eg sometimes I like pizza, sometimes I
+like sushi).</b> The axioms don't say you as a person must hold a consistent
+set of preferences over time, it just says when forced to make a decision at a
+specific time there should be an underlying preference.</li>
+
+<ul></ul>
+</ul></details><details closed><summary><b>Objections to transitivity</b></summary>
+
+This one is usually the least objectionable. The most common objection is
+probably something like "in some situations I prefer A, in some situations I
+prefer B", but this "objection" is just misinterpreting the axioms as assuming
+preferences don't vary with time or context (see bullet point in previous box).
+
+</details><details closed><summary><b>Objections to continuity</b></summary>
+
+This axiom probably feels unintuitive because we aren't usually presented with
+choices like this in real life. However, risking worse outcomes for a chance at
+better outcomes is something people do all the time. Here are some
+scenarios/responses:
+
+<ul>
+<li>
+<b>Extreme outcomes (eg "gain $100 vs lose your leg")</b>. You might
+have the intuition that you would <i>never</i> take a gamble like that. I think
+in practice this intuition just means that p would need to be very high. If p
+is sufficiently close to 1 (eg 0.999999999999999999999999999999), the "bet"
+starts to look like "free $100"). Another intuition pump: if we change $100 to
+$1M, you might imagine taking the gamble with a slightly lower p).</li>
+
+<li>
+<b>An exact value for p isn't obvious (eg should p be 0.51 or 0.49).</b>
+Fair, but if you accept some p value to be high enough that the gamble is worth
+it (eg p=0.9999) and some level where p is too low (eg 0.00001), there must be
+some p in the middle where it transitions. It might feel difficult to settle on
+a precise number, but this is probably because in the general range of the
+"right number" you would feel mostly indifferent (see "objections to
+completeness" above).</li>
+
+<li>
+<b>Lexicographic preferences (eg "judge on price, then on quality, in
+order, no trade-offs allowed").</b> This violates continuity because it does
+not allow trade-offs. My objection to this is that being unwilling to make
+trade-offs is, in most cases, very silly. Intuitions about "not having
+trade-offs" are probably just intuitions that the trade-offs are very
+steep.</li>
+
+</ul></details><details closed><summary><b>Objections to independence</b></summary>
+
+Historically this axiom has received a lot of criticism and debate in the
+academic literature, but as far as I can tell most of this criticism is
+directed at <i>utility maximization as a description of human decision
+making</i>. Famous counter-examples like the Allais paradox show that humans
+can violate independence in real-world gambling contexts. To resolve this,
+remember that these axioms are <i>not</i> meant to be a description of real
+human decision-making: instead they are descriptions of <i>rational</i>
+decision making. I simply don't see how a decision maker violating independence
+could be seen as an "intelligent" choice.
+
+</details><p><br><br></p>
+<h3 id="accepting-the-axioms-leads-to-expected-utility">Accepting the axioms leads to expected utility</h3>
+<p>I will not write out a proof here (<a href="https://en.wikipedia.org/wiki/Von_Neumann%E2%80%93Morgenstern_utility_theorem#Proof_sketch">Wikipedia has a pretty good
+one</a>),
+but accepting these axioms directly implies the existence of a utility function
+such that decisions for any lottery are made by maximizing expected utility.
+Believing in these axioms <em>is</em> believing in expected utility.</p>
+<p>Of course, the VNM theorem is not stating that decision-makers operate by
+<em>explicitly calculating</em> expected utility (clearly they do not need to). It
+only says that an expected-utility agent can <em>replicate</em> the behaviour of
+another agent by doing explicit expected utility calculations.</p>
+<h3 id="does-this-mean-ai-algorithms-should-calculate-and-maximize-expected-utility">Does this mean AI algorithms should calculate and maximize expected utility?</h3>
+<p>Sort of: it says it is a viable option. If decisions are made through a complex
+process (eg human thought) but satisfy the VNM axioms, it means that direct
+calculation is a viable alternative. However, there are many situations where
+this is not possible:</p>
+<ul>
+<li>The odds of different outcomes are unknown (or hard/impossible to specify
+  numerically)</li>
+<li>In a high-dimensional space it might be difficult to directly construct a
+  utility function which represents a user's preferences (eg, think of learning
+  art preferences directly in pixel space).</li>
+<li>In repeated rounds of decision making there is an exploration-exploitation
+  trade-off which expected utility does not address</li>
+</ul>
+<p>That being said, I am convinced that expected utility is a reasonable first
+approach for many problems.</p>
+<h3 id="epilogue-how-does-this-apply-to-molecules-and-other-scientific-problems">Epilogue: how does this apply to molecules and other scientific problems?</h3>
+<p>In the context of such <em>scientific design</em> problems (like molecule design in
+drug discovery), scientists design high-dimensional objects (ie molecules) with
+multiple (conflicting) objectives (eg potency, toxicity, solubility), each of
+which is difficult to predict (and also difficult to measure experimentally). I
+think each molecule can be thought of as a <em>lottery</em>, and its <em>properties</em> are
+the potentially uncertain outcomes.</p>
+<p>The advantage of expected utility in this context is that it allows you to
+decouple <em>uncertainty in outcomes</em> from <em>preferences across multiple
+objectives</em>, specify each one separately, then bring them together into a
+principled decision-making algorithm. This is possible <em>if</em> the chemists'
+preferences satisfy the VNM axioms. Being humans, their past decisions might
+not always follow it, but if the chemists agree that these axioms are
+reasonable then it means constructing a utility function <em>is</em> possible (at
+least in theory).</p>
+<p>Also, elucidating chemists preferences for hypothetical molecules with <em>known</em>
+properties is much easier than for real molecules with unknown properties,
+because their decisions will be a mix of preferences and property predictions.</p>
+<p>I am personally hopeful that this approach (or an approach with this general
+flavour) can be useful for getting AI to "work" for drug discovery, at least to
+a degree that medicinal chemists are happy with!</p>
+<hr>
+<h3 id="references">References</h3>
+<p>For this post I mostly referred to Wikipedia's page on this, which is very
+good:
+<a href="https://en.wikipedia.org/wiki/Von_Neumann%E2%80%93Morgenstern_utility_theorem">https://en.wikipedia.org/wiki/Von_Neumann%E2%80%93Morgenstern_utility_theorem</a>.</p>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/machine-learning/" rel="tag">machine learning</a></li>
+            <li><a class="tag p-category" href="../../categories/opinion/" rel="tag">opinion</a></li>
+            <li><a class="tag p-category" href="../../categories/statistics/" rel="tag">statistics</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2025-10-05-latent-space-cowboys/" rel="prev" title="Latent Space COWBOYS: a VAE-BO method I can actually buy into!">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../2025-11-04-finally-a-reviewer-guide/" rel="next" title="Finally, an ML conference review guide!">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2025-11-16.
+Contents © 2025         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

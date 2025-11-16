@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website (Posts about machine learning)</title><link>https://austintripp.ca/</link><description></description><atom:link href="https://austintripp.ca/categories/machine-learning.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Sun, 10 Aug 2025 15:45:56 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>An accessible introduction to mutual information using a d20</title><link>https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=8c7d68eb-f957-4e21-8632-74b01147a07c"&gt;&lt;div class="prompt input_prompt"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website (Posts about machine learning)</title><link>https://austintripp.ca/</link><description></description><atom:link href="https://austintripp.ca/categories/machine-learning.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2025 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Sun, 16 Nov 2025 21:45:44 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Finally, an ML conference review guide!</title><link>https://austintripp.ca/blog/2025-11-04-finally-a-reviewer-guide/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;ICLR 2026 released a detailed review guide as part of its review process
+(&lt;a href="https://iclr.cc/Conferences/2026/ReviewerGuide"&gt;link&lt;/a&gt;). Let's analyze it!&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-11-04-finally-a-reviewer-guide/"&gt;Read more…&lt;/a&gt; (3 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>peer review</category><guid>https://austintripp.ca/blog/2025-11-04-finally-a-reviewer-guide/</guid><pubDate>Tue, 04 Nov 2025 00:00:00 GMT</pubDate></item><item><title>Justifying expected utility maximization from first principles (Von Neumann–Morgenstern).</title><link>https://austintripp.ca/blog/2025-11-02-expected-utility/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I've recently found myself arguing for expected utility maximization as an
+approach to practical decision making problems at work (mostly regarding
+molecule selection). This post is my attempt to write out an argument for using
+expected utility, targeted at non-mathematical (but still technical) readers.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-11-02-expected-utility/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>opinion</category><category>statistics</category><guid>https://austintripp.ca/blog/2025-11-02-expected-utility/</guid><pubDate>Sun, 02 Nov 2025 00:00:00 GMT</pubDate></item><item><title>Latent Space COWBOYS: a VAE-BO method I can actually buy into!</title><link>https://austintripp.ca/blog/2025-10-05-latent-space-cowboys/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I am generally pessimistic about BO (Bayesian optimization) methods which use
+VAE embeddings as part of the model. Mostly this is because distance in a VAE's
+latent space has no reason to correlate with distances in property space
+(unless trained for it), and because training with labels is basically deep
+kernel learning which usually overfits&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-10-05-latent-space-cowboys/#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;. However, I recently came across the
+paper "&lt;em&gt;Return of the Latent Space COWBOYS: Re-thinking the use of VAEs for
+Bayesian Optimisation of Structured Spaces&lt;/em&gt;"&lt;sup id="fnref:2"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-10-05-latent-space-cowboys/#fn:2"&gt;2&lt;/a&gt;&lt;/sup&gt; and quite liked the idea,
+ending my long-standing streak of disliking every VAE-BO paper I read.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-10-05-latent-space-cowboys/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>bayesian optimization</category><category>machine learning</category><category>opinion</category><category>research papers</category><guid>https://austintripp.ca/blog/2025-10-05-latent-space-cowboys/</guid><pubDate>Sun, 05 Oct 2025 00:00:00 GMT</pubDate></item><item><title>An accessible introduction to mutual information using a d20</title><link>https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=8c7d68eb-f957-4e21-8632-74b01147a07c"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Scientists want to do "informative" experiments. What makes an experiment informative? I believe that information theory has a lot of answers. In this post I will try to explain information theory's definition of "how much information you get from an experiment" using d20 dice, assuming no previous knowledge of information theory.&lt;/p&gt;
@@ -40,44 +54,4 @@ better "success"&lt;sup id="fnref:success"&gt;&lt;a class="footnote-ref" href="h
 is possible to experience this when the implementation is flawed.&lt;sup id="fnref:wrong"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-04-02-active-learning-random/#fn:wrong"&gt;2&lt;/a&gt;&lt;/sup&gt;
 However, in some problems it &lt;em&gt;may not be possible&lt;/em&gt; to beat random-like
 performance. In this post I try to explain why.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-04-02-active-learning-random/"&gt;Read more…&lt;/a&gt; (3 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-04-02-active-learning-random/</guid><pubDate>Wed, 02 Apr 2025 00:00:00 GMT</pubDate></item><item><title>Generic recommendations for cheminformatics models</title><link>https://austintripp.ca/blog/2025-04-01-cheminformatics-model-qa/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I was recently asked via email for my thoughts on which models to use &lt;em&gt;in
-general&lt;/em&gt; for molecular property prediction. I'm sharing my responses publicly
-in case they are useful.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-04-01-cheminformatics-model-qa/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>chemistry</category><category>machine learning</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-04-01-cheminformatics-model-qa/</guid><pubDate>Tue, 01 Apr 2025 00:00:00 GMT</pubDate></item><item><title>Conceptual confusion about desirable outputs of reaction prediction models.</title><link>https://austintripp.ca/blog/2025-03-27-reaction-correctness/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;In the literature about machine learning for retrosynthesis, one line of work
-tries to predict chemical reactions, either in the &lt;em&gt;forward direction&lt;/em&gt; (ie what
-products will A + B form) or in the &lt;em&gt;backward direction&lt;/em&gt; (ie what reactants
-could react to produce molecule C). Such models are often trained on datasets
-of known reactions like Pistachio or USPTO, with the hope of generalizing to
-new "correct" reactions. However, this formulation of the problem overlooks a
-lot of subtleties about what makes a reaction "correct". In this post I will
-present a more nuanced mental model which (hopefully) clarifies some
-ambiguities.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-03-27-reaction-correctness/"&gt;Read more…&lt;/a&gt; (3 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>chemistry</category><category>machine learning</category><category>retrosynthesis</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-03-27-reaction-correctness/</guid><pubDate>Thu, 27 Mar 2025 00:00:00 GMT</pubDate></item><item><title>Punishing poor reviewers at CVPR</title><link>https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;p&gt;This year &lt;a href="https://cvpr.thecvf.com/"&gt;CVPR&lt;/a&gt; pledged to make all authors
-participate in peer review, and reject papers from authors who wrote
-low-quality reviews.&lt;sup id="fnref:ref"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/#fn:ref"&gt;1&lt;/a&gt;&lt;/sup&gt; Last week they &lt;a href="https://x.com/CVPR/status/1894853624200863958"&gt;confirmed on
-Twitter&lt;/a&gt; that they followed
-through with this and rejected 19 papers. Presumably this is a tiny fraction of
-the overall papers submitted, but I hope this is an effective deterrent for
-future authors. At the very least, I'm glad that &lt;em&gt;some&lt;/em&gt; major conference tried
-something like this!&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;strong&gt;Update 2025-06-25&lt;/strong&gt;: NeurIPS is trying something similar now, see
-&lt;a href="https://blog.neurips.cc/2025/05/02/responsible-reviewing-initiative-for-neurips-2025/"&gt;https://blog.neurips.cc/2025/05/02/responsible-reviewing-initiative-for-neurips-2025/&lt;/a&gt;.
-In particular:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Reviewers who are also authors &lt;em&gt;will not be able to see their own papers'
-  reviews until they submit their own reviews&lt;/em&gt;. This also extends to their
-  co-authors.&lt;/li&gt;
-&lt;li&gt;Once again, authors who are alos reviewers can have their own papers
-  desk-rejected if they submit poor reviews.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Overall this seems like a good initiative, but I hope this doesn't cause people
-to simply not review at all...&lt;/p&gt;
-&lt;div class="footnote"&gt;
-&lt;hr&gt;
-&lt;ol&gt;
-&lt;li id="fn:ref"&gt;
-&lt;p&gt;&lt;a href="https://cvpr.thecvf.com/Conferences/2025/CVPRChanges"&gt;https://cvpr.thecvf.com/Conferences/2025/CVPRChanges&lt;/a&gt; &lt;a class="footnote-backref" href="https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/#fnref:ref" title="Jump back to footnote 1 in the text"&gt;↩&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;</description><category>machine learning</category><category>opinion</category><category>peer review</category><guid>https://austintripp.ca/blog/2025-03-04-punish-bad-reviewers/</guid><pubDate>Tue, 04 Mar 2025 00:00:00 GMT</pubDate></item></channel></rss>
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-04-02-active-learning-random/"&gt;Read more…&lt;/a&gt; (3 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>machine learning</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-04-02-active-learning-random/</guid><pubDate>Wed, 02 Apr 2025 00:00:00 GMT</pubDate></item></channel></rss>

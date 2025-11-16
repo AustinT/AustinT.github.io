@@ -41,9 +41,12 @@ Feel free to contact me.
 
 ### Hiring me (for consulting or employment)
 
-I am currently _unavailable_ for full-time employment.
-If you are interested in hiring me for contract work please send me an email
-(but my availability for this will be limited due to my full-time employment).
+**Full-time**: I am not actively looking for new opportunities, but am always
+happy to hear about teams doing interesting work!
+
+**Consulting**: In principle I am also open to contract/consulting work.
+However, my availability (and legal ability) to do this may be limited by my
+full-time employment. If you are interested, please reach out by email.
 
 ### Learning more about me
 

@@ -168,6 +168,13 @@ free to contact me!
 
 ---
 
+## Update 2025-11-04
+
+ICLR 2026 published a review guide.
+I discuss it in [another post](/blog/2025-11-04-finally-a-reviewer-guide).
+
+---
+
 <div class="alert alert-info">
 This is a "quickpost": a post which I have tried to write quickly, without very much editing/polishing.
 For more details on quickposts, see
