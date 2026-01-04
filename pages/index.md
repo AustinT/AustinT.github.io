@@ -3,20 +3,20 @@ title: Austin Tripp
 ---
 
 Welcome to [my personal website](/), thanks for visiting!
+This website hosts my
+[blog](/blog),
+[CV](/cv),
+[research summary](/research),
+and repository of miscellaneous [resources](/resources).
 
 I am a researcher in science and machine learning.
 I currently work at [Valence Labs](https://www.valencelabs.com/),
 a research unit within [Recursion](https://www.recursion.com/).
-This website functions as a
-[CV](/cv),
-[research summary](/research),
-[blog](/blog) about various topics,
-and repository of miscellaneous [resources](/resources).
 
-Feel free to email me if you have questions about this website,
-or if you find any issues like broken links.
-Note that all opinions and content on this website is completely my own
-and does not in any way represent my employer.
+Feel free to reach out to me! I like hearing from interesting people
+or getting any kind of feedback about the website (positive, negative, technical[^links], etc).
+
+[^links]: Especially don't feel shy to email me about technical issues with the site like broken links.
 
 ---
 
@@ -74,4 +74,6 @@ _if_ I can reasonably assess the page's quality.
 Please email me if you think this is the case.
 Note that if you email me about something completely irrelevant
 to my expertise and interests then I will _not_ link to it
-because I _cannot_ determine whether it is high-quality.
+because I _cannot_ determine whether it is high-quality
+(see [this blog post](/blog/2026-01-04-odd-link-requests/)
+for examples of some irrelevant requests).
