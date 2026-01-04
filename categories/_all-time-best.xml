@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website (Posts about _all-time-best)</title><link>https://austintripp.ca/</link><description></description><atom:link href="https://austintripp.ca/categories/_all-time-best.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2026 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Sun, 04 Jan 2026 14:41:44 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>My review guide for machine learning conference papers</title><link>https://austintripp.ca/blog/2025-06-22-ml-conference-review-guide/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;There is no official step by step guide for how to review ML conference papers
+at venues like NeurIPS/ICML/ICLR.&lt;sup id="fnref:prev"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-06-22-ml-conference-review-guide/#fn:prev"&gt;1&lt;/a&gt;&lt;/sup&gt; In this post, I try to explain &lt;em&gt;my
+guide&lt;/em&gt;. It is not official, endorsed, or necessarily good, but I have been
+reviewing for 4+ years with this (implicitly) in mind already.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-06-22-ml-conference-review-guide/"&gt;Read more…&lt;/a&gt; (6 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_all-time-best</category><category>machine learning</category><category>peer review</category><guid>https://austintripp.ca/blog/2025-06-22-ml-conference-review-guide/</guid><pubDate>Sun, 22 Jun 2025 00:00:00 GMT</pubDate></item><item><title>Chebyshev Scalarization Explained</title><link>https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I've been reading about multi-objective optimization recently.&lt;sup id="fnref:surprise"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/#fn:surprise"&gt;1&lt;/a&gt;&lt;/sup&gt;
+Many papers state limitations of "linear scalarization" approaches,
+mainly that it might not be able to represent all Pareto-optimal solutions
+(if this sentence does not make sense to you, see &lt;a href="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/#background-to-multi-objective-optimization"&gt;background&lt;/a&gt;).
+Chebyshev scalarization is sometimes mentioned as an alternative which &lt;em&gt;can&lt;/em&gt; represent all solutions.
+However, these papers mention it in passing without a proper explanation,
+and I did not find a good explanation of it online.&lt;sup id="fnref:online"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/#fn:online"&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;After doing a bit of my own research,&lt;sup id="fnref:gemini"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/#fn:gemini"&gt;3&lt;/a&gt;&lt;/sup&gt; I found that Chebyshev scalarization is actually not too complicated, so I thought &lt;em&gt;I&lt;/em&gt; would explain it online.
+In this post, I:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Give definitions for Chebyshev scalarization (for both maximization and minimization)&lt;/li&gt;
+&lt;li&gt;Give a simple proof that it can represent all Pareto-optimal solutions&lt;/li&gt;
+&lt;li&gt;Explain its relationship to linear scalarization via $\ell_p$ norms.&lt;/li&gt;
+&lt;li&gt;Give a geometric interpretation via an interactive visualization&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/"&gt;Read more…&lt;/a&gt; (13 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_all-time-best</category><category>bayesian optimization</category><category>machine learning</category><guid>https://austintripp.ca/blog/2025-05-12-chebyshev-scalarization/</guid><pubDate>Mon, 12 May 2025 00:00:00 GMT</pubDate></item><item><title>Problems with the top-k diversity metric for diverse optimization</title><link>https://austintripp.ca/blog/2024-10-07-problems-with-topk-diversity/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=b4485680-e872-4498-b53b-cfc0bcde2315"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;div class="alert alert-block alert-info"&gt;
+&lt;b&gt;NOTE&lt;/b&gt;
+    this blog post can be run as a jupyter notebook. I re-ordered the cells to make it easier to read; to re-produce all the plots see instructions at the end of the post.
+&lt;/div&gt;
+&lt;h3 id="Background"&gt;Background&lt;a class="anchor-link" href="https://austintripp.ca/blog/2024-10-07-problems-with-topk-diversity/#Background"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;em&gt;"Diverse optimization"&lt;/em&gt; has been a popular topic in machine learning conferences
+for a few years now, particularly in the "AI for drug discovery" sub-field.
+In this context, the goal of "optimization" algorithms is to suggest
+promising drug candidates,
+where "promising" means maximizing one (or more) objective functions.
+An example of an objective function could be a docking score
+(an approximate simulation of the interactions between a protein and a molecule).
+"Diverse" optimization further requires that an algorithm produce multiple
+distinct candidate solutions.
+This is typically desired when the objective functions don't fully capture
+everything we want (for example, a drug candidate also having low toxicity).
+The hope is that a diverse set of candidates will have a higher chance of
+one useful candidate compared to a non-diverse sets.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-10-07-problems-with-topk-diversity/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description><category>_all-time-best</category><category>machine learning</category><category>statistics</category><guid>https://austintripp.ca/blog/2024-10-07-problems-with-topk-diversity/</guid><pubDate>Mon, 07 Oct 2024 00:00:00 GMT</pubDate></item><item><title>The Monty Hall Problem is Really About Policy Assumptions</title><link>https://austintripp.ca/blog/2020/02/10/monty-hall/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt;: the Monty Hall problem doesn't have a well-defined solution.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2020/02/10/monty-hall/"&gt;Read more…&lt;/a&gt; (8 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_all-time-best</category><category>statistics</category><guid>https://austintripp.ca/blog/2020/02/10/monty-hall/</guid><pubDate>Mon, 10 Feb 2020 00:00:00 GMT</pubDate></item><item><title>Sparse Matrices: 5 Tips and Tricks</title><link>https://austintripp.ca/blog/2018/09/12/sparse-matrices-tips1/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Over the course of my internship at the online shopping company &lt;a href="https://www.wish.com/"&gt;Wish&lt;/a&gt;, I have dealt a lot with a lot of data in the form of sparse matrices, specificaly in the form of item interaction matrices for customer data. In doing so, I have made heavy use of &lt;a href="https://docs.scipy.org/doc/scipy/reference/sparse.html"&gt;scipy's sparse matrices library&lt;/a&gt;.
+Here are 5 tricks that I have learned.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2018/09/12/sparse-matrices-tips1/"&gt;Read more…&lt;/a&gt; (2 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_all-time-best</category><category>machine learning</category><guid>https://austintripp.ca/blog/2018/09/12/sparse-matrices-tips1/</guid><pubDate>Wed, 12 Sep 2018 00:00:00 GMT</pubDate></item></channel></rss>

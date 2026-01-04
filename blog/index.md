@@ -7,16 +7,16 @@ As such, the quality of posts is very mixed.
 Even when I do write about things which I have expertise in,
 please don't expect publication-quality writing or fact-checking 😅
 
-Some highlighted posts:
-
-{{% post_list tags="frontpage" %}}
-
 You can browse all posts by:
 
 <!-- NOTE: manually specifying .html extension because the link was broken online -->
 - [Per-year archive](/blog/archive.html)
 - Its [feed](/blog/index/index.html)
 - By [category](/categories/)
+
+Some highlighted posts (mix of recent best and all-time best):
+
+{{% post_list tags="_all-time-best,_recent-highlight,_all-time-highlight" %}}
 
 Sometimes I write about topics which I know more about. You may find posts with the following tags useful:
 

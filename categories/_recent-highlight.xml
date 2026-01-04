@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website (Posts about _recent-highlight)</title><link>https://austintripp.ca/</link><description></description><atom:link href="https://austintripp.ca/categories/_recent-highlight.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2026 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Sun, 04 Jan 2026 14:41:44 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Review of NeurIPS 2025</title><link>https://austintripp.ca/blog/2025-12-18-neurips25/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I added the NeurIPS &lt;em&gt;workshops&lt;/em&gt; this year (not the main conference).&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="https://austintripp.ca/blog/2025-12-18-neurips25/#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt; Here
+are my takeaways. I'll follow up with predictions for 2026 in a later post.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-12-18-neurips25/"&gt;Read more…&lt;/a&gt; (1 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>machine learning</category><guid>https://austintripp.ca/blog/2025-12-18-neurips25/</guid><pubDate>Thu, 18 Dec 2025 00:00:00 GMT</pubDate></item><item><title>Justifying expected utility maximization from first principles (Von Neumann–Morgenstern).</title><link>https://austintripp.ca/blog/2025-11-02-expected-utility/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I've recently found myself arguing for expected utility maximization as an
+approach to practical decision making problems at work (mostly regarding
+molecule selection). This post is my attempt to write out an argument for using
+expected utility, targeted at non-mathematical (but still technical) readers.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-11-02-expected-utility/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>machine learning</category><category>opinion</category><category>statistics</category><guid>https://austintripp.ca/blog/2025-11-02-expected-utility/</guid><pubDate>Sun, 02 Nov 2025 00:00:00 GMT</pubDate></item><item><title>An accessible introduction to mutual information using a d20</title><link>https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered" id="cell-id=8c7d68eb-f957-4e21-8632-74b01147a07c"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Scientists want to do "informative" experiments. What makes an experiment informative? I believe that information theory has a lot of answers. In this post I will try to explain information theory's definition of "how much information you get from an experiment" using d20 dice, assuming no previous knowledge of information theory.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/"&gt;Read more…&lt;/a&gt; (16 min remaining to read)&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>machine learning</category><category>statistics</category><guid>https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/</guid><pubDate>Sun, 10 Aug 2025 00:00:00 GMT</pubDate></item><item><title>Is offline model-based optimization a realistic problem? (I'm not convinced)</title><link>https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;div class="alert alert-info"&gt;
+This is a "quickpost": a post which I have tried to write quickly, without very much editing/polishing.
+For more details on quickposts, see
+&lt;a href="https://austintripp.ca/blog/2025-02-11-lowering-quality/"&gt;this blog post&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;p&gt;Offline model-based optimization (OMBO in this post) is essentially 1-shot
+optimization using a fixed dataset. You see data, do whatever you want, then
+propose a batch of query points, which are then evaluated. Hopefully, one (or
+most) of the query points are optimal (or near optimal). End of task.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/"&gt;Read more…&lt;/a&gt; (4 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>machine learning</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/</guid><pubDate>Fri, 14 Feb 2025 00:00:00 GMT</pubDate></item><item><title>Double checking that Gauche's fingerprint kernels are positive definite</title><link>https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;&lt;a href="https://github.com/leojklarner/gauche"&gt;GAUCHE&lt;/a&gt; is a library for Gaussian
+processes in chemistry. I contributed a small amount to GAUCHE several years
+ago but am not an active developer. I recently learned that some new
+fingerprint kernels were added. In this post I examine whether these kernels
+are positive definite (PD), and if there are any restrictions attached.&lt;/p&gt;
+&lt;p&gt;Using a small set of lemmas (of which two were new to me), I am convinced that
+all but two of the kernels are PD, &lt;em&gt;without being restricted to binary
+vectors&lt;/em&gt;. The remaining 2 I am unsure of, but don't claim that they are &lt;em&gt;not&lt;/em&gt;
+PD.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/"&gt;Read more…&lt;/a&gt; (6 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>machine learning</category><guid>https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/</guid><pubDate>Sun, 12 Jan 2025 00:00:00 GMT</pubDate></item><item><title>Rules of scientific English writing for an international audience.</title><link>https://austintripp.ca/blog/2024-12-30-international-english/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Although English is the common language for international scientific
+communication, most scientists are not native English speakers. To account for
+this, I think that all scientists (especially native English speakers) should
+try to write text which is easy to read for non-native speakers. I propose the
+following rules for this:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-12-30-international-english/"&gt;Read more…&lt;/a&gt; (11 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>language</category><category>speculation</category><category>writing</category><guid>https://austintripp.ca/blog/2024-12-30-international-english/</guid><pubDate>Mon, 30 Dec 2024 00:00:00 GMT</pubDate></item><item><title>When should you expect Bayesian optimization to work well?</title><link>https://austintripp.ca/blog/2024-12-10-when-should-bo-work/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;As much as I believe in the potential of Bayesian optimization (BO) to be
+useful for scientific discovery, after 4+ years I have seen many instances
+where BO &lt;em&gt;does not&lt;/em&gt; work. In this post I explain a simple heuristic rule to
+decide whether you should expect BO to work well or not.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-12-10-when-should-bo-work/"&gt;Read more…&lt;/a&gt; (3 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>bayesian optimization</category><category>machine learning</category><category>speculation</category><guid>https://austintripp.ca/blog/2024-12-10-when-should-bo-work/</guid><pubDate>Tue, 10 Dec 2024 00:00:00 GMT</pubDate></item><item><title>Advice for applying for a PhD in AI for science in 2024</title><link>https://austintripp.ca/blog/2024-10-27-ai4sci-phi/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;With the immense growth of AI for science (AI4sci for brevity), I imagine many
+younger students are considering applying for PhDs in AI for science in this
+application cycle. This post is my attempt to turn my 5 years of experience in
+AI4sci into actionable advice for prospective PhD students.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-10-27-ai4sci-phi/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>PhD</category><category>speculation</category><guid>https://austintripp.ca/blog/2024-10-27-ai4sci-phi/</guid><pubDate>Sun, 27 Oct 2024 00:00:00 GMT</pubDate></item><item><title>Thoughts on Google Vizier</title><link>https://austintripp.ca/blog/2024-10-13-vizier-bayesopt/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Vizier,
+described in a &lt;a href="http://arxiv.org/abs/2408.11527"&gt;recent paper from Google&lt;/a&gt;,
+is a black-box optimization algorithm deployed
+for "numerous research and production systems at Google".
+Allegedly, this one algorithm works well on a wide range of settings
+(something which the "no-free-lunch-theorem" suggests might not be possible).
+In this post I provide my thoughts on what key design decisions likely make this
+algorithm work well.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-10-13-vizier-bayesopt/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>bayesian optimization</category><category>machine learning</category><category>research papers</category><guid>https://austintripp.ca/blog/2024-10-13-vizier-bayesopt/</guid><pubDate>Sun, 13 Oct 2024 00:00:00 GMT</pubDate></item></channel></rss>

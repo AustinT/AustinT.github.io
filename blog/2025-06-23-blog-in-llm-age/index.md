@@ -4,6 +4,7 @@ date: 2025-06-23
 tags:
     - blog
     - speculation
+    - _all-time-highlight
 has_math: false
 ---
 

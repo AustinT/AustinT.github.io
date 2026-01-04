@@ -4,6 +4,7 @@ date: 2018-08-21
 tags:
     - statistics
     - decision making
+    - _all-time-highlight
 has_math: true
 ---
 

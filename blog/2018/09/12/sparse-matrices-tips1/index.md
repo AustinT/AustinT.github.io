@@ -3,7 +3,7 @@ title: "Sparse Matrices: 5 Tips and Tricks"
 date: 2018-09-12
 tags:
     - machine learning
-    - frontpage
+    - _all-time-best
 mathjax: true
 ---
 

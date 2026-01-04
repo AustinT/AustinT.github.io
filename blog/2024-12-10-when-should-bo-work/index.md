@@ -5,6 +5,7 @@ tags:
     - machine learning
     - bayesian optimization
     - speculation
+    - _recent-highlight
 has_math: false
 ---
 
