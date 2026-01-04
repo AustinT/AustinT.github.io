@@ -5,6 +5,7 @@ tags:
     - machine learning
     - statistics
     - opinion
+    - _recent-highlight
 has_math: false
 ---
 

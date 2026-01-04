@@ -5,6 +5,7 @@ tags:
     - speculation
     - language
     - writing
+    - _recent-highlight
 has_math: false
 ---
 

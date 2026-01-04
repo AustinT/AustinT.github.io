@@ -3,6 +3,7 @@ title: "Review of NeurIPS 2025"
 date: 2025-12-18
 tags:
     - machine learning
+    - _recent-highlight
 has_math: false
 ---
 

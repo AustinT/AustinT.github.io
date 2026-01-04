@@ -5,6 +5,7 @@ tags:
     - machine learning
     - bayesian optimization
     - research papers
+    - _recent-highlight
 has_math: true
 ---
 

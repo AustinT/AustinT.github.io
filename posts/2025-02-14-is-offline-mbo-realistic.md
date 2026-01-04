@@ -4,6 +4,7 @@ date: 2025-02-14
 tags:
     - machine learning
     - speculation
+    - _recent-highlight
 has_math: false
 ---
 

@@ -22,7 +22,15 @@ or getting any kind of feedback about the website (positive, negative, technical
 
 ## Highlighted blog posts
 
-{{% post_list tags="frontpage" %}}
+**All-time**
+
+{{% post_list tags="_all-time-best" %}}
+
+**Recent**
+
+{{% post_list tags="_recent-highlight" %}}
+
+[More on my blog's home page](/blog).
 
 ---
 
