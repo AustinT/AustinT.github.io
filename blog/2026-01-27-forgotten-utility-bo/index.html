@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>We have forgotten about utility functions in BO (whoops!) | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2026-01-25-model-centric-bo/" title="My model-centric view of Bayesian optimization" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="We have forgotten about utility functions in BO (whoops!)">
+<meta property="og:url" content="https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/">
+<meta property="og:description" content='Bayesian decision theory is one of the best justifications for BO- particularly
+for myopic acquisition functions like expected improvement. However, these
+acquisition functions are only "optimal" if o'>
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-01-27T00:00:00Z">
+<meta property="article:tag" content="_recent-highlight">
+<meta property="article:tag" content="bayesian optimization">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="opinion">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">We have forgotten about utility functions in BO (whoops!)</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2026-01-27T00:00:00Z" itemprop="datePublished" title="2026-01-27">2026-01-27</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>Bayesian decision theory is one of the best justifications for BO- particularly
+for myopic acquisition functions like expected improvement. However, these
+acquisition functions are only "optimal" if one's utility function is $u(y) =
+y$ (the identity function). Have BO researchers (and BO users) basically
+<em>forgotten</em> to swap this out for "real" utility functions in practice? In this
+post I argue that we have basically overlooked this detail (to our own
+detriment). It's not <em>too</em> hard to fix, but unfortunately the $u(y) = y$
+assumption is actually quite deeply embedded, and completely removing it will
+make things more complicated. Ultimately, despite the difficulty, I think we
+should do it anyway.</p>
+<!-- TEASER_END -->
+
+<h3 id="primer-how-the-utility-assumption-ends-up-in-expected-improvement">Primer: how the utility assumption ends up in expected improvement</h3>
+<p>I will use the <em>expected improvement</em> (EI) acquisition function as a
+placeholder for utility-based acquisition functions in general, and present a
+quick derivation. A better and more thorough derivation can be found in §5.2 of "Bayesian
+Optimization" by Garnett.<sup id="fnref:bayesoptbook"><a class="footnote-ref" href="#fn:bayesoptbook">1</a></sup></p>
+<p><strong>Problem setting.</strong> We are maximizing a noiseless function $y = f(x)$. We have an evaluation history ${{(x_1, y_1), \ldots, (x_n, y_n)}}$. We can query 1 more x location: what should we do?</p>
+<p><strong>Utility Functions</strong> the answer depends on what we want. There is an element
+of risk/reward trade-off (eg should we do a risky evaluation which might be
+very large or a modest point which we are more confident about), and also some
+ambiguity about how the previous solutions should affect our decisions. EI
+starts by making an innocent assumption: we only care about the <em>single best
+point</em> we evaluate. This means there is an incumbent best point</p>
+<p>$$y^* = \max_{i\leq1\leq n} y_i$$</p>
+<p>and, if our final evaluation returns $y_{n+1} &lt; y^*$
+then that's ok, we will just go with $y^*$. Otherwise we will go with $y_{n+1}$.
+We can only <em>gain</em> from the final evaluation, not lose anything.</p>
+<p><strong>Bayesian decision theory.</strong> Next, Bayesian decision theory says that we
+should make this decision by maximizing <em>expected utility</em>, which maps each
+outcome through a utility function $u$ that says how "good" the outcome is.
+Assuming $u(y_1, \ldots, y_n, y_{n+1})=\max_i y_i$ and doing the math, you get
+an expected utility</p>
+<p>$$ E_{y_{n+1}} \left[ \max\left(0, y_{n+1}-y^* \right)\right]$$</p>
+<p>which is the expected amount of improvement (hence the name expected improvement).</p>
+<p><strong>Summary.</strong> The utility function appears when Bayesian decision theory is
+invoked, and the utility of a <em>set</em> of solutions is just the maximum value in
+the set.</p>
+<h3 id="whats-wrong-with-this-utility-function">What's wrong with this utility function?</h3>
+<p>Bayesian decision theory states that preferences over uncertain outcomes can be
+cast as maximizing expected utility of <em>some</em> utility function: ie for any
+given set of preferences there must exist a utility function. It <em>does not</em> say
+that if you pick a utility function and maximize expected utility you will be
+acting according to your preferences. Therefore, the utility function
+fundamentally must be an <em>input</em> to the problem, not something that can be arbitrarily set.</p>
+<p>Digging into the assumptions behind expected utility a bit
+further,<sup id="fnref:expectedutilitypost"><a class="footnote-ref" href="#fn:expectedutilitypost">2</a></sup> the utility function's values basically play 2
+roles:</p>
+<ol>
+<li>It <em>orders</em> the outcomes (saying which outcomes are better and worse, and
+   which are equivalent).</li>
+<li>It defines the user's <em>risk reward</em> over outcomes. Assuming $u(A) &lt; u(B) &lt;
+   u(C)$ it assumes the user would be equally ok with receiving B with 100%
+   chance or taking the gamble "A with probability p, otherwise C" where $p =
+   \left(u(C) - u(B)\right) / \left(u(C) - u(A) \right)$.</li>
+</ol>
+<p>$u(y) = y$ obviously correctly orders outcomes in the case of maximization
+(where higher is always better), but who knows what the user's risk-reward
+trade-off actually is? The bet with probability p is a highly specific
+assumption that seems highly unlikely to hold for users in general. To make it
+a bit more concrete, let's assume $y^* = 1$ (ie best score found so far is 1).
+If presented with the options:</p>
+<ol>
+<li>1.5 (100% probability)</li>
+<li>0.5 (50% probability), 2.1 (50% probability)</li>
+<li>0.9 (90% probability), 7 (10% probability)</li>
+</ol>
+<p>Expected improvement under the standard utility function would choose option 3
+because it has the highest expected improvement, even though it is the riskiest
+option.<sup id="fnref:EIvalues"><a class="footnote-ref" href="#fn:EIvalues">3</a></sup> To give a stylized real-world example of where this is might
+be unreasonable: in drug discovery there are often competitor drugs, and one's
+drug needs to be <em>better</em> in order to get approved. If the competitor drug has
+a potency of 1, then <em>matching</em> them doesn't succeed: you need to be better. I
+bet many decision makers would prefer option 1 in this case: it gets you "over
+the line" with certainty. Their utility function would probably be flat before
+$y=1$, then increase.</p>
+<h3 id="how-did-this-utility-function-come-to-be-used-everywhere">How did this utility function come to be used everywhere?</h3>
+<p>I'm not sure- and don't really have time to go to the literature to find out.
+My guess is just a by-product of how papers are written. Academic papers aren't
+really "users" of the algorithms so they don't have strong preferences that
+would form the basis for a utility function. At the same time they need to make
+<em>some</em> choice to run experiments, and a choice like $u(y) = y$ seems more
+"neutral" than something like $u(y) = \min\left(y, 3\sqrt{y} -1\right)$, plus
+it allows EI to be computed analytically, so authors just go with it. Authors
+of other papers then reimplement the method and use the implementation in the
+original paper with $u(y)=y$. Over time, the original utility function gets
+forgotten and users concentrate on the case that is actually implemented and
+studied.</p>
+<p>My overall point is that using $u(y)=y$ was probably <em>not</em> a deliberate choice
+or statement about how BO methods should be used in general, it was just a
+simple design choice that stuck around.</p>
+<h3 id="warped-gps-are-not-the-answer">Warped GPs are not the answer</h3>
+<p>A plausible-sounding workaround is the following: instead of creating a
+surrogate model of the unknown function f(x), create a surrogate model of
+$g(x)=u(f(x))$ and run BO with this. After all, $g(x)$ is effectively just
+another black-box function. This model, commonly called a <em>warped
+GP</em><sup id="fnref:snelson2003"><a class="footnote-ref" href="#fn:snelson2003">4</a></sup>, might seem to be the ideal solution: it uses the utility
+function without needing to adjust the underlying BO algorithm. Problem solved?</p>
+<p>Unfortunately I think not. The main issue I foresee is that real-world utility
+functions u might violate a lot of assumptions commonly made about surrogate
+models: for example, differentiability, continuity, or stationarity. For
+example, consider the drug discovery example I gave earlier about finding
+molecules that bind better than a competitor's molecule. A lot of molecules
+with binding ≤ 1 will have a utility score of exactly 0, with a sudden jump in
+g once binding exceeds 1. This is probably hard to fit a model to: it turns
+what might be a smooth relationship between structure and binding into a
+discrete jump, and probably masks the learning signal because a lot of
+improvements in binding (eg 0.7 -&gt; 0.8 -&gt; 0.9) will just look like a constant
+zero. It's also probably harder to fit a good noise model in utility space. An
+actual binding measurement probably has (somewhat) Gaussian noise of a similar
+magnitude for most binding strengths. However, mapped through a utility
+function to give noise on g, the noise would be highly non-Gaussian and
+therefore harder to model.</p>
+<p>A secondary issue is that such a model goes against the decision-theoretic
+roots of BO, which fundamentally posits that outcomes and preferences are
+conceptually separate. I think this separation is one of BO's biggest
+strengths, especially when compared to other methods (like generative models)
+which mix preferences and beliefs together in a confusing way (and are thus a
+bit harder to tune and use).</p>
+<p>Of course we can abandon principled appeals to theory, it's not <em>impossible</em> to
+overcome these modelling difficulties. In this sense warped GPs <em>could</em> work.
+The main point I want to convey is that they are a difficult choice that comes
+with a lot of "hidden" drawbacks, and therefore we (the BO community) shouldn't
+just accept them as the sole solution and move on.</p>
+<h3 id="properly-supporting-more-general-utility-functions-might-be-hard">Properly supporting more general utility functions might be hard</h3>
+<p>If we stick to the principles of Bayesian decision theory, the "right" way to
+handle utility functions is as an <em>input</em> to the BO loop. A surrogate model is
+constructed, and the acquisition function should be computed on the <em>utilities</em>
+of the output, not the raw outputs themselves. Unfortunately this introduces a
+lot of potential difficulties.</p>
+<p>To start, what restrictions should exist on u, if any? If u is itself a black
+box function then something like numerical integration would be necessary to
+evaluate the acquisition function at any point. That adds a lot of computation
+cost, and that's just for a <em>pointwise</em> estimation, not even the <em>gradient</em>
+$\nabla_x \alpha(x)$.</p>
+<p>I think we can't totally dismiss this worst-case scenario, but intuitively it
+feels like most users should be happy with <em>analytic</em> utility functions,
+possibly even ones which are continuous, and maybe even differentiable (almost
+everywhere). This includes functions like:</p>
+<ul>
+<li>$u(y) = y$</li>
+<li>$u(y) = \sqrt{y}$</li>
+<li>$u(y) = \min\left(y, 3\sqrt{y}-1\right)$</li>
+</ul>
+<p>This feels like a pretty broad class of functions for users to express their
+preferences with, and one which is more amenable to BO. Acquisition values may
+still need to be computed with numerical integration, but I bet this could be
+partially cached or done analytically (at least with Gaussian posteriors). You
+should even be able to compute acquisition function gradients using the
+analytic derivative of u.</p>
+<p>However, even in this more optimistic case BO software would look a lot more
+complicated: essentially every acquisition function would have custom
+computational requirements which need to be specified by the user (because
+having BO researchers provide out of the box utility functions sort of defeats
+the point of the user providing this as an input).</p>
+<h3 id="summary-this-is-tough-but-worth-it">Summary: this is tough but worth it</h3>
+<p>Given how hard it would be to retrofit user-provided utility functions onto BO, should we (the BO research community) just not do it? While the lazy option is certainly tempting, I think at least <em>some</em> people in the BO community should work on this. Here is what I think pursuing this could lead to:</p>
+<ul>
+<li>A way for the user to input their risk/reward preferences, giving them more
+  direct control over the explore/exploit behaviours of BO algorithms
+  (something which many users would like).</li>
+<li>A more principled starting point for cost-aware BO, which usually needs to
+  assume a value-cost trade off.</li>
+<li>Automatically the cases of maximization, minimization, and targeting a
+  specific value get handled in a unified way (via the utility function). No
+  more confusing the EI equations for maximization vs minimization!</li>
+<li>A utility-based framework naturally generalizes to multi-objective
+  optimization (the utility function is basically a kind of scalarization).</li>
+</ul>
+<p>Overall I think there is potentially for at least one good JMLR-style paper
+here, or a NeurIPS/ICML/ICLR paper introducing a software library supporting
+arbitrary utility functions for BO. Plus, there are some acquisition functions
+without a clear grounding in Bayesian decision theory (eg UCB), and some
+theoretical work putting utility functions in would be welcome.<sup id="fnref:ucb"><a class="footnote-ref" href="#fn:ucb">5</a></sup> If any of
+this sounds interesting, feel free to get in touch with me.</p>
+<p><strong>Final thought</strong>: remember, in Bayesian ML we do things not because they are
+easy, but because they are <em>right</em>.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:bayesoptbook">
+<p>Website here: <a href="https://bayesoptbook.com/">https://bayesoptbook.com/</a>. <a class="footnote-backref" href="#fnref:bayesoptbook" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+<li id="fn:expectedutilitypost">
+<p>See <a href="../2025-11-02-expected-utility/">this post</a> for more details on these assuptions. <a class="footnote-backref" href="#fnref:expectedutilitypost" title="Jump back to footnote 2 in the text">↩</a></p>
+</li>
+<li id="fn:EIvalues">
+<p>EI values are 1: 0.5 2: 0.55 3: 0.6. <a class="footnote-backref" href="#fnref:EIvalues" title="Jump back to footnote 3 in the text">↩</a></p>
+</li>
+<li id="fn:snelson2003">
+<p>Original paper: <a href="https://proceedings.neurips.cc/paper/2003/hash/6b5754d737784b51ec5075c0dc437bf0-Abstract.html">Warped Gaussian Processes, NeurIPS 2003</a>. <a class="footnote-backref" href="#fnref:snelson2003" title="Jump back to footnote 4 in the text">↩</a></p>
+</li>
+<li id="fn:ucb">
+<p>Eg for UCB I imagine the equivalent notion would be an upper bound on the <em>utility</em> (rather than an upper bound on the function), but I'm not sure if all the desirable properties of UCB would transfer to this case. <a class="footnote-backref" href="#fnref:ucb" title="Jump back to footnote 5 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/bayesian-optimization/" rel="tag">bayesian optimization</a></li>
+            <li><a class="tag p-category" href="../../categories/machine-learning/" rel="tag">machine learning</a></li>
+            <li><a class="tag p-category" href="../../categories/opinion/" rel="tag">opinion</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2026-01-25-model-centric-bo/" rel="prev" title="My model-centric view of Bayesian optimization">Previous post</a>
+            </li>
+        </ul></nav></aside><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2026-02-01.
+Contents © 2026         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

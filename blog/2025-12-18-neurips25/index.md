@@ -8,7 +8,7 @@ has_math: false
 ---
 
 I added the NeurIPS _workshops_ this year (not the main conference).[^1] Here
-are my takeaways. I'll follow up with predictions for 2026 in a later post.
+are my takeaways. I'll follow up with predictions for 2026 in a later post (**EDIT**: [here is that post](/blog/2026-01-05-predictions26/)).
 
 <!-- TEASER_END -->
 
