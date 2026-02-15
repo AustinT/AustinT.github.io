@@ -76,7 +76,90 @@
     
         
     <div class="postindex">
-            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2026-01-27-forgotten-utility-bo/" class="u-url">We have forgotten about utility functions in BO (whoops!)</a></h1>
+            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2026-02-14-noise-in-gp-models/" class="u-url">Clarifying noise vs model misspecification in Gaussian Process models (and its importance in BO)</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2026-02-14-noise-in-gp-models/" rel="bookmark">
+            <time class="published dt-published" datetime="2026-02-14T23:00:00Z" itemprop="datePublished" title="2026-02-14">2026-02-14</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>The most common kind of Gaussian process (GP) model is:</p>
+<p>$$f \sim GP\left(\mu(\cdot), k(\cdot, \cdot)\right) $$</p>
+<p>$$ y \sim N(f(x), \sigma^2) $$</p>
+<p class="more"><a href="../2026-02-14-noise-in-gp-models/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2026-02-13-talent/" class="u-url">Tyler Cowen's book on talent</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2026-02-13-talent/" rel="bookmark">
+            <time class="published dt-published" datetime="2026-02-13T00:00:00Z" itemprop="datePublished" title="2026-02-13">2026-02-13</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>Cross-posting my summary of the book "Talent: How to Identify Energizers,
+Creatives, and Winners Around the World" from my GitHub:
+<a href="https://github.com/AustinT/book-summaries/blob/master/non-fiction/2026-02-01-talent.md">link</a>.</p>
+<p class="more"><a href="../2026-02-13-talent/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2026-02-09-bo-modularity/" class="u-url">We are underselling the modularity of Bayesian optimization</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2026-02-09-bo-modularity/" rel="bookmark">
+            <time class="published dt-published" datetime="2026-02-09T00:00:00Z" itemprop="datePublished" title="2026-02-09">2026-02-09</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>I think the Bayesian optimization (BO) community is vastly underselling one of
+BO's most practically appealing features: <em>modularity</em>. A "modular" algorithm
+is one composed of individual parts which are largely exchangeable. I think BO
+is extremely modular, and this is something users want in practice, but BO
+papers rarely describe it in this way. This post outlines these points in more
+detail and ends with some recommendations.</p>
+<p class="more"><a href="../2026-02-09-bo-modularity/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2026-02-08-bo-benchmarks/" class="u-url">Why I don't care about toy benchmarks in BO</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2026-02-08-bo-benchmarks/" rel="bookmark">
+            <time class="published dt-published" datetime="2026-02-08T22:00:00Z" itemprop="datePublished" title="2026-02-08">2026-02-08</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>A lot of Bayesian optimization (BO) papers include experiments on "toy"
+functions. Examples of such toy functions are Ackley, Rosenbrock, Hartmann, and
+Branin. I basically ignore these experiments when I read papers and skip to the
+next section. When I review papers (and therefore cannot simply skip sections),
+I find my eyes glazing over and feel bored: I don't care about these functions,
+don't care about the results, and don't really understand why the authors ran
+this experiment.</p>
+<p>For a while I assumed every BO researcher feels this way, but a bunch of recent
+conversations have made it clear to me that many people do care. So, in this
+post I explain why I don't care at all about benchmarks on toy functions (and
+why you shouldn't either).</p>
+<p class="more"><a href="../2026-02-08-bo-benchmarks/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2026-01-27-forgotten-utility-bo/" class="u-url">We have forgotten about utility functions in BO (whoops!)</a></h1>
                 <div class="metadata">
                     <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                         Austin Tripp
@@ -1398,7 +1481,7 @@ MathJax.Hub.Config({
 </div>
 <br>
 Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
-Last updated 2026-02-01.
+Last updated 2026-02-14.
 Contents © 2026         Austin Tripp (MIT License). <br>
 All opinions and statements on this site are my own (ie not my employer's).
 <br></footer>

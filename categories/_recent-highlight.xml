@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website (Posts about _recent-highlight)</title><link>https://austintripp.ca/</link><description></description><atom:link href="https://austintripp.ca/categories/_recent-highlight.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2026 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Sun, 01 Feb 2026 12:17:09 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>We have forgotten about utility functions in BO (whoops!)</title><link>https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Bayesian decision theory is one of the best justifications for BO- particularly
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Austin Tripp's website (Posts about _recent-highlight)</title><link>https://austintripp.ca/</link><description></description><atom:link href="https://austintripp.ca/categories/_recent-highlight.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2026 &lt;a href="mailto:austin.james.tripp[at]gmail.com"&gt;Austin Tripp&lt;/a&gt; MIT License</copyright><lastBuildDate>Sun, 15 Feb 2026 00:16:09 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Clarifying noise vs model misspecification in Gaussian Process models (and its importance in BO)</title><link>https://austintripp.ca/blog/2026-02-14-noise-in-gp-models/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;The most common kind of Gaussian process (GP) model is:&lt;/p&gt;
+&lt;p&gt;$$f \sim GP\left(\mu(\cdot), k(\cdot, \cdot)\right) $$&lt;/p&gt;
+&lt;p&gt;$$ y \sim N(f(x), \sigma^2) $$&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2026-02-14-noise-in-gp-models/"&gt;Read more…&lt;/a&gt; (4 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>bayesian optimization</category><category>machine learning</category><guid>https://austintripp.ca/blog/2026-02-14-noise-in-gp-models/</guid><pubDate>Sat, 14 Feb 2026 23:00:00 GMT</pubDate></item><item><title>We are underselling the modularity of Bayesian optimization</title><link>https://austintripp.ca/blog/2026-02-09-bo-modularity/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;I think the Bayesian optimization (BO) community is vastly underselling one of
+BO's most practically appealing features: &lt;em&gt;modularity&lt;/em&gt;. A "modular" algorithm
+is one composed of individual parts which are largely exchangeable. I think BO
+is extremely modular, and this is something users want in practice, but BO
+papers rarely describe it in this way. This post outlines these points in more
+detail and ends with some recommendations.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2026-02-09-bo-modularity/"&gt;Read more…&lt;/a&gt; (7 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>bayesian optimization</category><category>machine learning</category><category>opinion</category><guid>https://austintripp.ca/blog/2026-02-09-bo-modularity/</guid><pubDate>Mon, 09 Feb 2026 00:00:00 GMT</pubDate></item><item><title>Why I don't care about toy benchmarks in BO</title><link>https://austintripp.ca/blog/2026-02-08-bo-benchmarks/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;A lot of Bayesian optimization (BO) papers include experiments on "toy"
+functions. Examples of such toy functions are Ackley, Rosenbrock, Hartmann, and
+Branin. I basically ignore these experiments when I read papers and skip to the
+next section. When I review papers (and therefore cannot simply skip sections),
+I find my eyes glazing over and feel bored: I don't care about these functions,
+don't care about the results, and don't really understand why the authors ran
+this experiment.&lt;/p&gt;
+&lt;p&gt;For a while I assumed every BO researcher feels this way, but a bunch of recent
+conversations have made it clear to me that many people do care. So, in this
+post I explain why I don't care at all about benchmarks on toy functions (and
+why you shouldn't either).&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2026-02-08-bo-benchmarks/"&gt;Read more…&lt;/a&gt; (10 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>bayesian optimization</category><category>machine learning</category><category>opinion</category><guid>https://austintripp.ca/blog/2026-02-08-bo-benchmarks/</guid><pubDate>Sun, 08 Feb 2026 22:00:00 GMT</pubDate></item><item><title>We have forgotten about utility functions in BO (whoops!)</title><link>https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Bayesian decision theory is one of the best justifications for BO- particularly
 for myopic acquisition functions like expected improvement. However, these
 acquisition functions are only "optimal" if one's utility function is $u(y) =
 y$ (the identity function). Have BO researchers (and BO users) basically
@@ -29,28 +49,4 @@ expected utility, targeted at non-mathematical (but still technical) readers.&lt
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Scientists want to do "informative" experiments. What makes an experiment informative? I believe that information theory has a lot of answers. In this post I will try to explain information theory's definition of "how much information you get from an experiment" using d20 dice, assuming no previous knowledge of information theory.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/"&gt;Read more…&lt;/a&gt; (16 min remaining to read)&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>machine learning</category><category>statistics</category><guid>https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/</guid><pubDate>Sun, 10 Aug 2025 00:00:00 GMT</pubDate></item><item><title>Is offline model-based optimization a realistic problem? (I'm not convinced)</title><link>https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;div class="alert alert-info"&gt;
-This is a "quickpost": a post which I have tried to write quickly, without very much editing/polishing.
-For more details on quickposts, see
-&lt;a href="https://austintripp.ca/blog/2025-02-11-lowering-quality/"&gt;this blog post&lt;/a&gt;.
-&lt;/div&gt;
-
-&lt;p&gt;Offline model-based optimization (OMBO in this post) is essentially 1-shot
-optimization using a fixed dataset. You see data, do whatever you want, then
-propose a batch of query points, which are then evaluated. Hopefully, one (or
-most) of the query points are optimal (or near optimal). End of task.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/"&gt;Read more…&lt;/a&gt; (4 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>machine learning</category><category>speculation</category><guid>https://austintripp.ca/blog/2025-02-14-is-offline-mbo-realistic/</guid><pubDate>Fri, 14 Feb 2025 00:00:00 GMT</pubDate></item><item><title>Double checking that Gauche's fingerprint kernels are positive definite</title><link>https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;&lt;a href="https://github.com/leojklarner/gauche"&gt;GAUCHE&lt;/a&gt; is a library for Gaussian
-processes in chemistry. I contributed a small amount to GAUCHE several years
-ago but am not an active developer. I recently learned that some new
-fingerprint kernels were added. In this post I examine whether these kernels
-are positive definite (PD), and if there are any restrictions attached.&lt;/p&gt;
-&lt;p&gt;Using a small set of lemmas (of which two were new to me), I am convinced that
-all but two of the kernels are PD, &lt;em&gt;without being restricted to binary
-vectors&lt;/em&gt;. The remaining 2 I am unsure of, but don't claim that they are &lt;em&gt;not&lt;/em&gt;
-PD.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/"&gt;Read more…&lt;/a&gt; (6 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>machine learning</category><guid>https://austintripp.ca/blog/2025-01-12-gauche-kernels-pd/</guid><pubDate>Sun, 12 Jan 2025 00:00:00 GMT</pubDate></item><item><title>Rules of scientific English writing for an international audience.</title><link>https://austintripp.ca/blog/2024-12-30-international-english/</link><dc:creator>Austin Tripp</dc:creator><description>&lt;div&gt;&lt;p&gt;Although English is the common language for international scientific
-communication, most scientists are not native English speakers. To account for
-this, I think that all scientists (especially native English speakers) should
-try to write text which is easy to read for non-native speakers. I propose the
-following rules for this:&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2024-12-30-international-english/"&gt;Read more…&lt;/a&gt; (11 min remaining to read)&lt;/p&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>language</category><category>speculation</category><category>writing</category><guid>https://austintripp.ca/blog/2024-12-30-international-english/</guid><pubDate>Mon, 30 Dec 2024 00:00:00 GMT</pubDate></item></channel></rss>
+&lt;p&gt;&lt;a href="https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/"&gt;Read more…&lt;/a&gt; (16 min remaining to read)&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description><category>_recent-highlight</category><category>machine learning</category><category>statistics</category><guid>https://austintripp.ca/blog/2025-08-10-mutual-information-introduction/</guid><pubDate>Sun, 10 Aug 2025 00:00:00 GMT</pubDate></item></channel></rss>

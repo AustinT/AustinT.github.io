@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clarifying noise vs model misspecification in Gaussian Process models (and its importance in BO) | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2026-02-14-noise-in-gp-models/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2026-02-13-talent/" title="Tyler Cowen's book on talent" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Clarifying noise vs model misspecification in Gaussian Process models ">
+<meta property="og:url" content="https://austintripp.ca/blog/2026-02-14-noise-in-gp-models/">
+<meta property="og:description" content="The most common kind of Gaussian process (GP) model is:
+$$f \sim GP\left(\mu(\cdot), k(\cdot, \cdot)\right) $$
+$$ y \sim N(f(x), \sigma^2) $$
+
+
+Essentially, the function of interest is sampled from a ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-02-14T23:00:00Z">
+<meta property="article:tag" content="_recent-highlight">
+<meta property="article:tag" content="bayesian optimization">
+<meta property="article:tag" content="machine learning">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Clarifying noise vs model misspecification in Gaussian Process models (and its importance in BO)</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2026-02-14T23:00:00Z" itemprop="datePublished" title="2026-02-14">2026-02-14</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>The most common kind of Gaussian process (GP) model is:</p>
+<p>$$f \sim GP\left(\mu(\cdot), k(\cdot, \cdot)\right) $$</p>
+<p>$$ y \sim N(f(x), \sigma^2) $$</p>
+<!-- TEASER_END -->
+
+<p>Essentially, the function of interest is sampled from a Gaussian process, and
+observations are noisy versions of the function values with Gaussian noise of
+standard deviation $\sigma$. Model fitting is done either by maximum likelihood
+or MAP (maximum a posteriori), with the parameters fitted being:</p>
+<ol>
+<li>Parameters of the mean function $\mu$ and kernel function $k$ (for example:
+   constant mean value, kernel lengthscale, etc).</li>
+<li>The noise value $\sigma$.</li>
+</ol>
+<p>Seems like a reasonable model, right?</p>
+<h3 id="noise-is-really-noise-plus-misspecification">Noise is really "noise plus misspecification"</h3>
+<p>Unfortunately, one problem with this model is that the noise term $\sigma$
+plays a <em>dual role</em>: it represents not just random fluctuations from the mean,
+but also <em>unresolvable model misspecification issues</em>. If the true function $f$
+violates the GP's modelling assumptions, the GP fit will collapse to the
+"closest" GP function $f^*$ with inflated noise to explain deviations between
+the observations and $f^*$.</p>
+<p>An example is shown below. $f$ is a sinusoid with a sawtooth perturbation,
+introducing discontinuities which cannot be modelled by an RBF GP. The true
+observation noise is $\sigma^2=10^{-4}$. We fix the kernel amplitude to be 1.0
+and fit the noise and lengthscale terms. The maximum likelihood solution
+inflates the noise to $0.012$ (a 120x increase over the true value), but finds
+a reasonable lengthscale. The overall GP fit (total error bars) looks decent
+(visually, most of the points are within 1 standard deviation).</p>
+<p><img src="../../blog-images/2026-02-14-noise-in-gp-models/gp_misspecification_comparison.png"></p>
+<p>Normally, fixing model parameters to "true" values makes things better.
+Unfortunately, not here. If we fix $\sigma=10^{-4}$ and only optimize the
+lengthscale, it finds a very tiny value which produces a very poor fit
+(rightmost plot). This is because the model which is best able to predict sharp
+changes in function value is a GP with a very small lengthscale. Such a model
+predicts way more jumps than we actually see, and therefore has crazy looking
+error bars. Overall, this result is quite counterintuitive: even if you know
+the noise, you actually get a better fit <em>if you pretend you don't know it and
+fit it as a free parameter</em>.</p>
+<h3 id="problem-wrong-balance-of-epistemic-and-aleatoric-uncertainty">Problem: wrong balance of epistemic and aleatoric uncertainty</h3>
+<p>Unfortunately, accepting this solution also has the unintended consequence of
+mixing up epistemic uncertainty (uncertainty due to not knowing the true
+function value) and aleatoric uncertainty (uncertainty due to random noise).
+Although the error bars for $y$ (the observed outputs) generally contain the
+true function values, the error bars for $f$ (the true underlying function) are
+much narrower and often generally <em>do not</em> contain the underlying function.</p>
+<p>This can make a big practical difference if the GP is being used for something
+like Bayesian optimization. For example, Thompson sampling<sup id="fnref:thompson"><a class="footnote-ref" href="#fn:thompson">1</a></sup> or
+predictive entropy search methods would likely behave as if the function
+maximizer is close to 0.25 (red line) instead of its actual location of 0.2
+(black line). This could potentially cause optimization to avoid sampling the
+actual maximum for quite a long time, or falsely suggest terminating
+optimization because the algorithm is confident that the maximizer has already
+been found.</p>
+<h3 id="a-simple-workaround">A simple workaround</h3>
+<p>The simple way to avoid this is to add a third <em>misspecification</em> parameter to
+the kernel with its own amplitude $\sigma^2_m$. The new kernel becomes:</p>
+<p>$$k_{\mathrm{new}}(x,x') = k_{\mathrm{orig}}(x,x') + \sigma^2_m \delta(x,x') $$</p>
+<p>where $\delta$ is the Dirac delta function (1 if $x=x'$ otherwise 0).</p>
+<p>This model will essentially behave identically to the original model with noise
+variance $\sigma^2_m + \sigma^2$, and when fitting with maximum likelihood
+there will be a continuum of solutions with equal likelihood where $\sigma^2_m
++ \sigma^2 = \mathrm{const}$ (meaning the parameters $\sigma^2_m$ and
+$\sigma^2$ are not identifiable from data alone). However, if you know the
+value for $\sigma^2$ (or have a prior belief for its value), fitting via MAP or
+constrained maximum likelihood will allow the model to increase $\sigma^2_m$ to
+account for model misspecification while allowing noise to remain low. This is
+illustrated in the figure below.</p>
+<p><img src="../../blog-images/2026-02-14-noise-in-gp-models/gp_delta_solution.png"></p>
+<p>Notice the strong similarities to the figure above. The value of $\sigma^2_m$
+basically exactly matches the maximum likelihood value for $\sigma^2$ in the
+original plot, and the predictive distribution of $y$ is basically identical,
+but this is modelled almost entirely as <em>epistemic</em> uncertainty (uncertainty
+about $f$) instead of noise. Bayesian optimization techniques like Thompson
+sampling and predictive entropy search would behave more sensibly (notice the
+whole region of 0.2-0.3 plausibly containing the optimum of $f$).</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>In this post I explained a subtle point of GPs: that the noise term plays a
+second role of capturing model misspecification, allowing the predictive
+distribution of $y$ to be reasonable but with the cost of underestimating
+epistemic uncertainty. I showed a quick fix: adding a delta "misspecification"
+term which can grow to handle model misspecification, keeping the predictive
+distribution reasonable and maintaining high epistemic uncertainty.</p>
+<p>There is basically no downside to including this term in a kernel if one is
+already using Gaussian noise, so I highly recommend that it is included by
+default in Bayesian optimization.</p>
+<hr>
+<p><strong>Code</strong>: code for these figures can be found <a href="https://github.com/AustinT/misc-blog-code/tree/main/2026-02-14-noise-in-gp-models">on my
+GitHub</a>.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:thompson">
+<p>If done on $f$. There is another version of Thompson sampling done on $y$ which would behave differently. <a class="footnote-backref" href="#fnref:thompson" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/bayesian-optimization/" rel="tag">bayesian optimization</a></li>
+            <li><a class="tag p-category" href="../../categories/machine-learning/" rel="tag">machine learning</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2026-02-13-talent/" rel="prev" title="Tyler Cowen's book on talent">Previous post</a>
+            </li>
+        </ul></nav></aside><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2026-02-14.
+Contents © 2026         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

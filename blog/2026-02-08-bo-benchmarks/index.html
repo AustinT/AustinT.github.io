@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why I don't care about toy benchmarks in BO | Austin Tripp's website</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://austintripp.ca/blog/2026-02-08-bo-benchmarks/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<link rel="prev" href="../2026-01-27-forgotten-utility-bo/" title="We have forgotten about utility functions in BO (whoops!)" type="text/html">
+<link rel="next" href="../2026-02-09-bo-modularity/" title="We are underselling the modularity of Bayesian optimization" type="text/html">
+<meta property="og:site_name" content="Austin Tripp's website">
+<meta property="og:title" content="Why I don't care about toy benchmarks in BO">
+<meta property="og:url" content="https://austintripp.ca/blog/2026-02-08-bo-benchmarks/">
+<meta property="og:description" content='A lot of Bayesian optimization (BO) papers include experiments on "toy"
+functions. Examples of such toy functions are Ackley, Rosenbrock, Hartmann, and
+Branin. I basically ignore these experiments whe'>
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-02-08T22:00:00Z">
+<meta property="article:tag" content="_recent-highlight">
+<meta property="article:tag" content="bayesian optimization">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="opinion">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+
+            <span id="blog-title">Austin Tripp's website</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.md" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../../cv/" class="nav-link">CV</a>
+                </li>
+<li class="nav-item">
+<a href="../../research/" class="nav-link">Research</a>
+                </li>
+<li class="nav-item">
+<a href="../../resources/" class="nav-link">Resources</a>
+                </li>
+<li class="nav-item">
+<a href="../" class="nav-link">Blog</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Why I don't care about toy benchmarks in BO</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Austin Tripp
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2026-02-08T22:00:00Z" itemprop="datePublished" title="2026-02-08">2026-02-08</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>A lot of Bayesian optimization (BO) papers include experiments on "toy"
+functions. Examples of such toy functions are Ackley, Rosenbrock, Hartmann, and
+Branin. I basically ignore these experiments when I read papers and skip to the
+next section. When I review papers (and therefore cannot simply skip sections),
+I find my eyes glazing over and feel bored: I don't care about these functions,
+don't care about the results, and don't really understand why the authors ran
+this experiment.</p>
+<p>For a while I assumed every BO researcher feels this way, but a bunch of recent
+conversations have made it clear to me that many people do care. So, in this
+post I explain why I don't care at all about benchmarks on toy functions (and
+why you shouldn't either).</p>
+<!-- TEASER_END -->
+
+<h3 id="the-main-issue-is-transferability">The main issue is transferability</h3>
+<p>Toy functions have known optima, and therefore running optimization on them is
+a pointless task. In isolation, the knowledge of which algorithms perform best
+on toy functions is a useless bit of trivia (since nobody is going to deploy
+them in practice to optimize these specific functions). I don't think even the
+most ardent supporter of toy benchmark functions would dispute this. Instead,
+they claim that the value lies in some finding of the benchmark being
+<em>transferable</em> to settings we actually do care about (real world problems). I
+think this is the core of the disagreement: I simply don't expect these results
+to be transferable at all to real-world settings. That will be the crux of this
+post.</p>
+<p>Before getting to that, let's clear away two assumptions. The first is that I'm
+basically <em>guessing</em> that the point of toy benchmark experiments is to make
+statements about real-world problems. Unfortunately, the scientific rigor of ML
+is so poor that most papers don't even state why they do the experiments they
+do or the scope of the results claimed, leaving it up to the reader's
+imagination.<sup id="fnref:empirical"><a class="footnote-ref" href="#fn:empirical">1</a></sup> If you imagine something different when you see these
+experiments that's ok, but the position argued in this post might not make
+sense. I am arguing against how <em>I</em> believe <em>most people</em> interpret these
+experiments.</p>
+<p>The second is that there are many possible "real-world" experiments. When I use
+this term in this post, I mean the set of applications where BO is most often
+proposed as a desirable solution, which I think is:</p>
+<ul>
+<li>ML hyperparameter search</li>
+<li>Scientific discovery (small molecules, proteins, and materials being top
+  spaces)</li>
+<li>Chemical reaction optimization (choosing temperature, concentration, solvent,
+  etc)</li>
+<li>Engineering design (eg choosing which wing design to simulate)</li>
+</ul>
+<p>Of course there are other problems, and sometimes real-world problems that
+highly resemble toy benchmarks. I'm assuming in this post that this is highly
+exceptional, and most real-world problems look very different than benchmarks.</p>
+<h3 id="too-many-things-change-to-expect-toy-benchmark-results-to-transfer">Too many things change to expect toy benchmark results to transfer</h3>
+<p>In short, the answer is that <em>too many things change</em> for me to reasonably
+expect trends observed in benchmark problems to also hold in real-world
+problems. BO algorithms are <em>very</em> sensitive to changes, eg changes in model
+hyperparameters, acquisition functions, etc. In my experience playing around
+with many algorithms in my PhD, changes in parameters can significantly change
+both absolute performance, and performance relative to other algorithms.
+Therefore, in the toy benchmark -&gt; real-world function transfer, I simply see
+too many things change to expect trends to hold. Let's go through some.</p>
+<h4 id="input-space-changes-mean-you-cant-even-run-the-same-algorithm">Input space changes mean <em>you can't even run the same algorithm</em>
+</h4>
+<p>Almost all toy benchmarks are in d-dimensional Euclidean space, while most
+real-world problems have at least some discrete element. Continuous to fully
+(or partially) discrete is a massive change. First, it often requires a
+different model to be used than the one chosen for benchmarking (eg a
+stationary GP is not even well-defined on a space of graphs). Even if the same
+model can be used, the acquisition function optimizer probably needs to change,
+since pure gradient descent on the inputs is no longer possible.</p>
+<p>A second (related) concern is that the <em>bounds</em> of the input space can change.
+Toy benchmarks usually assume a unit hypercube of some kind, whereas real-world
+problems might be unbounded for have unknown bounds.</p>
+<p>Overall, this puts two holes on any claims of transferability of conclusions.
+First, if the algorithms studied <em>literally cannot be run on real-world
+problems</em>, arguably the counterfactual of running the algorithms on real-world
+problems <em>doesn't even exist</em>, so there is no "transfer" possible. If,
+alternatively, you include changing core parts of the algorithm as part of the
+process of "transfer", experience tells me that changing the model and
+acquisition function optimization are some of the biggest possible changes in
+the BO loop, ones that affect optimization performance in ways that are
+difficult to predict, making conclusions less likely to transfer.</p>
+<h4 id="function-being-optimized">Function being optimized</h4>
+<p>Benchmark functions are, usually, relatively smooth functions with no
+pathological features that defy modelling assumptions: things like
+discontinuities (or sharp jumps), varying smoothness, or different "regions"
+with qualitatively different behaviour. Real-world functions can have all of
+these. Therefore, even when using a "standard" model like a stationary GP, the
+model is far more likely to be misspecified, and small differences in
+misspecification could significantly change BO performance.</p>
+<h4 id="biased-starting-data-causes-modelling-issues">Biased starting data causes modelling issues</h4>
+<p>BO benchmark problems are usually randomly initialized, while in real-world
+problems one usually starts optimization from whatever previous data is
+available. This data is usually quite biased: eg biased to one region of input
+space, biased towards one mode, biased towards being close to optimal or far
+from optimal (depending on the problem). Unfortunately, biased data causes
+modelling issues.</p>
+<p>The most common way to fit models in BO is by maximum likelihood (eg maximizing
+marginal log likelihood to set GP hyperparameters), which balances model
+"simplicity" with data fit. With biased data, this has two important effects:</p>
+<ol>
+<li>It often selects for models which assume the "bias" in the biased data is
+   present uniformly.</li>
+<li>When parameters are underspecified, it picks the strongest and most
+   simplifying assumption by default.</li>
+</ol>
+<p>Here's a semi-real example in drug discovery, using an exact GP model (assuming
+molecules are represented by vector features). In the "lead optimization" phase
+of drug discovery, the starting data probably comes from the "hit ID" phase,
+which are all structurally similar and all unusually active, derived from the
+same initial "hit" molecule. First, the model is highly incentivized to learn a
+mean near the starting data mean (assuming a constant mean function) and kernel
+amplitude equal to starting dataset variance. While this set of parameters
+explains the starting data well, it severely overestimates the activity of
+molecules similar to the starting data, which are mostly not active at all.
+Second, having never seen any 2 data points that are very far away from each
+other, the model will not have good data to confidently set the GP lengthscale
+parameter. Maximum likelihood highly incentives large lengthscale values (this
+improves the "data fit" ter), and therefore the model will select the largest
+plausible lengthscale compatible with the current data. Unfortunately, this
+will probably mark structurally distinct molecules as more similar to training
+molecules than is reasonable, causing the GP's predictive variance to be small.
+Overall, the result is a model that confidently predicts almost all molecules
+to be strong actives.</p>
+<p>The best argument I've heard against this is that the initial random sampling
+should be viewed as a core part of the BO procedure, not just a placeholder
+initialization strategy. Perhaps there is some merit to this- random sampling
+is a counter against dataset bias. But it is impractical for two reasons.
+First, in situations where function evaluations are really expensive (eg lab
+experiments with molecules), nobody wants to spend tons of money on random
+initialization. Second, in more complex input spaces (eg molecules), it's not
+even clear what an appropriate "random" distribution is. There is no analogue
+to U(0, 1) or N(0, 1).</p>
+<h4 id="unrealistic-state-of-knowledge">Unrealistic state of knowledge</h4>
+<p>This applies if you take <a href="../2026-01-25-model-centric-bo/">my previous
+advice</a> and aim to start BO with a model
+that roughly captures your probabilistic belief about the function f at the
+start of optimization, rather than just leave model selection as an internal
+part of the BO algorithm. Toy benchmarks don't really simulate a realistic
+"state of knowledge" that could be used to influence model fitting. On one
+hand, BO researchers deliberately avoid biasing algorithm with knowledge about
+the location or value of the optimum, even though this is actually known and
+probably would help the algorithm perform better. On the other hand, the rough
+level / kind of smoothness <em>is</em> known and <em>is</em> used implicitly when the BO
+model creator selects a model class (eg Matern vs RBF kernel).</p>
+<p>Real-world problems don't have this distinction of knowledge we "can" and
+"cannot" use- we can (and should) use all knowledge. In fact, I bet it's
+actually more common in practice to have an idea of the optimum's location and
+value but <em>not</em> the smoothness of the function- the opposite case to standard
+BO practice.</p>
+<p>Overall though, the bias against using knowledge about the problem probably
+means that toy benchmark results are based on models which are overly "broad"
+compared to real-world models, and I expect real-world problems to often use
+"narrower" models.</p>
+<h3 id="i-dont-believe-in-performance-floor">I don't believe in "performance floor"</h3>
+<p>Some people might accept that claims like "algorithm A outperforms algorithm B"
+might not hold between toy benchmarks and real-world problems, but advocate for
+a lesser version of the claim: "any algorithm that performs well on real-world
+problems should <em>at least</em> perform well on toy benchmarks". Therefore, one
+could argue, toy benchmarks simply enforce a "floor" on performance, and not
+clearing this floor means an algorithm is not worth considering for real-world
+problems.</p>
+<p>I don't believe this either, for largely the same reasons as above. Too many
+things change, and it isn't too hard to imagine an algorithm that performs well
+in practice but does not perform well on toy benchmarks.</p>
+<p>For example, a BO algorithm which expects noisy, non-stationary data may use a
+GP model with a smaller lengthscale. In relatively smooth BO benchmarks, this
+would cause the algorithm to spend a lot of time doing local exploration,
+rather than doing large leaps towards the optimum, and therefore it's
+performance might be relatively poor. It would be erroneously to discard this
+algorithm as "poor" though, it just makes a different set of assumptions that
+are not valid in the circumstances of the benchmark.</p>
+<p>Put another way, I think the same argument as above also applies in reverse:
+there are too many changes <em>from</em> real-world problems <em>to</em> toy benchmarks to
+expect performance results to transfer between these settings.</p>
+<h3 id="no-insight-either">No "insight" either</h3>
+<p>Aside from conclusions transferring from toy benchmarks to real-world
+scenarios, another purported use of benchmark is to gain "insight" or
+"understanding" of BO methods. Many toy benchmark problems are simple or have
+one "difficult" component (eg 2 modes), and can be used to study how different
+algorithms handle these scenarios. I agree that toy benchmarks have the
+<em>potential</em> to yield such insights, but as they are currently used they do not
+yield any. This is because, in general, only the optimization <em>performance</em> are
+shown and studied, not the actual actions of the algorithms in input space.
+This limits insights to things like "this change makes performance worse" or
+"this change makes performance better". I think the arguments from the previous
+sections apply here: there are just too many changes from toy problems to
+real-world ones to expect such trends to hold. I bet some algorithm behaviours
+<em>could</em> hold up between problems and models (eg "algorithm A prioritizes
+uncertain points over certain ones"), but since these aren't reported there is
+nothing to comment on.</p>
+<h3 id="conclusions">Conclusions</h3>
+<p>In this post I've outlined how a lot of things change between toy benchmarks
+and real-world problems, and argued that it is therefore unlikely for results
+on toy benchmarks to be transferable to real-world problems. For the same
+reason, I also disagree that toy benchmarks can be used as a "floor" or
+"filter" for all worthy algorithms to pass through. I concede there might be
+scope for toy benchmarks to yield insights into algorithms' behaviour, although
+the prevailing practice of just showing the optimization performance (and not
+the actual underlying behaviour) prevents us from realizing this benefit. To
+me, this completely defeats the purpose of running the benchmarks in the first
+place, and hence I do not care about toy benchmarks.</p>
+<p>When I've expressed this view in the past, I've sometimes gotten the
+incredulous question "what should we do instead, not run <em>any</em> standardized
+benchmark?" My answer is yes, I'd rather see no benchmark than a flawed one (or
+at the very least, it could just be put into the appendix). I'm not sure why so
+many people find this shocking. To finish, I'd like to seed the reader with the
+suggestion to seriously consider just not running toy benchmarks at all. It's
+hard to deviate from established practice, but when the practice is not useful
+I think it's what we should do.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:empirical">
+<p>I liked the paper <a href="10.48550/arXiv.2405.02200">Position: Why We Must Rethink Empirical Research in Machine Learning</a> for its explanation of this (even though the paper was a bit too verbose). To paraphrase, other sciences usually have an explicit goal of what they are trying to measure, and try to establish "validity" of the metric they are using (ie "does it actually measure what we want to measure"). Not only does ML not really try to establish the validity of its metrics, it usually doesn't even specify what it is trying to measure. <a class="footnote-backref" href="#fnref:empirical" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/bayesian-optimization/" rel="tag">bayesian optimization</a></li>
+            <li><a class="tag p-category" href="../../categories/machine-learning/" rel="tag">machine learning</a></li>
+            <li><a class="tag p-category" href="../../categories/opinion/" rel="tag">opinion</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../2026-01-27-forgotten-utility-bo/" rel="prev" title="We have forgotten about utility functions in BO (whoops!)">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../2026-02-09-bo-modularity/" rel="next" title="We are underselling the modularity of Bayesian optimization">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer"><div style="text-align: center;">
+<a href="mailto:austin.james.tripp[at]gmail.com">Email</a> | 
+<a href="https://github.com/AustinT">GitHub</a> | 
+<a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | 
+<a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | 
+<a href="https://twitter.com/austinjtripp">Twitter/X</a> 
+</div>
+<br>
+Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
+Last updated 2026-02-14.
+Contents © 2026         Austin Tripp (MIT License). <br>
+All opinions and statements on this site are my own (ie not my employer's).
+<br></footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/luxon.min.js"></script><!-- fancy dates --><script>
+        luxon.Settings.defaultLocale = "en";
+        fancydates(2, {"preset": false, "format": "yyyy-MM-dd HH:mm"});
+        </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>
