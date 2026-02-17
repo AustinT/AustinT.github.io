@@ -1297,7 +1297,24 @@ INDEX_DISPLAY_POST_COUNT = 10_000  # ideally all posts on a single page
 # Extra things you want in the pages HEAD tag. This will be added right
 # before </head>
 # (translatable)
-# EXTRA_HEAD_DATA = ""
+#
+# Explanation: make blockquotes stand out more.
+EXTRA_HEAD_DATA = """
+<style>
+blockquote {
+    font-size: 0.95em;
+    margin: 1em 0;
+    padding: 0.5em 1em 0.5em 1.25em;
+    border-left: 4px solid #6c757d;
+    color: #495057;
+    background: #f8f9fa;
+}
+
+blockquote > *:last-child {
+    margin-bottom: 0;
+}
+</style>
+"""
 # Google Analytics or whatever else you use. Added to the bottom of <body>
 # in the default template (base.tmpl).
 # (translatable)
