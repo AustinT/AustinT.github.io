@@ -12,7 +12,21 @@
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
 <link rel="canonical" href="https://austintripp.ca/blog/2026-01-25-model-centric-bo/">
-<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Austin Tripp">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><style>
+blockquote {
+    font-size: 0.95em;
+    margin: 1em 0;
+    padding: 0.5em 1em 0.5em 1.25em;
+    border-left: 4px solid #6c757d;
+    color: #495057;
+    background: #f8f9fa;
+}
+
+blockquote > *:last-child {
+    margin-bottom: 0;
+}
+</style>
+<meta name="author" content="Austin Tripp">
 <link rel="prev" href="../2026-01-05-predictions26/" title="Predictions for ML/AI in 2026 (and 2025 predictions re-visited)." type="text/html">
 <link rel="next" href="../2026-01-27-forgotten-utility-bo/" title="We have forgotten about utility functions in BO (whoops!)" type="text/html">
 <meta property="og:site_name" content="Austin Tripp's website">
@@ -451,6 +465,27 @@ individual posts, but my main suggestions are:</p>
 </ul>
 </li>
 </ul>
+<hr>
+<h3 id="edit-2026-02-21-interesting-snippet-from-garnett-bayesopt-book">Edit 2026-02-21: interesting snippet from Garnett Bayesopt book</h3>
+<p>I found an interesting snippet from the end of chapter 12 <a href="https://bayesoptbook.com/">Roman Garnett's 2023
+Bayesopt textbook</a>.</p>
+<blockquote>
+<p>A guiding philosophy in Bayesian optimization has been to “take the human out
+of the loop” and hand over complete control of experimental design to an
+algorithm. This paradigm has demonstrated remarkable success on “black-box”
+problems, where the user has little understanding of the system being
+optimized. However, in settings such as scientific discovery, the user has a
+deep understanding of and intuition for the mechanisms driving the system of
+interest, and we should perhaps consider how to “bring them back into the
+loop.” One could imagine an ecosystem of cooperative tools that enable
+Bayesian optimization algorithms to benefit from user knowledge while
+facilitating the presentation of experimental progress and evolving model
+beliefs back to the users.</p>
+</blockquote>
+<p>This feels very similar to what I'm arguing here, except I'd further argue that
+in <em>most</em> cases the users will have enough understanding to be "brought into
+the loop", and specifically that their role in the loop should (at least) be to
+shape the surrogate model.</p>
 <div class="footnote">
 <hr>
 <ol>
@@ -526,7 +561,7 @@ opinion of the team developing it. <a class="footnote-backref" href="#fnref:bot
 </div>
 <br>
 Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
-Last updated 2026-02-14.
+Last updated 2026-02-22.
 Contents © 2026         Austin Tripp (MIT License). <br>
 All opinions and statements on this site are my own (ie not my employer's).
 <br></footer>

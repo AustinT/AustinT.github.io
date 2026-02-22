@@ -411,3 +411,26 @@ individual posts, but my main suggestions are:
     - A model-agnostic BO package might be a good idea (not sure how feasible
       it is though).
 
+---
+
+## Edit 2026-02-21: interesting snippet from Garnett Bayesopt book
+
+I found an interesting snippet from the end of chapter 12 [Roman Garnett's 2023
+Bayesopt textbook](https://bayesoptbook.com/).
+
+> A guiding philosophy in Bayesian optimization has been to “take the human out
+> of the loop” and hand over complete control of experimental design to an
+> algorithm. This paradigm has demonstrated remarkable success on “black-box”
+> problems, where the user has little understanding of the system being
+> optimized. However, in settings such as scientific discovery, the user has a
+> deep understanding of and intuition for the mechanisms driving the system of
+> interest, and we should perhaps consider how to “bring them back into the
+> loop.” One could imagine an ecosystem of cooperative tools that enable
+> Bayesian optimization algorithms to benefit from user knowledge while
+> facilitating the presentation of experimental progress and evolving model
+> beliefs back to the users.
+
+This feels very similar to what I'm arguing here, except I'd further argue that
+in _most_ cases the users will have enough understanding to be "brought into
+the loop", and specifically that their role in the loop should (at least) be to
+shape the surrogate model.

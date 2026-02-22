@@ -13,7 +13,20 @@
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
 <link rel="canonical" href="https://austintripp.ca/blog/index/">
-<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><style>
+blockquote {
+    font-size: 0.95em;
+    margin: 1em 0;
+    padding: 0.5em 1em 0.5em 1.25em;
+    border-left: 4px solid #6c757d;
+    color: #495057;
+    background: #f8f9fa;
+}
+
+blockquote > *:last-child {
+    margin-bottom: 0;
+}
+</style>
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -76,7 +89,51 @@
     
         
     <div class="postindex">
-            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2026-02-14-noise-in-gp-models/" class="u-url">Clarifying noise vs model misspecification in Gaussian Process models (and its importance in BO)</a></h1>
+            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2026-02-21-behaviour-based-bo-evals/" class="u-url">Behaviour-based evaluations in Bayesian optimization</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2026-02-21-behaviour-based-bo-evals/" rel="bookmark">
+            <time class="published dt-published" datetime="2026-02-21T22:00:00Z" itemprop="datePublished" title="2026-02-21">2026-02-21</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>I think the Bayesian optimization (BO) research community needs to change its
+evaluation practices. In a <a href="../2026-01-25-model-centric-bo/">previous post</a>
+I explained how I think users should generally bring their own model to BO and
+try to calibrate it to their beliefs/expectations. In <em>this</em> post, I explain
+why existing evaluation practices are not well-suited to this stance on BO, and
+outline a different approach to BO evaluation based on algorithm behaviour.</p>
+<p class="more"><a href="../2026-02-21-behaviour-based-bo-evals/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2026-02-16-bo-rebrand/" class="u-url">Rebranding BO away from "black-box" and towards "model-based"</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Austin Tripp
+                    </span></p>
+            <p class="dateline">
+            <a href="../2026-02-16-bo-rebrand/" rel="bookmark">
+            <time class="published dt-published" datetime="2026-02-16T15:00:00Z" itemprop="datePublished" title="2026-02-16">2026-02-16</time></a>
+            </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+                    <div>
+<p>In a recent blog post (<a href="../2026-01-25-model-centric-bo/">link</a>) I described
+my "model-centric" view of Bayesian optimization (BO), essentially arguing that
+the model is the most important component of BO and BO users (and researchers)
+should do more to get it right. Under the assumption that the reader broadly
+agrees with the content of that post (or at least thinks this view of BO is one
+of several valid views), here I want to argue that the BO community should
+<em>re-brand</em> itself more towards model-based optimization and away from black-box
+optimization.</p>
+<p class="more"><a href="../2026-02-16-bo-rebrand/">Read more…</a></p>
+</div>
+                </div>
+            </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="../2026-02-14-noise-in-gp-models/" class="u-url">Clarifying noise vs model misspecification in Gaussian Process models (and its importance in BO)</a></h1>
                 <div class="metadata">
                     <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                         Austin Tripp
@@ -1481,7 +1538,7 @@ MathJax.Hub.Config({
 </div>
 <br>
 Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
-Last updated 2026-02-14.
+Last updated 2026-02-22.
 Contents © 2026         Austin Tripp (MIT License). <br>
 All opinions and statements on this site are my own (ie not my employer's).
 <br></footer>
