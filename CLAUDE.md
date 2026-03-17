@@ -34,13 +34,24 @@ Use `<!-- TEASER_END -->` to mark where the post preview ends on the index page.
 ## Workflow
 
 - Edit `.md`/`.rst`/`.ipynb` files in `posts/` or `pages/`, or `conf.py`
-- Preview locally: `nikola auto --browser` (requires conda env `nikola`)
+- Preview locally: `nikola auto --browser`
 - Check for broken links: `nikola check --clean-files`
 - Deploy: `nikola github_deploy`
 - Commit changes on a separate branch, merge to `src` before deploying
 
 ## Python environment
 
+Dependencies are declared in `pyproject.toml` and managed with [uv](https://docs.astral.sh/uv/).
+
 ```bash
-conda activate nikola
+uv sync          # install/update dependencies into the local venv
+uv run nikola ...  # prefix any nikola command with `uv run`
 ```
+
+Do not use `conda` or a manually activated virtualenv — always use `uv run`
+so the correct environment is used automatically.
+
+## Documentation
+
+Any changes to the way the website code is run or managed should be reflected
+in README.md or DEVELOPMENT.md

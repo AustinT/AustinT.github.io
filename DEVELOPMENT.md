@@ -29,13 +29,14 @@ nikola auto --browser
 
 ## python environment with nikola
 
-I just used conda:
+Dependencies are managed with [uv](https://docs.astral.sh/uv/) via `pyproject.toml`.
 
 ```bash
-conda create --name nikola
-conda activate nikola
-pip install "Nikola[extras]"
+uv sync          # create/update the virtual environment
+uv run nikola …  # run any nikola command
 ```
+
+To add or change dependencies, edit `pyproject.toml` and re-run `uv sync`.
 
 ## re-directing old links
 
