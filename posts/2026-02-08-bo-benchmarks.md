@@ -47,7 +47,7 @@ experiments that's ok, but the position argued in this post might not make
 sense. I am arguing against how _I_ believe _most people_ interpret these
 experiments.
 
-[^empirical]: I liked the paper [Position: Why We Must Rethink Empirical Research in Machine Learning](10.48550/arXiv.2405.02200) for its explanation of this (even though the paper was a bit too verbose). To paraphrase, other sciences usually have an explicit goal of what they are trying to measure, and try to establish "validity" of the metric they are using (ie "does it actually measure what we want to measure"). Not only does ML not really try to establish the validity of its metrics, it usually doesn't even specify what it is trying to measure.
+[^empirical]: I liked the paper [Position: Why We Must Rethink Empirical Research in Machine Learning](https://doi.org/10.48550/arXiv.2405.02200) for its explanation of this (even though the paper was a bit too verbose). To paraphrase, other sciences usually have an explicit goal of what they are trying to measure, and try to establish "validity" of the metric they are using (ie "does it actually measure what we want to measure"). Not only does ML not really try to establish the validity of its metrics, it usually doesn't even specify what it is trying to measure.
 
 The second is that there are many possible "real-world" experiments. When I use
 this term in this post, I mean the set of applications where BO is most often

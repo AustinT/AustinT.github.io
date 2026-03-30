@@ -8,7 +8,7 @@ and how to change it.
 1. Edit files as necessary (usually `.md` files or `conf.py`).
 2. Check that:
   - Pages render correctly locally.
-  - No links are broken accidentally.
+  - No links are broken accidentally: `nikola check --check-links`
 3. Commit changes on a separate branch, then merge to `src`.
 4. Deploy using commands below
 
