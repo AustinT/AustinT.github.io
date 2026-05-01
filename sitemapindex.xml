@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
   <loc>https://austintripp.ca/categories/_all-time-best.xml</loc>
-  <lastmod>2026-01-04T14:41:00Z</lastmod>
+  <lastmod>2026-05-01T08:39:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/_all-time-highlight.xml</loc>
@@ -15,7 +15,7 @@
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/_recent-highlight.xml</loc>
-  <lastmod>2026-02-22T15:52:00Z</lastmod>
+  <lastmod>2026-05-01T08:39:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/announcement.xml</loc>
@@ -23,15 +23,19 @@
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/bayesian-optimization.xml</loc>
-  <lastmod>2026-02-22T15:52:00Z</lastmod>
+  <lastmod>2026-05-01T08:39:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/blog.xml</loc>
   <lastmod>2026-01-04T14:41:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>https://austintripp.ca/categories/book.xml</loc>
+  <lastmod>2026-05-01T08:39:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>https://austintripp.ca/categories/chemistry.xml</loc>
-  <lastmod>2026-01-04T14:41:00Z</lastmod>
+  <lastmod>2026-05-01T08:39:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/chinese.xml</loc>
@@ -40,6 +44,10 @@
  <sitemap>
   <loc>https://austintripp.ca/categories/decision-making.xml</loc>
   <lastmod>2026-01-04T14:41:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://austintripp.ca/categories/drug-discovery.xml</loc>
+  <lastmod>2026-05-01T08:39:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/employment.xml</loc>
@@ -55,15 +63,15 @@
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/machine-learning.xml</loc>
-  <lastmod>2026-02-22T15:52:00Z</lastmod>
+  <lastmod>2026-05-01T08:39:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/medicine.xml</loc>
-  <lastmod>2026-01-04T14:41:00Z</lastmod>
+  <lastmod>2026-05-01T08:39:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/opinion.xml</loc>
-  <lastmod>2026-02-22T15:52:00Z</lastmod>
+  <lastmod>2026-05-01T08:39:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/pedantry.xml</loc>
@@ -87,7 +95,7 @@
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/research-papers.xml</loc>
-  <lastmod>2026-01-04T14:41:00Z</lastmod>
+  <lastmod>2026-05-01T08:39:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/retrosynthesis.xml</loc>
@@ -99,7 +107,7 @@
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/statistics.xml</loc>
-  <lastmod>2026-01-04T14:41:00Z</lastmod>
+  <lastmod>2026-05-01T08:39:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/categories/travel.xml</loc>
@@ -119,10 +127,10 @@
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/rss.xml</loc>
-  <lastmod>2026-02-22T15:52:00Z</lastmod>
+  <lastmod>2026-05-01T08:39:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://austintripp.ca/sitemap.xml</loc>
-  <lastmod>2026-02-22T15:52:00Z</lastmod>
+  <lastmod>2026-05-01T08:39:00Z</lastmod>
  </sitemap>
 </sitemapindex>

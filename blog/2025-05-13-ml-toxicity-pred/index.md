@@ -4,6 +4,7 @@ date: 2025-05-13
 tags:
     - machine learning
     - medicine
+    - drug discovery
     - chemistry
     - research papers
 has_math: false

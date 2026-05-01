@@ -166,19 +166,19 @@ you can change the size of the dice freely by setting the <code>D</code> variabl
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># Change as desired, but D ≠ 20 will mean the numbers in text won't match the numbers from the code</span>
 <span class="n">DICE_OUTCOMES</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">D</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">Counter</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">Counter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 
 <span class="c1"># Some useful functions for later</span>
-<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span> <span class="p">(</span><span class="n">n</span><span class="o">%</span><span class="k">i</span>) == 0 for i in range(2, int(n/2 + 1)))
 
-<span class="k">def</span> <span class="nf">is_even</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_even</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">n</span><span class="o">%</span><span class="k">2</span>) == 0
 
-<span class="k">def</span> <span class="nf">prior_prob</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prior_prob</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">DICE_OUTCOMES</span> <span class="k">if</span> <span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">DICE_OUTCOMES</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -203,7 +203,7 @@ you can change the size of the dice freely by setting the <code>D</code> variabl
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">information</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">information</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
     <span class="n">I</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>  <span class="c1"># this is just for numerical errors</span>
 
@@ -270,7 +270,7 @@ Let's revisit the same examples as above.</p>
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">entropy</span><span class="p">(</span><span class="n">prob_dist</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">entropy</span><span class="p">(</span><span class="n">prob_dist</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Compute entropy of a probability distribution"""</span>
     <span class="n">probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">prob_dist</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
     <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">probs</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
@@ -278,7 +278,7 @@ Let's revisit the same examples as above.</p>
     <span class="n">H</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">probs</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">probs</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>  <span class="c1"># for numerical errors</span>
 
-<span class="k">def</span> <span class="nf">function_to_prob_dict</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">function_to_prob_dict</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">DICE_OUTCOMES</span><span class="p">])</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">outcome</span><span class="p">:</span> <span class="n">count</span><span class="o">/</span><span class="n">D</span> <span class="k">for</span> <span class="n">outcome</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
@@ -401,7 +401,7 @@ allowing for random functions (eg observe the dice with 95% probability, otherwi
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">dice_mutual_information</span><span class="p">(</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">dice_mutual_information</span><span class="p">(</span>
     <span class="n">f1</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
     <span class="n">f2</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
     <span class="n">dice_prob_dist</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -462,7 +462,7 @@ allowing for random functions (eg observe the dice with 95% probability, otherwi
         <span class="mf">0.0</span>   <span class="c1"># handle numerical errors</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">explain</span><span class="p">:</span>
-        <span class="k">def</span> <span class="nf">_arr_entropy</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_arr_entropy</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
             <span class="c1"># Entropy of an array</span>
             <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">arr</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
             <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
@@ -504,7 +504,7 @@ allowing for random functions (eg observe the dice with 95% probability, otherwi
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">dice_value</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">dice_value</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI between dice value and itself:          </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">dice_value</span><span class="p">,</span><span class="w"> </span><span class="n">dice_value</span><span class="p">)</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI between dice value and even/odd:        </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">dice_value</span><span class="p">,</span><span class="w"> </span><span class="k">lambda</span><span class="w"> </span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="n">is_even</span><span class="p">(</span><span class="n">n</span><span class="p">):</span><span class="w"> </span><span class="mf">1.0</span><span class="p">})</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -552,7 +552,7 @@ The plot below compares this strategy to asking whether the dice is even or odd:
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">show_value_with_prob_p</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">show_value_with_prob_p</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
     <span class="n">outcomes</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">DICE_OUTCOMES</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">DICE_OUTCOMES</span><span class="p">}</span>
     <span class="n">outcomes</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+=</span> <span class="n">p</span>
     <span class="k">return</span> <span class="n">outcomes</span>
@@ -613,7 +613,7 @@ is 6/20, so its entropy will be fairly low. Let's see how different observations
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">outcome_is_extreme</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">outcome_is_extreme</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="n">is_extreme</span> <span class="o">=</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">18</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">is_extreme</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
 
@@ -626,7 +626,7 @@ is 6/20, so its entropy will be fairly low. Let's see how different observations
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MI from learning ≤10:             </span><span class="si">{</span><span class="n">dice_mutual_information</span><span class="p">(</span><span class="n">outcome_is_extreme</span><span class="p">,</span><span class="w"> </span><span class="k">lambda</span><span class="w"> </span><span class="n">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">10</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">})</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> bits"</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">random_plus_minus_1</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">random_plus_minus_1</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="n">out</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">D</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">D</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">}</span>
 
     <span class="c1"># Handle wrap-around case well</span>
@@ -933,7 +933,7 @@ MathJax.Hub.Config({
 </div>
 <br>
 Website powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>.
-Last updated 2026-02-22.
+Last updated 2026-05-01.
 Contents © 2026         Austin Tripp (MIT License). <br>
 All opinions and statements on this site are my own (ie not my employer's).
 <br></footer>
