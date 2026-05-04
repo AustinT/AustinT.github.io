@@ -44,6 +44,5 @@ To add or change dependencies, edit `pyproject.toml` and re-run `uv sync`.
 
 ## My thoughts on some design choices
 
-(A reminder to my future self)
-
-- KaTeX for math: initially decided not to use, but switched 2026-05-04. Main reason is it fixed the rendering of the `\mathcal` fonts in chrome.
+See `./decisions` for design issues that I've thought through and explanations
+of why I made these decisions.
