@@ -12,7 +12,7 @@ The most common kind of Gaussian process (GP) model is:
 
 $$f \sim GP\left(\mu(\cdot), k(\cdot, \cdot)\right) $$
 
-$$ y \sim N(f(x), \sigma^2) $$
+$$ y \sim \mathcal N(f(x), \sigma^2) $$
 
 <!-- TEASER_END -->
 

@@ -4,7 +4,7 @@ date: 2018-09-12
 tags:
     - machine learning
     - _all-time-best
-mathjax: true
+has_math: true
 ---
 
 Over the course of my internship at the online shopping company [Wish](https://www.wish.com/), I have dealt a lot with a lot of data in the form of sparse matrices, specificaly in the form of item interaction matrices for customer data. In doing so, I have made heavy use of [scipy's sparse matrices library](https://docs.scipy.org/doc/scipy/reference/sparse.html).
@@ -15,7 +15,7 @@ Here are 5 tricks that I have learned.
 Note this post has an [associated Jupyter notebook](https://github.com/AustinT/sparse-matrices-tips/blob/master/Sparse%20Matrix%20Tips%20and%20Tricks-%20Part%201.ipynb) that contains example code.
 
 ## 1: Use a normal dict instead of a `dok_matrix` to construct sparse matrices incrementally
-A dok matrix is essentially storing a sparse matrix in a hashmap. According to the [documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.dok_matrix.html#scipy.sparse.dok_matrix), it is an efficient structure for constructing matrices incrementally, because adding an element to a hashmap is an $$O(1)$$ operation.
+A dok matrix is essentially storing a sparse matrix in a hashmap. According to the [documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.dok_matrix.html#scipy.sparse.dok_matrix), it is an efficient structure for constructing matrices incrementally, because adding an element to a hashmap is an $O(1)$ operation.
 However, what the documentation doesn't mention is that the `dok_matrix` class has a very significant overhead on item assignment. Suppose you have a dok matrix and you try to perform item assignment via:
 
 `matrix[i, j] = some_value`
