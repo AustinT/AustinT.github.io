@@ -46,4 +46,4 @@ To add or change dependencies, edit `pyproject.toml` and re-run `uv sync`.
 
 (A reminder to my future self)
 
-- KaTeX for math: apparently faster, but does not support all of LaTeX. Decided not to use (2025-01-05)
+- KaTeX for math: initially decided not to use, but switched 2026-05-04. Main reason is it fixed the rendering of the `\mathcal` fonts in chrome.
