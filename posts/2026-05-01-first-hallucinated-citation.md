@@ -2,8 +2,7 @@
 title: 'First time encountering a hallucinated citation of my paper.'
 date: 2026-05-01T08:00Z
 tags:
-    - book
-    - drug discovery
+    - research papers
 has_math: false
 ---
 
