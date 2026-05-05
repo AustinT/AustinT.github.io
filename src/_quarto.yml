@@ -1,0 +1,31 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - "CNAME"
+    - "blog-images/**"
+    - "assets/**"
+    - "austin-cv-website.pdf"
+
+website:
+  title: "Austin Tripp's website"
+  description: "Austin Tripp's personal website"
+  site-url: "https://austintripp.ca"
+  navbar:
+    left:
+      - {href: index.qmd, text: Home}
+      - {href: cv/index.qmd, text: CV}
+      - {href: research/index.qmd, text: Research}
+      - {href: resources/index.qmd, text: Resources}
+      - {href: blog/index.qmd, text: Blog}
+  page-footer:
+    left: "© Austin Tripp"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    html-math-method: katex
+
+execute:
+  freeze: true

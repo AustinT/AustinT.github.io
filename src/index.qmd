@@ -1,0 +1,79 @@
+---
+title: Austin Tripp
+---
+
+Welcome to [my personal website](/), thanks for visiting!
+This website hosts my
+[blog](/blog),
+[CV](/cv),
+[research summary](/research),
+and repository of miscellaneous [resources](/resources).
+
+I am a researcher in science and machine learning.
+I currently work at [Valence Labs](https://www.valencelabs.com/),
+a research unit within [Recursion](https://www.recursion.com/).
+
+Feel free to reach out to me! I like hearing from interesting people
+or getting any kind of feedback about the website (positive, negative, technical[^links], etc).
+
+[^links]: Especially don't feel shy to email me about technical issues with the site like broken links.
+
+---
+
+## Highlighted blog posts
+
+See my [blog page](/blog) for highlighted and featured posts.
+
+---
+
+## Quick answers to common questions
+
+### Contacting me
+
+The best way to reach me is by email.
+My email can be found at the bottom of this page.
+
+### Collaborating with me
+
+I am happy to work together on academic collaborations
+(at least ones which are relevant to my work and research interests).
+Feel free to contact me.
+
+### Hiring me (for consulting or employment)
+
+**Full-time**: I am not actively looking for new opportunities, but am always
+happy to hear about teams doing interesting work!
+
+**Consulting**: In principle I am also open to contract/consulting work.
+However, my availability (and legal ability) to do this may be limited by my
+full-time employment. If you are interested, please reach out by email.
+
+### Learning more about me
+
+You can look at my [CV](/cv) to understand my accomplishments,
+my GitHub profile to look at my code (link below),
+my Google scholar to view my academic publications (link below),
+or my [blog](/blog) to learn about how I think.
+
+### Inspiration for your own website
+
+If you like my website, please adapt it as needed for your own website. All
+code and content is available under an MIT license. You are free to fork the
+repository on GitHub or otherwise copy the source code.
+
+Some blog posts about the design of this website can be found on my [blog](/blog).
+Perhaps they will be helpful.
+
+If you do use material from my website, I would appreciate attribution, for
+example by including a list of websites you copied.
+
+### Asking me to put a link to your website on my website
+
+I am happy to link to things which I think are high-quality,
+_if_ I can reasonably assess the page's quality.
+Please email me if you think this is the case.
+Note that if you email me about something completely irrelevant
+to my expertise and interests then I will _not_ link to it
+because I _cannot_ determine whether it is high-quality
+(see [this blog post](/blog/2026-01-04-odd-link-requests/)
+for examples of some irrelevant requests).

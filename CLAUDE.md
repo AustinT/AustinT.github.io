@@ -1,18 +1,23 @@
 # Website
 
 This is source code for my personal website. It is a static site built with
-nikola, mostly using markdown as the source.
+Quarto, mostly using Quarto Markdown (`.qmd`) as the source.
 
 ## Site structure
 
-- `posts/` — blog posts (markdown/rst/ipynb with YAML frontmatter)
-- `pages/` — static pages (about, CV, resources, etc.)
-- `files/` — static assets copied directly to the output
-- `conf.py` — Nikola configuration (site title, URL, plugins, etc.)
-- `output/` — **generated output, do not edit directly**
-
-There might be some other files/folders with names like "drafts" or "tmp".
-These are temporary files and are generally not included in the site.
+- `src/` — Quarto project root (all website source lives here)
+  - `src/_quarto.yml` — Quarto configuration (site title, URL, navbar, theme, etc.)
+  - `src/index.qmd` — Home page
+  - `src/blog/` — Blog posts (one subdirectory per post: `YYYY-MM-DD-slug/index.qmd`)
+  - `src/blog/index.qmd` — Blog listing page
+  - `src/blog-images/` — Static images served at `/blog-images/`
+  - `src/assets/` — Other static assets served at `/assets/`
+  - `src/CNAME` — GitHub Pages custom domain file
+  - `src/_site/` — **generated output, do not edit directly** (gitignored)
+- `scripts/` — Build utilities
+  - `scripts/generate_redirects.py` — Post-build: writes legacy redirect HTML files
+- `posts/` — Old Nikola blog posts (pending removal after migration)
+- `pages/` — Old Nikola pages (pending removal after migration)
 
 ## Post frontmatter format
 
@@ -22,34 +27,22 @@ Blog posts use YAML frontmatter like:
 ---
 title: "Post title"
 date: YYYY-MM-DD
-tags:
+categories:
     - tag1
     - tag2
-has_math: false
+description: "One-sentence summary shown in listings."
 ---
 ```
 
-Use `<!-- TEASER_END -->` to mark where the post preview ends on the index page.
+KaTeX math is enabled globally — no `has_math` field needed.
 
 ## Workflow
 
-- Edit `.md`/`.rst`/`.ipynb` files in `posts/` or `pages/`, or `conf.py`
-- Preview locally: `nikola auto --browser`
-- Check for broken links: `nikola check --clean-files`
-- Deploy: `nikola github_deploy`
-- Commit changes on a separate branch, merge to `src` before deploying
-
-## Python environment
-
-Dependencies are declared in `pyproject.toml` and managed with [uv](https://docs.astral.sh/uv/).
-
-```bash
-uv sync          # install/update dependencies into the local venv
-uv run nikola ...  # prefix any nikola command with `uv run`
-```
-
-Do not use `conda` or a manually activated virtualenv — always use `uv run`
-so the correct environment is used automatically.
+- Edit `.qmd` files in `src/`
+- Preview locally: `quarto preview src/`
+- Render: `quarto render src/`
+- After rendering, generate redirects: `python scripts/generate_redirects.py --output-dir src/_site`
+- Deploy: `quarto publish gh-pages src/ --no-browser`
 
 ## Documentation
 
