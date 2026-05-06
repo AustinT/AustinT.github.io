@@ -249,12 +249,7 @@ The level sets of the scalarizations are shown with contour lines (hopefully mak
 I suggest you take some time to play around with the visualization now
 (otherwise I provide a summary below).
 
-<!-- Include visualization div directly -->
-<div class="visualization-container">
-    <div class="visualization-container" >
-      <object type="text/html" data="/blog-images/2025-chebyshev/multi_objective_scalarization.html" width="100%" height="700px"></object>
-  </div>
-</div>
+<iframe src="/blog-images/2025-chebyshev/multi_objective_scalarization.html" width="100%" height="700px" frameborder="0"></iframe>
 
 ### My analysis of visualization
 

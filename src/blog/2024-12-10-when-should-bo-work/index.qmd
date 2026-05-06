@@ -29,7 +29,7 @@ For the purposes of this heuristic, I project BO algorithms onto two axes:
 My heuristic to answer "will BO work well" is then as follows:
 
 <!-- NOTE: display options try to center the image and not make it too big. -->
-<img src="/blog-images/2024-12-10-bo-grid.png" alt="2x2 grid of whether BO will work" style="display: block; margin: auto; max-width: 100%; height: auto; max-height: 50vh;">
+![2x2 grid of whether BO will work](/blog-images/2024-12-10-bo-grid.png){fig-align="center" style="max-height: 50vh;"}
 
 I'll walk through it below.
 

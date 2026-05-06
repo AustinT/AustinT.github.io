@@ -46,7 +46,7 @@ inflates the noise to $0.012$ (a 120x increase over the true value), but finds
 a reasonable lengthscale. The overall GP fit (total error bars) looks decent
 (visually, most of the points are within 1 standard deviation).
 
-<img src="/blog-images/2026-02-14-noise-in-gp-models/gp_misspecification_comparison.png">
+![](/blog-images/2026-02-14-noise-in-gp-models/gp_misspecification_comparison.png)
 
 Normally, fixing model parameters to "true" values makes things better.
 Unfortunately, not here. If we fix $\sigma=10^{-4}$ and only optimize the
@@ -97,7 +97,7 @@ constrained maximum likelihood will allow the model to increase $\sigma^2_m$ to
 account for model misspecification while allowing noise to remain low. This is
 illustrated in the figure below.
 
-<img src="/blog-images/2026-02-14-noise-in-gp-models/gp_delta_solution.png">
+![](/blog-images/2026-02-14-noise-in-gp-models/gp_delta_solution.png)
 
 Notice the strong similarities to the figure above. The value of $\sigma^2_m$
 basically exactly matches the maximum likelihood value for $\sigma^2$ in the

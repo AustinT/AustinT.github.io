@@ -5,9 +5,9 @@ categories:
 - machine learning
 - speculation
 - _recent-highlight
-description: '<div class="alert alert-info"> This is a "quickpost": a post which I
-  have tried to write quickly, without very much editing/polishing. For more details
-  on quickposts, see <a href="/blog/2025-02-11-...'
+description: Offline model-based optimization (OMBO) is essentially 1-shot optimization
+  using a fixed dataset. I see lots of ML papers about OMBO at top conferences but
+  am not convinced it is a realistic problem.
 ---
 
 <div class="alert alert-info">

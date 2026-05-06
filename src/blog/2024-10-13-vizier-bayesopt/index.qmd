@@ -83,7 +83,7 @@ Essentially, outliers are removed and the entire distribution looks
 Gaussian on the left, and something more heavy-tailed on the right.
 Invalid points are re-added as slightly outliers on the extreme left.
 
-<img src="/blog-images/2024-10-13-vizier-warping.png">
+![](/blog-images/2024-10-13-vizier-warping.png)
 
 I think this helps Vizier overcome one of the most significant limitations of GP models:
 difficulty predicting outliers.

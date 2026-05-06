@@ -4,8 +4,9 @@ date: 2026-03-11T12:00Z
 categories:
 - book
 - drug discovery
-description: <div class="alert alert-info"> <p> This is a re-post from my <a href="https://github.com/AustinT/book-summaries/blob/master/non-fiction/2026-03-11-drug-hunters.md">book
-  summaries repo</a>, which is...
+description: Review of "The Drug Hunters" by Kirsch and Ogas. The authors explain
+  what the job of a drug hunter is and how hard it is, taking a historical perspective
+  through different eras of drug discovery.
 ---
 
 <div class="alert alert-info">
