@@ -10,6 +10,7 @@ listing:
       categories: ["_all-time-best", "_recent-highlight", "_all-time-highlight"]
     type: default
     fields: [title, date, description]
+    page-size: 50
 ---
 
 This blog mostly exists to help me clarify my own thoughts on various topics and practice writing.

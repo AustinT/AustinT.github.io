@@ -9,6 +9,7 @@ listing:
     type: default
     fields: [title, date, description]
     feed: true
+    page-size: 1000
 ---
 
 ::: {#all-posts}
