@@ -6,9 +6,7 @@ categories:
 - machine learning
 - opinion
 - research papers
-description: I am generally pessimistic about BO (Bayesian optimization) methods which
-  use VAE embeddings as part of the model. Mostly this is because distance in a VAE's
-  latent space has no reason to correlate...
+description: ""
 ---
 
 I am generally pessimistic about BO (Bayesian optimization) methods which use

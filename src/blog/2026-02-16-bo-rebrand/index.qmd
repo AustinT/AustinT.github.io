@@ -6,9 +6,7 @@ categories:
 - bayesian optimization
 - opinion
 - _recent-highlight
-description: In a recent blog post (link) I described my "model-centric" view of Bayesian
-  optimization (BO), essentially arguing that the model is the most important component
-  of BO and BO users (and researcher...
+description: ""
 ---
 
 In a recent blog post ([link](/blog/2026-01-25-model-centric-bo/)) I described

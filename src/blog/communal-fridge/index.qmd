@@ -1,9 +1,7 @@
 ---
 title: How to Keep a Communal Fridge Clean
 date: 2018-10-08
-description: 'Last month, my class decided that we should get a fridge for the class
-  study room. This brought up an important question: how would the fridge be cleaned?
-  I thought this was an interesting problem ...'
+description: ""
 ---
 
 Last month, my class decided that we should get a fridge for the class study room.

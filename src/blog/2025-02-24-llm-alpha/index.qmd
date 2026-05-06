@@ -5,9 +5,7 @@ categories:
 - announcement
 - blog
 - using large language models
-description: 'On a recent podcast, Patrick McKenzie mentioned the idea of "alpha over
-  LLMs": does a publisher produce text with any meaningful advantage over asking an
-  LLM? I think this is an important question ...'
+description: ""
 ---
 
 On a recent podcast, [Patrick McKenzie](https://www.kalzumeus.com/about/)

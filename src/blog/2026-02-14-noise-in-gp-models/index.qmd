@@ -6,8 +6,7 @@ categories:
 - machine learning
 - bayesian optimization
 - _recent-highlight
-description: 'The most common kind of Gaussian process (GP) model is: $$f \sim GP\left(\mu(\cdot),
-  k(\cdot, \cdot)\right) $$ $$ y \sim \mathcal N(f(x), \sigma^2) $$'
+description: ""
 ---
 
 The most common kind of Gaussian process (GP) model is:

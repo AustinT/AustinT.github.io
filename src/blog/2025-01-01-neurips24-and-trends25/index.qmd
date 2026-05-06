@@ -4,9 +4,7 @@ date: 2025-01-01
 categories:
 - machine learning
 - speculation
-description: I was fortunate to attend NeurIPS 2024, arguably the largest and most
-  influential machine learning conference in the world (thanks Valence for sponsoring
-  my trip 🙏). In this post I will try to summ...
+description: ""
 ---
 
 I was fortunate to attend NeurIPS 2024, arguably the largest and most

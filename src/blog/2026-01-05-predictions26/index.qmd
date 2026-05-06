@@ -5,8 +5,7 @@ categories:
 - machine learning
 - speculation
 - _recent-highlight
-description: Last year I made a bunch of predictions about ML, and since 2025 is over
-  it's time to grade myself and repeat this exercise.
+description: ""
 ---
 
 Last year [I made a bunch of predictions about

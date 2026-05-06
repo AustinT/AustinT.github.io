@@ -6,9 +6,7 @@ categories:
 - statistics
 - opinion
 - _recent-highlight
-description: I've recently found myself arguing for expected utility maximization
-  as an approach to practical decision making problems at work (mostly regarding molecule
-  selection). This post is my attempt to w...
+description: ""
 ---
 
 I've recently found myself arguing for expected utility maximization as an

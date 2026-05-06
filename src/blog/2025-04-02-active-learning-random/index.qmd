@@ -4,9 +4,7 @@ date: 2025-04-02
 categories:
 - machine learning
 - speculation
-description: 'I am a big fan of active learning, but I am also acutely aware of its
-  potential failure modes. A common failure mode is random-like performance: achieving
-  no better "success" in picking points than...'
+description: ""
 ---
 
 I am a big fan of active learning, but I am also acutely aware of its potential

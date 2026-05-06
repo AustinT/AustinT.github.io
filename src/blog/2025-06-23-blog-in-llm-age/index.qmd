@@ -5,9 +5,7 @@ categories:
 - blog
 - speculation
 - _all-time-highlight
-description: LLMs (large language models) are currently scraping all text on the public
-  internet, training on it, and spitting out variants of that text in response to
-  queries. I think this fact makes now a gol...
+description: ""
 ---
 
 LLMs (large language models) are currently scraping _all_ text on the public

@@ -7,9 +7,7 @@ categories:
 - drug discovery
 - chemistry
 - research papers
-description: 'I recently read a review paper by Seal et al about machine learning
-  for toxicity prediction. Given the length of the paper I thought I would share my
-  important takeaways. Disclaimer: not everything...'
+description: ""
 ---
 
 I recently read [a review paper by Seal et

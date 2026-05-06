@@ -6,8 +6,7 @@ categories:
 - chemistry
 - machine learning
 - speculation
-description: 'Machine-learning for retrosynthesis is a popular research topic. Popular
-  sub-topics include:'
+description: ""
 ---
 
 Machine-learning for retrosynthesis is a popular research topic. Popular

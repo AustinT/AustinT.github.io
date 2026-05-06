@@ -3,9 +3,7 @@ title: Some odd requests I've received to put links on my website.
 date: 2026-01-04
 categories:
 - website
-description: In the ~8 years since I started my website I've had a bunch of people
-  reach out to me requesting that a link be added to my "links" page (currently called
-  resources). The emails I got were fairly p...
+description: ""
 ---
 
 In the ~8 years since I started my website I've had a bunch of people reach out

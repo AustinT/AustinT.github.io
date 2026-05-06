@@ -3,9 +3,7 @@ title: 'Hiring is hard: why good applicants without connections can get overlook
 date: 2025-02-09
 categories:
 - employment
-description: Knowing people is a great way to get hired. Nepotism is one obvious explanation
-  (aka people hire you because they like you, or to gain favors from people who like
-  you). I (along with most other peo...
+description: ""
 ---
 
 Knowing people is a great way to get hired. Nepotism is one obvious explanation

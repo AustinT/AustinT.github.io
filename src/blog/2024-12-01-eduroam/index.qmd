@@ -3,9 +3,7 @@ title: What can eduroam teach us about building research infrastructure
 date: 2024-12-01
 categories:
 - speculation
-description: 'Eduroam is a fantastic piece of academic infrastructure: students/researchers
-  from thousands of universities around the world can automatically connect to WiFi
-  and any partner institutions using lo...'
+description: ""
 ---
 
 Eduroam is a fantastic piece of academic infrastructure: students/researchers

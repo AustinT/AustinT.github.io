@@ -6,9 +6,7 @@ categories:
 - bayesian optimization
 - opinion
 - _recent-highlight
-description: A lot of conversations at NeurIPS this year made me think that I view
-  the role of the surrogate model in Bayesian optimization a bit differently than
-  many other researchers in the field, and this p...
+description: ""
 ---
 
 A lot of conversations at NeurIPS this year made me think that I view the role

@@ -5,9 +5,7 @@ categories:
 - employment
 - opinion
 - PhD
-description: 2025 was the first year where I wrote reference letters for research
-  students who I supervised. In this post I will explain my strategy towards writing
-  letters and how students can best support thi...
+description: ""
 ---
 
 2025 was the first year where I wrote reference letters for research students

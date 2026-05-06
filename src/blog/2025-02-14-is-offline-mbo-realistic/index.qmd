@@ -5,9 +5,7 @@ categories:
 - machine learning
 - speculation
 - _recent-highlight
-description: Offline model-based optimization (OMBO) is essentially 1-shot optimization
-  using a fixed dataset. I see lots of ML papers about OMBO at top conferences but
-  am not convinced it is a realistic problem.
+description: ""
 ---
 
 <div class="alert alert-info">

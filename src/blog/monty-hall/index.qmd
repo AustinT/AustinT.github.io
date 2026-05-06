@@ -4,7 +4,7 @@ date: 2020-02-10
 categories:
 - statistics
 - _all-time-best
-description: 'TL;DR: the Monty Hall problem doesn''t have a well-defined solution.'
+description: ""
 ---
 
 **TL;DR**: the Monty Hall problem doesn't have a well-defined solution.

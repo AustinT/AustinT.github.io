@@ -5,9 +5,7 @@ categories:
 - machine learning
 - peer review
 - speculation
-description: I remember when I first received an invitation to review papers for an
-  ML conference in late 2020. What surprised me most was not that I was being invited
-  (even though that was a surprise, since I ...
+description: ""
 ---
 
 I remember when I first received an invitation to review papers for an ML

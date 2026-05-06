@@ -6,9 +6,7 @@ categories:
 - chemistry
 - machine learning
 - speculation
-description: In the literature about machine learning for retrosynthesis, one line
-  of work tries to predict chemical reactions, either in the forward direction (ie
-  what products will A + B form) or in the backw...
+description: ""
 ---
 
 In the literature about machine learning for retrosynthesis, one line of work

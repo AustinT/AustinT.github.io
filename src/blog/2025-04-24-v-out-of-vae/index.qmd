@@ -3,9 +3,7 @@ title: 'Taking the V out of VAEs: long live KL-regularized autoencoders!'
 date: 2025-04-24
 categories:
 - machine learning
-description: 'I recently read this post about generative modelling in latent space
-  by Sander Dieleman and agreed strongly with the following quote (copied verbatim
-  except for typo correction):'
+description: ""
 ---
 
 I recently read [this post about generative modelling in latent

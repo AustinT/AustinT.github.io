@@ -6,9 +6,7 @@ categories:
 - bayesian optimization
 - opinion
 - _recent-highlight
-description: 'I think the Bayesian optimization (BO) community is vastly underselling
-  one of BO''s most practically appealing features: modularity. A "modular" algorithm
-  is one composed of individual parts which ...'
+description: ""
 ---
 
 I think the Bayesian optimization (BO) community is vastly underselling one of

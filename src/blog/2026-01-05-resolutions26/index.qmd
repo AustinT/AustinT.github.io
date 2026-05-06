@@ -4,8 +4,7 @@ date: 2026-01-05T00:00Z
 categories:
 - personal development
 - _recent-highlight
-description: Happy 2026! Here is my self-assessment on last year's goals and my goals
-  for this year (2026).
+description: ""
 ---
 
 Happy 2026! Here is my self-assessment on [last year's

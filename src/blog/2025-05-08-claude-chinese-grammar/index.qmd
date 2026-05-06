@@ -5,9 +5,7 @@ categories:
 - using large language models
 - language
 - chinese
-description: 'This shouldn''t surprise anybody who uses LLMs a lot, but LLMs are really
-  good at common languages and translation. When practising Chinese today, a sentence
-  which confused me was:'
+description: ""
 ---
 
 This shouldn't surprise anybody who uses LLMs a lot, but LLMs are _really_ good

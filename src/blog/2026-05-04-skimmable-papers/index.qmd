@@ -6,8 +6,7 @@ categories:
 - research papers
 - opinion
 - _recent-highlight
-description: Don't write your paper for somebody to read it, write for somebody to
-  skim it.
+description: ""
 ---
 
 Don't write your paper for somebody to _read_ it, write for somebody to _skim_

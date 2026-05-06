@@ -3,10 +3,7 @@ title: Reasons to have a website
 date: '2024-08-26'
 categories:
 - website
-description: I created this website because I thought (and continue to think) that
-  having a website can benefit one's career. Essentially, a professional website serves
-  as an accessible source of information about oneself for prospective employers, coworkers,
-  and employees.
+description: ""
 ---
 
 I created this website because I thought (and continue to think) that having a website can benefit one's career. Essentially, a professional website serves as an accessible source of information about oneself for prospective employers, coworkers, and employees. Unless you put something horrible on your website, the effect should at worst be neutral, so there is essentially no downside to having one.

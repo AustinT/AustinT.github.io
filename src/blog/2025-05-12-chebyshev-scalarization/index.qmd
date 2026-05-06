@@ -5,9 +5,7 @@ categories:
 - machine learning
 - bayesian optimization
 - _all-time-best
-description: I've been reading about multi-objective optimization recently. Many papers
-  state limitations of "linear scalarization" approaches, mainly that it might not
-  be able to represent all Pareto-optimal s...
+description: ""
 ---
 
 I've been reading about multi-objective optimization recently.[^surprise]

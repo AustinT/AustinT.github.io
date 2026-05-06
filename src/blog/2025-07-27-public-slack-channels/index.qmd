@@ -3,9 +3,7 @@ title: The case for public Slack channels only (no DMs).
 date: 2025-07-27
 categories:
 - opinion
-description: Working at a company with a distributed team and hybrid work, a lot of
-  work gets done on Slack. Slack can be very noisy, and I used to wish that fewer
-  people would post in public channels, instead ...
+description: ""
 ---
 
 Working at a company with a distributed team and hybrid work, a lot of work

@@ -3,9 +3,7 @@ title: An Overview of Gradient Boosting and Popular Libraries for it.
 date: 2018-07-17
 categories:
 - machine learning
-description: 'Everybody doing machine learning wants the best models possible. The
-  aim of this blog article is the following: 1. To provide an introduction to the
-  machine learning technique known as boosting, an...'
+description: ""
 ---
 
 Everybody doing machine learning wants the best models possible. 

@@ -3,7 +3,7 @@ title: The hardest bugs are non-bugs
 date: 2025-07-12
 categories:
 - programming
-description: Debugging computer programs is hard.
+description: ""
 ---
 
 Debugging computer programs is hard.

@@ -4,9 +4,7 @@ date: 2024-10-09
 categories:
 - decision making
 - speculation
-description: Relying on data rather than intuitions to make decisions is usually a
-  good thing, but is not always better. When one needs to make a decision about things
-  for which there is no good data it might b...
+description: ""
 ---
 
 Relying on data rather than intuitions to make decisions is usually a good thing,

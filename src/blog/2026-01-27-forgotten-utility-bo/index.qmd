@@ -6,9 +6,7 @@ categories:
 - bayesian optimization
 - opinion
 - _recent-highlight
-description: Bayesian decision theory is one of the best justifications for BO- particularly
-  for myopic acquisition functions like expected improvement. However, these acquisition
-  functions are only "optimal" i...
+description: ""
 ---
 
 Bayesian decision theory is one of the best justifications for BO- particularly

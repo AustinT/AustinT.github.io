@@ -5,9 +5,7 @@ categories:
 - machine learning
 - peer review
 - _all-time-best
-description: There is no official step by step guide for how to review ML conference
-  papers at venues like NeurIPS/ICML/ICLR. In this post, I try to explain my guide.
-  It is not official, endorsed, or necessaril...
+description: ""
 ---
 
 There is no official step by step guide for how to review ML conference papers

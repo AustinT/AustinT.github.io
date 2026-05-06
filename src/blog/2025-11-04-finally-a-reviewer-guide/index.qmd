@@ -4,8 +4,7 @@ date: 2025-11-04
 categories:
 - machine learning
 - peer review
-description: ICLR 2026 released a detailed review guide as part of its review process
-  (link). Let's analyze it!
+description: ""
 ---
 
 ICLR 2026 released a detailed review guide as part of its review process

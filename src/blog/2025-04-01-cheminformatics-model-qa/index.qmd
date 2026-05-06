@@ -5,9 +5,7 @@ categories:
 - machine learning
 - chemistry
 - speculation
-description: I was recently asked via email for my thoughts on which models to use
-  in general for molecular property prediction. I'm sharing my responses publicly
-  in case they are useful.
+description: ""
 ---
 
 I was recently asked via email for my thoughts on which models to use _in

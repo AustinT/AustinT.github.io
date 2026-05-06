@@ -5,9 +5,7 @@ categories:
 - statistics
 - decision making
 - _all-time-highlight
-description: People are notoriously bad at estimating their percent confidence in
-  their beliefs, as explained further in this Wikipedia article. Something I thought
-  of recently is what effect this overconfidenc...
+description: ""
 ---
 
 People are notoriously bad at estimating their percent confidence in their beliefs, as explained further in this [Wikipedia article](https://en.wikipedia.org/wiki/Overconfidence_effect). 

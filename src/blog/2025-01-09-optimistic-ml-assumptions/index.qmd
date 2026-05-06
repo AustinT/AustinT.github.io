@@ -3,9 +3,7 @@ title: 'What ML researchers and users get wrong: optimistic assumptions'
 date: 2025-01-09
 categories:
 - speculation
-description: ML is often done poorly, both by "ML experts" (by which I mean people
-  who understand the algorithms but not the data) and "ML users" (by which I mean
-  people who understand their data, but not the a...
+description: ""
 ---
 
 ML is often done poorly, both by "ML experts" (by which I mean people who

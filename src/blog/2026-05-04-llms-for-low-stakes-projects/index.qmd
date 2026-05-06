@@ -4,9 +4,7 @@ date: '2026-05-04'
 categories:
 - using large language models
 - website
-description: I've been a somewhat late adopter to coding agents. In this post I'll
-  walk through some use cases where I used coding agents for low-urgency, low-impact
-  tasks that I'd previously been procrastinating on.
+description: ""
 ---
 
 I've been a somewhat late adopter to coding agents: until ~1 month ago I was

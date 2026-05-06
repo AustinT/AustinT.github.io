@@ -3,9 +3,7 @@ title: Scientific conferences as approximate Bayesian inference
 date: 2024-11-17
 categories:
 - speculation
-description: Scientists should ideally form their beliefs based on evidence and update
-  their beliefs as new evidence arrives. Unfortunately, humans are far from perfect
-  Bayesian thinkers and therefore may strug...
+description: ""
 ---
 
 Scientists should ideally form their beliefs based on evidence and update their

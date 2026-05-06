@@ -4,9 +4,7 @@ date: 2025-12-18
 categories:
 - machine learning
 - _recent-highlight
-description: 'I added the NeurIPS workshops this year (not the main conference). Here
-  are my takeaways. I''ll follow up with predictions for 2026 in a later post (EDIT:
-  here is that post).'
+description: ""
 ---
 
 I added the NeurIPS _workshops_ this year (not the main conference).[^1] Here

@@ -4,9 +4,7 @@ date: 2025-02-11
 categories:
 - announcement
 - blog
-description: Since starting my new position at Valence, my efforts to write more on
-  my blog have clearly been successful. However, my internal list of "things I would
-  like to write a blog post about" is growing...
+description: ""
 ---
 
 Since starting my new position at Valence, my efforts to write more on my blog have clearly been successful.[^4years]

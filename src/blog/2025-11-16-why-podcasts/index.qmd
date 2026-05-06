@@ -3,9 +3,7 @@ title: Why listen to podcasts?
 date: 2025-11-16
 categories:
 - opinion
-description: Although everybody seems to listen to podcasts these days, some people
-  do not, and I've found myself explaining several times why I choose to listen to
-  them (as opposed to just listening to music o...
+description: ""
 ---
 
 Although everybody seems to listen to podcasts these days, some people do not,

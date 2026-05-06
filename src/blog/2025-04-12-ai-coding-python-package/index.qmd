@@ -4,9 +4,7 @@ date: 2025-04-12
 categories:
 - machine learning
 - using large language models
-description: I tried using some new LLM tools to code 2 entire python packages (instead
-  of editing a handful of lines at a time, which is what I did previously). It went
-  well! These tools are not perfect, but t...
+description: ""
 ---
 
 I tried using some new LLM tools to code 2 entire python packages (instead of

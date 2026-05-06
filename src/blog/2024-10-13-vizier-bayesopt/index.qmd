@@ -6,9 +6,7 @@ categories:
 - bayesian optimization
 - research papers
 - _recent-highlight
-description: Vizier, described in a recent paper from Google, is a black-box optimization
-  algorithm deployed for "numerous research and production systems at Google". Allegedly,
-  this one algorithm works well on...
+description: ""
 ---
 
 Vizier,

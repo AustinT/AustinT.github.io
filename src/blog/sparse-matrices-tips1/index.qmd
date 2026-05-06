@@ -4,9 +4,7 @@ date: 2018-09-12
 categories:
 - machine learning
 - _all-time-best
-description: Over the course of my internship at the online shopping company Wish,
-  I have dealt a lot with a lot of data in the form of sparse matrices, specificaly
-  in the form of item interaction matrices for ...
+description: ""
 ---
 
 Over the course of my internship at the online shopping company [Wish](https://www.wish.com/), I have dealt a lot with a lot of data in the form of sparse matrices, specificaly in the form of item interaction matrices for customer data. In doing so, I have made heavy use of [scipy's sparse matrices library](https://docs.scipy.org/doc/scipy/reference/sparse.html).

@@ -4,9 +4,7 @@ date: 2024-11-04
 categories:
 - research papers
 - _all-time-highlight
-description: Nondominated sorting genetic algorithm version 2, more commonly called
-  NSGA-II, is a well-established genetic algorithm (aka evolutionary algorithm) for
-  multi-objective optimization (MOO). In this ...
+description: ""
 ---
 
 Nondominated sorting genetic algorithm version 2,

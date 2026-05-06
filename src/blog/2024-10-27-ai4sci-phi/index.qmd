@@ -5,9 +5,7 @@ categories:
 - PhD
 - speculation
 - _recent-highlight
-description: With the immense growth of AI for science (AI4sci for brevity), I imagine
-  many younger students are considering applying for PhDs in AI for science in this
-  application cycle. This post is my attemp...
+description: ""
 ---
 
 With the immense growth of AI for science (AI4sci for brevity), I imagine many

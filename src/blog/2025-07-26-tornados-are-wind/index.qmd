@@ -1,9 +1,7 @@
 ---
 title: Tornados are just wind at close range.
 date: 2025-07-26
-description: 'I find tornados really interesting: dark funnels of power and destruction.
-  From far away they look like a "wall of cloud", and over the last 6 months I spent
-  a bunch of time on YouTube trying to un...'
+description: ""
 ---
 
 I find tornados really interesting: dark funnels of power and destruction. From

@@ -5,9 +5,7 @@ categories:
 - using large language models
 - language
 - chinese
-description: I've been learning Chinese for almost 10 years now, but still make awkward-sounding
-  sentences when I speak. A few months ago I thought "why not use LLMs to help me
-  speak more naturally", and found ...
+description: ""
 ---
 
 I've been learning Chinese for almost 10 years now, but still make

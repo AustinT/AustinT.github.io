@@ -5,9 +5,7 @@ categories:
 - machine learning
 - peer review
 - opinion
-description: This year CVPR pledged to make all authors participate in peer review,
-  and reject papers from authors who wrote low-quality reviews. Last week they confirmed
-  on Twitter that they followed through w...
+description: ""
 ---
 
 This year [CVPR](https://cvpr.thecvf.com/) pledged to make all authors

@@ -4,9 +4,7 @@ date: 2018-09-19
 categories:
 - language
 - japanese
-description: One dream I have always had since I started learning languages is to
-  be able to go to another country and use that language to communicate. This August
-  I had the first opportunity to do that during...
+description: ""
 ---
 
 One dream I have always had since I started learning languages is to be able to go to another country and use that language to communicate.

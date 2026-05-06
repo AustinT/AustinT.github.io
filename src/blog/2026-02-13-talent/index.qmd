@@ -1,8 +1,7 @@
 ---
 title: Tyler Cowen's book on talent
 date: 2026-02-13T00:00Z
-description: 'Cross-posting my summary of the book "Talent: How to Identify Energizers,
-  Creatives, and Winners Around the World" from my GitHub: link.'
+description: ""
 ---
 
 Cross-posting my summary of the book "Talent: How to Identify Energizers,

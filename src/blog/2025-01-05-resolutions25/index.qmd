@@ -3,7 +3,7 @@ title: New Year's Resolutions for 2025
 date: 2025-01-05
 categories:
 - personal development
-description: Happy 2025! Here are a few goals I am setting for myself this year!
+description: ""
 ---
 
 Happy 2025! Here are a few goals I am setting for myself this year!

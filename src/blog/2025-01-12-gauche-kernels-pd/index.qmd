@@ -4,9 +4,7 @@ date: 2025-01-12
 categories:
 - machine learning
 - _recent-highlight
-description: GAUCHE is a library for Gaussian processes in chemistry. I contributed
-  a small amount to GAUCHE several years ago but am not an active developer. I recently
-  learned that some new fingerprint kernel...
+description: ""
 ---
 
 [GAUCHE](https://github.com/leojklarner/gauche) is a library for Gaussian

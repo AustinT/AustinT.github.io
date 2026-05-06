@@ -6,9 +6,7 @@ categories:
 - bayesian optimization
 - opinion
 - _recent-highlight
-description: A lot of Bayesian optimization (BO) papers include experiments on "toy"
-  functions. Examples of such toy functions are Ackley, Rosenbrock, Hartmann, and
-  Branin. I basically ignore these experiments ...
+description: ""
 ---
 
 A lot of Bayesian optimization (BO) papers include experiments on "toy"

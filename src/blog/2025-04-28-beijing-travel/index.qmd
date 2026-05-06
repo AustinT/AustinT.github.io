@@ -3,9 +3,7 @@ title: Some Beijing travel tips
 date: 2025-04-28
 categories:
 - travel
-description: Earlier this year I went to Beijing. Here are some miscellaneous travel
-  tips. What I am writing here is probably not unique or original, treat this just
-  as my personal emphasis / endorsement.
+description: ""
 ---
 
 Earlier this year I went to Beijing. Here are some miscellaneous travel tips.

@@ -3,9 +3,7 @@ title: Turning Adam Optimization into SGD
 date: 2018-07-02
 categories:
 - machine learning
-description: Motivation This strange question came up when working on a machine learning
-  project to generate embeddings. Working with the version of Pytorch available on
-  our DGX (similar to version 0.3.1), I fo...
+description: ""
 ---
 
 ## Motivation

@@ -3,9 +3,7 @@ title: First time encountering a hallucinated citation of my paper.
 date: 2026-05-01T08:00Z
 categories:
 - research papers
-description: 'I recently ran an LLM deep research query about large matrices of Tanimoto
-  coefficients, and one of its references was the paper "Bandwidth adjustable Tanimoto
-  kernel: a smooth alternative to the G...'
+description: ""
 ---
 
 I recently ran an LLM deep research query about large matrices of Tanimoto

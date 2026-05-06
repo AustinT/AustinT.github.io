@@ -6,9 +6,7 @@ categories:
 - bayesian optimization
 - speculation
 - _recent-highlight
-description: As much as I believe in the potential of Bayesian optimization (BO) to
-  be useful for scientific discovery, after 4+ years I have seen many instances where
-  BO does not work. In this post I explain a...
+description: ""
 ---
 
 As much as I believe in the potential of Bayesian optimization (BO) to be

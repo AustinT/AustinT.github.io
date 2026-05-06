@@ -6,9 +6,7 @@ categories:
 - language
 - writing
 - _recent-highlight
-description: Although English is the common language for international scientific
-  communication, most scientists are not native English speakers. To account for this,
-  I think that all scientists (especially nat...
+description: ""
 ---
 
 Although English is the common language for international scientific

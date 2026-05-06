@@ -5,9 +5,7 @@ date: 2025-02-11
 categories:
 - machine learning
 - peer review
-description: So many ML papers contain tables like |Method|Score(↑)| |---|----| |Baseline
-  1|49.9%| |Baseline 2|49.8%| |Baseline 3|50.0%| |Our super fancy SOTA method|50.1%|
-  then say "results on the benchmark sh...
+description: ""
 ---
 
 So many ML papers contain tables like
