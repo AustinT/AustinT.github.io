@@ -17,6 +17,7 @@ listing:
     sort: "date desc"
     type: default
     fields: [title, date, description]
+    feed: true
 ---
 
 This blog mostly exists to help me clarify my own thoughts on various topics and practice writing.

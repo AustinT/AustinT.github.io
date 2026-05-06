@@ -52,6 +52,9 @@ def main():
     for dest, src in FILE_MOVES.items():
         src_path = os.path.join(args.output_dir, src)
         dest_path = os.path.join(args.output_dir, dest)
+        if not os.path.exists(src_path):
+            print(f"Warning: /{src} not found, skipping move to /{dest}")
+            continue
         shutil.move(src_path, dest_path)
         print(f"Moved: /{src} -> /{dest}")
 
