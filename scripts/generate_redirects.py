@@ -3,10 +3,17 @@
 
 import argparse
 import os
+import shutil
 
 REDIRECTS = {
     "links": "/resources/",
     "about": "/",
+}
+
+# Files to copy within the output dir (dest: source).
+# Used for legacy feed URLs — feed readers don't follow meta-refresh redirects.
+FILE_MOVES = {
+    "rss.xml": "blog/index.xml",
 }
 
 TEMPLATE = """\
@@ -41,6 +48,12 @@ def main():
         with open(out_path, "w") as f:
             f.write(TEMPLATE.format(target=target))
         print(f"Created redirect: /{slug}/ -> {target}")
+
+    for dest, src in FILE_MOVES.items():
+        src_path = os.path.join(args.output_dir, src)
+        dest_path = os.path.join(args.output_dir, dest)
+        shutil.move(src_path, dest_path)
+        print(f"Moved: /{src} -> /{dest}")
 
 
 if __name__ == "__main__":
