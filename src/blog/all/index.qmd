@@ -1,0 +1,15 @@
+---
+title: "All Posts"
+listing:
+  - id: all-posts
+    contents:
+      - "../**/index.qmd"
+      - "../**/index.ipynb"
+    sort: "date desc"
+    type: default
+    fields: [title, date, description]
+    feed: true
+---
+
+::: {#all-posts}
+:::

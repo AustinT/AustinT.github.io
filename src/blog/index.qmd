@@ -10,14 +10,6 @@ listing:
       categories: ["_all-time-best", "_recent-highlight", "_all-time-highlight"]
     type: default
     fields: [title, date, description]
-  - id: all-posts
-    contents:
-      - "**/index.qmd"
-      - "**/index.ipynb"
-    sort: "date desc"
-    type: default
-    fields: [title, date, description]
-    feed: true
 ---
 
 This blog mostly exists to help me clarify my own thoughts on various topics and practice writing.
@@ -45,7 +37,4 @@ Good question. For now, 2 reasons:
 ::: {#curated}
 :::
 
-## All Posts
-
-::: {#all-posts}
-:::
+[Browse all posts →](/blog/all/)

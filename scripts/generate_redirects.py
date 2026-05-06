@@ -13,7 +13,7 @@ REDIRECTS = {
 # Files to copy within the output dir (dest: source).
 # Used for legacy feed URLs — feed readers don't follow meta-refresh redirects.
 FILE_MOVES = {
-    "rss.xml": "blog/index.xml",
+    "rss.xml": "blog/all/index.xml",
 }
 
 TEMPLATE = """\
