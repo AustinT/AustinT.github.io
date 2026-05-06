@@ -29,8 +29,8 @@ def main():
     parser = argparse.ArgumentParser(description="Generate redirect HTML files")
     parser.add_argument(
         "--output-dir",
-        default="src/_site",
-        help="Quarto output directory (default: src/_site)",
+        default=os.environ.get("QUARTO_PROJECT_OUTPUT_DIR", "src/_site"),
+        help="Quarto output directory (default: $QUARTO_PROJECT_OUTPUT_DIR or src/_site)",
     )
     args = parser.parse_args()
 

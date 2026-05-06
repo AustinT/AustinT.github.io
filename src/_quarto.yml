@@ -1,6 +1,7 @@
 project:
   type: website
   output-dir: _site
+  post-render: ../scripts/generate_redirects.py
   resources:
     - "CNAME"
     - "blog-images/**"
