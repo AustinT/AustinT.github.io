@@ -34,13 +34,7 @@ at 4.2km wide and had lots of videos filmed at all ranges. I liked this video
 as a general overview of the tornado:
 
 <div style="text-align: center;">
-    <iframe width="560" height="315" 
-        src="https://www.youtube.com/embed/Ppw0W5IXNAI" 
-        title="YouTube video player" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-    </iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Ppw0W5IXNAI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 However, up close it seemed... less impressive. This video from Dan Robinson
@@ -48,13 +42,7 @@ shows him driving through the edge of the tornado (I've clipped the video to
 start roughly where he enters the tornado).
 
 <div style="text-align: center;">
-    <iframe width="560" height="315" 
-        src="https://www.youtube.com/embed/MxgU1QcFMJM?start=200&end=350" 
-        title="YouTube video player" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-    </iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/MxgU1QcFMJM?start=200&end=350" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 This video basically looks like driving through a thunderstorm. You can see
@@ -73,13 +61,7 @@ part of the tornado.
 Another view of inside the tornado is here:
 
 <div style="text-align: center;">
-    <iframe width="560" height="315" 
-        src="https://www.youtube.com/embed/4KPnqetzYGs?start=308" 
-        title="YouTube video player" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-    </iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4KPnqetzYGs?start=308" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 Here, the powerful sub-vortices are visible before the camera stops filming the
@@ -99,13 +81,7 @@ My conclusions from El Reno are:
 This is somebody named "HIGH RISK Chris" being hit by a tornado in his car:
 
 <div style="text-align: center;">
-    <iframe width="560" height="315" 
-        src="https://www.youtube.com/embed/4B2u8yaId54?start=735" 
-        title="YouTube video player" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-    </iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4B2u8yaId54?start=735" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 In the initial moments you see strong winds and some wisps of clouds, but no
@@ -117,13 +93,7 @@ This is a team of scientists in a special armored car which should be able to
 survive tornadic winds. Here is a video from just a few days ago:
 
 <div style="text-align: center;">
-    <iframe width="560" height="315" 
-        src="https://www.youtube.com/embed/Fo1ErRAahNk?start=0" 
-        title="YouTube video player" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-    </iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Fo1ErRAahNk?start=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 The tornado itself basically looks like strong wind.
@@ -137,13 +107,7 @@ like from a distance). You also get to see the wind change direction as the
 tornado passes over them.
 
 <div style="text-align: center;">
-    <iframe width="560" height="315" 
-        src="https://www.youtube.com/embed/T3yF5-OsijM?start=198" 
-        title="YouTube video player" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-    </iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/T3yF5-OsijM?start=198" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 However, in the tornado itself, all you see is wind and debris. There is not a
@@ -156,11 +120,5 @@ This tornado was filmed with a good zoom lens. It has damaging winds but not a
 clearly visible funnel, and basically looks like wind.
 
 <div style="text-align: center;">
-    <iframe width="560" height="315" 
-        src="https://www.youtube.com/embed/RcZdg3I2Pso?start=830" 
-        title="YouTube video player" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-    </iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RcZdg3I2Pso?start=830" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>

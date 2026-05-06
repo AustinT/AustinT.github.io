@@ -50,15 +50,15 @@ graph.[^everywhere] Two examples:
 
 [^everywhere]: This is an issue for all kinds of cheminformatics tasks, not just toxicity.
 
-1. **Tautomers** are molecules which readily interconvert between each other
-   (see image below for examples). One form could be toxic, the other not. A
+1. **Tautomers** are molecules which readily interconvert between each other.[^tautomers]
+   One form could be toxic, the other not. A
    single graph cannot represent both forms.
 2. **Protonation states** (ie the number of hydrogen atoms bonded to
    oxygens/nitrogens/etc) will change depending on the surrounding pH, changing
    reactivity and charge. Without a corresponding pH input, a molecular graph
    may not represent the actual state of a molecule in the body.
 
-<a title="Example of tautomers. Image by Vaccinationist, Public domain, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Tautomers.svg"><img width="512" alt="Tautomers" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Tautomers.svg/512px-Tautomers.svg.png?20161224141657"></a>
+[^tautomers]: Example image from wikipedia: <a title="Example of tautomers. Image by Vaccinationist, Public domain, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Tautomers.svg"><img width="512" alt="Tautomers" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Tautomers.svg/512px-Tautomers.svg.png?20161224141657"></a>
 
 Essentially, this means that the actual state of a molecule in the body often
 _cannot_ be represented by a _single_ graph, and exactly which graph(s) are
