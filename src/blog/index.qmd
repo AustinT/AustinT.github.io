@@ -3,8 +3,8 @@ title: "Austin's Blog"
 listing:
   - id: curated
     contents:
-      - "*/index.qmd"
-      - "*/index.ipynb"
+      - "**/index.qmd"
+      - "**/index.ipynb"
     sort: "date desc"
     include:
       categories: ["_all-time-best", "_recent-highlight", "_all-time-highlight"]
@@ -12,8 +12,8 @@ listing:
     fields: [title, date, description]
   - id: all-posts
     contents:
-      - "*/index.qmd"
-      - "*/index.ipynb"
+      - "**/index.qmd"
+      - "**/index.ipynb"
     sort: "date desc"
     type: default
     fields: [title, date, description]
