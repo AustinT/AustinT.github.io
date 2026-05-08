@@ -16,8 +16,6 @@ Quarto, mostly using Quarto Markdown (`.qmd`) as the source.
   - `src/_site/` — **generated output, do not edit directly** (gitignored)
 - `scripts/` — Build utilities
   - `scripts/generate_redirects.py` — Post-build: writes legacy redirect HTML files
-- `posts/` — Old Nikola blog posts (pending removal after migration)
-- `pages/` — Old Nikola pages (pending removal after migration)
 
 ## Post frontmatter format
 
@@ -30,9 +28,10 @@ date: YYYY-MM-DD
 categories:
     - tag1
     - tag2
-description: "One-sentence summary shown in listings."
 ---
 ```
+
+`description:` is optional. If omitted, Quarto shows the start of the post body as a teaser in listings.
 
 KaTeX math is enabled globally — no `has_math` field needed.
 
