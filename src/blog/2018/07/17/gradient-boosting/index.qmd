@@ -16,9 +16,9 @@ The aim of this blog article is the following:
 
 
 ## A brief introduction to ensemble models
-Machine learning tasks can be framed as a function approximation task, where the goal is to approximate a function \\(f(\vec{x})\\) given a set of observations 
-\\(\lbrace \left(\vec x_i, f(\vec x_i) \right)\rbrace _{i=1:N}\\).
-The main difficulty is that \\(f\\) can be very complex, or potentially we might not have a lot of data. So a simple model (e.g. linear regression) might not be able to adequately model \\(f\\), and a sufficiently complex model would overfit the training set.
+Machine learning tasks can be framed as a function approximation task, where the goal is to approximate a function $f(\vec{x})$ given a set of observations 
+$\lbrace \left(\vec x_i, f(\vec x_i) \right)\rbrace _{i=1:N}$.
+The main difficulty is that $f$ can be very complex, or potentially we might not have a lot of data. So a simple model (e.g. linear regression) might not be able to adequately model $f$, and a sufficiently complex model would overfit the training set.
 
 This kind of scenario is perfect for an ensemble method: where multiple models are combined together to create one superior model. Two popular methods for this are called _bagging_ and _boosting_.
 
@@ -29,12 +29,12 @@ However, how do you guarantee that all the models will make different kinds of e
 
 This technique is what gives _bagging_ its name: it stands for _"Bootstrap AGGregatING"_. (I used to think it was called bagging because you had a "bag of models", but this is not the case).
 
-Moving up one level of abstraction, bagging can be thought of as a weighted averaging model: given the outputs of several models, the bagging model assigns a weight to each of the model's predictions and sums them to get a total prediction. Assuming the bagging method uses N models, an averaging bagging model assigns a weight of \\(1/N\\) to each sub-model, and a mode bagging model assigns a weight of \\(1/N_{mode}\\). 
+Moving up one level of abstraction, bagging can be thought of as a weighted averaging model: given the outputs of several models, the bagging model assigns a weight to each of the model's predictions and sums them to get a total prediction. Assuming the bagging method uses N models, an averaging bagging model assigns a weight of $1/N$ to each sub-model, and a mode bagging model assigns a weight of $1/N_{mode}$. 
 
 ### Boosting
 Boosting differs from bagging in the fitting procedure, and in the goal of each model. In bagging, the goal is to train models independently so that they make less correlated errors. In boosting however, models are trained sequentially, with the goal of training each model being to correct for the errors made by the previous model.
 
-That is, if you have a model \\(m_j(\vec{x})\\) fit after \\(j\\) iterations, then the goal of boosting is to fit a model
+That is, if you have a model $m_j(\vec{x})$ fit after $j$ iterations, then the goal of boosting is to fit a model
 
 $$m_{j+1}(\vec{x}) = f(\vec{x}) - m_j(\vec{x})$$ 
 
@@ -47,7 +47,7 @@ Typically in this kind of scenario, a _loss function_ is used to capture the err
 
 $$L(m_{j+1} + m_j) \leq L(m_{j+1})$$
 
-One way to do this is to make \\(m_{j+1}\\) proportional to the loss gradient. By making \\(m_{j+1} = \nabla_{m_j} L(m_j)\\), we know that adding (subtracting) \\(m_{j+1}\\) will cause an increase (decrease) in the loss function, because the gradient gives the direction of steepest increase.
+One way to do this is to make $m_{j+1}$ proportional to the loss gradient. By making $m_{j+1} = \nabla_{m_j} L(m_j)$, we know that adding (subtracting) $m_{j+1}$ will cause an increase (decrease) in the loss function, because the gradient gives the direction of steepest increase.
 
 However, because the gradient might vary significantly within a short distance, we multiply the gradient by a small constant to improve the accuracy of this first order approximation. 
 
