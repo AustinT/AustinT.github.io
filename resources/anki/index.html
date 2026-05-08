@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>More Information about Anki – Austin Tripp’s website</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Austin Tripp’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#anki-explained" id="toc-anki-explained" class="nav-link active" data-scroll-target="#anki-explained">Anki explained</a></li>
+  <li><a href="#my-general-anki-tips" id="toc-my-general-anki-tips" class="nav-link" data-scroll-target="#my-general-anki-tips">My General Anki Tips</a></li>
+  <li><a href="#what-i-use-anki-for-with-more-detailed-tips" id="toc-what-i-use-anki-for-with-more-detailed-tips" class="nav-link" data-scroll-target="#what-i-use-anki-for-with-more-detailed-tips">What I use Anki for (with more detailed tips)</a></li>
+  <li><a href="#further-resources-on-anki" id="toc-further-resources-on-anki" class="nav-link" data-scroll-target="#further-resources-on-anki">Further Resources on Anki</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">More Information about Anki</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Anki is an extremely useful piece of software for learning new things. This page:</p>
+<ol type="1">
+<li>links to some resources that have helped me use Anki better</li>
+<li>lists some of my own tips</li>
+</ol>
+<p><strong>Note</strong>: this page is meant to be a reflection of my <em>current</em> views on Anki, and therefore may change without notice. It is meant to be updated on an ongoing basis.</p>
+<section id="anki-explained" class="level2">
+<h2 class="anchored" data-anchor-id="anki-explained">Anki explained</h2>
+<p>If you <strong>do</strong> know what Anki is you should skip this section.</p>
+<p>If you <strong>don’t</strong> know what Anki is, I will refer you to some external websites since I have no intention of writing my own intro when there are plenty of good ones already out there.</p>
+<ul>
+<li><a href="https://ncase.me/remember/">Nicky Case’s intro</a> is a fun interactive web app which motivates spaced repetition (the algorithm that Anki uses).</li>
+<li>The <a href="https://apps.ankiweb.net/docs/manual.html">user manual</a> is long but surprisingly readable. Skimming the introduction is not a bad way to start learning about Anki.</li>
+</ul>
+</section>
+<section id="my-general-anki-tips" class="level2">
+<h2 class="anchored" data-anchor-id="my-general-anki-tips">My General Anki Tips</h2>
+<p>These are my personal tips for using Anki. They are the result of me using Anki since 2014 and doing some non-rigorous experiments with myself, <em>not</em> from scientific studies.</p>
+<ul>
+<li><p><strong>Change learning intervals</strong>: I find that the default learning intervals of 1 min, then 10 mins, then right into review the next day is a bit fast, since you can easily forget things between the 10 min review and the review the next day. With the 10 min interval, I think the item is only in your short term memory (not long term), and that the potential for forgetting before the 1 day review is even greater if you have a lot of new cards every day.</p>
+<p>Instead, I like to use the intervals of 1m, 10m, 5h, since the extra 5h interval makes it much more likely that I will remember it the next day. I’ve found that if I do this I can often increase my initial review interval from 1 day to 2 days, which really makes reviewing much more manageable in the long term.</p>
+<p>I’ve also experimented with extra long learning phases before going to review (often up to 1w), but I thought that didn’t work well since I would forget a card then need to start the long learning process all over again. So, a longer learning phase is good, but keep it under 1 day!</p></li>
+<li><p><strong>Accept leeches</strong>: for a long time I would “clean up my leeches” every month, putting them back into the new card deck to make sure I learned everything. However, I now think this is a waste of time: you rarely need to know <em>absolutely everything</em>, so just accept that you will be unable to learn ~5% of things and don’t focus too much on them.</p>
+<p>If later on you need to know the leeched cards you can just put them back in your deck at that time.</p></li>
+<li><p><strong>Number of new cards</strong>: don’t learn too many new cards every day (at most ~50), but too few can also be bad (&lt;5), since it means you won’t have enough items in the deck to really review it every day, thus depriving the cards of context.</p>
+<p>You can learn more new cards every day if you really want to do a lot of Anki, but I find that spending more than 30 mins reviewing every day is quite tedious so I combat this by limiting the rate at which I learn new cards.</p></li>
+<li><p><strong>New cards before reviews</strong>: the default settings (last time I checked) mix new cards with reviews. Unless you have large decks, this might mean that you finish reviewing your cards before you’ve completed the learning phase for the new cards, which will cause Anki to shorten the learning intervals and show you the cards in the “learning” pile slightly earlier than it should. To combat this, I strongly recommend turning on the setting that shows new cards before review cards, so that you can keep the full intervals for your new cards.</p></li>
+<li><p><strong>One unambiguous thing per card</strong>: if you have multiple things on a card and only get some right, is the card “hard” or “again”? The same difficulty occurs if you have a card with an ambiguous answer.</p>
+<p>An example of this for me was a card asking me to list the Chinese Dynasties in order. I would always mess up a few of them, but would answer “hard” since I knew most of them, and over time this led to me just having a vague idea of what half the dynasties were. I eventually got rid of the note since it wasn’t helpful. So, give your cards a <em>single unambiguous item</em>.</p></li>
+<li><p><strong>Be critical of your performance</strong>: if you forget a card, it can be tempting to think “I was pretty close, so I will just mark <em>hard</em> instead of <em>again</em>”. This is especially tempting if you have a lot of reviews to do. Over time though this can lead to a strong quality decrease, where you just vaguely know the cards and need to keep applying a low standard for reviews to prevent your deck from becoming 90% lapses. I’ve had this happen for a few decks, where after a few months I realized I barely remembered any of the cards and questioned whether I should abandon the deck entirely.</p>
+<p>When this happens, I would say it is a sign that you have too many reviews or probably don’t need to memorize the thing that you are memorizing. Otherwise, don’t hesitate to press <em>again</em> when you forget! It will be better in the long term.</p></li>
+<li><p><strong>Don’t be afraid to turn off a deck</strong>: the point of Anki is to put things into your long-term memory, so the real benefits of using it are the memories that are there <em>years</em> after you first started, maintained with only a few reviews per day. Therefore it might seem like a huge waste to stop reviewing a deck, since you’ve invested a lot of time at the beginning and won’t reap the benefits later. However, reviewing each deck every day is a time cost, and if you don’t think you will need this knowledge in the future perhaps it makes sense to stop reviewing it.</p>
+<p>If you need the knowledge again at a later date, you can always start reviewing again, even if you’ve forgotten a lot. It will take a long time, but maybe 1 month of intense review is better than 5 years of a few daily reviews in a period where you aren’t using the knowledge. Think of the following calculation: add up how long you spend reviewing per day (maybe a few minutes), and compare it with the amount of intense study time you think you would need to remember things after a long break. If the review time is more than the future cram time, maybe turn off reviewing for that deck.</p>
+<p>Alternatively, if it is just some cards you don’t find useful, you can just suspend them and keep reviewing the rest.</p></li>
+<li><p><strong>Resist the temptation to memorize every detail</strong>: cramming your deck full of every single piece of information is just going to result in you memorizing a lot of fairly useless things. Just put in what you need to know.</p>
+<p>An example for me is country capitals: originally I had a deck with every country’s capital, but I realized later there wasn’t much point in me knowing the capital of a country I knew pretty much nothing else about, so I just suspended all the notes except for the countries whose capital I thought it was important to know.</p>
+<p>Anki should be there to help you; resist the temptation to listen blindly to what it tells you to study! Memorize only what you need.</p></li>
+</ul>
+</section>
+<section id="what-i-use-anki-for-with-more-detailed-tips" class="level2">
+<h2 class="anchored" data-anchor-id="what-i-use-anki-for-with-more-detailed-tips">What I use Anki for (with more detailed tips)</h2>
+<p>I’ve tried using Anki to memorize a variety of things, but mostly for languages. I have used it a bit for academic study but generally not as much. Here are some things I’ve used it for and some advice I have for specific learning tasks.</p>
+<ul>
+<li><p><strong>Foreign Languages</strong>: mainly Chinese, French, German, and a bit of Turkish all with relatively good success. I think foreign languages are the easiest thing to use Anki for, since there is relatively little conceptual understanding and a lot of memorization. However I’ve found some methods to be more effective than others.</p>
+<ul>
+<li><p><strong>Vocabulary cards</strong>: cards that directly teach vocabulary (e.g.&nbsp;<em>le chien</em> -&gt; <em>the dog</em> in French). <em>These generally work out quite well</em>. I like having a front/back card with <em>optional reverse</em> (where the front is the foreign language word and the back is the English word). This way I learn to both recognize the word when I see it, and recall the word when I need to say it in a conversation (both forms are necessary to communicate in a foreign language).</p>
+<p>However, I like the <em>optional reverse</em> in case the English word has many different translations, or the word doesn’t have a good English translation. An example of this is the French reflexive pronouns (<em>me</em>, <em>te</em>, <em>se</em>). These can be translated into English as <em>myself</em>, <em>yourself</em>, <em>himself/herself</em>, but the French words are used in a different way than the <em>*self</em> words are used in English. The most common translation of <em>myself</em> into English is <em>moi-même</em>, so having a card that tests <em>myself</em> (en) -&gt; <em>me</em> (fr) is a bit misleading. The optional reverse would allow me to remove this card without simply removing the note for <em>me</em> altogether.</p></li>
+<li><p><strong>Sentence cards</strong>: cards that teach a whole sentence (e.g.&nbsp;<em>J’ai un chien</em> -&gt; <em>I have a dog</em> in French). I have mixed but mostly negative feelings on these: I think they are an ok way to teach grammar (since you learn the grammar by using it in a sentence), but sentence cards can require a lot of reading if the sentence is too long (making reviewing slow), and it’s very easy to memorize the sentences if you don’t have very many of them. For example, if you only have one sentence with the word <em>chien</em> in it (like the example sentence <em>J’ai un chien</em>), you might eventually learn the heuristic that the sentence with <em>chien</em> in it means <em>I have a dog</em>, and thereby start answering the card without even reading the sentence. This causes you to inadvertently learn the idiosyncrasies of your deck instead of actually learning the language.</p>
+<p>The second reason I am against sentence cards is because they often don’t align well with the goal of learning a foreign language, which is to be able to understand and synthesize new sentences. Sentence flashcards just teach you to recognize and recall specific sentences, which you probably don’t care about (apart from basic phrasal sentences like hello, goodbye, you’re welcome, thank you). This is very different from vocabulary, where you probably want to recognize and understand every single word in the sentence! I think the goal of learning sentences should be getting exposed to a very large <em>number</em> of sentences, for which I think something like <em>Clozemaster</em> is a better option, since it has a large sentence database so most of what you see is new sentences instead of review sentences.</p>
+<p>Of course, you could use Anki like Clozemaster, by minimizing reviews and maximizing new sentences (and using cloze cards), but I would rather just use something like Clozemaster directly or read articles than stretch Anki to fit this goal.</p></li>
+<li><p><strong>Alphabet/Character cards</strong>: cards to learn foreign alphabets/characters (like Chinese characters). I’ve had good success with this, but only when simultaneously studying a language that uses that alphabet. For example, I studied Chinese characters when learning Chinese and this helped, but I studied the Korean alphabet without learning Korean and found it very hard (but suddenly a lot easier when I started learning Korean).</p>
+<p>I think the mechanism for this is that you quickly learn ~70% of the letters, so they move into the distant future of reviews, leaving you to get tested repeatedly on the ~30% of letters you forget. But since most alphabets are quite small (&lt; 100 letters), you end up just reviewing 1-2 of these “tough cards” every day, so it’s easy to make the same mistakes over and over because you only see &lt;5% of the alphabet on any given day. Repeated long term I find this leaves me in approximately the same position that I started in: knowing 70% of the alphabet and forgetting the other 30%, making reviewing seem kind of pointless.</p>
+<p>Overall, I would suggest trying to stick with alphabets you actually intend on using!</p>
+<p><em>Specifically for Chinese characters</em>, I found Ankidroid very useful since it has a “writing” function that let’s you actually draw the character. Otherwise I think using pen/paper to draw out the character is essential to testing yourself.</p></li>
+</ul></li>
+<li><p><strong>Equations</strong>: sometimes math/science courses require some memorization of equations, but in general I haven’t found Anki to be a helpful tool for this. Here are some thoughts as to why:</p>
+<ul>
+<li>Sometimes knowing an equation is more about understanding than memorizing equation itself, and if you understand the motivation for the equation you can re-derive it easily if needed. An example might be the ideal gas equation from physics. If you know the effects of every term (pressure, volume, temperature, number of moles), then it’s fairly easy to just write out the whole equation. Understanding the equation is also <em>much less prone to memory errors</em> than direct memorization.</li>
+<li>A lot of empirical equations have similar forms (like polynomials), so its better to just memorize the form and then look up the specific constants of the equations.</li>
+<li>Many equations have “important parts” and “unimportant parts”. An example would be a Gaussian distribution: sometimes it just matters that it is proportional to a square exponential function, and the normalizing constant isn’t relevant. So many you just need to memorize one part of an equation, or have a vague idea of its form rather than memorize the whole thing.</li>
+<li>Many equations have <em>multiple forms</em>, and any form is correct if you know how to use it. An example would be Maxwell’s equations of electromagnetism: generally, they have lots of constants, but they can also be written in “natural units” where all the constants are 1. Either form of the equation is “correct”, provided that you know which form is appropriate in which circumstances.</li>
+</ul>
+<p>In general, exactly recalling an equation means getting every variable and term right, and doing this doesn’t mean you understand the equation, what parts of it are important, nor does it guarantee that you will be able to use it. Additionally if you rely on a memorization-heavy approach but you misremember one tiny part of an equation, generally your answer will be totally wrong. For these reasons I don’t think <em>memorizing</em> equations is a good use of Anki. It is far more effective to learn equations without relying too strongly on memorization.</p></li>
+<li><p><strong>Trivia</strong>: random facts like flags/country capitals. I think this is a good use of Anki since short unambiguous questions are the kind of things Anki excels at. Whether using your <em>time</em> to memorize trivia is a good idea is another matter (my current answer: <em><strong>no</strong></em>).</p></li>
+<li><p><strong>Passwords</strong>: a good use of Anki I’ve found is to force you to log into your accounts every once in a while so you remember your passwords. This is especially useful if you use a password manager (like the one in your browser), which might allow you to go for long periods of time without ever needing to log into your accounts. Using Anki to prompt me to log in has been a good way of making me not <em>dependent</em> on password managers (even though I do use them for convenience).</p>
+<p><strong>Important note</strong>: if you do this, don’t actually put your passwords into Anki: have them stored somewhere safe, ideally encoded, such as with a password manager. Anki is not a secure password safe!</p></li>
+</ul>
+</section>
+<section id="further-resources-on-anki" class="level2">
+<h2 class="anchored" data-anchor-id="further-resources-on-anki">Further Resources on Anki</h2>
+<p>These are some websites I’ve found useful, or think have a lot of interesting content about Anki.</p>
+<ul>
+<li>This <a href="http://rs.io/anki-tips/">blog post</a> is a popular one for common Anki mistakes.</li>
+<li>This <a href="http://augmentingcognition.com/ltm.html">blog post</a> by Michael Nielsen<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> gives an interesting overview on the importance of memorization, and his experience using Anki to understand new research fields.</li>
+<li>This <a href="https://www.gwern.net/Spaced-repetition">review blog post</a> is very detailed and cites a lot of studies. It is more of an <em>advanced level</em> read.</li>
+<li>Alex Vermeer’s <a href="https://alexvermeer.com/anki-essentials/">Anki Essentials</a> is an e-book guide to Anki. I didn’t buy it but it seems comprehensive/good for beginners.</li>
+</ul>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>This guy’s work is really good in general. Wrote a very useful <a href="http://neuralnetworksanddeeplearning.com/">guide to neural networks</a>, and one of the <a href="https://www.amazon.com/Quantum-Computation-Information-10th-Anniversary/dp/1107002176/">main textbooks on quantum computing</a>,<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/austintripp\.ca");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="mailto:austin.james.tripp%5Bat%5Dgmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a></p>
+<p>© Austin Tripp · All opinions are my own (not my employer’s). · Website powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

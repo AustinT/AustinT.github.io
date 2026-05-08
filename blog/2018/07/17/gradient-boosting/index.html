@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2018-07-17">
+
+<title>An Overview of Gradient Boosting and Popular Libraries for it. – Austin Tripp’s website</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../../">
+<script src="../../../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../../../index.html">
+    <span class="navbar-title">Austin Tripp’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../resources/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#a-brief-introduction-to-ensemble-models" id="toc-a-brief-introduction-to-ensemble-models" class="nav-link active" data-scroll-target="#a-brief-introduction-to-ensemble-models">A brief introduction to ensemble models</a>
+  <ul class="collapse">
+  <li><a href="#bagging" id="toc-bagging" class="nav-link" data-scroll-target="#bagging">Bagging</a></li>
+  <li><a href="#boosting" id="toc-boosting" class="nav-link" data-scroll-target="#boosting">Boosting</a></li>
+  </ul></li>
+  <li><a href="#gradient-boosting" id="toc-gradient-boosting" class="nav-link" data-scroll-target="#gradient-boosting">Gradient boosting</a></li>
+  <li><a href="#gradient-boosting-and-decision-trees" id="toc-gradient-boosting-and-decision-trees" class="nav-link" data-scroll-target="#gradient-boosting-and-decision-trees">Gradient boosting and decision trees</a></li>
+  <li><a href="#high-level-comparison-of-gradient-boosting-frameworks" id="toc-high-level-comparison-of-gradient-boosting-frameworks" class="nav-link" data-scroll-target="#high-level-comparison-of-gradient-boosting-frameworks">High-level comparison of gradient boosting frameworks</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">An Overview of Gradient Boosting and Popular Libraries for it.</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">machine learning</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 17, 2018</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Everybody doing machine learning wants the best models possible. The aim of this blog article is the following:</p>
+<ol type="1">
+<li>To provide an introduction to the machine learning technique known as <em>boosting</em>, and specifically <em>gradient boosting</em>.</li>
+<li>To compare/contrast boosting with other ensemble methods, such as <em>bagging</em></li>
+<li>To explain and compare several popular gradient boosting frameworks, specifically <em>XGBoost</em>, <em>CatBoost</em>, and <em>LightGBM</em>.</li>
+</ol>
+<section id="a-brief-introduction-to-ensemble-models" class="level2">
+<h2 class="anchored" data-anchor-id="a-brief-introduction-to-ensemble-models">A brief introduction to ensemble models</h2>
+<p>Machine learning tasks can be framed as a function approximation task, where the goal is to approximate a function \(f()\) given a set of observations \((x_i, f(x_i) )_{i=1:N}\). The main difficulty is that \(f\) can be very complex, or potentially we might not have a lot of data. So a simple model (e.g.&nbsp;linear regression) might not be able to adequately model \(f\), and a sufficiently complex model would overfit the training set.</p>
+<p>This kind of scenario is perfect for an ensemble method: where multiple models are combined together to create one superior model. Two popular methods for this are called <em>bagging</em> and <em>boosting</em>.</p>
+<section id="bagging" class="level3">
+<h3 class="anchored" data-anchor-id="bagging">Bagging</h3>
+<p>Personally, I find this method to be more intuitive. The intuition behind bagging is that different models tend to make different kinds of errors, so given many models, it is unlikely that they will all make a similar misclassification error. Therefore, you train multiple models, and to inference on a data point you inference on all the models and then average/vote on the result.</p>
+<p>However, how do you guarantee that all the models will make different kinds of errors? Most simple models are fit using deterministic algorithms, meaning that training multiple copies of the same model won’t yield any different results. The answer for this is <em>bootstrapping</em>, which is the statistical name for subsampling from your data. By training models on different subsets of your training set, each point is only seen by a fraction of the models, and therefore not all the models will be able to overfit to that point. Furthermore, since the different models will also all see different data <em>distributions</em>, they will also be unable to precisely overfit to your training set distribution. The overall effect of this is that the different models you train will be significantly less correlated, making the above objective of independent errors more true.</p>
+<p>This technique is what gives <em>bagging</em> its name: it stands for <em>“Bootstrap AGGregatING”</em>. (I used to think it was called bagging because you had a “bag of models”, but this is not the case).</p>
+<p>Moving up one level of abstraction, bagging can be thought of as a weighted averaging model: given the outputs of several models, the bagging model assigns a weight to each of the model’s predictions and sums them to get a total prediction. Assuming the bagging method uses N models, an averaging bagging model assigns a weight of \(1/N\) to each sub-model, and a mode bagging model assigns a weight of \(1/N_{mode}\).</p>
+</section>
+<section id="boosting" class="level3">
+<h3 class="anchored" data-anchor-id="boosting">Boosting</h3>
+<p>Boosting differs from bagging in the fitting procedure, and in the goal of each model. In bagging, the goal is to train models independently so that they make less correlated errors. In boosting however, models are trained sequentially, with the goal of training each model being to correct for the errors made by the previous model.</p>
+<p>That is, if you have a model \(m_j()\) fit after \(j\) iterations, then the goal of boosting is to fit a model</p>
+<p><span class="math display">m_{j+1}(\vec{x}) = f(\vec{x}) - m_j(\vec{x})</span></p>
+<p>This essentially means that you are fitting a new model, such that when it is added to the previous model, perfectly corrects for its mistakes. Intuitively, you are training a model that <em>boosts</em> the performance of your previous model, hence the name boosting.</p>
+</section>
+</section>
+<section id="gradient-boosting" class="level2">
+<h2 class="anchored" data-anchor-id="gradient-boosting">Gradient boosting</h2>
+<p><em>Gradient boosting</em> is a specific variety of boosting, with a slightly different objective. Consider the following scenario: you would like to fit your entire dataset, but there is a specific region which you care more about, so errors in that region are more problematic than errors in other regions. One example of this kind of scenario would be medical diagnosis, where a false negative (saying no disease when there is really a disease) can have severe consequences. In this case, trying to match every point equally would not be the best choice.</p>
+<p>Typically in this kind of scenario, a <em>loss function</em> is used to capture the error preferences in a single scalar value. In this context, the goal of adding another model to your set of models is not to decrease the fitting errors, but to decrease the loss function. Specifically, you would like it so that:</p>
+<p><span class="math display">L(m_{j+1} + m_j) \leq L(m_{j+1})</span></p>
+<p>One way to do this is to make \(m_{j+1}\) proportional to the loss gradient. By making \(m_{j+1} = <em>{m_j} L(m_j)\), we know that adding (subtracting) \(m</em>{j+1}\) will cause an increase (decrease) in the loss function, because the gradient gives the direction of steepest increase.</p>
+<p>However, because the gradient might vary significantly within a short distance, we multiply the gradient by a small constant to improve the accuracy of this first order approximation.</p>
+<p>So in summary, the difference between gradient boosting and normal boosting is the objective function. In normal boosting, we want:</p>
+<p><span class="math display">m_{j+1}(\vec{x}) = f(\vec{x}) - m_j(\vec{x})</span></p>
+<p>Whereas in gradient boosting, we want:</p>
+<p><span class="math display">m_{j+1} = \nabla _{m_j} L(m_j)</span></p>
+<p>Note that like bagging, since the outputs of different trees are being added to produce the final output, it can also be thought of as a weighted averaging model.</p>
+</section>
+<section id="gradient-boosting-and-decision-trees" class="level2">
+<h2 class="anchored" data-anchor-id="gradient-boosting-and-decision-trees">Gradient boosting and decision trees</h2>
+<p>Usually when gradient boosting is discussed, it is almost always in relation to decision trees. Why is that? While I am not 100% sure of this, I can think of a few main reasons:</p>
+<ul>
+<li>With linear models (i.e.&nbsp;linear regression), the models are already additive, so adding two linear models is always equivalent to fitting a single linear model</li>
+<li>The gradient might be very high for a few training examples, and low for the rest (e.g.&nbsp;if only a few examples are misclassified). With most models, changing the parameters will affect all of the results, whereas with decision trees you can simply add a new leaf node to an existing leaf to further fit those specific examples, allowing you to increase accuracy for those examples while not sacrificing it for other examples.</li>
+<li>There are nice analytic updates about whether to split a node in a decision tree, while for other models (e.g.&nbsp;neural nets) the fitting takes a long time.</li>
+<li>Newer models (neural nets) are usually pretty strong learners, and in theory if the neural network consistently performs poorly on a specific output you can just train on that output more, or add more parameters to increase model complexity. So gradient boosting doesn’t seem very necessary for this.</li>
+</ul>
+<p>So while it seems like gradient boosting can be used for anything, in practice it is mainly used for decision tree models.</p>
+</section>
+<section id="high-level-comparison-of-gradient-boosting-frameworks" class="level2">
+<h2 class="anchored" data-anchor-id="high-level-comparison-of-gradient-boosting-frameworks">High-level comparison of gradient boosting frameworks</h2>
+<p><em>XGBoost</em>, <em>CatBoost</em>, and <em>LightGBM</em> are all popular gradient boosting frameworks for decision trees. They all use essentially the same algorithm for one part of it, with the difference being in the other part. The two steps for most gradient boosting algorithms are: 1. An algorithm to produce candidate new trees, usually iteratively, by given a starting tree, by selecting a leaf node to split and performing a split. Usually the first tree in this algorithm is just a single leaf node (i.e.&nbsp;all items in one node) 2. An algorithm to evaluate the quality of these splits.</p>
+<p>The common part is usually #2, the evaluation algorithm, since this is usually just the loss reduction caused by the split. The frameworks mainly differ in how they reduce the computationally hard problem of producing candidate trees. Roughly speaking, these are how the above 3 algorithms work:</p>
+<ul>
+<li><em>XGBoost</em>: Given an existing tree, the naive way to improve it would be to iterate over every possible split value for every possible feature, and calculate the loss for each split, then choose the best split. Note that iterating over every possible split realistically just means iterating over every feature value for every data point, since the only goal is partitioning your set of training data, meaning that two splits that yield different partitions are not useful.<br>
+XGBoost notes that this iteration isn’t efficient for large datasets, so they portion the dataset into quantiles for each feature, and do their partitions based on the quantiles. This results in a more efficient, but still slightly brute force method. <a href="https://arxiv.org/abs/1603.02754">This is the link to the XGBoost paper that explains it in more detail</a></li>
+<li><em>CatBoost</em>: one of the main ideas behind CatBoost is that if a data point is used to produce a model, then boosting it using the same data gives a biased estimate of the gradient (biased with respect to the underlying data distribution). They counteract this by training an ensemble of models based on different permutations of the data, where each model is boosted using only new data points (i.e.&nbsp;data points it hasn’t seen before). The multiple permutations ensure that each data point has the chance to be used for a <em>good</em> model, since the first few points in a given permutation are going to be used to boost models trained on <em>even fewer points</em>, so the model will be bad.<br>
+In addition, CatBoost also has some unique ways of handling categorical variables. <a href="https://arxiv.org/abs/1706.09516">This is the CatBoost paper, which provides more detail</a></li>
+<li><em>LightGBM</em>: Microsoft’s LightGBM does 2 things. Firstly, they throw away data points which have small gradients, reducing the amount of data that they have to calculate splits over (this is done heuristically). Secondly, they bundle features which are mutually exclusive, effectively taking two features X and Y and doing computations with a new feature, (X or Y). This is also estimated heuristically. <a href="https://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradient-boosting-decision-tree">See the original paper for more details</a></li>
+</ul>
+<p>So in summary, the main difference between these libraries is how they choose to reduce the number of splits that they investigate, and which points they choose to make/evaluate those splits. But the underlying split evaluation idea is almost identical.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In summary, I’ve explained what bagging and boosting are, and some of the key gradient boosting libraries. Even though boosting techniques don’t seem very prominent in modern machine learning literature, I think they are still valuable to know. They are especially useful for serving machine learning models at scale, where simple models like decision trees have huge speed advantages on large datasets. So I believe that boosting/gradient boosting will prove useful well into the future.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/austintripp\.ca");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="mailto:austin.james.tripp%5Bat%5Dgmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a></p>
+<p>© Austin Tripp · All opinions are my own (not my employer’s). · Website powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

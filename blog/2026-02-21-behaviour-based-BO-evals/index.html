@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-02-21">
+
+<title>Behaviour-based evaluations in Bayesian optimization – Austin Tripp’s website</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Austin Tripp’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-are-current-bo-evaluation-practices-and-why-are-they-problematic" id="toc-what-are-current-bo-evaluation-practices-and-why-are-they-problematic" class="nav-link active" data-scroll-target="#what-are-current-bo-evaluation-practices-and-why-are-they-problematic">What are current BO evaluation practices and why are they problematic?</a></li>
+  <li><a href="#from-regret-to-behaviour" id="toc-from-regret-to-behaviour" class="nav-link" data-scroll-target="#from-regret-to-behaviour">From regret to behaviour</a></li>
+  <li><a href="#ideas-for-how-to-evaluate-behaviour" id="toc-ideas-for-how-to-evaluate-behaviour" class="nav-link" data-scroll-target="#ideas-for-how-to-evaluate-behaviour">Ideas for how to evaluate behaviour</a>
+  <ul class="collapse">
+  <li><a href="#different-decisions-at-a-single-iteration" id="toc-different-decisions-at-a-single-iteration" class="nav-link" data-scroll-target="#different-decisions-at-a-single-iteration">Different decisions at a single iteration</a></li>
+  <li><a href="#counterfactuals-at-a-single-iteration" id="toc-counterfactuals-at-a-single-iteration" class="nav-link" data-scroll-target="#counterfactuals-at-a-single-iteration">Counterfactuals at a single iteration</a></li>
+  <li><a href="#restricted-decision-set-multiple-iterations" id="toc-restricted-decision-set-multiple-iterations" class="nav-link" data-scroll-target="#restricted-decision-set-multiple-iterations">Restricted decision set, multiple iterations</a></li>
+  <li><a href="#algorithm-switches" id="toc-algorithm-switches" class="nav-link" data-scroll-target="#algorithm-switches">Algorithm “switches”</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#bonus-could-these-evaluation-settings-be-turned-into-a-benchmark" id="toc-bonus-could-these-evaluation-settings-be-turned-into-a-benchmark" class="nav-link" data-scroll-target="#bonus-could-these-evaluation-settings-be-turned-into-a-benchmark">(Bonus) Could these evaluation settings be turned into a benchmark?</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Behaviour-based evaluations in Bayesian optimization</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">machine learning</div>
+    <div class="quarto-category">bayesian optimization</div>
+    <div class="quarto-category">opinion</div>
+    <div class="quarto-category">_recent-highlight</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 21, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>I think the Bayesian optimization (BO) research community needs to change its evaluation practices. In a <a href="../../blog/2026-01-25-model-centric-bo/">previous post</a> I explained how I think users should generally bring their own model to BO and try to calibrate it to their beliefs/expectations. In <em>this</em> post, I explain why existing evaluation practices are not well-suited to this stance on BO, and outline a different approach to BO evaluation based on algorithm behaviour.</p>
+<p><strong>Disclaimer</strong>: this post is written under the assumption that the reader broadly agrees with the arguments in my <a href="../../blog/2026-01-25-model-centric-bo/">model-centric BO</a>, <a href="../../blog/2026-02-08-bo-benchmarks/">not caring about toy BO benchmarks</a>, and <a href="../../blog/2026-02-16-bo-rebrand/">BO rebrand</a> posts. If you don’t agree with the arguments from these posts, you might still find these evaluation ideas interesting, but maybe less compelling.</p>
+<section id="what-are-current-bo-evaluation-practices-and-why-are-they-problematic" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-current-bo-evaluation-practices-and-why-are-they-problematic">What are current BO evaluation practices and why are they problematic?</h2>
+<p>Broadly speaking, most BO papers use a <em>regret</em>-based evaluation. For theoretical works this is basically the only kind of evaluation practiced, and for empirical works the common practice is to plot either the best y value over time (linearly related to simple regret) or the cumulative sum y values over time (linearly related to cumulative regret). Especially in empirical works, the core claim for a method’s efficacy is typically comparing regret values of their method and other methods.</p>
+<p>Of course, users probably don’t care about the exact benchmark problems studied in the paper, they care about their <em>particular</em> problem, and therefore the benchmark results are useful only insofar as their conclusions transfer to the user’s particular problem. There are many reasons to believe this might not hold, even in the “ideal” case where users run the exact algorithm from the paper on their own problem (see my <a href="../../blog/2026-02-08-bo-benchmarks/">post about toy BO benchmarks</a> for more on this). However, if we expect that the user won’t use the same model as the paper, I am <em>especially</em> doubtful that performance claims from benchmarks will apply in this setting.</p>
+<p>A lot of this is because the mainstream regret-based evaluation framework makes does not provide insight for <em>why</em> certain methods achieve better regret than others, especially in the non-asymptotic setting where few theoretical results apply. A lot of different qualitative behaviours could potentially yield similar regret values. For example:</p>
+<ol type="1">
+<li>The method “intentionally” exploits the region around the training data and finds a local optimum.</li>
+<li>The method “intentionally” explores regions far from the training data and “gets lucky” by finding a good point.</li>
+<li>The method “intends” to explore OOD, but is underconfident and has huge uncertainty values very close to the training data. Therefore, in practice it basically exploits the region around the training data and gets similar results for scenario 1.</li>
+<li>The method “intends” to exploit locally, but is extremely overconfident in its predictions and ends up selecting points very far from the training data. It gets lucky and finds a similar point as in scenario 2.</li>
+</ol>
+<p>(<strong>NOTE:</strong> when I use the word “intention” here I mean “an algorithm design decision made with a particular behaviour in mind”, for example trust-region BO limiting queries to a small region or UCB exploring points which <em>might</em> have a high objective value. I acknowledge this is a subjective area)</p>
+<p>It is intuitive to me that in each of these scenarios, changing the model would likely have a very different effect on regret performance. Therefore, I believe that studying the regret only will be insufficient to predict algorithm behaviour with new models. Therefore, to the extent that one does machine learning experiments in order to give guidance to <em>users</em> of algorithms, I believe something more than regret is needed.</p>
+</section>
+<section id="from-regret-to-behaviour" class="level2">
+<h2 class="anchored" data-anchor-id="from-regret-to-behaviour">From regret to behaviour</h2>
+<p>I think the sensible alternative to regret is <em>behaviour</em>: studying the algorithm in x space instead of y space. Seeing which points x it selects (and why it queries those points) is likely much more informative than looking at regret plots. It’s like seeing the full solution to a math problem instead of just the final answer. Unfortunately, outside of 1D benchmarks where the entire function and data can be nicely plotted, this is usually not easy to visualize, and even harder to distill into a single number or metric. It’s not an easy thing to turn into a “benchmark”.</p>
+<p>I think that’s ok. Benchmarks are much more suited to <em>confirmatory</em> studies that aim to answer a specific question. <em>Exploratory</em> questions like “how does this algorithm behave” are also valid targets for scientific study, even if there is no statistical test at the end or firm conclusion!</p>
+</section>
+<section id="ideas-for-how-to-evaluate-behaviour" class="level2">
+<h2 class="anchored" data-anchor-id="ideas-for-how-to-evaluate-behaviour">Ideas for how to evaluate behaviour</h2>
+<p>I haven’t settled on a single recipe or answer for evaluating behaviour of BO algorithms, but here are some approaches I find informative and interesting.</p>
+<section id="different-decisions-at-a-single-iteration" class="level3">
+<h3 class="anchored" data-anchor-id="different-decisions-at-a-single-iteration">Different decisions at a single iteration</h3>
+<p>Most BO algorithms are <em>stateless</em>: the only thing carried forward between iterations is the surrogate model itself, which could in principle just be refit from scratch on the data available. Therefore it is possible to initialize BO at an arbitrary starting point in the optimization and see what decision it makes.</p>
+<p>This is a powerful tool to compare algorithms (and models) side by side. One can fit a single surrogate model to some starting data, then apply 2 different acquisition function + optimizer pairs (the remaining 2 parts of any BO algorithm) and see which different points they choose. If they choose different points, you can look at the model predictions to understand why. Usually it will be because the acquisition function values are different, and from this you can understand preferences of each acquisition function (eg UCB often preferring higher uncertainty than EI). Occasionally you will find an error with acquisition function optimization (eg the same point x maximizes both acquisition functions, but one of the acquisition function optimizers failed to find x).</p>
+<p>Alternatively, you can compare 2 different models using the same acquisition function + optimizer and see how the decisions differ. In this case, differences in behaviour should come purely from the models’ different predictions, and you can understand how modelling decisions lead to behaviour decisions.</p>
+<p>It may seem unintuitive to look at a single decision in BO, because it is an algorithm usually run over many iterations. But, differences in long-run behaviour ultimately stem from different decisions being made at individual steps, and examining when algorithms make different decisions can form the basis for understanding differences in long-run behaviour.</p>
+</section>
+<section id="counterfactuals-at-a-single-iteration" class="level3">
+<h3 class="anchored" data-anchor-id="counterfactuals-at-a-single-iteration">Counterfactuals at a single iteration</h3>
+<p>When evaluating single decisions you can also ask questions like “what would the predictions need to be for a specific point x to be chosen”? For example, in toy problems where the global optimum is known, you can ask “what predictions would need to be made at the optimum for it to be chosen right now?” This might provide helpful modelling information, at least for those particular problems. You can also ask questions like “what would predictions need to be for the model to choose a point far away from the training data” or “how would the decision change if one of the surrogate model parameters was perturbed by a small amount?” This can be incredibly useful for deriving failure modes of optimization.</p>
+</section>
+<section id="restricted-decision-set-multiple-iterations" class="level3">
+<h3 class="anchored" data-anchor-id="restricted-decision-set-multiple-iterations">Restricted decision set, multiple iterations</h3>
+<p>Instead of optimizing over a large space X, you can restrict the algorithm to a finite set of options x1, x2, etc and maximize the acquisition function by brute force over the set. This technique obviously can’t be used to evaluate acquisition function optimizers (since it is replaced by brute force), but can be used to compare models and acquisition functions. This kind of study helps you understand how algorithms will behave on a smaller set of “representative” options.</p>
+<p>For example, you could have:</p>
+<ul>
+<li>2 “sensible” points far from the training data</li>
+<li>2 “nonsensical” points (eg a non-physical molecule or all-noise image)</li>
+<li>2 “good” points close to training data</li>
+<li>2 “bad” points close to training data</li>
+</ul>
+<p>You can run BO for ~4 iterations and track for each algorithm which 4 choices it makes. If an algorithm chooses “nonsense, nonsense, bad, bad” probably something is wrong. If an algorithm makes sensible choices you can see what the acquisition function difference was between good and bad choices (ideally it is large).</p>
+<p>If the decision set is slightly larger you can look at statistics like “what fraction of inputs were chosen in common” and “what are the statistics of points chosen by BO algorithm A but not by algorithm B?”</p>
+</section>
+<section id="algorithm-switches" class="level3">
+<h3 class="anchored" data-anchor-id="algorithm-switches">Algorithm “switches”</h3>
+<p>Run BO algorithm A for N iterations, then use its evaluation trajectory to initialize algorithm B and run for M iterations. Compare with running algorithm A and B for (N+M) iterations. Significant differences in performance can build understanding for what’s happening in the algorithm without needing to examine the entire long trajectory in a lot of detail. Some examples:</p>
+<ul>
+<li>If A &gt; A/B hybrid &gt; B, probably algorithm A is just better than B on this problem.</li>
+<li>If A/B hybrid &gt; A &gt; B, this is interesting. One possible explanation: A is exploratory, B is exploitative. A explores a lot, finds better solutions, but doesn’t exploit enough. B doesn’t explore enough (and this is a losing strategy if the initial training data is in a bad region of x space). A/B hybrid will explore then exploit.</li>
+<li>If A &gt; B &gt; A/B hybrid, this is also interesting. One possible explanation is that the algorithms explore in different ways (eg in different subspaces). Individually they perform ok because they explore/exploit within their subspace, but combined together they just explore too much (and never exploit the areas they’ve explored).</li>
+</ul>
+</section>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>In this post I argued that if we assume users will generally use a custom model in BO, then trends / findings from regret-based analysis are unlikely to remain true because similar regrets can be achieved by hugely different behaviours. I suggested studying algorithm <em>behaviours</em> instead, even though this is harder to quantify. I gave some ideas for how “behaviour” could be turned into simpler questions with clearer answers (although not ones that could easily become a “benchmark”).</p>
+<p>This is one of the things I’d like to see most in academic BO papers. I find it disappointing to read papers’ experiment sections and walk away with little to no understanding for what kind of decisions the model is actually making (it feels like reading LLM papers without ever seeing examples of its output text). If you are doing academic BO research, I’d love to hear from you about these ideas. Please feel free to reach out!</p>
+<hr>
+</section>
+<section id="bonus-could-these-evaluation-settings-be-turned-into-a-benchmark" class="level2">
+<h2 class="anchored" data-anchor-id="bonus-could-these-evaluation-settings-be-turned-into-a-benchmark">(Bonus) Could these evaluation settings be turned into a benchmark?</h2>
+<p>Maybe. I could imagine something like a set of challenging “decision scenarios” (aka BO initializations) with a desired decision in each one. BO algorithms could be run for a single iteration in each case, and the fraction of scenarios where the “right” decision is made could be reported as a metric. However, I imagine that defining a “right” decision in each scenario is difficult because it is inherently subjective. Furthermore, it would be hard to capture long-term explore/exploit trade-offs here (a BO algorithm’s exploratory decisions early on will put it in a fundamentally different scenario than an exploitative algorithm).</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/austintripp\.ca");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="mailto:austin.james.tripp%5Bat%5Dgmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a></p>
+<p>© Austin Tripp · All opinions are my own (not my employer’s). · Website powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

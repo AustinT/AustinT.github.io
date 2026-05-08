@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-02-08">
+
+<title>Why I don’t care about toy benchmarks in BO – Austin Tripp's website</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Austin Tripp’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-main-issue-is-transferability" id="toc-the-main-issue-is-transferability" class="nav-link active" data-scroll-target="#the-main-issue-is-transferability">The main issue is transferability</a></li>
+  <li><a href="#too-many-things-change-to-expect-toy-benchmark-results-to-transfer" id="toc-too-many-things-change-to-expect-toy-benchmark-results-to-transfer" class="nav-link" data-scroll-target="#too-many-things-change-to-expect-toy-benchmark-results-to-transfer">Too many things change to expect toy benchmark results to transfer</a>
+  <ul class="collapse">
+  <li><a href="#input-space-changes-mean-you-cant-even-run-the-same-algorithm" id="toc-input-space-changes-mean-you-cant-even-run-the-same-algorithm" class="nav-link" data-scroll-target="#input-space-changes-mean-you-cant-even-run-the-same-algorithm">Input space changes mean <em>you can’t even run the same algorithm</em></a></li>
+  <li><a href="#function-being-optimized" id="toc-function-being-optimized" class="nav-link" data-scroll-target="#function-being-optimized">Function being optimized</a></li>
+  <li><a href="#biased-starting-data-causes-modelling-issues" id="toc-biased-starting-data-causes-modelling-issues" class="nav-link" data-scroll-target="#biased-starting-data-causes-modelling-issues">Biased starting data causes modelling issues</a></li>
+  <li><a href="#unrealistic-state-of-knowledge" id="toc-unrealistic-state-of-knowledge" class="nav-link" data-scroll-target="#unrealistic-state-of-knowledge">Unrealistic state of knowledge</a></li>
+  </ul></li>
+  <li><a href="#i-dont-believe-in-performance-floor" id="toc-i-dont-believe-in-performance-floor" class="nav-link" data-scroll-target="#i-dont-believe-in-performance-floor">I don’t believe in “performance floor”</a></li>
+  <li><a href="#no-insight-either" id="toc-no-insight-either" class="nav-link" data-scroll-target="#no-insight-either">No “insight” either</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Why I don’t care about toy benchmarks in BO</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">machine learning</div>
+    <div class="quarto-category">bayesian optimization</div>
+    <div class="quarto-category">opinion</div>
+    <div class="quarto-category">_recent-highlight</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 8, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>A lot of Bayesian optimization (BO) papers include experiments on “toy” functions. Examples of such toy functions are Ackley, Rosenbrock, Hartmann, and Branin. I basically ignore these experiments when I read papers and skip to the next section. When I review papers (and therefore cannot simply skip sections), I find my eyes glazing over and feel bored: I don’t care about these functions, don’t care about the results, and don’t really understand why the authors ran this experiment.</p>
+<p>For a while I assumed every BO researcher feels this way, but a bunch of recent conversations have made it clear to me that many people do care. So, in this post I explain why I don’t care at all about benchmarks on toy functions (and why you shouldn’t either).</p>
+<section id="the-main-issue-is-transferability" class="level2">
+<h2 class="anchored" data-anchor-id="the-main-issue-is-transferability">The main issue is transferability</h2>
+<p>Toy functions have known optima, and therefore running optimization on them is a pointless task. In isolation, the knowledge of which algorithms perform best on toy functions is a useless bit of trivia (since nobody is going to deploy them in practice to optimize these specific functions). I don’t think even the most ardent supporter of toy benchmark functions would dispute this. Instead, they claim that the value lies in some finding of the benchmark being <em>transferable</em> to settings we actually do care about (real world problems). I think this is the core of the disagreement: I simply don’t expect these results to be transferable at all to real-world settings. That will be the crux of this post.</p>
+<p>Before getting to that, let’s clear away two assumptions. The first is that I’m basically <em>guessing</em> that the point of toy benchmark experiments is to make statements about real-world problems. Unfortunately, the scientific rigor of ML is so poor that most papers don’t even state why they do the experiments they do or the scope of the results claimed, leaving it up to the reader’s imagination.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> If you imagine something different when you see these experiments that’s ok, but the position argued in this post might not make sense. I am arguing against how <em>I</em> believe <em>most people</em> interpret these experiments.</p>
+<p>The second is that there are many possible “real-world” experiments. When I use this term in this post, I mean the set of applications where BO is most often proposed as a desirable solution, which I think is:</p>
+<ul>
+<li>ML hyperparameter search</li>
+<li>Scientific discovery (small molecules, proteins, and materials being top spaces)</li>
+<li>Chemical reaction optimization (choosing temperature, concentration, solvent, etc)</li>
+<li>Engineering design (eg choosing which wing design to simulate)</li>
+</ul>
+<p>Of course there are other problems, and sometimes real-world problems that highly resemble toy benchmarks. I’m assuming in this post that this is highly exceptional, and most real-world problems look very different than benchmarks.</p>
+</section>
+<section id="too-many-things-change-to-expect-toy-benchmark-results-to-transfer" class="level2">
+<h2 class="anchored" data-anchor-id="too-many-things-change-to-expect-toy-benchmark-results-to-transfer">Too many things change to expect toy benchmark results to transfer</h2>
+<p>In short, the answer is that <em>too many things change</em> for me to reasonably expect trends observed in benchmark problems to also hold in real-world problems. BO algorithms are <em>very</em> sensitive to changes, eg changes in model hyperparameters, acquisition functions, etc. In my experience playing around with many algorithms in my PhD, changes in parameters can significantly change both absolute performance, and performance relative to other algorithms. Therefore, in the toy benchmark -&gt; real-world function transfer, I simply see too many things change to expect trends to hold. Let’s go through some.</p>
+<section id="input-space-changes-mean-you-cant-even-run-the-same-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="input-space-changes-mean-you-cant-even-run-the-same-algorithm">Input space changes mean <em>you can’t even run the same algorithm</em></h3>
+<p>Almost all toy benchmarks are in d-dimensional Euclidean space, while most real-world problems have at least some discrete element. Continuous to fully (or partially) discrete is a massive change. First, it often requires a different model to be used than the one chosen for benchmarking (eg a stationary GP is not even well-defined on a space of graphs). Even if the same model can be used, the acquisition function optimizer probably needs to change, since pure gradient descent on the inputs is no longer possible.</p>
+<p>A second (related) concern is that the <em>bounds</em> of the input space can change. Toy benchmarks usually assume a unit hypercube of some kind, whereas real-world problems might be unbounded for have unknown bounds.</p>
+<p>Overall, this puts two holes on any claims of transferability of conclusions. First, if the algorithms studied <em>literally cannot be run on real-world problems</em>, arguably the counterfactual of running the algorithms on real-world problems <em>doesn’t even exist</em>, so there is no “transfer” possible. If, alternatively, you include changing core parts of the algorithm as part of the process of “transfer”, experience tells me that changing the model and acquisition function optimization are some of the biggest possible changes in the BO loop, ones that affect optimization performance in ways that are difficult to predict, making conclusions less likely to transfer.</p>
+</section>
+<section id="function-being-optimized" class="level3">
+<h3 class="anchored" data-anchor-id="function-being-optimized">Function being optimized</h3>
+<p>Benchmark functions are, usually, relatively smooth functions with no pathological features that defy modelling assumptions: things like discontinuities (or sharp jumps), varying smoothness, or different “regions” with qualitatively different behaviour. Real-world functions can have all of these. Therefore, even when using a “standard” model like a stationary GP, the model is far more likely to be misspecified, and small differences in misspecification could significantly change BO performance.</p>
+</section>
+<section id="biased-starting-data-causes-modelling-issues" class="level3">
+<h3 class="anchored" data-anchor-id="biased-starting-data-causes-modelling-issues">Biased starting data causes modelling issues</h3>
+<p>BO benchmark problems are usually randomly initialized, while in real-world problems one usually starts optimization from whatever previous data is available. This data is usually quite biased: eg biased to one region of input space, biased towards one mode, biased towards being close to optimal or far from optimal (depending on the problem). Unfortunately, biased data causes modelling issues.</p>
+<p>The most common way to fit models in BO is by maximum likelihood (eg maximizing marginal log likelihood to set GP hyperparameters), which balances model “simplicity” with data fit. With biased data, this has two important effects:</p>
+<ol type="1">
+<li>It often selects for models which assume the “bias” in the biased data is present uniformly.</li>
+<li>When parameters are underspecified, it picks the strongest and most simplifying assumption by default.</li>
+</ol>
+<p>Here’s a semi-real example in drug discovery, using an exact GP model (assuming molecules are represented by vector features). In the “lead optimization” phase of drug discovery, the starting data probably comes from the “hit ID” phase, which are all structurally similar and all unusually active, derived from the same initial “hit” molecule. First, the model is highly incentivized to learn a mean near the starting data mean (assuming a constant mean function) and kernel amplitude equal to starting dataset variance. While this set of parameters explains the starting data well, it severely overestimates the activity of molecules similar to the starting data, which are mostly not active at all. Second, having never seen any 2 data points that are very far away from each other, the model will not have good data to confidently set the GP lengthscale parameter. Maximum likelihood highly incentives large lengthscale values (this improves the “data fit” ter), and therefore the model will select the largest plausible lengthscale compatible with the current data. Unfortunately, this will probably mark structurally distinct molecules as more similar to training molecules than is reasonable, causing the GP’s predictive variance to be small. Overall, the result is a model that confidently predicts almost all molecules to be strong actives.</p>
+<p>The best argument I’ve heard against this is that the initial random sampling should be viewed as a core part of the BO procedure, not just a placeholder initialization strategy. Perhaps there is some merit to this- random sampling is a counter against dataset bias. But it is impractical for two reasons. First, in situations where function evaluations are really expensive (eg lab experiments with molecules), nobody wants to spend tons of money on random initialization. Second, in more complex input spaces (eg molecules), it’s not even clear what an appropriate “random” distribution is. There is no analogue to U(0, 1) or N(0, 1).</p>
+</section>
+<section id="unrealistic-state-of-knowledge" class="level3">
+<h3 class="anchored" data-anchor-id="unrealistic-state-of-knowledge">Unrealistic state of knowledge</h3>
+<p>This applies if you take <a href="../../blog/2026-01-25-model-centric-bo/">my previous advice</a> and aim to start BO with a model that roughly captures your probabilistic belief about the function f at the start of optimization, rather than just leave model selection as an internal part of the BO algorithm. Toy benchmarks don’t really simulate a realistic “state of knowledge” that could be used to influence model fitting. On one hand, BO researchers deliberately avoid biasing algorithm with knowledge about the location or value of the optimum, even though this is actually known and probably would help the algorithm perform better. On the other hand, the rough level / kind of smoothness <em>is</em> known and <em>is</em> used implicitly when the BO model creator selects a model class (eg Matern vs RBF kernel).</p>
+<p>Real-world problems don’t have this distinction of knowledge we “can” and “cannot” use- we can (and should) use all knowledge. In fact, I bet it’s actually more common in practice to have an idea of the optimum’s location and value but <em>not</em> the smoothness of the function- the opposite case to standard BO practice.</p>
+<p>Overall though, the bias against using knowledge about the problem probably means that toy benchmark results are based on models which are overly “broad” compared to real-world models, and I expect real-world problems to often use “narrower” models.</p>
+</section>
+</section>
+<section id="i-dont-believe-in-performance-floor" class="level2">
+<h2 class="anchored" data-anchor-id="i-dont-believe-in-performance-floor">I don’t believe in “performance floor”</h2>
+<p>Some people might accept that claims like “algorithm A outperforms algorithm B” might not hold between toy benchmarks and real-world problems, but advocate for a lesser version of the claim: “any algorithm that performs well on real-world problems should <em>at least</em> perform well on toy benchmarks”. Therefore, one could argue, toy benchmarks simply enforce a “floor” on performance, and not clearing this floor means an algorithm is not worth considering for real-world problems.</p>
+<p>I don’t believe this either, for largely the same reasons as above. Too many things change, and it isn’t too hard to imagine an algorithm that performs well in practice but does not perform well on toy benchmarks.</p>
+<p>For example, a BO algorithm which expects noisy, non-stationary data may use a GP model with a smaller lengthscale. In relatively smooth BO benchmarks, this would cause the algorithm to spend a lot of time doing local exploration, rather than doing large leaps towards the optimum, and therefore it’s performance might be relatively poor. It would be erroneously to discard this algorithm as “poor” though, it just makes a different set of assumptions that are not valid in the circumstances of the benchmark.</p>
+<p>Put another way, I think the same argument as above also applies in reverse: there are too many changes <em>from</em> real-world problems <em>to</em> toy benchmarks to expect performance results to transfer between these settings.</p>
+</section>
+<section id="no-insight-either" class="level2">
+<h2 class="anchored" data-anchor-id="no-insight-either">No “insight” either</h2>
+<p>Aside from conclusions transferring from toy benchmarks to real-world scenarios, another purported use of benchmark is to gain “insight” or “understanding” of BO methods. Many toy benchmark problems are simple or have one “difficult” component (eg 2 modes), and can be used to study how different algorithms handle these scenarios. I agree that toy benchmarks have the <em>potential</em> to yield such insights, but as they are currently used they do not yield any. This is because, in general, only the optimization <em>performance</em> are shown and studied, not the actual actions of the algorithms in input space. This limits insights to things like “this change makes performance worse” or “this change makes performance better”. I think the arguments from the previous sections apply here: there are just too many changes from toy problems to real-world ones to expect such trends to hold. I bet some algorithm behaviours <em>could</em> hold up between problems and models (eg “algorithm A prioritizes uncertain points over certain ones”), but since these aren’t reported there is nothing to comment on.</p>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>In this post I’ve outlined how a lot of things change between toy benchmarks and real-world problems, and argued that it is therefore unlikely for results on toy benchmarks to be transferable to real-world problems. For the same reason, I also disagree that toy benchmarks can be used as a “floor” or “filter” for all worthy algorithms to pass through. I concede there might be scope for toy benchmarks to yield insights into algorithms’ behaviour, although the prevailing practice of just showing the optimization performance (and not the actual underlying behaviour) prevents us from realizing this benefit. To me, this completely defeats the purpose of running the benchmarks in the first place, and hence I do not care about toy benchmarks.</p>
+<p>When I’ve expressed this view in the past, I’ve sometimes gotten the incredulous question “what should we do instead, not run <em>any</em> standardized benchmark?” My answer is yes, I’d rather see no benchmark than a flawed one (or at the very least, it could just be put into the appendix). I’m not sure why so many people find this shocking. To finish, I’d like to seed the reader with the suggestion to seriously consider just not running toy benchmarks at all. It’s hard to deviate from established practice, but when the practice is not useful I think it’s what we should do.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>I liked the paper <a href="https://doi.org/10.48550/arXiv.2405.02200">Position: Why We Must Rethink Empirical Research in Machine Learning</a> for its explanation of this (even though the paper was a bit too verbose). To paraphrase, other sciences usually have an explicit goal of what they are trying to measure, and try to establish “validity” of the metric they are using (ie “does it actually measure what we want to measure”). Not only does ML not really try to establish the validity of its metrics, it usually doesn’t even specify what it is trying to measure.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/austintripp\.ca");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="mailto:austin.james.tripp%5Bat%5Dgmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a></p>
+<p>© Austin Tripp · All opinions are my own (not my employer’s). · Website powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

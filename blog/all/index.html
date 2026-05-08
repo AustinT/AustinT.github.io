@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>All Posts – Austin Tripp’s website</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-listing/list.min.js"></script>
+<script src="../../site_libs/quarto-listing/quarto-listing.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-all-posts .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-date','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-all-posts'] = new List('listing-all-posts', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="alternate" type="application/rss+xml" title="Austin Tripp's website" href="index.xml" data-external="1"></head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Austin Tripp’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(72)</span></div><div class="category" data-category="X2FsbC10aW1lLWJlc3Q=">_all-time-best <span class="quarto-category-count">(5)</span></div><div class="category" data-category="X2FsbC10aW1lLWhpZ2hsaWdodA==">_all-time-highlight <span class="quarto-category-count">(3)</span></div><div class="category" data-category="X3JlY2VudC1oaWdobGlnaHQ=">_recent-highlight <span class="quarto-category-count">(19)</span></div><div class="category" data-category="YW5ub3VuY2VtZW50">announcement <span class="quarto-category-count">(2)</span></div><div class="category" data-category="YmF5ZXNpYW4lMjBvcHRpbWl6YXRpb24=">bayesian optimization <span class="quarto-category-count">(11)</span></div><div class="category" data-category="YmxvZw==">blog <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Ym9vaw==">book <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y2hlbWlzdHJ5">chemistry <span class="quarto-category-count">(4)</span></div><div class="category" data-category="Y2hpbmVzZQ==">chinese <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ZGVjaXNpb24lMjBtYWtpbmc=">decision making <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ZHJ1ZyUyMGRpc2NvdmVyeQ==">drug discovery <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ZW1wbG95bWVudA==">employment <span class="quarto-category-count">(2)</span></div><div class="category" data-category="amFwYW5lc2U=">japanese <span class="quarto-category-count">(2)</span></div><div class="category" data-category="bGFuZ3VhZ2U=">language <span class="quarto-category-count">(5)</span></div><div class="category" data-category="bWFjaGluZSUyMGxlYXJuaW5n">machine learning <span class="quarto-category-count">(34)</span></div><div class="category" data-category="bWVkaWNpbmU=">medicine <span class="quarto-category-count">(1)</span></div><div class="category" data-category="b3Bpbmlvbg==">opinion <span class="quarto-category-count">(13)</span></div><div class="category" data-category="cGVkYW50cnk=">pedantry <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGVlciUyMHJldmlldw==">peer review <span class="quarto-category-count">(5)</span></div><div class="category" data-category="cGVyc29uYWwlMjBkZXZlbG9wbWVudA==">personal development <span class="quarto-category-count">(2)</span></div><div class="category" data-category="UGhE">PhD <span class="quarto-category-count">(2)</span></div><div class="category" data-category="cHJvZ3JhbW1pbmc=">programming <span class="quarto-category-count">(2)</span></div><div class="category" data-category="cmVzZWFyY2glMjBwYXBlcnM=">research papers <span class="quarto-category-count">(7)</span></div><div class="category" data-category="cmV0cm9zeW50aGVzaXM=">retrosynthesis <span class="quarto-category-count">(2)</span></div><div class="category" data-category="c3BlY3VsYXRpb24=">speculation <span class="quarto-category-count">(17)</span></div><div class="category" data-category="c3RhdGlzdGljcw==">statistics <span class="quarto-category-count">(5)</span></div><div class="category" data-category="dHJhdmVs">travel <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dXNpbmclMjBsYXJnZSUyMGxhbmd1YWdlJTIwbW9kZWxz">using large language models <span class="quarto-category-count">(5)</span></div><div class="category" data-category="d2Vic2l0ZQ==">website <span class="quarto-category-count">(5)</span></div><div class="category" data-category="d3JpdGluZw==">writing <span class="quarto-category-count">(2)</span></div></div></div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">All Posts</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="listing-all-posts" class="quarto-listing quarto-listing-container-default">
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="dXNpbmclMjBsYXJnZSUyMGxhbmd1YWdlJTIwbW9kZWxzJTJDd2Vic2l0ZQ==" data-listing-date-sort="1777849200000" data-listing-file-modified-sort="1778236919242" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1013">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-05-04-llms-for-low-stakes-projects/index.html" class="no-external">Getting value out of coding agents for low-urgency, low-impact projects.</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-05-04-llms-for-low-stakes-projects/index.html" class="no-external">
+I’ve been a somewhat late adopter to coding agents: until ~1 month ago I was mainly using cursor and asking it to suggest local edits, or occasionally bigger refactors. In…<em></em>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-05-04-llms-for-low-stakes-projects/index.html" class="no-external">
+<div class="listing-date">
+May 4, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="d3JpdGluZyUyQ3Jlc2VhcmNoJTIwcGFwZXJzJTJDb3BpbmlvbiUyQ19yZWNlbnQtaGlnaGxpZ2h0" data-listing-date-sort="1777849200000" data-listing-file-modified-sort="1778236919242" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="655">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-05-04-skimmable-papers/index.html" class="no-external">Write research papers to be <em>skimmed</em></a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-05-04-skimmable-papers/index.html" class="no-external">
+Don’t write your paper for somebody to <em>read</em> it, write for somebody to <em>skim</em> it.
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-05-04-skimmable-papers/index.html" class="no-external">
+<div class="listing-date">
+May 4, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="cmVzZWFyY2glMjBwYXBlcnM=" data-listing-date-sort="1777622400000" data-listing-file-modified-sort="1778236919242" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="448">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-05-01-first-hallucinated-citation/index.html" class="no-external">First time encountering a hallucinated citation of my paper.</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-05-01-first-hallucinated-citation/index.html" class="no-external">
+I recently ran an LLM deep research query about large matrices of Tanimoto coefficients,<sup>1</sup> and one of its references was the paper “Bandwidth adjustable Tanimoto kernel: a…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-05-01-first-hallucinated-citation/index.html" class="no-external">
+<div class="listing-date">
+May 1, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="Ym9vayUyQ2RydWclMjBkaXNjb3Zlcnk=" data-listing-date-sort="1773230400000" data-listing-file-modified-sort="1778236919241" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="774">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-03-11-drug-hunters/index.html" class="no-external">Book review: The Drug Hunters</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-03-11-drug-hunters/index.html" class="no-external">
+
+
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-03-11-drug-hunters/index.html" class="no-external">
+<div class="listing-date">
+Mar 11, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDYmF5ZXNpYW4lMjBvcHRpbWl6YXRpb24lMkNvcGluaW9uJTJDX3JlY2VudC1oaWdobGlnaHQ=" data-listing-date-sort="1771711200000" data-listing-file-modified-sort="1778236919241" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1725">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-02-21-behaviour-based-BO-evals/index.html" class="no-external">Behaviour-based evaluations in Bayesian optimization</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-02-21-behaviour-based-BO-evals/index.html" class="no-external">
+I think the Bayesian optimization (BO) research community needs to change its evaluation practices. In a previous post I explained how I think users should generally bring…<em></em>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-02-21-behaviour-based-BO-evals/index.html" class="no-external">
+<div class="listing-date">
+Feb 21, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDYmF5ZXNpYW4lMjBvcHRpbWl6YXRpb24lMkNvcGluaW9uJTJDX3JlY2VudC1oaWdobGlnaHQ=" data-listing-date-sort="1771254000000" data-listing-file-modified-sort="1778236919241" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1424">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-02-16-bo-rebrand/index.html" class="no-external">Rebranding BO away from “black-box” and towards “model-based”</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-02-16-bo-rebrand/index.html" class="no-external">
+In a recent blog post (link) I described my “model-centric” view of Bayesian optimization (BO), essentially arguing that the model is the most important component of BO and…<em></em>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-02-16-bo-rebrand/index.html" class="no-external">
+<div class="listing-date">
+Feb 16, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="6" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDYmF5ZXNpYW4lMjBvcHRpbWl6YXRpb24lMkNfcmVjZW50LWhpZ2hsaWdodA==" data-listing-date-sort="1771110000000" data-listing-file-modified-sort="1778236919240" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="787">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-02-14-noise-in-gp-models/index.html" class="no-external">Clarifying noise vs model misspecification in Gaussian Process models (and its importance in BO)</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-02-14-noise-in-gp-models/index.html" class="no-external">
+The most common kind of Gaussian process (GP) model is:
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-02-14-noise-in-gp-models/index.html" class="no-external">
+<div class="listing-date">
+Feb 14, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="7" data-listing-date-sort="1770940800000" data-listing-file-modified-sort="1778236919240" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="53">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-02-13-talent/index.html" class="no-external">Tyler Cowen’s book on talent</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-02-13-talent/index.html" class="no-external">
+Cross-posting my summary of the book “Talent: How to Identify Energizers, Creatives, and Winners Around the World” from my GitHub: link.
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-02-13-talent/index.html" class="no-external">
+<div class="listing-date">
+Feb 13, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="8" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDYmF5ZXNpYW4lMjBvcHRpbWl6YXRpb24lMkNvcGluaW9uJTJDX3JlY2VudC1oaWdobGlnaHQ=" data-listing-date-sort="1770595200000" data-listing-file-modified-sort="1778236919240" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1715">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-02-09-bo-modularity/index.html" class="no-external">We are underselling the modularity of Bayesian optimization</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-02-09-bo-modularity/index.html" class="no-external">
+I think the Bayesian optimization (BO) community is vastly underselling one of BO’s most practically appealing features: <em>modularity</em>. A “modular” algorithm is one composed of…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-02-09-bo-modularity/index.html" class="no-external">
+<div class="listing-date">
+Feb 9, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="9" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDYmF5ZXNpYW4lMjBvcHRpbWl6YXRpb24lMkNvcGluaW9uJTJDX3JlY2VudC1oaWdobGlnaHQ=" data-listing-date-sort="1770588000000" data-listing-file-modified-sort="1778236919239" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2072">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-02-08-bo-benchmarks/index.html" class="no-external">Why I don’t care about toy benchmarks in BO</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-02-08-bo-benchmarks/index.html" class="no-external">
+A lot of Bayesian optimization (BO) papers include experiments on “toy” functions. Examples of such toy functions are Ackley, Rosenbrock, Hartmann, and Branin. I basically…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-02-08-bo-benchmarks/index.html" class="no-external">
+<div class="listing-date">
+Feb 8, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="10" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDYmF5ZXNpYW4lMjBvcHRpbWl6YXRpb24lMkNvcGluaW9uJTJDX3JlY2VudC1oaWdobGlnaHQ=" data-listing-date-sort="1769472000000" data-listing-file-modified-sort="1778236919239" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1782">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-01-27-forgotten-utility-bo/index.html" class="no-external">We have forgotten about utility functions in BO (whoops!)</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-01-27-forgotten-utility-bo/index.html" class="no-external">
+Bayesian decision theory is one of the best justifications for BO- particularly for myopic acquisition functions like expected improvement. However, these acquisition…<span class="math inline"></span><em></em><em></em><span class="math inline"></span>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-01-27-forgotten-utility-bo/index.html" class="no-external">
+<div class="listing-date">
+Jan 27, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="11" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDYmF5ZXNpYW4lMjBvcHRpbWl6YXRpb24lMkNvcGluaW9uJTJDX3JlY2VudC1oaWdobGlnaHQ=" data-listing-date-sort="1769378400000" data-listing-file-modified-sort="1778236919239" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3981">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-01-25-model-centric-bo/index.html" class="no-external">My model-centric view of Bayesian optimization</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-01-25-model-centric-bo/index.html" class="no-external">
+A lot of conversations at NeurIPS this year made me think that I view the role of the surrogate model in Bayesian optimization a bit differently than many other researchers…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-01-25-model-centric-bo/index.html" class="no-external">
+<div class="listing-date">
+Jan 25, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="12" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDc3BlY3VsYXRpb24lMkNfcmVjZW50LWhpZ2hsaWdodA==" data-listing-date-sort="1767574800000" data-listing-file-modified-sort="1778236919238" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1075">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-01-05-predictions26/index.html" class="no-external">Predictions for ML/AI in 2026 (and 2025 predictions re-visited).</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-01-05-predictions26/index.html" class="no-external">
+Last year I made a bunch of predictions about ML, and since 2025 is over it’s time to grade myself and repeat this exercise.
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-01-05-predictions26/index.html" class="no-external">
+<div class="listing-date">
+Jan 5, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="13" data-categories="cGVyc29uYWwlMjBkZXZlbG9wbWVudCUyQ19yZWNlbnQtaGlnaGxpZ2h0" data-listing-date-sort="1767571200000" data-listing-file-modified-sort="1778236919238" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="500">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-01-05-resolutions26/index.html" class="no-external">New Year’s Resolutions for 2026 (and scoring 2025 resolutions)</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-01-05-resolutions26/index.html" class="no-external">
+Happy 2026! Here is my self-assessment on last year’s goals and my goals for this year (2026).
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-01-05-resolutions26/index.html" class="no-external">
+<div class="listing-date">
+Jan 5, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="14" data-categories="d2Vic2l0ZQ==" data-listing-date-sort="1767484800000" data-listing-file-modified-sort="1778236919238" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1396">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2026-01-04-odd-link-requests/index.html" class="no-external">Some odd requests I’ve received to put links on my website.</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2026-01-04-odd-link-requests/index.html" class="no-external">
+In the ~8 years since I started my website I’ve had a bunch of people reach out to me requesting that a link be added to my “links” page (currently called resources). The…<em></em>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2026-01-04-odd-link-requests/index.html" class="no-external">
+<div class="listing-date">
+Jan 4, 2026
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="15" data-categories="ZW1wbG95bWVudCUyQ29waW5pb24lMkNQaEQ=" data-listing-date-sort="1767052800000" data-listing-file-modified-sort="1778236919237" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3059">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-12-30-phd-reference-letter/index.html" class="no-external">Thoughts on writing PhD reference letters.</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-12-30-phd-reference-letter/index.html" class="no-external">
+2025 was the first year where I wrote reference letters for research students who I supervised. In this post I will explain my strategy towards writing letters and how…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-12-30-phd-reference-letter/index.html" class="no-external">
+<div class="listing-date">
+Dec 30, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="16" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDX3JlY2VudC1oaWdobGlnaHQ=" data-listing-date-sort="1766016000000" data-listing-file-modified-sort="1778236919237" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="495">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-12-18-neurips25/index.html" class="no-external">Review of NeurIPS 2025</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-12-18-neurips25/index.html" class="no-external">
+I added the NeurIPS <em>workshops</em> this year (not the main conference).<sup>1</sup> Here are my takeaways. I’ll follow up with predictions for 2026 in a later post (<strong>EDIT</strong>: here is that post).
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-12-18-neurips25/index.html" class="no-external">
+<div class="listing-date">
+Dec 18, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="17" data-categories="b3Bpbmlvbg==" data-listing-date-sort="1763251200000" data-listing-file-modified-sort="1778236919237" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="403">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-11-16-why-podcasts/index.html" class="no-external">Why listen to podcasts?</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-11-16-why-podcasts/index.html" class="no-external">
+Although everybody seems to listen to podcasts these days, some people do not, and I’ve found myself explaining several times why I choose to listen to them (as opposed to…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-11-16-why-podcasts/index.html" class="no-external">
+<div class="listing-date">
+Nov 16, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="18" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDcGVlciUyMHJldmlldw==" data-listing-date-sort="1762214400000" data-listing-file-modified-sort="1778236919236" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="772">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-11-04-finally-a-reviewer-guide/index.html" class="no-external">Finally, an ML conference review guide!</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-11-04-finally-a-reviewer-guide/index.html" class="no-external">
+ICLR 2026 released a detailed review guide as part of its review process (link). Let’s analyze it!
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-11-04-finally-a-reviewer-guide/index.html" class="no-external">
+<div class="listing-date">
+Nov 4, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="19" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDc3RhdGlzdGljcyUyQ29waW5pb24lMkNfcmVjZW50LWhpZ2hsaWdodA==" data-listing-date-sort="1762041600000" data-listing-file-modified-sort="1778236919236" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1485">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-11-02-expected-utility/index.html" class="no-external">Justifying expected utility maximization from first principles (Von Neumann–Morgenstern).</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-11-02-expected-utility/index.html" class="no-external">
+I’ve recently found myself arguing for expected utility maximization as an approach to practical decision making problems at work (mostly regarding molecule selection). This…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-11-02-expected-utility/index.html" class="no-external">
+<div class="listing-date">
+Nov 2, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="20" data-categories="YmF5ZXNpYW4lMjBvcHRpbWl6YXRpb24lMkNtYWNoaW5lJTIwbGVhcm5pbmclMkNvcGluaW9uJTJDcmVzZWFyY2glMjBwYXBlcnM=" data-listing-date-sort="1759618800000" data-listing-file-modified-sort="1778236919235" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="223">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-10-05-latent-space-cowboys/index.html" class="no-external">Latent Space COWBOYS: a VAE-BO method I can actually buy into!</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-10-05-latent-space-cowboys/index.html" class="no-external">
+I am generally pessimistic about BO (Bayesian optimization) methods which use VAE embeddings as part of the model. Mostly this is because distance in a VAE’s latent space…<sup></sup><em></em><sup></sup>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-10-05-latent-space-cowboys/index.html" class="no-external">
+<div class="listing-date">
+Oct 5, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="21" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDc3RhdGlzdGljcyUyQ19yZWNlbnQtaGlnaGxpZ2h0" data-listing-date-sort="1754780400000" data-listing-file-modified-sort="1778236919235" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2044">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-08-10-mutual-information-introduction/index.html" class="no-external">An accessible introduction to mutual information using a d20</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-08-10-mutual-information-introduction/index.html" class="no-external">
+<p>Scientists want to do ‘informative’ experiments. What makes an experiment informative? I believe that information theory has a lot of answers. In this post I will try to explain information theory’s d…</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-08-10-mutual-information-introduction/index.html" class="no-external">
+<div class="listing-date">
+Aug 10, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="22" data-categories="b3Bpbmlvbg==" data-listing-date-sort="1753570800000" data-listing-file-modified-sort="1778236919235" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="475">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-07-27-public-slack-channels/index.html" class="no-external">The case for public Slack channels only (no DMs).</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-07-27-public-slack-channels/index.html" class="no-external">
+Working at a company with a distributed team and hybrid work, a lot of work gets done on Slack. Slack can be very noisy, and I used to wish that fewer people would post in…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-07-27-public-slack-channels/index.html" class="no-external">
+<div class="listing-date">
+Jul 27, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="23" data-listing-date-sort="1753484400000" data-listing-file-modified-sort="1778236919234" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="749">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-07-26-tornados-are-wind/index.html" class="no-external">Tornados are just wind at close range.</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-07-26-tornados-are-wind/index.html" class="no-external">
+I find tornados really interesting: dark funnels of power and destruction. From far away they look like a “wall of cloud”, and over the last 6 months I spent a bunch of time…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-07-26-tornados-are-wind/index.html" class="no-external">
+<div class="listing-date">
+Jul 26, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="24" data-categories="cGVkYW50cnk=" data-listing-date-sort="1752361200000" data-listing-file-modified-sort="1778236919234" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="267">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-07-13-time-zones/index.html" class="no-external">Time zones: why you shouldn’t use the terms EST or GMT</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-07-13-time-zones/index.html" class="no-external">
+This post is about a small mistake in how people discuss time zones which I find mildly annoying: using the term EST (Eastern Standard Time) to refer to the current time in…<em></em>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-07-13-time-zones/index.html" class="no-external">
+<div class="listing-date">
+Jul 13, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="25" data-categories="cHJvZ3JhbW1pbmc=" data-listing-date-sort="1752274800000" data-listing-file-modified-sort="1778236919234" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="190">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-07-12-hardest-bugs/index.html" class="no-external">The hardest bugs are non-bugs</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-07-12-hardest-bugs/index.html" class="no-external">
+Debugging computer programs is hard.
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-07-12-hardest-bugs/index.html" class="no-external">
+<div class="listing-date">
+Jul 12, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="26" data-categories="YmxvZyUyQ3NwZWN1bGF0aW9uJTJDX2FsbC10aW1lLWhpZ2hsaWdodA==" data-listing-date-sort="1750633200000" data-listing-file-modified-sort="1778236919233" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="771">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-06-23-blog-in-llm-age/index.html" class="no-external">Blogging in the LLM age: a second golden age for blogs?</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-06-23-blog-in-llm-age/index.html" class="no-external">
+LLMs (large language models) are currently scraping <em>all</em> text on the public internet, training on it, and spitting out variants of that text in response to queries. I think…<em></em>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-06-23-blog-in-llm-age/index.html" class="no-external">
+<div class="listing-date">
+Jun 23, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="27" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDcGVlciUyMHJldmlldyUyQ19hbGwtdGltZS1iZXN0" data-listing-date-sort="1750546800000" data-listing-file-modified-sort="1778236919233" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1308">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-06-22-ml-conference-review-guide/index.html" class="no-external">My review guide for machine learning conference papers</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-06-22-ml-conference-review-guide/index.html" class="no-external">
+There is no official step by step guide for how to review ML conference papers at venues like NeurIPS/ICML/ICLR.<sup>1</sup> In this post, I try to explain <em>my guide</em>. It is not…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-06-22-ml-conference-review-guide/index.html" class="no-external">
+<div class="listing-date">
+Jun 22, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="28" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDbWVkaWNpbmUlMkNkcnVnJTIwZGlzY292ZXJ5JTJDY2hlbWlzdHJ5JTJDcmVzZWFyY2glMjBwYXBlcnM=" data-listing-date-sort="1747090800000" data-listing-file-modified-sort="1778236919232" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="806">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-05-13-ml-toxicity-pred/index.html" class="no-external">Problems with ML for toxicity prediction.</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-05-13-ml-toxicity-pred/index.html" class="no-external">
+I recently read a review paper by Seal et al about machine learning for toxicity prediction. Given the length of the paper I thought I would share my important takeaways.…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-05-13-ml-toxicity-pred/index.html" class="no-external">
+<div class="listing-date">
+May 13, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="29" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDYmF5ZXNpYW4lMjBvcHRpbWl6YXRpb24lMkNfYWxsLXRpbWUtYmVzdA==" data-listing-date-sort="1747004400000" data-listing-file-modified-sort="1778236919232" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2742">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-05-12-chebyshev-scalarization/index.html" class="no-external">Chebyshev Scalarization Explained</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-05-12-chebyshev-scalarization/index.html" class="no-external">
+I’ve been reading about multi-objective optimization recently.<sup>1</sup> Many papers state limitations of “linear scalarization” approaches, mainly that it might not be able to…<em></em><sup></sup>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-05-12-chebyshev-scalarization/index.html" class="no-external">
+<div class="listing-date">
+May 12, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="30" data-categories="dXNpbmclMjBsYXJnZSUyMGxhbmd1YWdlJTIwbW9kZWxzJTJDbGFuZ3VhZ2UlMkNjaGluZXNl" data-listing-date-sort="1746658800000" data-listing-file-modified-sort="1778236919231" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="222">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-05-08-claude-chinese-grammar/index.html" class="no-external">Reminder that Claude is really good for Chinese grammar</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-05-08-claude-chinese-grammar/index.html" class="no-external">
+This shouldn’t surprise anybody who uses LLMs a lot, but LLMs are <em>really</em> good at common languages and translation. When practising Chinese today, a sentence which confused…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-05-08-claude-chinese-grammar/index.html" class="no-external">
+<div class="listing-date">
+May 8, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="31" data-categories="dHJhdmVs" data-listing-date-sort="1745794800000" data-listing-file-modified-sort="1778236919231" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="176">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-04-28-beijing-travel/index.html" class="no-external">Some Beijing travel tips</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-04-28-beijing-travel/index.html" class="no-external">
+Earlier this year I went to Beijing. Here are some miscellaneous travel tips. What I am writing here is probably not unique or original, treat this just as my personal…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-04-28-beijing-travel/index.html" class="no-external">
+<div class="listing-date">
+Apr 28, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="32" data-categories="bWFjaGluZSUyMGxlYXJuaW5n" data-listing-date-sort="1745449200000" data-listing-file-modified-sort="1778236919231" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="416">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-04-24-v-out-of-vae/index.html" class="no-external">Taking the V out of VAEs: long live KL-regularized autoencoders!</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-04-24-v-out-of-vae/index.html" class="no-external">
+I recently read this post about generative modelling in latent space by Sander Dieleman and agreed strongly with the following quote (copied verbatim except for typo…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-04-24-v-out-of-vae/index.html" class="no-external">
+<div class="listing-date">
+Apr 24, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="33" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDdXNpbmclMjBsYXJnZSUyMGxhbmd1YWdlJTIwbW9kZWxz" data-listing-date-sort="1744412400000" data-listing-file-modified-sort="1778236919230" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="649">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-04-12-ai-coding-python-package/index.html" class="no-external">Coding python packages with AI</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-04-12-ai-coding-python-package/index.html" class="no-external">
+I tried using some new LLM tools to code 2 entire python packages (instead of editing a handful of lines at a time, which is what I did previously). It went well! These…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-04-12-ai-coding-python-package/index.html" class="no-external">
+<div class="listing-date">
+Apr 12, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="34" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDc3BlY3VsYXRpb24=" data-listing-date-sort="1743548400000" data-listing-file-modified-sort="1778236919230" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="866">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-04-02-active-learning-random/index.html" class="no-external">Why your active learning algorithm may not do better than random</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-04-02-active-learning-random/index.html" class="no-external">
+I am a big fan of active learning, but I am also acutely aware of its potential failure modes. A common failure mode is <em>random-like</em> performance: achieving no better “success”<sup>1</sup>…<em></em><sup></sup><em></em>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-04-02-active-learning-random/index.html" class="no-external">
+<div class="listing-date">
+Apr 2, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="35" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDY2hlbWlzdHJ5JTJDc3BlY3VsYXRpb24=" data-listing-date-sort="1743462000000" data-listing-file-modified-sort="1778236919230" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="363">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-04-01-cheminformatics-model-qa/index.html" class="no-external">Generic recommendations for cheminformatics models</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-04-01-cheminformatics-model-qa/index.html" class="no-external">
+I was recently asked via email for my thoughts on which models to use <em>in general</em> for molecular property prediction. I’m sharing my responses publicly in case they are useful.
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-04-01-cheminformatics-model-qa/index.html" class="no-external">
+<div class="listing-date">
+Apr 1, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="36" data-categories="dXNpbmclMjBsYXJnZSUyMGxhbmd1YWdlJTIwbW9kZWxzJTJDbGFuZ3VhZ2UlMkNjaGluZXNl" data-listing-date-sort="1743292800000" data-listing-file-modified-sort="1778236919229" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="409">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-03-30-llms-improve-chinese/index.html" class="no-external">Using LLMs to improve my Chinese</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-03-30-llms-improve-chinese/index.html" class="no-external">
+I’ve been learning Chinese for almost 10 years now, but still make awkward-sounding sentences when I speak. A few months ago I thought “why not use LLMs to help me speak…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-03-30-llms-improve-chinese/index.html" class="no-external">
+<div class="listing-date">
+Mar 30, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="37" data-categories="cmV0cm9zeW50aGVzaXMlMkNjaGVtaXN0cnklMkNtYWNoaW5lJTIwbGVhcm5pbmclMkNzcGVjdWxhdGlvbg==" data-listing-date-sort="1743033600000" data-listing-file-modified-sort="1778236919229" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="735">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-03-27-reaction-correctness/index.html" class="no-external">Conceptual confusion about desirable outputs of reaction prediction models.</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-03-27-reaction-correctness/index.html" class="no-external">
+In the literature about machine learning for retrosynthesis, one line of work tries to predict chemical reactions, either in the <em>forward direction</em> (ie what products will A +…<em></em>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-03-27-reaction-correctness/index.html" class="no-external">
+<div class="listing-date">
+Mar 27, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="38" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDcGVlciUyMHJldmlldyUyQ29waW5pb24=" data-listing-date-sort="1741046400000" data-listing-file-modified-sort="1778236919228" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="142">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-03-04-punish-bad-reviewers/index.html" class="no-external">Punishing poor reviewers at CVPR</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-03-04-punish-bad-reviewers/index.html" class="no-external">
+This year CVPR pledged to make all authors participate in peer review, and reject papers from authors who wrote low-quality reviews.<sup>1</sup> Last week they confirmed on Twitter that…<em></em>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-03-04-punish-bad-reviewers/index.html" class="no-external">
+<div class="listing-date">
+Mar 4, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="39" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDcGVlciUyMHJldmlldyUyQ3NwZWN1bGF0aW9u" data-listing-date-sort="1740441600000" data-listing-file-modified-sort="1778236919228" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="385">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-02-25-no-reviewer-instructions/index.html" class="no-external">Why don’t ML conferences provide reviewer instructions?</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-02-25-no-reviewer-instructions/index.html" class="no-external">
+I remember when I first received an invitation to review papers for an ML conference in late 2020. What surprised me most was <em>not</em> that I was being invited (even though that…<em></em><sup></sup>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-02-25-no-reviewer-instructions/index.html" class="no-external">
+<div class="listing-date">
+Feb 25, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="40" data-categories="YW5ub3VuY2VtZW50JTJDYmxvZyUyQ3VzaW5nJTIwbGFyZ2UlMjBsYW5ndWFnZSUyMG1vZGVscw==" data-listing-date-sort="1740355200000" data-listing-file-modified-sort="1778236919228" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="122">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-02-24-llm-alpha/index.html" class="no-external">Alpha over LLMs</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-02-24-llm-alpha/index.html" class="no-external">
+On a recent podcast, Patrick McKenzie mentioned the idea of “alpha over LLMs”: does a publisher produce text with any meaningful advantage over asking an LLM? I think this…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-02-24-llm-alpha/index.html" class="no-external">
+<div class="listing-date">
+Feb 24, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="41" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDc3BlY3VsYXRpb24lMkNfcmVjZW50LWhpZ2hsaWdodA==" data-listing-date-sort="1739491200000" data-listing-file-modified-sort="1778236919227" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="989">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-02-14-is-offline-mbo-realistic/index.html" class="no-external">Is offline model-based optimization a realistic problem? (I’m not convinced)</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-02-14-is-offline-mbo-realistic/index.html" class="no-external">
+This is a “quickpost”: a post which I have tried to write quickly, without very much editing/polishing. For more details on quickposts, see this blog post.
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-02-14-is-offline-mbo-realistic/index.html" class="no-external">
+<div class="listing-date">
+Feb 14, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="42" data-categories="YW5ub3VuY2VtZW50JTJDYmxvZw==" data-listing-date-sort="1739232000000" data-listing-file-modified-sort="1778236919226" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="220">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-02-11-lowering-quality/index.html" class="no-external">Experiment: more posts, lower quality</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-02-11-lowering-quality/index.html" class="no-external">
+Since starting my new position at Valence, my efforts to write more on my blog have clearly been successful.<sup>1</sup> However, my internal list of “things I would like to write a…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-02-11-lowering-quality/index.html" class="no-external">
+<div class="listing-date">
+Feb 11, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="43" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDcGVlciUyMHJldmlldw==" data-listing-date-sort="1739232000000" data-listing-file-modified-sort="1778236919227" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="801">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-02-11-peer-review-stat-tests/index.html" class="no-external">Stock responses about statistical significance for reviewing machine learning papers</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-02-11-peer-review-stat-tests/index.html" class="no-external">
+So many ML papers contain tables like
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-02-11-peer-review-stat-tests/index.html" class="no-external">
+<div class="listing-date">
+Feb 11, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="44" data-categories="ZW1wbG95bWVudA==" data-listing-date-sort="1739059200000" data-listing-file-modified-sort="1778236919226" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="975">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-02-09-hiring-is-hard/index.html" class="no-external">Hiring is hard: why good applicants without connections can get overlooked</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-02-09-hiring-is-hard/index.html" class="no-external">
+Knowing people is a great way to get hired. Nepotism is one obvious explanation (aka people hire you because they like you, or to gain favors from people who like you). I…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-02-09-hiring-is-hard/index.html" class="no-external">
+<div class="listing-date">
+Feb 9, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="45" data-categories="cmV0cm9zeW50aGVzaXMlMkNjaGVtaXN0cnklMkNtYWNoaW5lJTIwbGVhcm5pbmclMkNzcGVjdWxhdGlvbg==" data-listing-date-sort="1737849600000" data-listing-file-modified-sort="1778236919225" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="892">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-01-26-reaction-model-scores/index.html" class="no-external">Reaction model scores are CRITICAL to multi-step retrosynthesis</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-01-26-reaction-model-scores/index.html" class="no-external">
+Machine-learning for retrosynthesis is a popular research topic. Popular sub-topics include:
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-01-26-reaction-model-scores/index.html" class="no-external">
+<div class="listing-date">
+Jan 26, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="46" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDX3JlY2VudC1oaWdobGlnaHQ=" data-listing-date-sort="1736640000000" data-listing-file-modified-sort="1778236919225" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1397">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-01-12-gauche-kernels-pd/index.html" class="no-external">Double checking that Gauche’s fingerprint kernels are positive definite</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-01-12-gauche-kernels-pd/index.html" class="no-external">
+GAUCHE is a library for Gaussian processes in chemistry. I contributed a small amount to GAUCHE several years ago but am not an active developer. I recently learned that…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-01-12-gauche-kernels-pd/index.html" class="no-external">
+<div class="listing-date">
+Jan 12, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="47" data-categories="c3BlY3VsYXRpb24=" data-listing-date-sort="1736380800000" data-listing-file-modified-sort="1778236919225" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="284">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-01-09-optimistic-ml-assumptions/index.html" class="no-external">What ML researchers and users get wrong: optimistic assumptions</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-01-09-optimistic-ml-assumptions/index.html" class="no-external">
+ML is often done poorly, both by “ML experts” (by which I mean people who understand the algorithms but not the data) and “ML users” (by which I mean people who understand…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-01-09-optimistic-ml-assumptions/index.html" class="no-external">
+<div class="listing-date">
+Jan 9, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="48" data-categories="cGVyc29uYWwlMjBkZXZlbG9wbWVudA==" data-listing-date-sort="1736035200000" data-listing-file-modified-sort="1778236919224" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="90">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-01-05-resolutions25/index.html" class="no-external">New Year’s Resolutions for 2025</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-01-05-resolutions25/index.html" class="no-external">
+Happy 2025! Here are a few goals I am setting for myself this year!
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-01-05-resolutions25/index.html" class="no-external">
+<div class="listing-date">
+Jan 5, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="49" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDc3BlY3VsYXRpb24=" data-listing-date-sort="1735689600000" data-listing-file-modified-sort="1778236919224" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1661">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2025-01-01-neurips24-and-trends25/index.html" class="no-external">Review of NeurIPS 2024 and predictions for ML in 2025</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2025-01-01-neurips24-and-trends25/index.html" class="no-external">
+I was fortunate to attend NeurIPS 2024, arguably the largest and most influential machine learning conference in the world (thanks Valence for sponsoring my trip 🙏). In…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2025-01-01-neurips24-and-trends25/index.html" class="no-external">
+<div class="listing-date">
+Jan 1, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="50" data-categories="c3BlY3VsYXRpb24lMkNsYW5ndWFnZSUyQ3dyaXRpbmclMkNfcmVjZW50LWhpZ2hsaWdodA==" data-listing-date-sort="1735516800000" data-listing-file-modified-sort="1778236919224" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2501">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2024-12-30-international-english/index.html" class="no-external">Rules of scientific English writing for an international audience.</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2024-12-30-international-english/index.html" class="no-external">
+Although English is the common language for international scientific communication, most scientists are not native English speakers. To account for this, I think that all…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2024-12-30-international-english/index.html" class="no-external">
+<div class="listing-date">
+Dec 30, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="51" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDYmF5ZXNpYW4lMjBvcHRpbWl6YXRpb24lMkNzcGVjdWxhdGlvbiUyQ19yZWNlbnQtaGlnaGxpZ2h0" data-listing-date-sort="1733788800000" data-listing-file-modified-sort="1778236919223" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="604">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2024-12-10-when-should-bo-work/index.html" class="no-external">When should you expect Bayesian optimization to work well?</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2024-12-10-when-should-bo-work/index.html" class="no-external">
+As much as I believe in the potential of Bayesian optimization (BO) to be useful for scientific discovery, after 4+ years I have seen many instances where BO <em>does not</em> work.…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2024-12-10-when-should-bo-work/index.html" class="no-external">
+<div class="listing-date">
+Dec 10, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="52" data-categories="c3BlY3VsYXRpb24=" data-listing-date-sort="1733011200000" data-listing-file-modified-sort="1778236919223" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="286">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2024-12-01-eduroam/index.html" class="no-external">What can eduroam teach us about building research infrastructure</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2024-12-01-eduroam/index.html" class="no-external">
+Eduroam is a fantastic piece of academic infrastructure: students/researchers from thousands of universities around the world can <em>automatically</em> connect to WiFi and any…<em></em>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2024-12-01-eduroam/index.html" class="no-external">
+<div class="listing-date">
+Dec 1, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="53" data-categories="c3BlY3VsYXRpb24=" data-listing-date-sort="1731801600000" data-listing-file-modified-sort="1778236919223" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="603">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2024-11-17-conference-bayes/index.html" class="no-external">Scientific conferences as approximate Bayesian inference</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2024-11-17-conference-bayes/index.html" class="no-external">
+Scientists should ideally form their beliefs based on evidence and update their beliefs as new evidence arrives. Unfortunately, humans are far from perfect Bayesian thinkers…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2024-11-17-conference-bayes/index.html" class="no-external">
+<div class="listing-date">
+Nov 17, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="54" data-categories="cmVzZWFyY2glMjBwYXBlcnMlMkNfYWxsLXRpbWUtaGlnaGxpZ2h0" data-listing-date-sort="1730678400000" data-listing-file-modified-sort="1778236919222" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="909">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2024-11-04-nsga-ii/index.html" class="no-external">Overview of the NSGA-II algorithm for multi-objective optimization</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2024-11-04-nsga-ii/index.html" class="no-external">
+Nondominated sorting genetic algorithm version 2, more commonly called NSGA-II, is a well-established genetic algorithm (aka evolutionary algorithm) for multi-objective…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2024-11-04-nsga-ii/index.html" class="no-external">
+<div class="listing-date">
+Nov 4, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="55" data-categories="UGhEJTJDc3BlY3VsYXRpb24lMkNfcmVjZW50LWhpZ2hsaWdodA==" data-listing-date-sort="1729983600000" data-listing-file-modified-sort="1778236919222" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1532">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2024-10-27-ai4sci-phi/index.html" class="no-external">Advice for applying for a PhD in AI for science in 2024</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2024-10-27-ai4sci-phi/index.html" class="no-external">
+With the immense growth of AI for science (AI4sci for brevity), I imagine many younger students are considering applying for PhDs in AI for science in this application…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2024-10-27-ai4sci-phi/index.html" class="no-external">
+<div class="listing-date">
+Oct 27, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="56" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDYmF5ZXNpYW4lMjBvcHRpbWl6YXRpb24lMkNyZXNlYXJjaCUyMHBhcGVycyUyQ19yZWNlbnQtaGlnaGxpZ2h0" data-listing-date-sort="1728774000000" data-listing-file-modified-sort="1778236919221" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1510">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2024-10-13-vizier-bayesopt/index.html" class="no-external">Thoughts on Google Vizier</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2024-10-13-vizier-bayesopt/index.html" class="no-external">
+Vizier, described in a recent paper from Google, is a black-box optimization algorithm deployed for “numerous research and production systems at Google”. Allegedly, this one…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2024-10-13-vizier-bayesopt/index.html" class="no-external">
+<div class="listing-date">
+Oct 13, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="57" data-categories="ZGVjaXNpb24lMjBtYWtpbmclMkNzcGVjdWxhdGlvbg==" data-listing-date-sort="1728428400000" data-listing-file-modified-sort="1778236919221" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="261">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2024-10-09-data-driven-bad-data/index.html" class="no-external">Being ‘data-driven’ does not mean that you should use bad data.</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2024-10-09-data-driven-bad-data/index.html" class="no-external">
+Relying on data rather than intuitions to make decisions is usually a good thing, but is not always better. When one needs to make a decision about things for which there is…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2024-10-09-data-driven-bad-data/index.html" class="no-external">
+<div class="listing-date">
+Oct 9, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="58" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDc3RhdGlzdGljcyUyQ19hbGwtdGltZS1iZXN0" data-listing-date-sort="1728255600000" data-listing-file-modified-sort="1778236919221" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="900">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2024-10-07-problems-with-topk-diversity/index.html" class="no-external">Problems with the top-k diversity metric for diverse optimization</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2024-10-07-problems-with-topk-diversity/index.html" class="no-external">
+<p>NOTE this blog post can be run as a jupyter notebook. I re-ordered the cells to make it easier to read; to re-produce all the plots see instructions at the end of the post. Background ’Diverse optimiz…</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2024-10-07-problems-with-topk-diversity/index.html" class="no-external">
+<div class="listing-date">
+Oct 7, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="59" data-categories="d2Vic2l0ZQ==" data-listing-date-sort="1725836400000" data-listing-file-modified-sort="1778236919220" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="453">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2024-09-09-static-site-generators/index.html" class="no-external">How I chose a static site generator</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2024-09-09-static-site-generators/index.html" class="no-external">
+Recently, I wanted to update my website to look a bit more polished (and support additional features such as automatically generating pages for my publications). In the end…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2024-09-09-static-site-generators/index.html" class="no-external">
+<div class="listing-date">
+Sep 9, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="60" data-categories="d2Vic2l0ZQ==" data-listing-date-sort="1724626800000" data-listing-file-modified-sort="1778236919220" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1598">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2024-08-26-reasons-website/index.html" class="no-external">Reasons to have a website</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2024-08-26-reasons-website/index.html" class="no-external">
+I created this website because I thought (and continue to think) that having a website can benefit one’s career. Essentially, a professional website serves as an accessible…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2024-08-26-reasons-website/index.html" class="no-external">
+<div class="listing-date">
+Aug 26, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="61" data-categories="c3RhdGlzdGljcyUyQ19hbGwtdGltZS1iZXN0" data-listing-date-sort="1581292800000" data-listing-file-modified-sort="1778236919219" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1711">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2020/02/10/monty-hall/index.html" class="no-external">The Monty Hall Problem is Really About Policy Assumptions</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2020/02/10/monty-hall/index.html" class="no-external">
+<strong>TL;DR</strong>: the Monty Hall problem doesn’t have a well-defined solution.
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2020/02/10/monty-hall/index.html" class="no-external">
+<div class="listing-date">
+Feb 10, 2020
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="62" data-categories="cHJvZ3JhbW1pbmc=" data-listing-date-sort="1563404400000" data-listing-file-modified-sort="1778236919219" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1892">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2019/07/18/bash-quotes/index.html" class="no-external">A Quick Tutorial on Bash Quotes</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2019/07/18/bash-quotes/index.html" class="no-external">
+Today I learned <strong>way</strong> more about quotations in bash than I ever thought I needed to know. I thought I would highlight the interesting use case that I discovered, which…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2019/07/18/bash-quotes/index.html" class="no-external">
+<div class="listing-date">
+Jul 18, 2019
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="63" data-listing-date-sort="1538953200000" data-listing-file-modified-sort="1778236919218" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="838">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2018/10/08/communal-fridge/index.html" class="no-external">How to Keep a Communal Fridge Clean</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2018/10/08/communal-fridge/index.html" class="no-external">
+Last month, my class decided that we should get a fridge for the class study room. This brought up an important question: how would the fridge be cleaned? I thought this was…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2018/10/08/communal-fridge/index.html" class="no-external">
+<div class="listing-date">
+Oct 8, 2018
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="64" data-categories="bGFuZ3VhZ2UlMkNqYXBhbmVzZQ==" data-listing-date-sort="1537311600000" data-listing-file-modified-sort="1778236919218" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1461">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2018/09/19/japanese-learning-reflections/index.html" class="no-external">Language Travel Logs: Japanese 2018</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2018/09/19/japanese-learning-reflections/index.html" class="no-external">
+One dream I have always had since I started learning languages is to be able to go to another country and use that language to communicate. This August I had the first…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2018/09/19/japanese-learning-reflections/index.html" class="no-external">
+<div class="listing-date">
+Sep 19, 2018
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="65" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDX2FsbC10aW1lLWJlc3Q=" data-listing-date-sort="1536706800000" data-listing-file-modified-sort="1778236919218" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="599">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2018/09/12/sparse-matrices-tips1/index.html" class="no-external">Sparse Matrices: 5 Tips and Tricks</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2018/09/12/sparse-matrices-tips1/index.html" class="no-external">
+Over the course of my internship at the online shopping company Wish, I have dealt a lot with a lot of data in the form of sparse matrices, specificaly in the form of item…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2018/09/12/sparse-matrices-tips1/index.html" class="no-external">
+<div class="listing-date">
+Sep 12, 2018
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="66" data-categories="c3RhdGlzdGljcyUyQ2RlY2lzaW9uJTIwbWFraW5nJTJDX2FsbC10aW1lLWhpZ2hsaWdodA==" data-listing-date-sort="1534806000000" data-listing-file-modified-sort="1778236919217" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="977">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2018/08/21/bayes-no-certain-priors/index.html" class="no-external">Why you should never be certain of your beliefs: a Bayesian perspective</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2018/08/21/bayes-no-certain-priors/index.html" class="no-external">
+People are notoriously bad at estimating their percent confidence in their beliefs, as explained further in this Wikipedia article. Something I thought of recently is what…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2018/08/21/bayes-no-certain-priors/index.html" class="no-external">
+<div class="listing-date">
+Aug 21, 2018
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="67" data-categories="bWFjaGluZSUyMGxlYXJuaW5n" data-listing-date-sort="1531782000000" data-listing-file-modified-sort="1778236919217" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1715">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2018/07/17/gradient-boosting/index.html" class="no-external">An Overview of Gradient Boosting and Popular Libraries for it.</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2018/07/17/gradient-boosting/index.html" class="no-external">
+Everybody doing machine learning wants the best models possible. The aim of this blog article is the following:
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2018/07/17/gradient-boosting/index.html" class="no-external">
+<div class="listing-date">
+Jul 17, 2018
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="68" data-categories="bWFjaGluZSUyMGxlYXJuaW5n" data-listing-date-sort="1530486000000" data-listing-file-modified-sort="1778236919216" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="268">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2018/07/02/adam-to-sgd/index.html" class="no-external">Turning Adam Optimization into SGD</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2018/07/02/adam-to-sgd/index.html" class="no-external">
+This strange question came up when working on a machine learning project to generate embeddings. Working with the version of Pytorch available on our DGX (similar to version…<em></em><em></em>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2018/07/02/adam-to-sgd/index.html" class="no-external">
+<div class="listing-date">
+Jul 2, 2018
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="69" data-categories="cmVzZWFyY2glMjBwYXBlcnM=" data-listing-date-sort="1530399600000" data-listing-file-modified-sort="1778236919216" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="797">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2018/07/01/organization_structure_paper/index.html" class="no-external">Paper Review: A Computational Approach to Organizational Structure</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2018/07/01/organization_structure_paper/index.html" class="no-external">
+Ever since I’ve started doing internships, the concept of efficient organizations has piqued my interest. In every workplace I have been in, time is always wasted by…
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2018/07/01/organization_structure_paper/index.html" class="no-external">
+<div class="listing-date">
+Jul 1, 2018
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="70" data-categories="bGFuZ3VhZ2UlMkNqYXBhbmVzZSUyQ3NwZWN1bGF0aW9u" data-listing-date-sort="1529881200000" data-listing-file-modified-sort="1778236919215" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="636">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2018/06/25/onyomi/index.html" class="no-external">How to guess a Kanji’s on-yomi in 4 easy steps</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2018/06/25/onyomi/index.html" class="no-external">
+Lately I have been putting a lot of effort into studying Japanese, to prepare for my upcoming trip to Japan at the end of summer 2018. While learning the readings for…<em></em>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2018/06/25/onyomi/index.html" class="no-external">
+<div class="listing-date">
+Jun 25, 2018
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="71" data-categories="d2Vic2l0ZQ==" data-listing-date-sort="1521849600000" data-listing-file-modified-sort="1778236919215" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="25">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../blog/2018/03/24/website-launch/index.html" class="no-external">Launched my website</a>
+</h3>
+<div class="delink listing-description"><a href="../../blog/2018/03/24/website-launch/index.html" class="no-external">
+Didn’t know that creating a decent looking website could be this easy. Thanks Jekyll. Also thanks to this website for walking me through the process.
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../blog/2018/03/24/website-launch/index.html" class="no-external">
+<div class="listing-date">
+Mar 24, 2018
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
+
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/austintripp\.ca");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="mailto:austin.james.tripp%5Bat%5Dgmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a></p>
+<p>© Austin Tripp · All opinions are my own (not my employer’s). · Website powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

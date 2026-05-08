@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-05-12">
+
+<title>Chebyshev Scalarization Explained – Austin Tripp’s website</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Austin Tripp’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#background-to-multi-objective-optimization" id="toc-background-to-multi-objective-optimization" class="nav-link active" data-scroll-target="#background-to-multi-objective-optimization">Background to multi-objective optimization</a>
+  <ul class="collapse">
+  <li><a href="#multi-objective-optimization-moo" id="toc-multi-objective-optimization-moo" class="nav-link" data-scroll-target="#multi-objective-optimization-moo">Multi-objective optimization (MOO)</a></li>
+  <li><a href="#pareto-optimality-and-non-domination" id="toc-pareto-optimality-and-non-domination" class="nav-link" data-scroll-target="#pareto-optimality-and-non-domination">Pareto optimality and non-domination</a></li>
+  <li><a href="#scalarization-turning-multi-objective-optimization-into-single-objective-optimization" id="toc-scalarization-turning-multi-objective-optimization-into-single-objective-optimization" class="nav-link" data-scroll-target="#scalarization-turning-multi-objective-optimization-into-single-objective-optimization">Scalarization: turning multi-objective optimization into single-objective optimization</a></li>
+  </ul></li>
+  <li><a href="#chebyshev-scalarization" id="toc-chebyshev-scalarization" class="nav-link" data-scroll-target="#chebyshev-scalarization">Chebyshev scalarization</a>
+  <ul class="collapse">
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
+  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
+  <li><a href="#pareto-coverage-property" id="toc-pareto-coverage-property" class="nav-link" data-scroll-target="#pareto-coverage-property">Pareto coverage property</a></li>
+  <li><a href="#note-about-the-weights" id="toc-note-about-the-weights" class="nav-link" data-scroll-target="#note-about-the-weights">Note about the weights</a></li>
+  </ul></li>
+  <li><a href="#comparison-with-linear-scalarization" id="toc-comparison-with-linear-scalarization" class="nav-link" data-scroll-target="#comparison-with-linear-scalarization">Comparison with linear scalarization</a></li>
+  <li><a href="#augmented-chebyshev" id="toc-augmented-chebyshev" class="nav-link" data-scroll-target="#augmented-chebyshev">Augmented Chebyshev</a></li>
+  <li><a href="#geometric-interpretation" id="toc-geometric-interpretation" class="nav-link" data-scroll-target="#geometric-interpretation">Geometric interpretation</a>
+  <ul class="collapse">
+  <li><a href="#my-analysis-of-visualization" id="toc-my-analysis-of-visualization" class="nav-link" data-scroll-target="#my-analysis-of-visualization">My analysis of visualization</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#theorems-and-proofs" id="toc-theorems-and-proofs" class="nav-link" data-scroll-target="#theorems-and-proofs">Theorems and proofs</a>
+  <ul class="collapse">
+  <li><a href="#a-scalarization-and-monotonicity" id="toc-a-scalarization-and-monotonicity" class="nav-link" data-scroll-target="#a-scalarization-and-monotonicity">A: Scalarization and monotonicity</a></li>
+  <li><a href="#b-chebyshev-coverage-of-pareto-front" id="toc-b-chebyshev-coverage-of-pareto-front" class="nav-link" data-scroll-target="#b-chebyshev-coverage-of-pareto-front">B: Chebyshev coverage of Pareto front</a></li>
+  </ul></li>
+  <li><a href="#some-references" id="toc-some-references" class="nav-link" data-scroll-target="#some-references">Some references</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Chebyshev Scalarization Explained</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">machine learning</div>
+    <div class="quarto-category">bayesian optimization</div>
+    <div class="quarto-category">_all-time-best</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 12, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>I’ve been reading about multi-objective optimization recently.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Many papers state limitations of “linear scalarization” approaches, mainly that it might not be able to represent all Pareto-optimal solutions (if this sentence does not make sense to you, see <a href="#background-to-multi-objective-optimization">background</a>). Chebyshev scalarization is sometimes mentioned as an alternative which <em>can</em> represent all solutions. However, these papers mention it in passing without a proper explanation, and I did not find a good explanation of it online.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>After doing a bit of my own research,<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> I found that Chebyshev scalarization is actually not too complicated, so I thought <em>I</em> would explain it online. In this post, I:</p>
+<ul>
+<li>Give definitions for Chebyshev scalarization (for both maximization and minimization)</li>
+<li>Give a simple proof that it can represent all Pareto-optimal solutions</li>
+<li>Explain its relationship to linear scalarization via <span class="math inline">\ell_p</span> norms.</li>
+<li>Give a geometric interpretation via an interactive visualization</li>
+</ul>
+<div class="alert alert-info">
+<h4 class="anchored">
+Notation and Acronyms
+</h4>
+<ul>
+<li>
+<strong>MOO</strong>: multi-objective optimization
+</li>
+<li>
+Bold denotes vectors (eg <span class="math inline">\mathbf{f}</span>), <span class="math inline">f_i</span> is element of a vector
+</li>
+</ul>
+</div>
+<section id="background-to-multi-objective-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="background-to-multi-objective-optimization">Background to multi-objective optimization</h2>
+<p><em>Feel free to skip to <a href="#chebyshev-scalarization">the next section</a> if you are familiar with this field, my notation and definitions are fairly standard</em>.</p>
+<section id="multi-objective-optimization-moo" class="level3">
+<h3 class="anchored" data-anchor-id="multi-objective-optimization-moo">Multi-objective optimization (MOO)</h3>
+<p>The goal of <em>multi</em>-objective optimization is to optimize a k-dimensional vector-valued function <span class="math inline">\mathbf{f}: \mathcal{X} \mapsto \mathbb{R}^k</span> (<span class="math inline">\mathcal{X}</span> is an arbitrary input space). <em>Optimize</em> can mean maximize or minimize. In this post I will generally assume <em>maximization</em>. This means we want to find a <em>single</em> point <span class="math inline">x\in\mathcal{X}</span> where <span class="math inline">\mathbf{f}(x)</span> is as large as possible in each dimension.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+</section>
+<section id="pareto-optimality-and-non-domination" class="level3">
+<h3 class="anchored" data-anchor-id="pareto-optimality-and-non-domination">Pareto optimality and non-domination</h3>
+<p>Although MOO is a problem in <span class="math inline">\mathcal{X}</span> space, the remainder of this post will only discriminate between points <span class="math inline">x</span> via their values of <span class="math inline">\mathbf{f}(x)</span>. Therefore we will drop the dependence on <span class="math inline">x</span> and simply write <span class="math inline">\mathbf{f}</span> for the remainder of the post (and always assume there is a point <span class="math inline">x</span> attached to <span class="math inline">\mathbf{f}</span>). This should not cause any ambiguity.</p>
+<p>If a point <span class="math inline">\mathbf{f}</span> is at least as large as a point <span class="math inline">\mathbf{f}'</span> in <em>every</em> dimension and exceeds <span class="math inline">\mathbf{f}'</span> in <em>at least one</em> dimension, we say that <span class="math inline">\mathbf{f}</span> <em>dominates</em> <span class="math inline">\mathbf{f}'</span> and write<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> <span class="math inline">\mathbf{f}\succ \mathbf{f}'</span>.</p>
+<p>Unlike in single-objective optimization, there may not be a single dominant point <span class="math inline">\mathbf{f}^\ast</span>. For example, in the set <span class="math inline">\\{[0, 1], [1, 0]\\}</span>, neither point dominates the other: they are both better in one dimension and worse in the other. Therefore, MOO generally seeks points <span class="math inline">\mathbf{f}^*</span> which are <em>not dominated</em> by any other vector <span class="math inline">\mathbf{f}</span>. Such vectors are called <em>Pareto optimal</em>, and the collection of all such vectors is called the <em>Pareto set</em>.</p>
+<p>For a more precise definition, see this footnote.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+</section>
+<section id="scalarization-turning-multi-objective-optimization-into-single-objective-optimization" class="level3">
+<h3 class="anchored" data-anchor-id="scalarization-turning-multi-objective-optimization-into-single-objective-optimization">Scalarization: turning multi-objective optimization into single-objective optimization</h3>
+<p>Optimization algorithms which are <em>truly</em> multi-objective will look very different from single-objective optimization algorithms because they need to find a Pareto set and explore different trade-offs between the k objectives. This is a shame, since single-objective optimization is well-studied and many useful algorithms have been developed. <em>Scalarization</em> is essentially an attempt to turn a MOO problem into a <em>set</em> of single-objective problems via a set of <em>scalarization functions</em> <span class="math display">\\{s_\theta: \mathbb{R}^k\mapsto \mathbb{R}\\}_{\theta\in\Theta}\ .</span></p>
+<p>Each scalarization function assigns a single (scalar) score to the vector-valued output of <span class="math inline">\mathbf{f}</span>. The most common type of scalarization is <em>linear scalarization</em>, aka “weighted sum”: <span class="math display">s_{\mathbf{w}}(\mathbf{f}) = \sum_i w_i f_i</span> where <span class="math inline">\mathbf{w}=[w_1,\ldots,w_k]</span> is a vector of positive weights.</p>
+<p>One would hope to find Pareto optimal points by optimizing <span class="math inline">s_\theta(\mathbf{f}(x))</span> for various values of <span class="math inline">\theta</span>. Clearly this will not actually produce Pareto optimal points for <em>any</em> functions <span class="math inline">s_\theta</span>. However:</p>
+<ul>
+<li>If the scalarization functions are are <em>strictly monotonically increasing</em> in all of their inputs, then the <em>maximizer(s)</em> of the scalarization function must all be Pareto optimal.</li>
+<li>If the scalarization functions are <em>non-decreasing</em> (ie non-strictly monotonically increasing), then the set of maximizers will <em>contain</em> Pareto optimal points, but may also include sub-optimal points.</li>
+</ul>
+<p>Hopefully this makes intuitive sense, otherwise see <a href="#a-scalarization-and-monotonicity">these theorems</a>.</p>
+</section>
+</section>
+<section id="chebyshev-scalarization" class="level2">
+<h2 class="anchored" data-anchor-id="chebyshev-scalarization">Chebyshev scalarization</h2>
+<section id="definition" class="level3">
+<h3 class="anchored" data-anchor-id="definition">Definition</h3>
+<p>Chebyshev scalarization<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> functions take two parameters:</p>
+<ol type="1">
+<li>A vector of positive weights <span class="math inline">\mathbf{w}</span> (like linear scalarization)</li>
+<li>A <em>reference point</em> <span class="math inline">\mathbf{z}\in\mathbb{R}^k</span>, interpreted as the <em>ideal value</em> for <span class="math inline">\mathbf{f}</span>.</li>
+</ol>
+<p>Scalarization was introduced previously as a set of functions <span class="math inline">s_\theta</span> to be <em>maximized</em>. In this form, the function is:</p>
+<p><span class="math display">s_{\mathbf{w}, \mathbf{z}}(\mathbf{f}) = s_{\mathrm{Cheby(max)},\mathbf{w}, \mathbf{z}}(\mathbf{f}) = - \max_i \left[ w_i|f_i - z_i|\right]\ .</span></p>
+<p>Note that by maximization, I mean that <span class="math inline">s</span> is to be maximized, not <span class="math inline">\mathbf{f}</span>. The form is <em>the same</em> regardless of whether <span class="math inline">\mathbf{f}</span> is to be maximized or minimized- that information is encoded by the <em>reference point</em> <span class="math inline">\mathbf{z}</span>.</p>
+<p>Importantly, notice the <em>negative sign</em>: it means that this function is always <em>negative</em>. This is because Chebyshev scalarization is normally defined as a scalar to be <em>minimized</em>. This alternative (and more natural) definition is:</p>
+<p><span class="math display"> s_{\mathrm{Cheby(min)},\mathbf{w}, \mathbf{z}}(\mathbf{f}) = \max_i \left[ w_i|f_i - z_i|\right]\ .</span></p>
+<p><span class="math inline">s_{\mathrm{Cheby(min)},\mathbf{w}, \mathbf{z}}(\mathbf{f})</span> and <span class="math inline">s_{\mathrm{Cheby(max)},\mathbf{w}, \mathbf{z}}(\mathbf{f})</span> differ only by a negative sign. I will mainly use the (max) variant in this post for consistency.</p>
+</section>
+<section id="interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation">Interpretation</h3>
+<p>Chebyshev scalarization is essentially a <em>penalty</em> equal to the largest deviation between <span class="math inline">\mathbf{f}</span> and the reference point <span class="math inline">\mathbf{z}</span> across any dimension, with all deviations re-scaled by the weight vector <span class="math inline">\mathbf{w}</span>. It is optimized when this penalty is <em>smallest</em> (hence the negative sign when it is maximized).</p>
+<p>Dimension-wise maximum is essentially the definition of the <span class="math inline">\ell_\infty</span> norm, also called the Chebyshev norm. This is actually where Chebyshev scalarization gets its name.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> In this form, it is:</p>
+<p><span class="math display">s_{\mathbf{w}, \mathbf{z}}(\mathbf{f}) = -\left\| \mathbf{w}\odot \left(\mathbf{f} - \mathbf{z} \right) \right\|_\infty \ .</span></p>
+<p>Therefore, think of Chebyshev scalarization as “distance to reference point in a different norm.”</p>
+</section>
+<section id="pareto-coverage-property" class="level3">
+<h3 class="anchored" data-anchor-id="pareto-coverage-property">Pareto coverage property</h3>
+<p>This is the most important property of Chebyshev scalarization.</p>
+<p><em><strong>IF</strong> <span class="math inline">\mathbf{z} &gt; \mathbf{f}</span> in each dimension for all achievable points <span class="math inline">\mathbf{f}</span></em>, then:</p>
+<ol type="1">
+<li>All Pareto-optimal points maximize <span class="math inline">s_{\mathbf{w}, \mathbf{z}}(\cdot)</span> for some positive weight vector <span class="math inline">\mathbf{w}</span>.</li>
+<li>For any positive weight vector <span class="math inline">\mathbf{w}</span>, maximizing <span class="math inline">s_{\mathbf{w}, \mathbf{z}}(\cdot)</span> will produce at least one Pareto-optimal point.</li>
+</ol>
+<p>This means:</p>
+<ol type="1">
+<li>Picking a weight vector <span class="math inline">\mathbf{w}</span> and maximizing <span class="math inline">s_{\mathbf{w}, \mathbf{z}}(\cdot)</span> will produce a Pareto optimal point (although it may also produce additional maximums for sub-optimal points). Useful, but this is not surprising since, if <span class="math inline">\mathbf{z} &gt; \mathbf{f}</span> element-wise, then the function is non-decreasing and <a href="#a-scalarization-and-monotonicity">proposition A.2</a> applies.</li>
+<li><strong>ALL</strong> Pareto-optimal points can be produced by picking a suitable vector <span class="math inline">\mathbf{w}</span>.</li>
+<li>These properties <strong>do not</strong> depend on a specific value of the reference point <span class="math inline">\mathbf{z}</span> (as long as it is an unachievable high value).</li>
+</ol>
+<p>Property 2 is what distinguishes Chebyshev scalarization from linear scalarization (which can only find points on the convex hull of the Pareto frontier). <a href="#b-chebyshev-coverage-of-pareto-front">At the end of this post</a> I give a simple proof by construction of point 2, which essentially amounts to setting <span class="math inline">w_i = 1/\left(z_i-f_i\right)</span>.</p>
+<p><em>(NOTE: for minimization of <span class="math inline">\mathbf{f}</span>, simply replace the condition <span class="math inline">\mathbf{z} &gt; \mathbf{f}</span> with <span class="math inline">\mathbf{z} &lt; \mathbf{f}</span>) and the same result will hold.</em></p>
+</section>
+<section id="note-about-the-weights" class="level3">
+<h3 class="anchored" data-anchor-id="note-about-the-weights">Note about the weights</h3>
+<p>Because one can factor a multiplicative constant out of the weights, it suffices to consider only weights which sum up to 1: <span class="math display">\mathbf{w}: \sum_i w_i = 1\ .</span> This is true for Chebyshev <em>and</em> linear scalarization.</p>
+</section>
+</section>
+<section id="comparison-with-linear-scalarization" class="level2">
+<h2 class="anchored" data-anchor-id="comparison-with-linear-scalarization">Comparison with linear scalarization</h2>
+<p><a href="#interpretation">Earlier</a> I stated that Chebyshev scalarization is essentially minimizing the <span class="math inline">\ell_\infty</span> norm between <span class="math inline">\mathbf{f}</span> and <span class="math inline">\mathbf{z}</span>. Linear scalarization actually has a close connection to the <span class="math inline">\ell_1</span> distance between <span class="math inline">\mathbf{f}</span> and <span class="math inline">\mathbf{z}</span>.</p>
+<p>Assume that we have a reference <span class="math inline">\mathbf{z}</span> where <span class="math inline">\mathbf{z} &gt; \mathbf{f}</span> element-wise (just as <a href="#pareto-coverage-property">done previously</a> to get Pareto coverage for Chebyshev scalarization). Then, we write</p>
+<p><span class="math display">-\left\| \mathbf{w}\odot \left(\mathbf{f} - \mathbf{z} \right) \right\|_1  = -\sum_i w_i \left|f_i - z_i \right| =\sum_i w_i f_i - \sum_i w_i z_i</span></p>
+<p>(Step-by-step explanations in footnote<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>) The first time is linear scalarization. The second term is <em>constant</em> with respect to the input vector <span class="math inline">\mathbf{f}</span>, and therefore will not change which inputs <em>maximize</em> the scalarization. This allows the reference point to be <em>excluded</em> from the scalarization without consequence, but also allows us to <em>include</em> a reference point in linear scalarization without consequence.</p>
+<p><em>Summary: Chebyshev and linear scalarization can both by interpreted as <span class="math inline">\ell_p</span> distances between objectives and an unattainable reference point. Linear scalarization uses <span class="math inline">p=1</span>, and you can manipulate the expression to put the reference point in an additive constant. Chebyshev scalarization uses <span class="math inline">p=\infty</span> and does not allow you to separate out the reference point.</em></p>
+</section>
+<section id="augmented-chebyshev" class="level2">
+<h2 class="anchored" data-anchor-id="augmented-chebyshev">Augmented Chebyshev</h2>
+<p>Because Chebyshev scalarization is not <em>strictly</em> monotonic, there may be some maximizers which are not Pareto optimal. This can be fixed by <em>augmenting</em> it with a linear scalarization term, weighted by a factor <span class="math inline">\rho &gt; 0</span>: <span class="math display">s_{\mathrm{Cheby(aug)},\mathbf w, \mathbf z, \rho} = - \max_i \left[ w_i|f_i - z_i|\right] + \rho\sum_i w_i f_i \ .</span></p>
+<p>This <em>augmented Chebyshev</em> function is <em>strictly</em> monotonic, and therefore all maximizers will be Pareto optimal. Unfortunately, this function <em>does not</em> guarantee that all Pareto optimal points can be found, although a sufficiently small value of <span class="math inline">\rho</span> makes this likely in practice.</p>
+</section>
+<section id="geometric-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="geometric-interpretation">Geometric interpretation</h2>
+<p>To build understanding, I made an interactive visualization comparing linear, Chebyshev, and augmented Chebyshev scalarization. <strong>Disclaimer</strong>: this was vibe-coded with Cursor and definitely isn’t perfect; I just had no experience using plotly before. The visualization will probably work much better on desktop compared to mobile (apologies 🙏). If you want to modify / improve the visualization, check out the source code <a href="https://github.com/AustinT/2025-chebyshev-scalarization">here</a>.</p>
+<p>The visualization shows 3 types of Pareto fronts in <span class="math inline">\mathbf{f}</span> space: convex (default), concave, and mixed. The feasible region is marked in blue. You can switch between Pareto front types using the drop-down menu.</p>
+<p>Because this is a 2D problem, we can set <span class="math inline">w_2=1-w_1</span> and just look at the scalarizations as a function of <span class="math inline">w_1</span>. The bottom slider controls <span class="math inline">w_1</span> for all scalarizations simultaneously. All scalarizations use the reference point <span class="math inline">\mathbf{z} = [1.1, 1.1]</span> (which dominates all points in the feasible region for all examples).</p>
+<p>The feasible point which maximizes the scalarization is marked with a black dot (if several points are tied then there may be multiple black dots). The level sets of the scalarizations are shown with contour lines (hopefully making it clear where the maximum comes from).</p>
+<p>I suggest you take some time to play around with the visualization now (otherwise I provide a summary below).</p>
+<iframe src="../../blog-images/2025-chebyshev/multi_objective_scalarization.html" width="100%" height="700px" frameborder="0">
+</iframe>
+<section id="my-analysis-of-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="my-analysis-of-visualization">My analysis of visualization</h3>
+<p>First, note the shapes of the level sets. For “Linear” they are parallel lines. For Chebyshev they are square-like (which should not be surprising since the <span class="math inline">\ell_\infty</span> unit ball is a square). For augmented Chebyshev they are <em>almost</em> square, except the angle is a bit larger than 90°.</p>
+<p>Now, let’s compare the behavior as <span class="math inline">w_1</span> ranges from 0 to 1:</p>
+<ul>
+<li>For the “convex” Pareto front, all 3 functions sweep across the entire front. The maximum point is always tangent<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> to a level set.</li>
+<li>For the “concave” Pareto front:
+<ul>
+<li>Linear scalarization completely fails. For <span class="math inline">w_1&lt;0.5</span> the maximum is near the top left, and for <span class="math inline">w_1&gt;0.5</span> it suddenly shifts to the bottom right.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> This is a well-understood limitation of linear scalarization.</li>
+<li>Chebyshev scalarization nicely sweeps across the entire front. However, note that for very small or very large values of <span class="math inline">w_1</span> there is a tie and a small number of dominated points also maximize the objective.</li>
+<li>Augmented Chebyshev also covers the entire front, but does not include duplicate points at the end (NOTE: at <span class="math inline">w_1=0.5</span> 2 points appear, but this is just an artifact of the maximization being done on a finite grid, the true maximum should be between those two points).</li>
+</ul></li>
+<li>For the “mixed” Pareto front:
+<ul>
+<li>Linear scalarization finds the two convex sections, but completely skips the concave part (looking at the level sets should make it clear why this is).</li>
+<li>Chebyshev scalarization sweeps across the entire front, but for several values of <span class="math inline">w_1</span> around 0.25 and 0.75 a few dominated points are included (see small vertical or horizontal lines of black dots).</li>
+<li>Augmented Chebyshev scalarization sweeps across <em>most</em> of the front, but if you look carefully, some parts of the concave region are actually skipped (look for a big jump around <span class="math inline">w_1\approx 0.45</span> which does not appear for Chebyshev). It should be clear that this is caused by the level sets not being “pointy” enough to reach into all parts of the concavity. If <span class="math inline">\rho</span> were decreased then this problem would be reduced.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>This post explained Chebyshev scalarization, which is essentially a weighted <span class="math inline">\ell_\infty</span> distance to a reference point. Its main advantage is its ability to cover <em>every</em> point on a Pareto front, while its main disadvantage is that it can be maximized by some dominated points. Another potential disadvantage is that it requires specifying a reference point which is guaranteed to dominate all other points. Its Pareto coverage property does not depend on the exact <em>value</em> of this reference point, but it <em>must</em> dominate all points, and it does affect which point(s) are optimal for a given value of <span class="math inline">\mathbf{w}</span>.</p>
+<p>Augmented Chebyshev has properties in between that of Chebyshev and linear scalarization: it may not cover <em>every</em> point on a Pareto front, but will likely cover <em>most</em> points, especially when <span class="math inline">\rho</span> is small. However, dominated points will <em>not</em> maximize augmented Chebyshev.</p>
+<p>Perhaps another middle ground is the <span class="math inline">\ell_p</span> distance with large <span class="math inline">p</span>. The level sets would be “pointier”, but the function would still be strictly monotonic in all its inputs.</p>
+<p>Ultimately, I think Chebyshev scalarization is a good idea and people should try to use it!</p>
+<hr>
+</section>
+<section id="theorems-and-proofs" class="level2">
+<h2 class="anchored" data-anchor-id="theorems-and-proofs">Theorems and proofs</h2>
+<section id="a-scalarization-and-monotonicity" class="level3">
+<h3 class="anchored" data-anchor-id="a-scalarization-and-monotonicity">A: Scalarization and monotonicity</h3>
+<p>The following propositions show that strictly monotonic functions are only maximized by Pareto-optimal points, and that non-strictly monotonic functions are <em>at least</em> maximized by Pareto-optimal points (although other maximizers may not be Pareto optimal).</p>
+<p><strong>Proposition A.1</strong>: if <span class="math inline">s: \mathbb{R}^k\mapsto\mathbb{R}</span> is strictly monotonically increasing, then all maximizers <span class="math display">\mathbf f^\ast\in\arg\max_{\mathbf{f} \in \mathbf{f}(\mathcal{X})} s(\mathbf{f})</span> must be Pareto optimal.</p>
+<p><strong>Proof</strong>: Assume a <span class="math inline">\mathbf f^\ast</span> is <em>not</em> Pareto optimal, then there is another point <span class="math inline">\mathbf f ' \succ\mathbf f^\ast</span>. By monotonicity, <span class="math inline">s(\mathbf f') &gt; s(\mathbf f)</span>, because <span class="math inline">f'_i \geq f_i</span> in all dimensions (showing <span class="math inline">s(\mathbf f') \geq s(\mathbf f)</span>), and <span class="math inline">f'_i &gt; f_i</span> in at least 1 dimension, thereby getting strict inequality. Therefore, <span class="math inline">s(\mathbf{f}^\ast)</span> must not actually be a maximizer: a contradiction.</p>
+<p><strong>Proposition A.2</strong>: if <span class="math inline">s: \mathbb{R}^k\mapsto\mathbb{R}</span> is non-strictly monotonically increasing, then the set <span class="math display">M=\arg\max_{\mathbf{f} \in \mathbf{f}(\mathcal{X})} s(\mathbf{f})</span> must contain at least one non-dominated point.</p>
+<p><strong>Proof</strong>: Similar to above. Assume it <em>does not</em> contain a non-dominated point, and let <span class="math inline">\mathbf{f}^\ast\not\in M</span> be a point which dominates at least one point in <span class="math inline">M</span> (call it <span class="math inline">\mathbf{f}</span>). By monotonicity, we must have that <span class="math inline">s(\mathbf{f}^\ast) \geq s(\mathbf{f})</span>, and therefore it should be that <span class="math inline">\mathbf{f}^\ast\in M</span>: a contradiction.</p>
+</section>
+<section id="b-chebyshev-coverage-of-pareto-front" class="level3">
+<h3 class="anchored" data-anchor-id="b-chebyshev-coverage-of-pareto-front">B: Chebyshev coverage of Pareto front</h3>
+<p>Here I provide a simple proof by construction for Pareto front coverage. Note that this is not my original proof.</p>
+<p><strong>Proposition B.1</strong>: If <span class="math inline">\mathbf{z} &gt; \mathbf{f}</span> in each dimension, then all Pareto-optimal points maximize <span class="math inline">s_{\mathbf{w}, \mathbf{z}}(\cdot)</span> for some positive weight vector <span class="math inline">\mathbf{w}</span>.</p>
+<p><strong>Proof</strong>: Let <span class="math inline">\mathbf f^\ast</span> be a Pareto optimal point, and construct <span class="math inline">\mathbf w</span> by <span class="math display">w_i = \frac{1}{z_i - f^\ast_i}\ .</span> Note that <span class="math inline">w_i&gt;0</span> for all <span class="math inline">i</span> because <span class="math inline">z_i&gt;f_i^\ast</span> by assumption. Then <span class="math display">s_{\mathbf{w}, \mathbf{z}}(\mathbf f ^\ast) = - \max_i \left[ w_i|f_i^\ast - z_i|\right]=-\max_i \left[ \frac{z_i-f_i^\ast}{z_i-f_i^\ast} \right] = -1\ .</span></p>
+<p>Now, assume that for some other <span class="math inline">\mathbf{f}</span>, <span class="math inline">s_{\mathbf{w}, \mathbf{z}}(\mathbf f) &gt; -1</span>. For this to happen, for <em>all</em> <span class="math inline">0\leq i \leq k</span> <span class="math display">\frac{z_i-f_i}{z_i - f_i^\ast} &lt; 1 \Rightarrow f_i^\ast &lt; f_i\ .</span> This would imply <span class="math inline">\mathbf f \succ \mathbf f^\ast</span>, contradicting the assumption that <span class="math inline">\mathbf f^\ast</span> is Pareto optimal!</p>
+<hr>
+</section>
+</section>
+<section id="some-references" class="level2">
+<h2 class="anchored" data-anchor-id="some-references">Some references</h2>
+<p>Here are some references which I relied on to write this post:</p>
+<ul>
+<li>Wikipedia has a page (<a href="https://en.wikipedia.org/wiki/Chebyshev_function">link</a>), but it describes 2 different kinds of function, and only describes the function for minimizing <span class="math inline">\mathbf{f}</span>.</li>
+<li>An <a href="https://link.springer.com/article/10.1007/BF02591870">old paper by Steuer &amp; Choo (1983)</a> describes random Chebyshev scalarization and basically covers the same material as this post, but with denser notation and more theorems (such that the key points are harder to ascertain).</li>
+<li><a href="https://proceedings.neurips.cc/paper_files/paper/2022/hash/7a583691ccfcf8945ab714b677ccbf0b-Abstract-Conference.html">This NeurIPS paper by Lin et al</a> re-states some of this content more clearly, but jumps to augmented Chebyshev scalarization without fully explaining its consequences.</li>
+</ul>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Since real-world drug design problems are always multi-objective (e.g.&nbsp;potency, toxicity, cost), this shouldn’t be very surprising!<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>More information about my sources is in the <a href="#some-references">references section</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Aided by Gemini 2.5, which was surprisingly helpful!<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Some papers write <span class="math inline">\max_{x\in\mathcal{X}} \mathbf{f}(x)</span>. This captures the <em>spirit</em> of the problem, but is not a well-defined mathematical expression. I always cringe when I see this 😬<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>We use <span class="math inline">\succ</span> instead of <span class="math inline">&gt;</span> because “domination” is only a partial ordering.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Is the Pareto set a subset of <span class="math inline">\mathcal{X}</span> or <span class="math inline">\mathbb{R}^k</span>? It can be both depending on the context. For this post I will define the Pareto set to be a subset of <span class="math inline">\mathbb{R}^k</span>, specifically the set of all non-dominated vectors in the image of <span class="math inline">\mathcal{X}</span> under <span class="math inline">\mathbf{f}</span>. <span class="math display">\\{\mathbf{f}(x)| x\in\mathcal{X} \text{ and } \not\exists y\in\mathcal{X} : \mathbf{f}(y)\succ \mathbf{f}(x)\\}</span> However, in the broader context of MOO I think the Pareto set should <em>really</em> be the set of all inputs <span class="math inline">x</span> which achieve these Pareto optimal values. I’ve mainly chosen the first definition for simplicity in this post.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Sometimes also spelled Tschebyschev or Tchebycheff, but I will just use Chebyshev.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>I think “<span class="math inline">\ell_\infty</span>-scalarization” would be a better name than Chebyshev scalarization, but it’s hard to change an established name 🫠<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>First use definition of <span class="math inline">\ell_1</span> norm, then note that <span class="math inline">f_i-z_i</span> always negative by the assumption that <span class="math inline">\mathbf{z} &gt; \mathbf{f}</span> in every dimension, then cancel with minus sign at front and distribute the product.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>I’m counting points on a corner as “tangent” too.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Note that nothing is <em>intrinsically</em> special about the value 0.5, the switch only happens here because the feasible region is symmetric between <span class="math inline">f_1</span> and <span class="math inline">f_2</span>. For other concave objectives the critical value might be different.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/austintripp\.ca");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="mailto:austin.james.tripp%5Bat%5Dgmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a></p>
+<p>© Austin Tripp · All opinions are my own (not my employer’s). · Website powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

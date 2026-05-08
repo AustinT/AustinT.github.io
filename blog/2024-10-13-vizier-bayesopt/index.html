@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2024-10-13">
+
+<title>Thoughts on Google Vizier – Austin Tripp’s website</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Austin Tripp’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#summary-of-vizier" id="toc-summary-of-vizier" class="nav-link active" data-scroll-target="#summary-of-vizier">Summary of Vizier</a></li>
+  <li><a href="#walk-through-of-viziers-design" id="toc-walk-through-of-viziers-design" class="nav-link" data-scroll-target="#walk-through-of-viziers-design">Walk-through of Vizier’s design</a>
+  <ul class="collapse">
+  <li><a href="#input-and-output-scaling-make-the-data-fit-the-model-rather-than-choosing-a-model-to-fit-the-data" id="toc-input-and-output-scaling-make-the-data-fit-the-model-rather-than-choosing-a-model-to-fit-the-data" class="nav-link" data-scroll-target="#input-and-output-scaling-make-the-data-fit-the-model-rather-than-choosing-a-model-to-fit-the-data">Input and output scaling: make the data fit the model, rather than choosing a model to fit the data</a></li>
+  <li><a href="#pick-kernel-parameters-with-map" id="toc-pick-kernel-parameters-with-map" class="nav-link" data-scroll-target="#pick-kernel-parameters-with-map">Pick kernel parameters with MAP</a></li>
+  <li><a href="#ucb-acquisition-function-with-trust-regions" id="toc-ucb-acquisition-function-with-trust-regions" class="nav-link" data-scroll-target="#ucb-acquisition-function-with-trust-regions">UCB acquisition function (with trust regions)</a></li>
+  <li><a href="#optimizing-the-acquisition-function-with-genetic-algorithms" id="toc-optimizing-the-acquisition-function-with-genetic-algorithms" class="nav-link" data-scroll-target="#optimizing-the-acquisition-function-with-genetic-algorithms">Optimizing the acquisition function with genetic algorithms</a></li>
+  <li><a href="#batched-setting-with-an-ignored-constant-liar" id="toc-batched-setting-with-an-ignored-constant-liar" class="nav-link" data-scroll-target="#batched-setting-with-an-ignored-constant-liar">Batched setting with an (ignored) constant liar</a></li>
+  <li><a href="#extension-to-multiple-objectives" id="toc-extension-to-multiple-objectives" class="nav-link" data-scroll-target="#extension-to-multiple-objectives">Extension to multiple objectives</a></li>
+  <li><a href="#start-optimization-with-semi-random-selection" id="toc-start-optimization-with-semi-random-selection" class="nav-link" data-scroll-target="#start-optimization-with-semi-random-selection">Start optimization with semi-random selection</a></li>
+  </ul></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Thoughts on Google Vizier</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">machine learning</div>
+    <div class="quarto-category">bayesian optimization</div>
+    <div class="quarto-category">research papers</div>
+    <div class="quarto-category">_recent-highlight</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 13, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Vizier, described in a <a href="http://arxiv.org/abs/2408.11527">recent paper from Google</a>, is a black-box optimization algorithm deployed for “numerous research and production systems at Google”. Allegedly, this one algorithm works well on a wide range of settings (something which the “no-free-lunch-theorem” suggests might not be possible). In this post I provide my thoughts on what key design decisions likely make this algorithm work well.</p>
+<div class="alert alert-info">
+<p>NOTE: throughout this post I use the following acronyms:</p>
+<ul>
+<li>
+BO (Bayesian optimization)
+</li>
+<li>
+GP (Gaussian process)
+</li>
+<li>
+UCB (upper confidence bound)
+</li>
+<li>
+GA (genetic algorithm)
+</li>
+</ul>
+</div>
+<section id="summary-of-vizier" class="level2">
+<h2 class="anchored" data-anchor-id="summary-of-vizier">Summary of Vizier</h2>
+<p>Vizier is a Gaussian process Bayesan optimization (GP-BO) algorithm: a class of algorithms that I worked with a lot during my PhD. Formally, the algorithm seeks to optimize a function <span class="math inline">f(x)</span>. At every step, it fits a GP surrogate model to the data, then chooses a new point (or set of points) to evaluate by maximizing an <em>acquisition function</em>. I won’t give further details about GP-BO here, but if you are unfamiliar with this topic I suggest reading <a href="https://bayesoptbook.com/">Chapter 1 of Roman Garnett’s textbook</a> for a high level overview.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>What’s remarkable about Vizier is, frankly, how <em>unremarkable</em> it is. The algorithm does not depart from the general GP-BO paradigm. Furthermore, each part of the algorithm is pretty standard: for example, they use a GP with a Matern 5/2 kernel and the UCB acquisition function, rather than any of the fancy kernels or information-theoretic acquisition functions commonly seem in ML conference papers over the past decade. No individual component stands out as being particularly clever or groundbreaking. Instead, I think Vizier’s success comes from <em>making standard parts work well together</em> and <em>using reasonable heuristics</em>.</p>
+</section>
+<section id="walk-through-of-viziers-design" class="level2">
+<h2 class="anchored" data-anchor-id="walk-through-of-viziers-design">Walk-through of Vizier’s design</h2>
+<section id="input-and-output-scaling-make-the-data-fit-the-model-rather-than-choosing-a-model-to-fit-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="input-and-output-scaling-make-the-data-fit-the-model-rather-than-choosing-a-model-to-fit-the-data">Input and output scaling: make the data fit the model, rather than choosing a model to fit the data</h3>
+<p>First, the input data is all normalized to be in the interval <span class="math inline">[0,1]</span> in every dimension, optionally with logarithmic scaling. This has the effect of:</p>
+<ol type="1">
+<li>Ensuring distances between points are never <em>too close</em> or <em>too far</em>.</li>
+<li>Allowing categorical and continuous inputs to be handled in the same way.</li>
+</ol>
+<p>I think this is key to allow the Matern 5/2 kernel to be used for all problems. What is arguably more interesting however is their <em>output</em> scaling. They perform a series of transformations which:</p>
+<ul>
+<li>Center the outputs around the median</li>
+<li>Rescales the <em>below-median</em> points to have a more Gaussian distribution</li>
+<li>Slightly exaggerates differences between the best points</li>
+<li>Maps invalid/infeasible points to a negative value, but not <em>too</em> negative.</li>
+</ul>
+<p>Figure 2 from the paper (copied below) illustrates these transformations. Essentially, outliers are removed and the entire distribution looks Gaussian on the left, and something more heavy-tailed on the right. Invalid points are re-added as slightly outliers on the extreme left.</p>
+<p><img src="../../blog-images/2024-10-13-vizier-warping.png" class="img-fluid"></p>
+<p>I think this helps Vizier overcome one of the most significant limitations of GP models: difficulty predicting outliers. This difficulty arises because GPs always assume that output values are Gaussian distributed, making extreme deviations from the mean very unlikely. Vizier handles this by trying to make the data “look” more Gaussian.</p>
+</section>
+<section id="pick-kernel-parameters-with-map" class="level3">
+<h3 class="anchored" data-anchor-id="pick-kernel-parameters-with-map">Pick kernel parameters with MAP</h3>
+<p>The amplitude, lengthscale, and noise parameters are all given an (approximately) log-normal prior. Then, a set of model parameters is chosen using <em>maximum a posteriori</em> (MAP) inference (ie the parameter values whose posterior probability is the highest). Using MAP inference to fit the parameters is a common strategy to reduce overfitting in GPs. However, what I imagine makes this work really nicely for Vizier is the fact that scaling the data allows them to set reasonably strong priors but still be confident that the data will be modelled well. This is the first example of good “synergy” from Vizier in my opinion.</p>
+<p>The actual maximization with done with Scipy’s L-BFGS function, which is pretty standard.</p>
+</section>
+<section id="ucb-acquisition-function-with-trust-regions" class="level3">
+<h3 class="anchored" data-anchor-id="ucb-acquisition-function-with-trust-regions">UCB acquisition function (with trust regions)</h3>
+<p>Vizier <em>essentially</em> uses the UCB acquisition function with an exploration constant <span class="math inline">\sqrt{\beta}=1.8</span>. However, they modify UCB to use <em>trust regions</em>: if a point <span class="math inline">x</span> is a distance greater than <span class="math inline">r_t</span> away from the nearest previously evaluated input, the acquisition function is immediately set to <span class="math inline">-10^{12} - d(x, x_{\text{trusted}})</span>. <span class="math inline">r_t</span> starts at 0.2 but grows over time (and all distances are calculated <em>after</em> rescaling). This choice has several advantages:</p>
+<ul>
+<li>UCB keeps the cost low because a point’s acquisition function value can be calculated analytically and is independent of other points. This is not true for other acquisition functions like Thompson sampling.</li>
+<li>Unlike expected improvement (EI), UCB is very exploratory, preventing under-exploration.</li>
+<li>Over-exploration is addressed using trust regions, which are simple and likely effective.</li>
+</ul>
+<p>This choice also synergizes with their output scaling: because the distribution of above-median points is carefully controlled it makes sense to use a fixed choice of <span class="math inline">\beta</span> in all scenarios.</p>
+</section>
+<section id="optimizing-the-acquisition-function-with-genetic-algorithms" class="level3">
+<h3 class="anchored" data-anchor-id="optimizing-the-acquisition-function-with-genetic-algorithms">Optimizing the acquisition function with genetic algorithms</h3>
+<p>They use a genetic algorithm (GA) called “Firefly” with a bit of tuning. The details of the GA did not seem particularly important to me, but does support my previous experience that GAs work well.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Using a GA also allows them to leverage parallelism.</p>
+</section>
+<section id="batched-setting-with-an-ignored-constant-liar" class="level3">
+<h3 class="anchored" data-anchor-id="batched-setting-with-an-ignored-constant-liar">Batched setting with an (ignored) constant liar</h3>
+<p>Vizier can be used in both the synchronous and asynchronous batch settings. Its batch selection strategy is described in §3.6 of the arXiv paper. Overall, I would describe the batch construction process as “entirely heuristic”, but also very reasonable. Batch BO methods tend to either be heuristic or intractable, so choosing “heuristic” for a practical system makes sense.</p>
+<p>In Vizier, batches are constructed <em>sequentially</em> (ie one point is chosen, then a second point, etc) instead of <em>simultaneously</em> (ie choosing all points together), so it suffices to just generally consider the acquisition function for the <span class="math inline">b</span>th point in the batch.</p>
+<div class="alert alert-info">
+<p>Before explaining the acquisition function choices, note that a GPs’ predicted standard deviation for <it>never depends on the observed outputs</it>. This allows one to easily calculate what the standard deviation would be if the first <span class="math inline">(b-1)</span> points in the batch were observed, without making any assumptions about what is observed.</p>
+</div>
+<p>Essentially, Vizier uses a mix of the following two acquisition functions:</p>
+<ol type="1">
+<li>UCB, with the standard deviation adjusted to account for the <span class="math inline">(b-1)</span> points already chosen in the batch, but <em>no adjustment</em> to the mean. They describe this as the “constant liar” heuristic,<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> but since it does not depend on the actual “value” of the constant I think of it as an “ignored” constant liar.</li>
+<li>“Pure exploration”, ie just the predicted standard deviation conditioned on all other points in the batch. They add a moderate penalty for not having a “sufficiently promising” UCB value.</li>
+</ol>
+<p>In the <em>synchronous</em> case (where all previously chosen inputs have received an observation), they use UCB with high probability (and pure exploration with low probability). In the <em>asynchronous</em> case (where observations have not yet been received for previously chosen experiments) they always use pure exploration. Overall, this mixture of acquisition functions seems like a reasonable way of balancing exploration and exploitation within a batch.</p>
+<p>A point of synergy in this section is that the UCB acquisition function depends only on the predicted mean and standard deviation, the latter of which can be updated without knowing the observation values.</p>
+</section>
+<section id="extension-to-multiple-objectives" class="level3">
+<h3 class="anchored" data-anchor-id="extension-to-multiple-objectives">Extension to multiple objectives</h3>
+<p>This is described in §3.7. When there are multiple objective, each objective is modelled independently using their standard GP model.</p>
+<p>They use an upper confidence bound on the hypervolume improvement as an acquisition function, which seems like a natural extension of scalar UCB. They estimate it using scalarizations with randomly selected weights (which, if drawn from the correct distribution, provably compute hypervolume). Using a Monte-Carlo estimate allows the objective function evaluations to be parallelized across many samples.</p>
+<p>Overall this seems like both the simplest modelling choice and a fairly simple acquisition function choice. I am surprised however that “hypervolume improvement UCB” is not a more commonly-seen acquisition function given its conceptual simplicity…</p>
+</section>
+<section id="start-optimization-with-semi-random-selection" class="level3">
+<h3 class="anchored" data-anchor-id="start-optimization-with-semi-random-selection">Start optimization with semi-random selection</h3>
+<p>The first trial is always the exact center of the search space. After that, a few trials are sampled quasi-randomly using Halton sequences to get a good diversity of points.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+</section>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>My main takeaway from this paper is that it might actually be possible to build black-box optimizers that work well for a diverse range of realistic problems (even though the no-free-lunch-theorem says this will be impossible for the set of <em>all</em> problems). Vizier specifically seemed to show that that output scaling can resolve a lot of problems. This step seemed to be the key which allowed all of Vizier’s design choices to work well together: mainly the use of a GP model at all, the GP’s kernel and hyperparameters, and the acquisition function.</p>
+<p>This paper also served as a reminder that real-world BO systems are probably <em>not</em> going to be deployed in the standard sequential setting: algorithms should ideally handle both <em>batch</em> and <em>asynchronous</em> evaluations, since these are likely to come up in practice.</p>
+<p>However, there were a number of issues that don’t seem to be addressed in Vizier. There is not a clear way to handle graph or sequence-structured inputs (necessary in AI for science problems). The acquisition function does not seem to account for non-uniform evaluation costs. Finally, some applications may benefit from a more complex noise model (eg if there is correlated noise between different observations). Extending Vizier to address these settings could be an interesting direction for future research!</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>and, if you have time, the whole first 7 chapters to get a much more thorough overview.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>see for example <a href="https://arxiv.org/abs/2310.09267">this paper</a> that I wrote in the last year of my PhD.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>“constant liar” is the name for the heuristic where the next point in the batch is chosen assuming that all previous points in the batch received the same constant observation <span class="math inline">c</span>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>the Halton sequences help ensure that no samples are “clumped” together, which often happens with larger numbers of i.i.d. samples. This is the same motivation behind quasi-Monte Carlo methods.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/austintripp\.ca");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="mailto:austin.james.tripp%5Bat%5Dgmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a></p>
+<p>© Austin Tripp · All opinions are my own (not my employer’s). · Website powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

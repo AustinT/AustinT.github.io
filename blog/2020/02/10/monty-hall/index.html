@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2020-02-10">
+
+<title>The Monty Hall Problem is Really About Policy Assumptions – Austin Tripp’s website</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../../">
+<script src="../../../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../../../index.html">
+    <span class="navbar-title">Austin Tripp’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../resources/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#bayesian-formulation-of-the-problem" id="toc-bayesian-formulation-of-the-problem" class="nav-link active" data-scroll-target="#bayesian-formulation-of-the-problem">Bayesian Formulation of the Problem</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a>
+  <ul class="collapse">
+  <li><a href="#standard-assumptions-the-argument-for-23" id="toc-standard-assumptions-the-argument-for-23" class="nav-link" data-scroll-target="#standard-assumptions-the-argument-for-23">Standard assumptions: the argument for 2/3</a></li>
+  <li><a href="#biased-random-choice-of-host" id="toc-biased-random-choice-of-host" class="nav-link" data-scroll-target="#biased-random-choice-of-host">Biased random choice of host</a></li>
+  <li><a href="#inattentive-host" id="toc-inattentive-host" class="nav-link" data-scroll-target="#inattentive-host">Inattentive host</a></li>
+  <li><a href="#no-door-as-an-option" id="toc-no-door-as-an-option" class="nav-link" data-scroll-target="#no-door-as-an-option">No door as an option</a></li>
+  </ul></li>
+  <li><a href="#rigged-game-the-answer-could-be-anything" id="toc-rigged-game-the-answer-could-be-anything" class="nav-link" data-scroll-target="#rigged-game-the-answer-could-be-anything">Rigged game: the answer could be anything</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The Monty Hall Problem is Really About Policy Assumptions</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">statistics</div>
+    <div class="quarto-category">_all-time-best</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 10, 2020</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>TL;DR</strong>: the Monty Hall problem doesn’t have a well-defined solution.</p>
+<p>The Monty Hall problem is a classic “probability paradox”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, where the answer is counter-intuitive to most people’s intuitions. To paraphrase <a href="https://en.wikipedia.org/wiki/Monty_Hall_problem">Wikipedia’s introduction to the problem</a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
+<blockquote class="blockquote">
+<p>Suppose you’re on a game show, and you’re given the choice of three doors: Behind one door is a prize; behind the others, nothing. You pick a door, say No.&nbsp;1, and the host, who knows what’s behind the doors, opens another door, say No.&nbsp;3, which has nothing. He then says to you, “Do you want to pick door No.&nbsp;2?” Is it to your advantage to switch your choice?</p>
+</blockquote>
+<p>This can be reframed as “what is the probability that the prize is behind door 2?” The “<em>intuitive answer</em>” is 1/2 (meaning there is no advantage to switching), since initially the prize could be behind any of the 3 doors, and you find out that it isn’t behind door #3, leaving just 2 doors left with equal probability of having the prize.</p>
+<p>In contrast, the “<em>correct answer</em>” is 2/3. This discrepancy is usually explained away as the host <em>giving away</em> information with their choice of which door to open. Again, paraphrasing <a href="https://en.wikipedia.org/wiki/Monty_Hall_problem#Simple_solutions">Wikipedia</a>:</p>
+<blockquote class="blockquote">
+<p>An intuitive explanation is that, if the contestant initially picks an empty door (2 of 3 doors), the contestant will win the prize by switching because the other empty door can no longer be picked, whereas if the contestant initially picks the prize (1 of 3 doors), the contestant will not win the prize by switching.</p>
+</blockquote>
+<p>However, in this post I am arguing that <strong>neither of these answers are “correct”</strong>, because the answer ultimately depends on your assumptions on what actions the game show host would take in counterfactual situations. Since this is not specified in most versions of the problem, the problem can’t really be said to have a “<em>correct answer</em>”. After <a href="#bayesian-formulation-of-the-problem">introducing the math necessary to solve the problem</a>, I will work through some <a href="#examples">example assumptions</a> and their resulting implications, and conclude with the surprising result that under the right assumptions, the answer to the problem could be <a href="#rigged-game-the-answer-could-be-anything"><strong>any</strong> probability</a>.</p>
+<section id="bayesian-formulation-of-the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-formulation-of-the-problem">Bayesian Formulation of the Problem</h2>
+<p>Let:</p>
+<ul>
+<li>\(c\) be the contestant’s <strong>c</strong>oice of door</li>
+<li>\(o\) be the door the host <strong>o</strong>pens</li>
+<li>\(a\) be the <strong>a</strong>nswer (the door the prize is actually behind)</li>
+</ul>
+<p>In a Bayesian decision framework, the way to handle this problem is to:</p>
+<ol type="1">
+<li>Use your knowledge of the situation to construct a probability distribution over the relevant variables (\(p(o,a,c)\)).</li>
+<li>Use the values of the observed variables \(c\) and \(o\) to calculate the <em>posterior probability distribution</em> over the answers: \(p(ao,c)\).</li>
+<li>Use this probability distribution to make an informed choice. In this situation, reasonable choice would be to choose the most likely answer, \(a^* = _a p(ao,c)\).</li>
+</ol>
+<p>Therefore solving the problem is the same as finding the posterior distribution. The posterior distribution can be found using Bayes theorem:</p>
+<p><span class="math display">p(a\mid o,c) = \frac{p(o,a,c)}{p(o,c)} = \frac{p(o,a,c)}{\sum_{a'} p(o,a',c)}</span></p>
+<p>This is far as we can go without making any assumptions. The most basic assumptions (which aren’t that interesting) is that the game is fair (\(a\) is chosen randomly in advance) and real (the player doesn’t know anything about \(a\), so their choice is effectively random). This means that the only interesting behaviour is that of the host, who can choose which door to open, knowing both where the prize is and the player’s choice. Mathematically, this means that the distribution \(p(o,a,c)\) can be <em>factored</em> as:</p>
+<p><span class="math display">p(o,a,c) = p(a)p(c)p(o\mid a,c)</span></p>
+<p>Substituting this into the posterior equation above, and nothing that \(p(c)\) is a constant and cancels, we find:</p>
+<p><span class="math display">p(a\mid o,c) = \frac{p(o,a,c)}{\sum_{a'} p(o,a',c)} = \frac{p(o\mid a,c)p(a)p(c)}{\sum_{a'}p(o\mid a',c)p(a')p(c)} = \frac{p(o\mid a,c)p(a)}{\sum_{a'}p(o\mid a',c)p(a')}</span></p>
+<p>Assuming further that all answers are equally probable, this further simplifies to:</p>
+<p><span class="math display">p(a\mid o,c) = \frac{p(o\mid a,c)}{\sum_{a'}p(o\mid a',c)}</span></p>
+<p>This means that for this particular problem, the posterior can be computed with only 3 values: \(p(o=3a_i, c=1)\), \(i{1,2,3}\).</p>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples</h2>
+<section id="standard-assumptions-the-argument-for-23" class="level3">
+<h3 class="anchored" data-anchor-id="standard-assumptions-the-argument-for-23">Standard assumptions: the argument for 2/3</h3>
+<p>When most people hear this problem, beyond the assumptions outlined in <a href="#bayesian-formulation-of-the-problem">the previous section</a>, they usually assume the following things:</p>
+<ol type="1">
+<li>the host will not open the door with the prize behind it</li>
+<li>the host will not open the player’s door</li>
+<li>the host will always open a door</li>
+<li>if the host can open multiple doors, they will choose one at random</li>
+</ol>
+<p>Assumptions 1-2 make sense, because otherwise the game show might not be any fun to watch. Assumption 3 isn’t necessary but is usually assumed because when people imagine this game show they usually imagine that this switching gimmick is just part of the show. Assumption 4 makes sense, since there is no reason <em>a priori</em> to assume that the host will be biased towards any particular door.</p>
+<p>With this, we can calculate the 3 values of \(p(oa,c)\):</p>
+<ol type="1">
+<li>\(p(o=3a=1,c=1)=1/2\): the host could open doors 2 or 3 here, and would therefore pick at random. This would have them pick door 3 50% of the time.</li>
+<li>\(p(o=3a=2,c=1)=1\): here the host cannot choose door 1 (since the player chose it) or door #2 (since it has the prize), so opening door #3 is the only option</li>
+<li>\(p(o=3a=3,c=1)=0\): if door #3 had the prize, the host wouldn’t have opened it, so this event isn’t possible.</li>
+</ol>
+<p>So, \(p(a=2o=3,c=1) = = 2/3\), suggesting that the best choice is to pick door 2 (switch doors). This is the classic “correct answer” of 2/3.</p>
+</section>
+<section id="biased-random-choice-of-host" class="level3">
+<h3 class="anchored" data-anchor-id="biased-random-choice-of-host">Biased random choice of host</h3>
+<p>Suppose that assumption 4 above isn’t true: when the host has multiple doors that they could choose, they don’t make a truly random decision<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. One example of this is if the host tends to pick higher numbers over lower numbers: that is, given a choice of opening doors 2 or 3, they will pick door 3 with probability \(z\), which might not be \(1/2\).</p>
+<p>This scenario is similar to the standard one, except \(p(o=3a=1,c=1)=z\), so \(p(a=2o=3,c=1)=\), which can vary between 1/2 and 1 for different values of \(z\). Already, this formulation (which isn’t completely unrealistic) gives a huge range of possible answers, all contingent on your belief about how the host picks random numbers.</p>
+</section>
+<section id="inattentive-host" class="level3">
+<h3 class="anchored" data-anchor-id="inattentive-host">Inattentive host</h3>
+<p>Suppose the host didn’t see what door the player chose. The host’s decision then can’t depend on \(c\) (breaking assumption 2). Instead, the host will randomly open one of the doors that doesn’t have the prize, regardless of whether the player chose this door. This means \(p(o=3a=i,c=1)=1/2\) for \(i=1,2\) (\(i=3\) remains unchanged since the host won’t open the door with the answer behind it). Therefore, \(p(a=2|o=3,c=1)=1/2\). This scenario is certainly plausible in a real game show (although fairly unlikely).</p>
+</section>
+<section id="no-door-as-an-option" class="level3">
+<h3 class="anchored" data-anchor-id="no-door-as-an-option">No door as an option</h3>
+<p>If the host can choose <em>not</em> to open a door, this opens up a wide range of possibilities:</p>
+<section id="dramatic-host-1" class="level4">
+<h4 class="anchored" data-anchor-id="dramatic-host-1">Dramatic host 1</h4>
+<p>To make the show more entertaining to watch, the host wants to bait the player into switching doors, not getting the prize, and then watch them agonize over their decision to switch. One way to do this would be to only open a door if the player’s initial guess was correct.</p>
+<p>This means \(p(o=3a=1,c=1)=1/2\), and the other 2 probabilities are 0, so the posterior probability \(p(a=2o=3,c=1)=0\).</p>
+</section>
+<section id="dramatic-host-2" class="level4">
+<h4 class="anchored" data-anchor-id="dramatic-host-2">Dramatic host 2</h4>
+<p>Dramatic host 1 is too predictable (since being offered to switch doors means you should never switch). Dramatic host 2 becomes slightly less predictable by choosing with probability \(q\) to open a wrong door if the player initially chose correctly. This means that \(p(o=3a=1,c=1)=1/2\) (like last time), but \(p(o=3a=2,c=1)=q\), making the posterior probability \(p(a=2o=3,c=1)=\), which can range from 0 to 2/3.</p>
+</section>
+<section id="merciful-host" class="level4">
+<h4 class="anchored" data-anchor-id="merciful-host">Merciful host</h4>
+<p>Instead, a host could open a door only if the player’s initial choice was wrong, yielding a posterior probability \(p(a=2o=3,c=1)=1\). In this case, you would always want to switch doors if offered.</p>
+</section>
+<section id="only-door-3-can-be-opened" class="level4">
+<h4 class="anchored" data-anchor-id="only-door-3-can-be-opened">Only door 3 can be opened</h4>
+<p>Imagine that the host will act normally (i.e.&nbsp;standard assumptions), but if the final decision is to open doors 1 or 2 they will simply not open a door at all (they are only willing to open door 3)<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. This means that \(p(o=3a=1,c=1)=1\), so the posterior \(p(a=2o=3,c=1)=1/2\).</p>
+</section>
+</section>
+</section>
+<section id="rigged-game-the-answer-could-be-anything" class="level2">
+<h2 class="anchored" data-anchor-id="rigged-game-the-answer-could-be-anything">Rigged game: the answer could be anything</h2>
+<p>Suppose that our initial model of the causal process is wrong, and the game is unfair. Specifically, the player chooses a door, and then the correct door is chosen afterwards with this information<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Specifically, suppose that the producers select the player’s door as correct with probability \(q\), and one of the other 2 doors with probability \(1-q\). Note that if \(q=1/3\), this corresponds to the standard assumptions of a fair game.</p>
+<p>To calculate the posterior in this scenario, we need \(p(ac)\) and \(p(oa,c)\), which are the following:</p>
+<ul>
+<li>\(p(a=1c=1) = q\) (by assumption above)</li>
+<li>\(p(a=2c=1) = p(a=3c=1) = (1-q)/2\) (since the probabilities must add to 1)</li>
+<li>Since the hosts actions don’t change, \(p(oa,c)\) is the same as before (\(p(o=3a=1,c=1)=1/2\), \(p(o=3a=2,c=1)=1\), \(p(o=3a=3,c=1)=0\))</li>
+</ul>
+<p>Reapplying Bayes rule, we get:</p>
+<p><span class="math display">p(a\mid o,c) = \frac{p(o\mid a,c)p(a\mid c)}{\sum_{a'}p(o\mid a',c)p(a'\mid c)}</span></p>
+<p><span class="math display">p(a=2\mid o=3,c=1) = \frac{1\times(1-q)/2}{q/2 + 1\times(1-q)/2 + 0\times(1-q)/2} = 1-q</span></p>
+<p>Since \(q\) can take on any value between 0 and 1, the posterior value can be any value between 0 and 1, meaning that the right decision could be <strong>absolutely anything</strong>. Of course, this is far from what most people assume when they encounter the Monty Hall problem, but if you were actually on such a game show in real life and offered this deal, would it not be prudent to at least consider this possibility?</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In this post, I’ve shown how <a href="#bayesian-formulation-of-the-problem">Bayes rule</a> can be used to solve the Monty Hall problem, which under <a href="#standard-assumptions-the-argument-for-23">standard assumptions</a> gives the “correct answer” of 2/3. However, under different assumptions, the posterior probability of the prize being behind door 2 can take on many different values, which between a <a href="#biased-random-choice-of-host">biased host</a> and a host that wants to <a href="#dramatic-host-2">make you lose</a> spans the whole range of probabilities between 0 and 1. In fact, just assuming that the game isn’t fair yields a model where it could be better to switch with probabilities ranging from 0 to 1 inclusive!.</p>
+<p>Overall, it’s very misleading to suggest that this is just a simple problem that tests if you can do some algebra; the entire solution is <strong>completely determined</strong> by one’s beliefs about the host’s counterfactual actions, so it’s frankly surprising that this aspect of the problem isn’t more widely discussed. As always, while an explicit Bayesian formulation isn’t required to arrive at the desired answer, the Bayesian framework does aid greatly in making your assumptions explicit.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Specifically it would be a <a href="https://en.wikipedia.org/wiki/Paradox#Quine's_classification">veridical paradox</a>, because the result appears absurd but is nonetheless true.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>the original version used cars and goats, which I changed to just a prize/nothing for clarity.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>since people are generally quite bad at choosing truly random numbers<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>maybe they are superstitious and like the number 3?<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>The producers of the game show might do this to increase the amount of dramatic tension on the show. Who says that “reality” TV needs to be real?<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/austintripp\.ca");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="mailto:austin.james.tripp%5Bat%5Dgmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a></p>
+<p>© Austin Tripp · All opinions are my own (not my employer’s). · Website powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-08-10">
+<meta name="description" content="Scientists want to do ‘informative’ experiments. What makes an experiment informative? I believe that information theory has a lot of answers. In this post I will try to explain information theory’s d…">
+
+<title>An accessible introduction to mutual information using a d20 – Austin Tripp’s website</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Austin Tripp’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#intuition-pump-a-hidden-d20-dice" id="toc-intuition-pump-a-hidden-d20-dice" class="nav-link active" data-scroll-target="#intuition-pump-a-hidden-d20-dice">Intuition pump: a hidden d20 dice</a></li>
+  <li><a href="#definition-information" id="toc-definition-information" class="nav-link" data-scroll-target="#definition-information">Definition information</a></li>
+  <li><a href="#some-statistical-definitions-and-notation" id="toc-some-statistical-definitions-and-notation" class="nav-link" data-scroll-target="#some-statistical-definitions-and-notation">Some statistical definitions and notation</a></li>
+  <li><a href="#entropy-is-average-information" id="toc-entropy-is-average-information" class="nav-link" data-scroll-target="#entropy-is-average-information">Entropy is <em>average</em> information</a>
+  <ul class="collapse">
+  <li><a href="#scenario-1-which-variables-produce-most-information-about-the-value-of-a-dice" id="toc-scenario-1-which-variables-produce-most-information-about-the-value-of-a-dice" class="nav-link" data-scroll-target="#scenario-1-which-variables-produce-most-information-about-the-value-of-a-dice">Scenario 1: which variables produce most information about the value of a dice</a></li>
+  <li><a href="#scenario-2-testing-for-extreme-values" id="toc-scenario-2-testing-for-extreme-values" class="nav-link" data-scroll-target="#scenario-2-testing-for-extreme-values">Scenario 2: testing for extreme values</a></li>
+  <li><a href="#scenario-3-multi-stage-tests" id="toc-scenario-3-multi-stage-tests" class="nav-link" data-scroll-target="#scenario-3-multi-stage-tests">Scenario 3: multi-stage tests</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">An accessible introduction to mutual information using a d20</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">machine learning</div>
+    <div class="quarto-category">statistics</div>
+    <div class="quarto-category">_recent-highlight</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Scientists want to do ‘informative’ experiments. What makes an experiment informative? I believe that information theory has a lot of answers. In this post I will try to explain information theory’s d…
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 10, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Scientists want to do “informative” experiments. What makes an experiment informative? I believe that information theory has a lot of answers. In this post I will try to explain information theory’s definition of “how much information you get from an experiment” using d20 dice, assuming no previous knowledge of information theory.</p>
+<div class="alert alert-info">
+<p>A tutorial like this has been on my writing list for a while now, and today I decided to just GET IT DONE, so I made it into a “quickpost”. The quality is not quite as good as I hoped, but I think it is still better than nothing. For more details on quickposts, see <a href="../../blog/2025-02-11-lowering-quality/">this blog post</a>.</p>
+</div>
+<section id="intuition-pump-a-hidden-d20-dice" class="level2">
+<h2 class="anchored" data-anchor-id="intuition-pump-a-hidden-d20-dice">Intuition pump: a hidden d20 dice</h2>
+<p>The running scenario in this post will be a d20 (aka a fair 20-sided dice) which is rolled in secret (so you do not know the number). We are trying to learn about the outcome of the dice.</p>
+<p>Suppose I told you that this number is odd. Does that provide information? Even though you still don’t “know” the value of the dice with certainty, your intuitive answer is probably “yes”. For example, you now know that the number is not “2”, which you didn’t know before.</p>
+<p>Now for a more complex scenario. A second d20 is rolled. If the number is a “20”, this second d20 is rolled <em>again</em> and you are told <em>that</em> number. Otherwise, you are told the number from the original dice. Essentially this means you are told the secret number with 95% probability, but with 5% probability you are told a random number. Is this informative?</p>
+<p>Here I expect intuitions to be more mixed. On the one hand, you are 95% certain to learn the true outcome of the dice. On the other hand, you can never <em>eliminate</em> any number: if you hear the number “15” the true number could still be <em>anything</em>.</p>
+<p><strong>By the end of this post</strong> you will know that <em>both</em> of these experiments <em>do</em> provide information, and in fact the second experiment is <em>more</em> informative than the first one.</p>
+<hr>
+<p>Below is some code which will be used to define the “experiments” on dice.</p>
+<p><strong>NOTE</strong>: this blog post is a runnable jupyter notebook. Even though the text in this notebook assumes a d20, you can change the size of the dice freely by setting the <code>D</code> variable below!</p>
+<div id="3e4ae50b-c489-407f-bb05-6d618e7a367a" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> <span class="dv">20</span>  <span class="co"># Change as desired, but D ≠ 20 will mean the numbers in text won't match the numbers from the code</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>DICE_OUTCOMES <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">1</span>, D<span class="op">+</span><span class="dv">1</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict, Counter</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Any, Callable</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Some useful functions for later</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_prime(n):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n <span class="op">&gt;</span> <span class="dv">1</span> <span class="kw">and</span> <span class="kw">not</span> <span class="bu">any</span>( (n<span class="op">%</span>i) <span class="op">==</span> <span class="dv">0</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="bu">int</span>(n<span class="op">/</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>)))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_even(n):</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (n<span class="op">%</span><span class="dv">2</span>) <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prior_prob(f):</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> n <span class="kw">in</span> DICE_OUTCOMES <span class="cf">if</span> f(n)) <span class="op">/</span> <span class="bu">len</span>(DICE_OUTCOMES)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="definition-information" class="level2">
+<h2 class="anchored" data-anchor-id="definition-information">Definition information</h2>
+<p>The “information” of a random outcome is defined as the (base 2) logarithm of its probability of occuring.</p>
+<p><span class="math display">I(X=x) = -\log_2 P(X=x)</span></p>
+<p>Information is measured in <em>bits</em>. Here are some examples:</p>
+<div id="fc9d5a37-daf2-4763-8858-ea30bf633569" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> information(p):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    I <span class="op">=</span> <span class="op">-</span>np.log2(p)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.maximum(I, <span class="fl">0.0</span>)  <span class="co"># this is just for numerical errors</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"1. I(x is even): -log2(1/2) = </span><span class="sc">{</span>information(prior_prob(is_even))<span class="sc">}</span><span class="ss"> bits"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2. I(x is prime): there are 8 primes in [1, 20] -log2(8/20) ≈ </span><span class="sc">{</span>information(prior_prob(is_prime))<span class="sc">:.2f}</span><span class="ss"> bits"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"3. I(x is between 1 and 20): -log2(1) = </span><span class="sc">{</span>information(prior_prob(<span class="kw">lambda</span> x: <span class="dv">1</span> <span class="op">&lt;=</span> x <span class="op">&lt;=</span> <span class="dv">20</span>))<span class="sc">:.2f}</span><span class="ss"> bits"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"4. I(dice is 20): -log2(1/20) ≈ </span><span class="sc">{</span>information(prior_prob(<span class="kw">lambda</span> x: x <span class="op">==</span> <span class="dv">20</span>))<span class="sc">:.2f}</span><span class="ss"> bits"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. I(x is even): -log2(1/2) = 1.0 bits
+2. I(x is prime): there are 8 primes in [1, 20] -log2(8/20) ≈ 1.32 bits
+3. I(x is between 1 and 20): -log2(1) = 0.00 bits
+4. I(dice is 20): -log2(1/20) ≈ 4.32 bits</code></pre>
+</div>
+</div>
+<p>Hopefully these examples make a few things clear:</p>
+<ul>
+<li>Rarer outcomes contain a higher amount of information</li>
+<li>Because probabilities are always ≤ 1, <span class="math inline">I(x)</span> is never negative</li>
+<li>The smallest amount of information is 0, which occurs for a <em>certain</em> outcome (hopefully this makes intuitive sense)</li>
+</ul>
+</section>
+<section id="some-statistical-definitions-and-notation" class="level2">
+<h2 class="anchored" data-anchor-id="some-statistical-definitions-and-notation">Some statistical definitions and notation</h2>
+<p>Unfortunately, before proceeding any further it is necessary to clarify some notation and definitions. Please bear with me: as you will see below, information depends on exactly what you know, don’t know, and want to know. These are easily confused, and to reduce confusion I will stick to some very standard terms.</p>
+<ul>
+<li><strong>Random variables</strong>: capital letters like <span class="math inline">X,Y,Z</span> will be used for <em>random variables</em>: variables which do not have a particular value.</li>
+<li><strong>The dice variable N</strong>: from now on, the random variable <span class="math inline">N</span> will denote the <em>number on the dice</em> (a value between 1 and 20).</li>
+<li><strong>Outcomes vs events</strong>: an <em>outcome</em> is a particular value of a random variable, and an <em>event</em> is a <em>set</em> of outcomes. These are not the same. In this post we will frequently learn about <em>events</em>. For example, learning that “the dice is even” means <span class="math inline">N</span> is in the set {2, 4, 6, 8, 10, 12, 14, 16, 18, 20}.</li>
+<li><strong>Other random variables</strong>: information is a function of <em>outcomes</em> only, <em>not</em> events. To represent events like “the dice is even”, we will define a <em>new</em> random variable with a name like <span class="math inline">X</span> with a different set of possible outcomes (like {True, False} instead of {1, 2, …, 20}. In most cases <span class="math inline">X</span> will be a deterministic function of <span class="math inline">N</span>, but not always. In these cases, an <em>outcome</em> of <span class="math inline">X</span> is equivalent to an <em>event</em> in <span class="math inline">N</span>.</li>
+</ul>
+</section>
+<section id="entropy-is-average-information" class="level2">
+<h2 class="anchored" data-anchor-id="entropy-is-average-information">Entropy is <em>average</em> information</h2>
+<p>The definition above allows you to quantify the information of an outcome <em>once you have learned it</em>. The natural extension of information to <em>unknown</em> outcomes is entropy, which is just the average amount of information you expect to obtain by observing a random variable <span class="math inline">X</span>.</p>
+<p><span class="math display">H(X) = \sum_{\text{outcomes }x} P(X=x) I(X=x) = -\sum_x P(X=x)\log_2{P(X=x)}</span></p>
+<p>Notice that <span class="math inline">H</span> is a function of <em>a random variable</em> (capital <span class="math inline">X</span>), rather than a particular outcome. This is because all outcomes of <span class="math inline">X</span> (denoted with lowercase <span class="math inline">x</span>) are <em>summed</em>. Let’s revisit the same examples as above.</p>
+<div id="5d664a31-7fa8-4b10-b135-639e6988e93a" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> entropy(prob_dist: <span class="bu">dict</span>[Any, <span class="bu">float</span>]) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Compute entropy of a probability distribution"""</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    probs <span class="op">=</span> np.array(<span class="bu">list</span>(prob_dist.values()))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.isclose(probs.<span class="bu">sum</span>(), <span class="dv">1</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    probs <span class="op">=</span> probs[probs <span class="op">&gt;</span> <span class="dv">0</span>]  <span class="co"># Remove zero probabilities</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    H <span class="op">=</span> <span class="op">-</span>np.<span class="bu">sum</span>(probs <span class="op">*</span> np.log2(probs))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.maximum(H, <span class="fl">0.0</span>)  <span class="co"># for numerical errors</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> function_to_prob_dict(f) <span class="op">-&gt;</span> <span class="bu">dict</span>[Any, <span class="bu">float</span>]:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> Counter([f(n) <span class="cf">for</span> n <span class="kw">in</span> DICE_OUTCOMES])</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {outcome: count<span class="op">/</span>D <span class="cf">for</span> outcome, count <span class="kw">in</span> c.items()}</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"1. H(x is even): -P(even)log2(P(even) - P(odd)log2(P(odd)) = -log2(1/2) = </span><span class="sc">{</span>entropy(function_to_prob_dict(is_even))<span class="sc">}</span><span class="ss"> bits"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2. H(x is prime):                -(8/20)log2(8/20) - (12/20)log2(12/20) ≈ </span><span class="sc">{</span>entropy(function_to_prob_dict(is_prime))<span class="sc">:.2f}</span><span class="ss"> bits"</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"3. H(x is between 1 and 20):                                 = -log2(1) = </span><span class="sc">{</span>entropy(function_to_prob_dict(<span class="kw">lambda</span> x: <span class="dv">1</span> <span class="op">&lt;=</span> x <span class="op">&lt;=</span> <span class="dv">20</span>))<span class="sc">:.2f}</span><span class="ss"> bits"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. H(x is even): -P(even)log2(P(even) - P(odd)log2(P(odd)) = -log2(1/2) = 1.0 bits
+2. H(x is prime):                -(8/20)log2(8/20) - (12/20)log2(12/20) ≈ 0.97 bits
+3. H(x is between 1 and 20):                                 = -log2(1) = 0.00 bits</code></pre>
+</div>
+</div>
+<p>However, example #4 (“dice is 20”) is more subtle because it can be interpreted as the outcome of multiple different random variables. The choice of variable will give different entropy values. Here are some examples:</p>
+<div id="1797757e-47bd-4dd3-846a-7f85b5722d96" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"4. H(x = 20)"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"    a: X=N (the exact value of the dice):   H(X) ≈ </span><span class="sc">{</span>entropy(function_to_prob_dict(<span class="kw">lambda</span> x: x))<span class="sc">:.2f}</span><span class="ss"> bits"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"    b: X=1 if N=20, otherwise 0:            H(X) ≈ </span><span class="sc">{</span>entropy(function_to_prob_dict(<span class="kw">lambda</span> x: <span class="dv">1</span> <span class="cf">if</span> x <span class="op">==</span> <span class="dv">20</span> <span class="cf">else</span> <span class="dv">0</span>))<span class="sc">:.2f}</span><span class="ss"> bits"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"    c: X=1 if N=20, 2 if N=10, otherwise 0: H(X) ≈ </span><span class="sc">{</span>entropy(function_to_prob_dict(<span class="kw">lambda</span> x: {<span class="dv">20</span>: <span class="dv">1</span>, <span class="dv">10</span>: <span class="dv">2</span>}.get(x, <span class="dv">0</span>)))<span class="sc">:.2f}</span><span class="ss"> bits"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"    d: ..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4. H(x = 20)
+    a: X=N (the exact value of the dice):   H(X) ≈ 4.32 bits
+    b: X=1 if N=20, otherwise 0:            H(X) ≈ 0.29 bits
+    c: X=1 if N=20, 2 if N=10, otherwise 0: H(X) ≈ 0.57 bits
+    d: ...</code></pre>
+</div>
+</div>
+<p>This might feel counter-intuitive, since observing a value of 20 is the same in all cases.The difference in entropy values is because <em>you do not know in advance whether you will observe a value of 20</em>!Other observations will rule out this outcome. For example, in 4b you have a 19/20 chance of observing <span class="math inline">X=0</span> (aka “the dice is any value besides 20”). This is a very low-information outcome (≈0.07 bits), but is sufficient to deduce that the value is not 20.In the other scenarios (4a or 4c) the other outcomes also rule out a value of 20, but are higher-information outcomes.## Intuitively, entropy an information “requirement”I’ve introduced entropy as an “average amount of information”,but intuitively it is a measure of <em>uncertainty</em> about a variable.The higher the entropy is, the more uncertain you are about a variable,and therefore the more information you will <em>need</em> to determine its value.If you want to know something, high entropy is <em>bad</em>.## Observations can change entropyLet’s re-use the random variable X from example 4b: <span class="math inline">X=1</span> if <span class="math inline">N=20</span>, otherwise <span class="math inline">X=0</span>.We will introduce a <em>second</em> random variable <span class="math inline">Y</span> to represent if <span class="math inline">N</span> is even: <span class="math inline">Y=1</span> if <span class="math inline">N</span> is even, otherwise <span class="math inline">Y=0</span>.Suppose we observe <span class="math inline">Y=1</span>. How much information do we <em>gain</em> about <span class="math inline">X</span>?We previously established that, without knowing <span class="math inline">Y</span>, <span class="math inline">H(X)\approx 0.29</span> bits.This value comes from the formula:<span class="math display">\begin{aligned}&amp;-P(X=1)\log_2{P(X=1)} - P(X=0)\log_2{P(X=0)} \\&amp;= -\frac{1}{20}\log_2{\tfrac{1}{20}} -\frac{19}{20}\log_2{\tfrac{19}{20}}\approx 0.29\end{aligned}</span>Observing <span class="math inline">Y=1</span> rules out all odd values, of which there are 10. Therefore, <em>conditioned</em> on this outcome, the probability of <span class="math inline">N=20</span> rises from 1/20 to 1/10. Hence, the new entropy of <span class="math inline">X</span> is:<span class="math display">\begin{aligned}H(X|Y=1) &amp;= -P(X=1|Y=1)\log_2{P(X=1|Y=1)} - P(X=0|Y=1)\log_2{P(X=0|Y=1)} \\&amp;= -\frac{1}{10}\log_2{\tfrac{1}{10}} -\frac{9}{10}\log_2{\tfrac{9}{10}}\approx 0.47\end{aligned}</span>This is <em>higher</em> than before: after this observation we are <em>more</em> uncertain about the value of X.This is reflected by the “uncertainty reduction” quantity:<span class="math display">H(X) - H(X|Y=1) \approx -0.18 \ ,</span>whose negative value means we have become ≈0.18 bits <em>less</em> certain about X.Consider however the other case, where we observe <span class="math inline">Y=0</span>. In this case, <span class="math inline">N</span> is odd, so we know <span class="math inline">N\neq 20</span>, implying <span class="math inline">P(X=1)=0</span>. This means <span class="math inline">X</span> is known with certainty. In this case:<span class="math display">H(X|Y=0)= -0\times\log_2{0} -1\times\log_2{1}=0 \ , </span>so <span class="math inline">H(X) - H(X|Y=0) = H(X) \approx 0.29</span>, implying <em>complete elimination of uncertainty in X</em>.## Mutual information: the main measure of uncertainty reduction and information gainBoth the measurements above are <em>ex-post</em> values: the change in uncertainty after a particular observation.If we are choosing whether to observe <span class="math inline">Y</span>, we do not know what we will observe!Similar to the definition of entropy, we will define an <em>average</em> value of uncertainty reduction.<span class="math display">I(X;Y) = \mathbb E_{y\sim P(Y)} \left [ H(X) - H(X|Y=y) \right]</span>Since <span class="math inline">H(X)</span> does not depend on <span class="math inline">Y</span>, this can be simplified to<span class="math display">H(X) - \mathbb E_{y\sim P(Y)} \left [ H(X|Y=y) \right]\ .</span>This quantity is called <em>mutual information</em>. It turns out that mutual information is <em>never</em> negative, which we can verify for the example above:<span class="math display">\begin{aligned}I(X;Y) &amp;= H(X) - \left[P(Y=1) H(X|Y=1) + P(Y=0) H(X|Y=0) \right] \\&amp;\approx 0.29 - 0.5\times (0.47) - 0.5\times 0 \approx 0.05\end{aligned}</span>Because of this, mutual information can be viewed as both an amount of “uncertainty reduction” or an amount of “information gain”.## Exploring mutual informationThe remainder of this notebook will go through a bunch of case studies of mutual information using code.The function below implements mutual information in a slightly more complex way than what I explained above,allowing for random functions (eg observe the dice with 95% probability, otherwise a random value).</p>
+<div id="58c3355f-9586-4630-afec-2015c37223ce" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dice_mutual_information(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    f1: Callable[[<span class="bu">int</span>], <span class="bu">dict</span>[Any, <span class="bu">float</span>]],</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    f2: Callable[[<span class="bu">int</span>], <span class="bu">dict</span>[Any, <span class="bu">float</span>]],</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    dice_prob_dist: <span class="bu">dict</span>[Any, <span class="bu">float</span>] <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    explain: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Mutual information for two probabilistic functions of the dice value</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">    (ie functions returning dict of outcome to probability dict).</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">    dice_prob_dist is the probability of observing different dice values</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">    (defaults to uniform).</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="al">NOTE</span><span class="co">: the implementation is different than the H(X) - H(X|Y) description above.</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Call function and check values</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    f1_calls <span class="op">=</span> {n: f1(n) <span class="cf">for</span> n <span class="kw">in</span> DICE_OUTCOMES}</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    f2_calls <span class="op">=</span> {n: f2(n) <span class="cf">for</span> n <span class="kw">in</span> DICE_OUTCOMES}</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> (f1_calls, f2_calls):</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> outcome_to_probs <span class="kw">in</span> d.values():</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">assert</span> np.isclose(<span class="bu">sum</span>(outcome_to_probs.values()), <span class="dv">1</span>)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Impute default dice probability distribution</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> dice_prob_dist <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>        dice_prob_dict <span class="op">=</span> {n: <span class="dv">1</span><span class="op">/</span><span class="bu">len</span>(DICE_OUTCOMES) <span class="cf">for</span> n <span class="kw">in</span> DICE_OUTCOMES}</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.isclose(<span class="bu">sum</span>(dice_prob_dict.values()), <span class="fl">1.0</span>)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get set of unique outcomes to index the joint distribution</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    f1_outcomes <span class="op">=</span> <span class="bu">sorted</span>({outcome <span class="cf">for</span> d <span class="kw">in</span> f1_calls.values() <span class="cf">for</span> outcome <span class="kw">in</span> d})</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    f2_outcomes <span class="op">=</span> <span class="bu">sorted</span>({outcome <span class="cf">for</span> d <span class="kw">in</span> f2_calls.values() <span class="cf">for</span> outcome <span class="kw">in</span> d})</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Built full joint distribution over f1 and f2 outcomes</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    joint <span class="op">=</span> np.zeros((<span class="bu">len</span>(f1_outcomes), <span class="bu">len</span>(f2_outcomes)))</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> DICE_OUTCOMES:</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i1, x1 <span class="kw">in</span> <span class="bu">enumerate</span>(f1_outcomes):</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> i2, x2 <span class="kw">in</span> <span class="bu">enumerate</span>(f2_outcomes):</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>                joint[i1, i2] <span class="op">+=</span> (</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>                    dice_prob_dict[n] <span class="op">*</span> </span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>                    f1_calls[n].get(x1, <span class="fl">0.0</span>) <span class="op">*</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>                    f2_calls[n].get(x2, <span class="fl">0.0</span>)</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.isclose(joint.<span class="bu">sum</span>(), <span class="fl">1.0</span>)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get marginals</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>    marginal_f1 <span class="op">=</span> joint.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    marginal_f2 <span class="op">=</span> joint.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    prod_of_marginals <span class="op">=</span> np.outer(marginal_f1, marginal_f2)</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute KL-divergence</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> np.errstate(divide<span class="op">=</span><span class="st">"ignore"</span>):</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>        log_term <span class="op">=</span> np.log2(joint) <span class="op">-</span> np.log2(prod_of_marginals)</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>        log_term <span class="op">=</span> np.nan_to_num(log_term, nan<span class="op">=</span><span class="fl">0.0</span>, posinf<span class="op">=</span><span class="fl">0.0</span>, neginf<span class="op">=</span><span class="fl">0.0</span>)</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>    kl_terms <span class="op">=</span> joint <span class="op">*</span> log_term</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Overall MI</span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>    MI_value <span class="op">=</span> <span class="bu">max</span>(</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>        <span class="bu">float</span>(kl_terms.<span class="bu">sum</span>()),</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>        <span class="fl">0.0</span>   <span class="co"># handle numerical errors</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> explain:</span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> _arr_entropy(arr):</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Entropy of an array</span></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>            arr <span class="op">=</span> arr[arr <span class="op">&gt;</span> <span class="dv">0</span>]</span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>            <span class="cf">assert</span> np.isclose(arr.<span class="bu">sum</span>(), <span class="dv">1</span>)</span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> np.maximum(<span class="op">-</span>np.<span class="bu">sum</span>(arr <span class="op">*</span> np.log2(arr)), <span class="fl">0.0</span>)</span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>        marginal_entropy <span class="op">=</span> _arr_entropy(marginal_f1)</span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Entropy of X1: </span><span class="sc">{</span>marginal_entropy<span class="sc">:.4g}</span><span class="ss"> bits"</span>)</span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>        mi_contribs <span class="op">=</span> []</span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, f2_outcome <span class="kw">in</span> <span class="bu">enumerate</span>(f2_outcomes):</span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>            p_f2 <span class="op">=</span> joint[:, i].<span class="bu">sum</span>()</span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\t</span><span class="ss">Case X2=</span><span class="sc">{</span>f2_outcome<span class="sc">}</span><span class="ss">:</span><span class="ch">\n\t</span><span class="ss">  Prob:      </span><span class="sc">{</span>p_f2<span class="sc">:+.4g}</span><span class="ss">"</span>)</span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> p_f2 <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>                h_f1_given_f2 <span class="op">=</span> _arr_entropy(joint[:, i] <span class="op">/</span> p_f2)</span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\t</span><span class="ss">  H(X1|X2):  </span><span class="sc">{</span>h_f1_given_f2<span class="sc">:+.4g}</span><span class="ss"> bits"</span>)</span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\t</span><span class="ss">  Info gain: </span><span class="sc">{</span>marginal_entropy <span class="op">-</span> h_f1_given_f2<span class="sc">:+.4g}</span><span class="ss"> bits"</span>)</span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>                mi_contrib <span class="op">=</span> (marginal_entropy <span class="op">-</span> h_f1_given_f2) <span class="op">*</span> p_f2</span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="st">"</span><span class="ch">\t</span><span class="st">  Conditional entropy undefined for 0 probability event"</span>)</span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a>                mi_contrib <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>            mi_contribs.append(mi_contrib)</span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> MI_value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="scenario-1-which-variables-produce-most-information-about-the-value-of-a-dice" class="level3">
+<h3 class="anchored" data-anchor-id="scenario-1-which-variables-produce-most-information-about-the-value-of-a-dice">Scenario 1: which variables produce most information about the value of a dice</h3>
+<p>We will look at the MI between <span class="math inline">N</span> and various other variables <span class="math inline">X</span>.</p>
+<div id="945dee8d-0eb1-42e5-889c-759fdf0664ed" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dice_value(n):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {n: <span class="fl">1.0</span>}</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MI between dice value and itself:          </span><span class="sc">{</span>dice_mutual_information(dice_value, dice_value)<span class="sc">:.3g}</span><span class="ss">"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MI between dice value and even/odd:        </span><span class="sc">{</span>dice_mutual_information(dice_value, <span class="kw">lambda</span> n: {is_even(n): <span class="fl">1.0</span>})<span class="sc">:.3g}</span><span class="ss">"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MI between dice value and prime/not prime: </span><span class="sc">{</span>dice_mutual_information(dice_value, <span class="kw">lambda</span> n: {is_prime(n): <span class="fl">1.0</span>})<span class="sc">:.3g}</span><span class="ss">"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MI between dice value and constant:        </span><span class="sc">{</span>dice_mutual_information(dice_value, <span class="kw">lambda</span> n: {<span class="st">"A"</span>: <span class="fl">1.0</span>})<span class="sc">:.3g}</span><span class="ss">"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MI between dice value and other dice:      </span><span class="sc">{</span>dice_mutual_information(dice_value, <span class="kw">lambda</span> n: {m: <span class="dv">1</span><span class="op">/</span><span class="bu">len</span>(DICE_OUTCOMES) <span class="cf">for</span> m <span class="kw">in</span> DICE_OUTCOMES})<span class="sc">:.3g}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MI between dice value and itself:          4.32
+MI between dice value and even/odd:        1
+MI between dice value and prime/not prime: 0.971
+MI between dice value and constant:        0
+MI between dice value and other dice:      0</code></pre>
+</div>
+</div>
+<p>Perhaps unsurprisingly, observing the value of the dice gives the most information about the value of the dice (and the mutual information of a variable with itself always equals the entropy). Observing whether it is even or odd gives 1 bit of information. Observing whether it is prime gives slightly less information. Observing a constant gives no information. Observing the roll of another dice also gives no information (since the probability distribution of outcomes is the same no matter what).</p>
+<p>Now we will examine the question posed at the start of this post: how much information does “true value with probability p, random value with (1-p)” give? Even though this is a random quantity, by Bayesian inference it will always result in a non-uniform distribution of belief over dice values, which will always have less entropy than a uniform distribuion. The plot below compares this strategy to asking whether the dice is even or odd:</p>
+<div id="1502d888-9514-4b2c-aae5-db4629041c7b" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_value_with_prob_p(n, p):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    outcomes <span class="op">=</span> {m: (<span class="dv">1</span><span class="op">-</span>p)<span class="op">/</span><span class="bu">len</span>(DICE_OUTCOMES) <span class="cf">for</span> m <span class="kw">in</span> DICE_OUTCOMES}</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    outcomes[n] <span class="op">+=</span> p</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> outcomes</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>p_arr <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">80</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    p_arr,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    [dice_mutual_information(dice_value, <span class="kw">lambda</span> n: show_value_with_prob_p(n, p)) <span class="cf">for</span> p <span class="kw">in</span> p_arr],</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">".-"</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"p"</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Mutual information"</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Mutual information between dice value and random reveal</span><span class="ch">\n</span><span class="st">as function of reveal probability p"</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">1</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, color<span class="op">=</span><span class="st">"orange"</span>, label<span class="op">=</span><span class="st">"MI of even/odd"</span>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>p095_val <span class="op">=</span> dice_mutual_information(dice_value, <span class="kw">lambda</span> n: show_value_with_prob_p(n, <span class="fl">0.95</span>))</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>plt.axhline(p095_val, linestyle<span class="op">=</span><span class="st">"--"</span>, color<span class="op">=</span><span class="st">"black"</span>, label<span class="op">=</span><span class="ss">f"p=0.95 (MI=</span><span class="sc">{</span>p095_val<span class="sc">:.3g}</span><span class="ss">)"</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>So, the answer to the question from the beginning of the post is that learning the dice value with 95% probability provides <em>dramatically</em> more information than whether it is even or odd. In fact, even if you only learned the dice value with <em>50%</em> probability it would still give more.</p>
+</section>
+<section id="scenario-2-testing-for-extreme-values" class="level3">
+<h3 class="anchored" data-anchor-id="scenario-2-testing-for-extreme-values">Scenario 2: testing for extreme values</h3>
+<p>A value will be considered “extreme” if N≤3 or N≥18. The probability of getting an extreme value is 6/20, so its entropy will be fairly low. Let’s see how different observations inform us about extreme outcomes.</p>
+<div id="0921025e-20de-40a9-b746-4dafeac49794" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> outcome_is_extreme(n):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    is_extreme <span class="op">=</span> n <span class="op">&lt;=</span> <span class="dv">3</span> <span class="kw">or</span> n <span class="op">&gt;=</span> <span class="dv">18</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {is_extreme: <span class="fl">1.0</span>}</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Entropy of extreme outcome:       </span><span class="sc">{</span>dice_mutual_information(outcome_is_extreme, outcome_is_extreme)<span class="sc">:.3g}</span><span class="ss"> bits"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MI from exact dice value:         </span><span class="sc">{</span>dice_mutual_information(outcome_is_extreme, dice_value)<span class="sc">:.3g}</span><span class="ss"> bits"</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MI from learning even/odd:        </span><span class="sc">{</span>dice_mutual_information(outcome_is_extreme, <span class="kw">lambda</span> n: {is_even(n): <span class="fl">1.0</span>})<span class="sc">:.3g}</span><span class="ss"> bits"</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MI from learning prime/not prime: </span><span class="sc">{</span>dice_mutual_information(outcome_is_extreme, <span class="kw">lambda</span> n: {is_prime(n): <span class="fl">1.0</span>})<span class="sc">:.3g}</span><span class="ss"> bits"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MI from learning ≤10:             </span><span class="sc">{</span>dice_mutual_information(outcome_is_extreme, <span class="kw">lambda</span> n: {n <span class="op">&lt;=</span> <span class="dv">10</span>: <span class="fl">1.0</span>})<span class="sc">:.3g}</span><span class="ss"> bits"</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> random_plus_minus_1(n):</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> {n: <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, (n<span class="op">+</span><span class="dv">1</span>) <span class="op">%</span> D: <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, (n<span class="op">-</span><span class="dv">1</span>) <span class="op">%</span> D: <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>}</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Handle wrap-around case well</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="dv">0</span> <span class="kw">in</span> out:</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>        out[D] <span class="op">=</span> out[<span class="dv">0</span>]</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>        <span class="kw">del</span> out[<span class="dv">0</span>]</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MI from learning value ±1:        </span><span class="sc">{</span>dice_mutual_information(outcome_is_extreme, random_plus_minus_1)<span class="sc">:.3g}</span><span class="ss"> bits"</span>)</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>, <span class="dv">19</span>):</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"MI from learning value mod </span><span class="sc">{</span>m<span class="sc">:&gt;2d}</span><span class="ss">:    </span><span class="sc">{</span>dice_mutual_information(outcome_is_extreme, <span class="kw">lambda</span> n: {n<span class="op">%</span>m: <span class="fl">1.0</span>})<span class="sc">:.3g}</span><span class="ss"> bits"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Entropy of extreme outcome:       0.881 bits
+
+MI from exact dice value:         0.881 bits
+
+MI from learning even/odd:        0 bits
+MI from learning prime/not prime: 0.0128 bits
+MI from learning ≤10:             0 bits
+
+MI from learning value ±1:        0.698 bits
+
+MI from learning value mod  3:    0.00162 bits
+MI from learning value mod  4:    0.0349 bits
+MI from learning value mod  5:    0.0323 bits
+MI from learning value mod  6:    0.206 bits
+MI from learning value mod  7:    0.0548 bits
+MI from learning value mod  8:    0.33 bits
+MI from learning value mod  9:    0.406 bits
+MI from learning value mod 10:    0.281 bits
+MI from learning value mod 11:    0.281 bits
+MI from learning value mod 12:    0.281 bits
+MI from learning value mod 13:    0.281 bits
+MI from learning value mod 14:    0.281 bits
+MI from learning value mod 15:    0.481 bits
+MI from learning value mod 16:    0.681 bits
+MI from learning value mod 17:    0.881 bits
+MI from learning value mod 18:    0.881 bits</code></pre>
+</div>
+</div>
+<p>This variable has much lower entropy than the dice value itself (≈0.9 bits instead of ≈4.3). Of course, learning the dice value also tells you whether it is extreme.</p>
+<p>Interestingly, while learning even/odd and prime/not prime gave ≈1 bit of information for the dice value, they give almost no information about whether the value is extreme. Why is this? In both cases, it is because the ratio of extreme : non-extreme values is similar regardless of the outcome. For even:odd exactly 3:7 values are extreme for both even or odd numbers. 3/8 primes are extreme values while 3/12 non-primes are exteme. Learning whether N≤10 is the same.</p>
+<p>A noisy measurement of the dice value which has a 1/3 chance of being 1 too high and 1/3 chance of being 1 too low also provides almost all information: this is not surprising, since only values of 3, 4, 17 or 18 will be uncertain.</p>
+<p>Finally, modulo provides a lot of information depending on the modulo value. Any value above 17 provides complete information (which should be clear if you think about it). Intermediate values provide an intermediate value of information. 9 is an interesting local optimum which provides more value than learning the value mod 8 or mod 10. Let’s look into it with the <code>explain=True</code> kwarg:</p>
+<div id="b27d8c16-12fe-4ae3-a26d-83432972deaa" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>dice_mutual_information(outcome_is_extreme, <span class="kw">lambda</span> n: {n<span class="op">%</span><span class="dv">9</span>: <span class="fl">1.0</span>}, explain<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Entropy of X1: 0.8813 bits
+    Case X2=0:
+      Prob:      +0.1
+      H(X1|X2):  +1 bits
+      Info gain: -0.1187 bits
+    Case X2=1:
+      Prob:      +0.15
+      H(X1|X2):  +0.9183 bits
+      Info gain: -0.037 bits
+    Case X2=2:
+      Prob:      +0.15
+      H(X1|X2):  +0.9183 bits
+      Info gain: -0.037 bits
+    Case X2=3:
+      Prob:      +0.1
+      H(X1|X2):  +1 bits
+      Info gain: -0.1187 bits
+    Case X2=4:
+      Prob:      +0.1
+      H(X1|X2):  +0 bits
+      Info gain: +0.8813 bits
+    Case X2=5:
+      Prob:      +0.1
+      H(X1|X2):  +0 bits
+      Info gain: +0.8813 bits
+    Case X2=6:
+      Prob:      +0.1
+      H(X1|X2):  +0 bits
+      Info gain: +0.8813 bits
+    Case X2=7:
+      Prob:      +0.1
+      H(X1|X2):  +0 bits
+      Info gain: +0.8813 bits
+    Case X2=8:
+      Prob:      +0.1
+      H(X1|X2):  +0 bits
+      Info gain: +0.8813 bits</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>0.40580214901434575</code></pre>
+</div>
+</div>
+<p>Here, 5/9 values (cumulative probability 0.5) completely rule out any extreme value. The other values (0 to 4) slightly <em>increase</em> the probability of a value being extreme, but overall the information gain works out to be large.</p>
+</section>
+<section id="scenario-3-multi-stage-tests" class="level3">
+<h3 class="anchored" data-anchor-id="scenario-3-multi-stage-tests">Scenario 3: multi-stage tests</h3>
+<p>We will still try to determine whether a value is “extreme”. However, instead of doing a single test, we will now perform a <em>series</em> of tests, represented by tuple values in code.</p>
+<div id="f1eabbde-8d14-4a73-9817-78053a352e9f" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Entropy of extreme outcome: </span><span class="sc">{</span>dice_mutual_information(outcome_is_extreme, outcome_is_extreme)<span class="sc">:.3g}</span><span class="ss"> bits"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MI of even/odd AND ≤10:     </span><span class="sc">{</span>dice_mutual_information(outcome_is_extreme, <span class="kw">lambda</span> n: {(n <span class="op">&lt;=</span> <span class="dv">10</span>, is_even(n)): <span class="fl">1.0</span>})<span class="sc">:.3g}</span><span class="ss"> bits"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MI of n%5 and n%6:          </span><span class="sc">{</span>dice_mutual_information(outcome_is_extreme, <span class="kw">lambda</span> n: {(n<span class="op">%</span><span class="dv">5</span>, n<span class="op">%</span><span class="dv">6</span>): <span class="fl">1.0</span>})<span class="sc">:.3g}</span><span class="ss"> bits"</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MI of n%3 and random ±1:    </span><span class="sc">{</span>dice_mutual_information(outcome_is_extreme, <span class="kw">lambda</span> n: {(n<span class="op">%</span><span class="dv">3</span>, k): v <span class="cf">for</span> k, v <span class="kw">in</span> random_plus_minus_1(n).items()})<span class="sc">:.3g}</span><span class="ss"> bits"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Entropy of extreme outcome: 0.881 bits
+
+MI of even/odd AND ≤10:     0.0349 bits
+MI of n%5 and n%6:          0.881 bits
+MI of n%3 and random ±1:    0.881 bits</code></pre>
+</div>
+</div>
+<p>All of these cases show that information is <em>non-additive</em>. The most obvious case is learning even/odd and ≤10. Independently these both give ZERO information (shown in the previous subsection). However, together they provide a small amount of information. This is just because of the relative ratios of different outcomes changes. To give an example, if the outcome <code>False, False</code> is observed, the only extreme value is 19, whereas the non-extreme values are 11, 13, 15, 17. The ratio of extreme values changes from 3/10 to 1/5, thereby providing an information gain. The full table of outcomes is below.</p>
+<div id="6bdd1b73-7e5e-4ef0-be75-28f4a79b66df" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dice_mutual_information(outcome_is_extreme, <span class="kw">lambda</span> n: {(n <span class="op">&lt;=</span> <span class="dv">10</span>, is_even(n)): <span class="fl">1.0</span>}, explain<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Entropy of X1: 0.8813 bits
+    Case X2=(False, False):
+      Prob:      +0.25
+      H(X1|X2):  +0.7219 bits
+      Info gain: +0.1594 bits
+    Case X2=(False, True):
+      Prob:      +0.25
+      H(X1|X2):  +0.971 bits
+      Info gain: -0.08966 bits
+    Case X2=(True, False):
+      Prob:      +0.25
+      H(X1|X2):  +0.971 bits
+      Info gain: -0.08966 bits
+    Case X2=(True, True):
+      Prob:      +0.25
+      H(X1|X2):  +0.7219 bits
+      Info gain: +0.1594 bits</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>0.034851554559677346</code></pre>
+</div>
+</div>
+<p>The last two examples show non-additivity. Firstly, even though learning n%5 and n%6 provides only 0.0323 bits and 0.206 bits respectively, when observed together the number can be completely deduced. This is because all numbers in 1 to 20 have a unique (n%5, n%6) tuple. Similarly, even though n%3 provides only 0.00162 bits, when combined with the noisy ±1 measurement it completely disambiguates the “boundary” measurements of 3, 4, 17, and 18.</p>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>This is the end of the tutorial, but please do play around with the notebook and write your own functions!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/austintripp\.ca");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="mailto:austin.james.tripp%5Bat%5Dgmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a></p>
+<p>© Austin Tripp · All opinions are my own (not my employer’s). · Website powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>How to ask for code help effectively (since I’m not a code psychic). – Austin Tripp's website</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Austin Tripp’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../resources/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#summary" id="toc-summary" class="nav-link active" data-scroll-target="#summary">Summary</a>
+  <ul class="collapse">
+  <li><a href="#example-of-a-good-request" id="toc-example-of-a-good-request" class="nav-link" data-scroll-target="#example-of-a-good-request">Example of a good request</a></li>
+  </ul></li>
+  <li><a href="#anatomy-of-a-good-request" id="toc-anatomy-of-a-good-request" class="nav-link" data-scroll-target="#anatomy-of-a-good-request">Anatomy of a good request</a>
+  <ul class="collapse">
+  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a>
+  <ul class="collapse">
+  <li><a href="#part-1-the-desired-outcome" id="toc-part-1-the-desired-outcome" class="nav-link" data-scroll-target="#part-1-the-desired-outcome">Part 1: the desired outcome</a></li>
+  <li><a href="#part-2-the-observed-outcome" id="toc-part-2-the-observed-outcome" class="nav-link" data-scroll-target="#part-2-the-observed-outcome">Part 2: the observed outcome</a></li>
+  </ul></li>
+  <li><a href="#minimal-working-example-mwe" id="toc-minimal-working-example-mwe" class="nav-link" data-scroll-target="#minimal-working-example-mwe">Minimal working example (MWE)</a>
+  <ul class="collapse">
+  <li><a href="#w-working" id="toc-w-working" class="nav-link" data-scroll-target="#w-working">W (working)</a></li>
+  <li><a href="#m-minimal" id="toc-m-minimal" class="nav-link" data-scroll-target="#m-minimal">M (minimal)</a></li>
+  <li><a href="#e-example" id="toc-e-example" class="nav-link" data-scroll-target="#e-example">E (example)</a></li>
+  </ul></li>
+  <li><a href="#information-on-os-and-code" id="toc-information-on-os-and-code" class="nav-link" data-scroll-target="#information-on-os-and-code">Information on OS and code</a></li>
+  <li><a href="#description-of-what-you-have-tried" id="toc-description-of-what-you-have-tried" class="nav-link" data-scroll-target="#description-of-what-you-have-tried">Description of what you have tried</a></li>
+  </ul></li>
+  <li><a href="#common-mistakes" id="toc-common-mistakes" class="nav-link" data-scroll-target="#common-mistakes">Common mistakes</a>
+  <ul class="collapse">
+  <li><a href="#not-working-as-a-description" id="toc-not-working-as-a-description" class="nav-link" data-scroll-target="#not-working-as-a-description">“Not working” as a description</a></li>
+  <li><a href="#no-mwe" id="toc-no-mwe" class="nav-link" data-scroll-target="#no-mwe">No MWE</a></li>
+  <li><a href="#screenshots" id="toc-screenshots" class="nav-link" data-scroll-target="#screenshots">Screenshots</a></li>
+  <li><a href="#custom-filespackages" id="toc-custom-filespackages" class="nav-link" data-scroll-target="#custom-filespackages">Custom files/packages</a></li>
+  <li><a href="#gpuscuda" id="toc-gpuscuda" class="nav-link" data-scroll-target="#gpuscuda">GPUs/CUDA</a></li>
+  </ul></li>
+  <li><a href="#why-this-webpage" id="toc-why-this-webpage" class="nav-link" data-scroll-target="#why-this-webpage">Why this webpage?</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">How to ask for code help effectively (since I’m not a code psychic).</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<p>If I have referred you to this page, then most likely you’ve asked me for help with your code without providing enough information for me to help you. Asking for coding help is a skill itself, and when you are just starting out it might not be clear what information to provide when asking a question. Essentially, I think you should provide:</p>
+<ol type="1">
+<li>A description of the goal of the code <em>and</em> how what you have does not achieve that goal.</li>
+<li>A <em>minimal working example</em> (MWE).</li>
+<li>Information about your operating system (e.g.&nbsp;Mac, Windows) and code environment (e.g.&nbsp;python 3.7 with numpy v1.2.3).</li>
+<li>If helpful, a short description of what you have tried.</li>
+</ol>
+<p>These criteria are explained more below, but before diving into that I will give an example of a <em>good</em> request.</p>
+<section id="example-of-a-good-request" class="level2">
+<h2 class="anchored" data-anchor-id="example-of-a-good-request">Example of a good request</h2>
+<p>Hi, I’m trying to compute the logarithm of a number in python, but the program crashes instead of outputting a number.</p>
+<p>I simplified my script down to the following MWE:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(math.log(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>When I run it, I get the following:</p>
+<pre><code>Traceback (most recent call last):
+  File "~/calculate_log.py", line 2, in &lt;module&gt;
+    print(math.log(0))
+ValueError: math domain error</code></pre>
+<p>I am running on MacOS, Python 3.9.16. I Googled this error but cannot find a clear answer<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Can you suggest what might be going wrong?</p>
+</section>
+</section>
+<section id="anatomy-of-a-good-request" class="level1">
+<h1>Anatomy of a good request</h1>
+<p>Here I explain my formula in more detail.</p>
+<section id="description" class="level2">
+<h2 class="anchored" data-anchor-id="description">Description</h2>
+<p>The essence of code “not working” is that it behaves differently than one desires. Clearly explaining this divergence is key to framing the issue so that I know what a “successful” resolution of your problem looks like. This requires explaining <em>both</em> what your desired outcome is <em>and</em> what you actually observe.</p>
+<section id="part-1-the-desired-outcome" class="level3">
+<h3 class="anchored" data-anchor-id="part-1-the-desired-outcome">Part 1: the desired outcome</h3>
+<p>Sometimes people omit this, thinking that the desired behavior is obvious (and often it is). But please don’t assume this: I may not know the background of your problem and it is always safer to tell me explicitly what you want.</p>
+<p>For example, in the <code>log(0)</code> example above the resolution might depend on what you desire:</p>
+<ul>
+<li>If you wanted to compute a logarithm of a general number and put 0 in as a placeholder, then the issue is simply that log is not defined at this value. Resolution: choose a different placeholder.</li>
+<li>If your goal is to compute <code>log(0)</code> specifically, then this goal is infeasible, since <code>log(0)</code> is not defined. The resolution is that your goal does not make sense.</li>
+</ul>
+<p>So please, don’t leave out this part!</p>
+</section>
+<section id="part-2-the-observed-outcome" class="level3">
+<h3 class="anchored" data-anchor-id="part-2-the-observed-outcome">Part 2: the observed outcome</h3>
+<p>Generally, “not working” code will either:</p>
+<ol type="1">
+<li>Crash (and raise an error)</li>
+<li>Produce an output without crashing, but the output is not what you expect.</li>
+</ol>
+<p>It is important to help me understand which of these outcomes it is, because the steps to resolve them are quite different. Crashing programs have a clear mistake which need to be identified. Non-crashing programs are usually logic mistakes (writing the wrong steps by accident) or misunderstanding some documentation.</p>
+<p>If a program crashes, it is helpful to include the error message, because this almost always contains helpful information. If a program does not crash, then it is helpful to include its output to save me the time of running it myself.</p>
+</section>
+</section>
+<section id="minimal-working-example-mwe" class="level2">
+<h2 class="anchored" data-anchor-id="minimal-working-example-mwe">Minimal working example (MWE)</h2>
+<p>A MWE is the simplest way of presenting the error to me. It serves a few functions:</p>
+<ul>
+<li>Saves me the time of writing a program myself to reproduce the error</li>
+<li>Ensures that I can reproduce your error exactly as you see it (instead of another version)</li>
+<li>Helps both of us narrow down where the error is occurring</li>
+</ul>
+<p>However, not all code is a MWE! Each of the letters (M,W,E) is important. Let’s go through them:</p>
+<section id="w-working" class="level3">
+<h3 class="anchored" data-anchor-id="w-working">W (working)</h3>
+<p>Here, “working” does not mean that the code actually works (otherwise you would not be asking for help). It means that I can 1) run the code and 2) get the same error as you do.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>Both parts of this are important: 1. The code should run. This means it must be a complete script, not a code fragment. 2. It should produce the error you observe (not some other error).</p>
+<p>For contrast, here is an attempted MWE for the example above which I would not consider to be “working”:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(math.log(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Although this is indeed the problematic line of code, when I run it I get a <em>different</em> error because the <code>import math</code> statement was not included:</p>
+<pre><code>Traceback (most recent call last):
+  File "~/calculate_log.py", line 1, in &lt;module&gt;
+    print(math.log(0))
+NameError: name 'math' is not defined</code></pre>
+<p>Of course, in this simple example I could probably figure out what imports are missing, but this should not be my job. Please just ensure that it runs.</p>
+<p>Importantly, it needs to run for <em>me</em>, not just you. For example, if your code refers to specific files on your computer, then it won’t run on my computer unless I also have those files.</p>
+</section>
+<section id="m-minimal" class="level3">
+<h3 class="anchored" data-anchor-id="m-minimal">M (minimal)</h3>
+<p>The code should be reasonably short (&lt; 100 lines). I probably do not have time to read through 10000 lines of code (unless you are paying me).</p>
+</section>
+<section id="e-example" class="level3">
+<h3 class="anchored" data-anchor-id="e-example">E (example)</h3>
+<p>Of course you may fairly ask:</p>
+<blockquote class="blockquote">
+<p>But Austin, the error is occurring in my 100000 code base. I don’t know what part is responsible. Shouldn’t I include the whole thing?</p>
+</blockquote>
+<p>No! A MWE is, fundamentally, an <em>example</em> of your problem, not a <em>detailed record</em>. When you want to find bugs in a huge code base, you need to find out what part is responsible, and constructing a small example which reproduces the problem is an important part of this. Often, the effort of just trying to construct a MWE will provide the insight needed to solve your problem (without needing to ask me or be pointed to this document).</p>
+</section>
+</section>
+<section id="information-on-os-and-code" class="level2">
+<h2 class="anchored" data-anchor-id="information-on-os-and-code">Information on OS and code</h2>
+<p>This can be brief, but many problems are OS specific, and if I am trying to debug an issue on a different OS than you I should at least know that. Also, knowing the version of python and versions of your python library can help (again, because some issues will only appear on certain versions).</p>
+</section>
+<section id="description-of-what-you-have-tried" class="level2">
+<h2 class="anchored" data-anchor-id="description-of-what-you-have-tried">Description of what you have tried</h2>
+<p>Already, the act of creating a MWE was probably enough. If however you spent time researching possible causes for the issue, it could be helpful to tell me (since it may save my time later on).</p>
+</section>
+</section>
+<section id="common-mistakes" class="level1">
+<h1>Common mistakes</h1>
+<p>Here are some unhelpful patterns which I would like to highlight in particular:</p>
+<section id="not-working-as-a-description" class="level2">
+<h2 class="anchored" data-anchor-id="not-working-as-a-description">“Not working” as a description</h2>
+<blockquote class="blockquote">
+<p>Hi, my code below is not working, can you help?</p>
+</blockquote>
+<p>I need to know more specifically what you consider to be “working” and what is actually happening. Read above.</p>
+</section>
+<section id="no-mwe" class="level2">
+<h2 class="anchored" data-anchor-id="no-mwe">No MWE</h2>
+<blockquote class="blockquote">
+<p>I’m trying to compute the logarithm of small positive numbers but am getting a “math domain error” even though they are in the domain of the log function. Can you help?</p>
+</blockquote>
+<p>How small are the numbers? What programming language are you using? What logarithm implementation? I do not know these things and therefore cannot be of much help. This is where a MWE is helpful.</p>
+</section>
+<section id="screenshots" class="level2">
+<h2 class="anchored" data-anchor-id="screenshots">Screenshots</h2>
+<p>Please do not screenshot error messages you get: include them as text. This helps me Google them without needing to re-type them. It’s only marginally slower for you, but much faster for me.</p>
+</section>
+<section id="custom-filespackages" class="level2">
+<h2 class="anchored" data-anchor-id="custom-filespackages">Custom files/packages</h2>
+<p>If your MWE looks like:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> my_custom_package</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="bu">open</span>(<span class="st">"file/on/my/computer.txt"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>my_custom_package.process_file(f)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>then I probably cannot run it unless I have access to the same package and same files on your computer. Please ensure that I can also run the MWE.</p>
+</section>
+<section id="gpuscuda" class="level2">
+<h2 class="anchored" data-anchor-id="gpuscuda">GPUs/CUDA</h2>
+<p>If your code uses <code>pytorch</code> or similar, it is relevant to know whether your machine has a GPU and if so, what version of CUDA it is running. Please include this. A lot of errors end up being GPU-specific.</p>
+</section>
+</section>
+<section id="why-this-webpage" class="level1">
+<h1>Why this webpage?</h1>
+<p>Enough people have asked me for code help without providing enough information that I thought it would be easier to write a good answer once and link to it instead of writing a bespoke answer every time. Also, in the past I have found it hard to resist putting in some sarcastic comments along the line of “I’m not a code psychic” which were probably not helpful 😅</p>
+</section>
+<section id="further-reading" class="level1">
+<h1>Further reading</h1>
+<p>I also found this guide from <a href="https://stackoverflow.com/help/how-to-ask">Stack Overflow</a> helpful.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Note that if you do Google this in real life, you actually do find a clear answer, and I generally expect you to do this level of basic Googling before asking me for help. This is just for illustration purposes.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Perhaps the name “minimal non-working example” would be more apt.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/austintripp\.ca");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="mailto:austin.james.tripp%5Bat%5Dgmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a></p>
+<p>© Austin Tripp · All opinions are my own (not my employer’s). · Website powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

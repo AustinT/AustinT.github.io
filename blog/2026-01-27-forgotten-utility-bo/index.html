@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-01-27">
+
+<title>We have forgotten about utility functions in BO (whoops!) – Austin Tripp’s website</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Austin Tripp’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#primer-how-the-utility-assumption-ends-up-in-expected-improvement" id="toc-primer-how-the-utility-assumption-ends-up-in-expected-improvement" class="nav-link active" data-scroll-target="#primer-how-the-utility-assumption-ends-up-in-expected-improvement">Primer: how the utility assumption ends up in expected improvement</a></li>
+  <li><a href="#whats-wrong-with-this-utility-function" id="toc-whats-wrong-with-this-utility-function" class="nav-link" data-scroll-target="#whats-wrong-with-this-utility-function">What’s wrong with this utility function?</a></li>
+  <li><a href="#how-did-this-utility-function-come-to-be-used-everywhere" id="toc-how-did-this-utility-function-come-to-be-used-everywhere" class="nav-link" data-scroll-target="#how-did-this-utility-function-come-to-be-used-everywhere">How did this utility function come to be used everywhere?</a></li>
+  <li><a href="#warped-gps-are-not-the-answer" id="toc-warped-gps-are-not-the-answer" class="nav-link" data-scroll-target="#warped-gps-are-not-the-answer">Warped GPs are not the answer</a></li>
+  <li><a href="#properly-supporting-more-general-utility-functions-might-be-hard" id="toc-properly-supporting-more-general-utility-functions-might-be-hard" class="nav-link" data-scroll-target="#properly-supporting-more-general-utility-functions-might-be-hard">Properly supporting more general utility functions might be hard</a></li>
+  <li><a href="#summary-this-is-tough-but-worth-it" id="toc-summary-this-is-tough-but-worth-it" class="nav-link" data-scroll-target="#summary-this-is-tough-but-worth-it">Summary: this is tough but worth it</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">We have forgotten about utility functions in BO (whoops!)</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">machine learning</div>
+    <div class="quarto-category">bayesian optimization</div>
+    <div class="quarto-category">opinion</div>
+    <div class="quarto-category">_recent-highlight</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 27, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Bayesian decision theory is one of the best justifications for BO- particularly for myopic acquisition functions like expected improvement. However, these acquisition functions are only “optimal” if one’s utility function is <span class="math inline">u(y) =
+y</span> (the identity function). Have BO researchers (and BO users) basically <em>forgotten</em> to swap this out for “real” utility functions in practice? In this post I argue that we have basically overlooked this detail (to our own detriment). It’s not <em>too</em> hard to fix, but unfortunately the <span class="math inline">u(y) = y</span> assumption is actually quite deeply embedded, and completely removing it will make things more complicated. Ultimately, despite the difficulty, I think we should do it anyway.</p>
+<section id="primer-how-the-utility-assumption-ends-up-in-expected-improvement" class="level2">
+<h2 class="anchored" data-anchor-id="primer-how-the-utility-assumption-ends-up-in-expected-improvement">Primer: how the utility assumption ends up in expected improvement</h2>
+<p>I will use the <em>expected improvement</em> (EI) acquisition function as a placeholder for utility-based acquisition functions in general, and present a quick derivation. A better and more thorough derivation can be found in §5.2 of “Bayesian Optimization” by Garnett.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p><strong>Problem setting.</strong> We are maximizing a noiseless function <span class="math inline">y = f(x)</span>. We have an evaluation history <span class="math inline">\{{(x_1, y_1), \ldots, (x_n, y_n)\}}</span>. We can query 1 more x location: what should we do?</p>
+<p><strong>Utility Functions</strong> the answer depends on what we want. There is an element of risk/reward trade-off (eg should we do a risky evaluation which might be very large or a modest point which we are more confident about), and also some ambiguity about how the previous solutions should affect our decisions. EI starts by making an innocent assumption: we only care about the <em>single best point</em> we evaluate. This means there is an incumbent best point</p>
+<p><span class="math display">y^* = \max_{i\leq1\leq n} y_i</span></p>
+<p>and, if our final evaluation returns <span class="math inline">y_{n+1} &lt; y^\*</span> then that’s ok, we will just go with <span class="math inline">y^*</span>. Otherwise we will go with <span class="math inline">y_{n+1}</span>. We can only <em>gain</em> from the final evaluation, not lose anything.</p>
+<p><strong>Bayesian decision theory.</strong> Next, Bayesian decision theory says that we should make this decision by maximizing <em>expected utility</em>, which maps each outcome through a utility function <span class="math inline">u</span> that says how “good” the outcome is. Assuming <span class="math inline">u(y_1, \ldots, y_n, y_{n+1})=\max_i y_i</span> and doing the math, you get an expected utility</p>
+<p><span class="math display"> E_{y_{n+1}} \left[ \max\left(0, y_{n+1}-y^* \right)\right]</span></p>
+<p>which is the expected amount of improvement (hence the name expected improvement).</p>
+<p><strong>Summary.</strong> The utility function appears when Bayesian decision theory is invoked, and the utility of a <em>set</em> of solutions is just the maximum value in the set.</p>
+</section>
+<section id="whats-wrong-with-this-utility-function" class="level2">
+<h2 class="anchored" data-anchor-id="whats-wrong-with-this-utility-function">What’s wrong with this utility function?</h2>
+<p>Bayesian decision theory states that preferences over uncertain outcomes can be cast as maximizing expected utility of <em>some</em> utility function: ie for any given set of preferences there must exist a utility function. It <em>does not</em> say that if you pick a utility function and maximize expected utility you will be acting according to your preferences. Therefore, the utility function fundamentally must be an <em>input</em> to the problem, not something that can be arbitrarily set.</p>
+<p>Digging into the assumptions behind expected utility a bit further,<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> the utility function’s values basically play 2 roles:</p>
+<ol type="1">
+<li>It <em>orders</em> the outcomes (saying which outcomes are better and worse, and which are equivalent).</li>
+<li>It defines the user’s <em>risk reward</em> over outcomes. Assuming <span class="math inline">u(A) &lt; u(B) &lt;
+u(C)</span> it assumes the user would be equally ok with receiving B with 100% chance or taking the gamble “A with probability p, otherwise C” where <span class="math inline">p =
+\left(u(C) - u(B)\right) / \left(u(C) - u(A) \right)</span>.</li>
+</ol>
+<p><span class="math inline">u(y) = y</span> obviously correctly orders outcomes in the case of maximization (where higher is always better), but who knows what the user’s risk-reward trade-off actually is? The bet with probability p is a highly specific assumption that seems highly unlikely to hold for users in general. To make it a bit more concrete, let’s assume <span class="math inline">y^* = 1</span> (ie best score found so far is 1). If presented with the options:</p>
+<ol type="1">
+<li>1.5 (100% probability)</li>
+<li>0.5 (50% probability), 2.1 (50% probability)</li>
+<li>0.9 (90% probability), 7 (10% probability)</li>
+</ol>
+<p>Expected improvement under the standard utility function would choose option 3 because it has the highest expected improvement, even though it is the riskiest option.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> To give a stylized real-world example of where this is might be unreasonable: in drug discovery there are often competitor drugs, and one’s drug needs to be <em>better</em> in order to get approved. If the competitor drug has a potency of 1, then <em>matching</em> them doesn’t succeed: you need to be better. I bet many decision makers would prefer option 1 in this case: it gets you “over the line” with certainty. Their utility function would probably be flat before <span class="math inline">y=1</span>, then increase.</p>
+</section>
+<section id="how-did-this-utility-function-come-to-be-used-everywhere" class="level2">
+<h2 class="anchored" data-anchor-id="how-did-this-utility-function-come-to-be-used-everywhere">How did this utility function come to be used everywhere?</h2>
+<p>I’m not sure- and don’t really have time to go to the literature to find out. My guess is just a by-product of how papers are written. Academic papers aren’t really “users” of the algorithms so they don’t have strong preferences that would form the basis for a utility function. At the same time they need to make <em>some</em> choice to run experiments, and a choice like <span class="math inline">u(y) = y</span> seems more “neutral” than something like <span class="math inline">u(y) = \min\left(y, 3\sqrt{y} -1\right)</span>, plus it allows EI to be computed analytically, so authors just go with it. Authors of other papers then reimplement the method and use the implementation in the original paper with <span class="math inline">u(y)=y</span>. Over time, the original utility function gets forgotten and users concentrate on the case that is actually implemented and studied.</p>
+<p>My overall point is that using <span class="math inline">u(y)=y</span> was probably <em>not</em> a deliberate choice or statement about how BO methods should be used in general, it was just a simple design choice that stuck around.</p>
+</section>
+<section id="warped-gps-are-not-the-answer" class="level2">
+<h2 class="anchored" data-anchor-id="warped-gps-are-not-the-answer">Warped GPs are not the answer</h2>
+<p>A plausible-sounding workaround is the following: instead of creating a surrogate model of the unknown function f(x), create a surrogate model of <span class="math inline">g(x)=u(f(x))</span> and run BO with this. After all, <span class="math inline">g(x)</span> is effectively just another black-box function. This model, commonly called a <em>warped GP</em><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, might seem to be the ideal solution: it uses the utility function without needing to adjust the underlying BO algorithm. Problem solved?</p>
+<p>Unfortunately I think not. The main issue I foresee is that real-world utility functions u might violate a lot of assumptions commonly made about surrogate models: for example, differentiability, continuity, or stationarity. For example, consider the drug discovery example I gave earlier about finding molecules that bind better than a competitor’s molecule. A lot of molecules with binding ≤ 1 will have a utility score of exactly 0, with a sudden jump in g once binding exceeds 1. This is probably hard to fit a model to: it turns what might be a smooth relationship between structure and binding into a discrete jump, and probably masks the learning signal because a lot of improvements in binding (eg 0.7 -&gt; 0.8 -&gt; 0.9) will just look like a constant zero. It’s also probably harder to fit a good noise model in utility space. An actual binding measurement probably has (somewhat) Gaussian noise of a similar magnitude for most binding strengths. However, mapped through a utility function to give noise on g, the noise would be highly non-Gaussian and therefore harder to model.</p>
+<p>A secondary issue is that such a model goes against the decision-theoretic roots of BO, which fundamentally posits that outcomes and preferences are conceptually separate. I think this separation is one of BO’s biggest strengths, especially when compared to other methods (like generative models) which mix preferences and beliefs together in a confusing way (and are thus a bit harder to tune and use).</p>
+<p>Of course we can abandon principled appeals to theory, it’s not <em>impossible</em> to overcome these modelling difficulties. In this sense warped GPs <em>could</em> work. The main point I want to convey is that they are a difficult choice that comes with a lot of “hidden” drawbacks, and therefore we (the BO community) shouldn’t just accept them as the sole solution and move on.</p>
+</section>
+<section id="properly-supporting-more-general-utility-functions-might-be-hard" class="level2">
+<h2 class="anchored" data-anchor-id="properly-supporting-more-general-utility-functions-might-be-hard">Properly supporting more general utility functions might be hard</h2>
+<p>If we stick to the principles of Bayesian decision theory, the “right” way to handle utility functions is as an <em>input</em> to the BO loop. A surrogate model is constructed, and the acquisition function should be computed on the <em>utilities</em> of the output, not the raw outputs themselves. Unfortunately this introduces a lot of potential difficulties.</p>
+<p>To start, what restrictions should exist on u, if any? If u is itself a black box function then something like numerical integration would be necessary to evaluate the acquisition function at any point. That adds a lot of computation cost, and that’s just for a <em>pointwise</em> estimation, not even the <em>gradient</em> <span class="math inline">\nabla_x \alpha(x)</span>.</p>
+<p>I think we can’t totally dismiss this worst-case scenario, but intuitively it feels like most users should be happy with <em>analytic</em> utility functions, possibly even ones which are continuous, and maybe even differentiable (almost everywhere). This includes functions like:</p>
+<ul>
+<li><span class="math inline">u(y) = y</span></li>
+<li><span class="math inline">u(y) = \sqrt{y}</span></li>
+<li><span class="math inline">u(y) = \min\left(y, 3\sqrt{y}-1\right)</span></li>
+</ul>
+<p>This feels like a pretty broad class of functions for users to express their preferences with, and one which is more amenable to BO. Acquisition values may still need to be computed with numerical integration, but I bet this could be partially cached or done analytically (at least with Gaussian posteriors). You should even be able to compute acquisition function gradients using the analytic derivative of u.</p>
+<p>However, even in this more optimistic case BO software would look a lot more complicated: essentially every acquisition function would have custom computational requirements which need to be specified by the user (because having BO researchers provide out of the box utility functions sort of defeats the point of the user providing this as an input).</p>
+</section>
+<section id="summary-this-is-tough-but-worth-it" class="level2">
+<h2 class="anchored" data-anchor-id="summary-this-is-tough-but-worth-it">Summary: this is tough but worth it</h2>
+<p>Given how hard it would be to retrofit user-provided utility functions onto BO, should we (the BO research community) just not do it? While the lazy option is certainly tempting, I think at least <em>some</em> people in the BO community should work on this. Here is what I think pursuing this could lead to:</p>
+<ul>
+<li>A way for the user to input their risk/reward preferences, giving them more direct control over the explore/exploit behaviours of BO algorithms (something which many users would like).</li>
+<li>A more principled starting point for cost-aware BO, which usually needs to assume a value-cost trade off.</li>
+<li>Automatically the cases of maximization, minimization, and targeting a specific value get handled in a unified way (via the utility function). No more confusing the EI equations for maximization vs minimization!</li>
+<li>A utility-based framework naturally generalizes to multi-objective optimization (the utility function is basically a kind of scalarization).</li>
+</ul>
+<p>Overall I think there is potentially for at least one good JMLR-style paper here, or a NeurIPS/ICML/ICLR paper introducing a software library supporting arbitrary utility functions for BO. Plus, there are some acquisition functions without a clear grounding in Bayesian decision theory (eg UCB), and some theoretical work putting utility functions in would be welcome.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> If any of this sounds interesting, feel free to get in touch with me.</p>
+<p><strong>Final thought</strong>: remember, in Bayesian ML we do things not because they are easy, but because they are <em>right</em>.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Website here: <a href="https://bayesoptbook.com/" class="uri">https://bayesoptbook.com/</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>See <a href="../../blog/2025-11-02-expected-utility/">this post</a> for more details on these assuptions.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>EI values are 1: 0.5 2: 0.55 3: 0.6.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Original paper: <a href="https://proceedings.neurips.cc/paper/2003/hash/6b5754d737784b51ec5075c0dc437bf0-Abstract.html">Warped Gaussian Processes, NeurIPS 2003</a>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Eg for UCB I imagine the equivalent notion would be an upper bound on the <em>utility</em> (rather than an upper bound on the function), but I’m not sure if all the desirable properties of UCB would transfer to this case.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/austintripp\.ca");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="mailto:austin.james.tripp%5Bat%5Dgmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a></p>
+<p>© Austin Tripp · All opinions are my own (not my employer’s). · Website powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

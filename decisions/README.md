@@ -1,1 +1,0 @@
-Contains markdown files explaining technical decisions for this website.
