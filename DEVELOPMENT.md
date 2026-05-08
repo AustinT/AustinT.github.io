@@ -31,15 +31,16 @@ quarto render src/
 
 ## How to deploy
 
-After rendering, generate legacy URL redirects and publish:
-
 ```bash
-quarto render src/
-python scripts/generate_redirects.py --output-dir src/_site
 quarto publish gh-pages src/ --no-browser
 ```
 
-Or push to the `src` branch to trigger the GitHub Actions workflow automatically.
+This renders the site, runs the post-render redirect script automatically, and pushes
+to the `gh-pages` branch. Alternatively, push to the `src` branch to trigger the
+GitHub Actions workflow automatically.
+
+To skip CI on a push (e.g. for a README-only change): include `[skip ci]` in the
+commit message.
 
 ## Adding blog posts
 

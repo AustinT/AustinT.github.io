@@ -39,9 +39,7 @@ KaTeX math is enabled globally — no `has_math` field needed.
 
 - Edit `.qmd` files in `src/`
 - Preview locally: `quarto preview src/`
-- Render: `quarto render src/`
-- After rendering, generate redirects: `python scripts/generate_redirects.py --output-dir src/_site`
-- Deploy: `quarto publish gh-pages src/ --no-browser`
+- Deploy: `quarto publish gh-pages src/ --no-browser` (renders + runs redirect script automatically)
 
 ## Documentation
 
