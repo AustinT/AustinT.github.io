@@ -1,46 +1,68 @@
 # Development
 
-Notes to myself on why/how I configured this website
-and how to change it.
+Notes on how to work on this website.
+
+## Repository layout
+
+```
+src/          # Quarto project root (website source)
+scripts/      # Build utilities
+decisions/    # Design decision records
+```
 
 ## Checklist for updating the website
 
-1. Edit files as necessary (usually `.md` files or `conf.py`).
-2. Check that:
-  - Pages render correctly locally.
-  - No links are broken accidentally: `nikola check --check-links`
+1. Edit files in `src/` (usually `.qmd` files).
+2. Check that pages render correctly locally: `quarto preview src/`
 3. Commit changes on a separate branch, then merge to `src`.
-4. Deploy using commands below
-
-## How to deploy website
-
-In correct python environment, run:
-
-```bash
-nikola check --clean-files  # remove unknown files accidentally added
-nikola github_deploy
-```
+4. Deploy (see below).
 
 ## How to build/serve locally
 
 ```bash
-nikola auto --browser
+quarto preview src/
 ```
 
-## python environment with nikola
-
-Dependencies are managed with [uv](https://docs.astral.sh/uv/) via `pyproject.toml`.
+## How to render (without serving)
 
 ```bash
-uv sync          # create/update the virtual environment
-uv run nikola …  # run any nikola command
+quarto render src/
 ```
 
-To add or change dependencies, edit `pyproject.toml` and re-run `uv sync`.
+## How to deploy
 
-## re-directing old links
+```bash
+quarto publish gh-pages src/ --no-browser
+```
 
-<https://getnikola.com/handbook.html#redirections>
+This renders the site, runs the post-render redirect script automatically, and pushes
+to the `gh-pages` branch. Alternatively, push to the `src` branch to trigger the
+GitHub Actions workflow automatically.
+
+To skip CI on a push (e.g. for a README-only change): include `[skip ci]` in the
+commit message.
+
+## Adding blog posts
+
+Create `src/blog/YYYY-MM-DD-slug/index.qmd` with frontmatter:
+
+```yaml
+---
+title: "Post title"
+date: YYYY-MM-DD
+categories:
+    - tag1
+    - tag2
+description: "One-sentence summary shown in listings."
+---
+```
+
+Use KaTeX math anywhere — it's enabled globally.
+
+## Redirects
+
+Legacy URLs `/links/` and `/about/` are handled by `scripts/generate_redirects.py`,
+which writes meta-refresh HTML into the render output directory after `quarto render`.
 
 ## My thoughts on some design choices
 

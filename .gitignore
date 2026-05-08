@@ -11,5 +11,9 @@ output/
 cache/
 __pycache__/
 
+# Quarto output
+src/_site/
+src/.quarto/
+
 # Mac files
 .DS_store

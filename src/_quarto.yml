@@ -1,0 +1,35 @@
+project:
+  type: website
+  output-dir: _site
+  post-render: ../scripts/generate_redirects.py
+  resources:
+    - "CNAME"
+    - "blog-images/**"
+    - "assets/**"
+    - "austin-cv-website.pdf"
+
+website:
+  title: "Austin Tripp's website"
+  description: "Austin Tripp's personal website"
+  site-url: "https://austintripp.ca"
+  navbar:
+    left:
+      - {href: index.qmd, text: Home}
+      - {href: cv/index.qmd, text: CV}
+      - {href: research/index.qmd, text: Research}
+      - {href: resources/index.qmd, text: Resources}
+      - {href: blog/index.qmd, text: Blog}
+  page-footer:
+    center: |
+      [Email](mailto:austin.james.tripp[at]gmail.com) | [GitHub](https://github.com/AustinT) | [Scholar](https://scholar.google.com/citations?user=WAvRaxMAAAAJ) | [Bluesky](https://bsky.app/profile/austinjtripp.bsky.social) | [Twitter/X](https://twitter.com/austinjtripp)
+
+      © Austin Tripp · All opinions are my own (not my employer's). · Website powered by [Quarto](https://quarto.org).
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    html-math-method: katex
+
+execute:
+  freeze: true

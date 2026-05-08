@@ -1,0 +1,20 @@
+---
+title: "All Posts"
+listing:
+  - id: all-posts
+    contents:
+      # Match only directories starting with a year digit (all blog posts are
+      # named YYYY-MM-DD-slug/ or YYYY/MM/DD/slug/). This avoids accidentally
+      # picking up blog/index.qmd or other non-post pages in this directory.
+      - "../2*/**/index.qmd"
+      - "../2*/**/index.ipynb"
+    sort: "date desc"
+    type: default
+    categories: true
+    fields: [title, date, description]
+    feed: true
+    page-size: 1000
+---
+
+::: {#all-posts}
+:::

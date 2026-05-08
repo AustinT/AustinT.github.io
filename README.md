@@ -1,9 +1,7 @@
 This is the source code for my personal website.
-The actual url of the website is: https://austint.github.io/.
+The actual URL of the website is: https://austintripp.ca/.
 
-Previously, this website was built using jekyll (the default for GitHub pages).
-Now it uses [nikola](https://getnikola.com/).
-Thanks to the developers of nikola for producing such a useful package.
+This website is built using [Quarto](https://quarto.org/).
 
 For instructions on how to add to the website, see the file `DEVELOPMENT.md`.
 
