@@ -43,7 +43,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../../../site_libs/bootstrap/bootstrap-4897d45d2f75ed4f519693be625836c5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -223,7 +223,7 @@ window.Quarto = {
 <li>Model tasks as <em>tokens</em>, where each node (person) has tokens which they can do the following with:
 <ul>
 <li><em>Compute</em> with two tokens, to form one token</li>
-<li><em>Transmit</em> one token to a neighbouring node These actions are assumed to take \(t_c\) and \(t_m\) respectively.</li>
+<li><em>Transmit</em> one token to a neighbouring node These actions are assumed to take <span class="math inline">t_c</span> and <span class="math inline">t_m</span> respectively.</li>
 </ul></li>
 </ul>
 <p>As a sample problem, the paper chooses to analyze the <em>information aggregation</em> problem, which means taking all the tokens (tasks) and combining them at one node. This is equivalent to passing around information: for example, doing an analysis of which items to purchase for the company, then condensing and passing the recommendations to the CEO to make the final decision.</p>
@@ -242,13 +242,13 @@ window.Quarto = {
 </section>
 <section id="more-detailed-explanation-of-the-fully-connected-graph-optimization" class="level2">
 <h2 class="anchored" data-anchor-id="more-detailed-explanation-of-the-fully-connected-graph-optimization">More detailed explanation of the fully-connected graph optimization</h2>
-<p>I found this quite interesting, so I thought I would elaborate more on it. The key formula is defining a tree \(T(R)\) as the largest tree such that information can be greedily aggregated within R time steps. The formula for such a tree is:</p>
+<p>I found this quite interesting, so I thought I would elaborate more on it. The key formula is defining a tree <span class="math inline">T(R)</span> as the largest tree such that information can be greedily aggregated within R time steps. The formula for such a tree is:</p>
 <p><span class="math display">T(R) = \begin{cases}
 \text{Single leaf},  &amp; \text{if $R &lt; t_m &lt; t_c$} \\
 T(R-t_c) \text{ with child } T(R-t_c-t_m), &amp; \text{otherwise}
 \end{cases}</span></p>
-<p>This can be interpreted in a simple way: if a node has a child, then it will take \(t_m\) time to get the token from the child node, and \(t_c\) to compute it. So if \(R &lt; t_m + t_c\), then there is no way to complete the computation in \(R\) rounds. So the tree cannot have any leaves.</p>
-<p>Otherwise, the tree can have leaves. So the largest tree you can create is the largest tree you can make and still have enough rounds left for one computation (\(T(R-t_c)\)), with an additional leaf tree which can be fully computed, and still have time to pass its message to the root (\(T(R-t_c-t_m)\)).</p>
+<p>This can be interpreted in a simple way: if a node has a child, then it will take <span class="math inline">t_m</span> time to get the token from the child node, and <span class="math inline">t_c</span> to compute it. So if <span class="math inline">R &lt; t_m + t_c</span>, then there is no way to complete the computation in <span class="math inline">R</span> rounds. So the tree cannot have any leaves.</p>
+<p>Otherwise, the tree can have leaves. So the largest tree you can create is the largest tree you can make and still have enough rounds left for one computation (<span class="math inline">T(R-t_c)</span>), with an additional leaf tree which can be fully computed, and still have time to pass its message to the root (<span class="math inline">T(R-t_c-t_m)</span>).</p>
 <p>I really liked this formula because it was so clean and recursive.</p>
 
 

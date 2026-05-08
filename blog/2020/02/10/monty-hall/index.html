@@ -43,7 +43,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../../../site_libs/bootstrap/bootstrap-4897d45d2f75ed4f519693be625836c5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -231,25 +231,25 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="bayesian-formulation-of-the-problem">Bayesian Formulation of the Problem</h2>
 <p>Let:</p>
 <ul>
-<li>\(c\) be the contestant’s <strong>c</strong>oice of door</li>
-<li>\(o\) be the door the host <strong>o</strong>pens</li>
-<li>\(a\) be the <strong>a</strong>nswer (the door the prize is actually behind)</li>
+<li><span class="math inline">c</span> be the contestant’s <strong>c</strong>hoice of door</li>
+<li><span class="math inline">o</span> be the door the host <strong>o</strong>pens</li>
+<li><span class="math inline">a</span> be the <strong>a</strong>nswer (the door the prize is actually behind)</li>
 </ul>
 <p>In a Bayesian decision framework, the way to handle this problem is to:</p>
 <ol type="1">
-<li>Use your knowledge of the situation to construct a probability distribution over the relevant variables (\(p(o,a,c)\)).</li>
-<li>Use the values of the observed variables \(c\) and \(o\) to calculate the <em>posterior probability distribution</em> over the answers: \(p(ao,c)\).</li>
-<li>Use this probability distribution to make an informed choice. In this situation, reasonable choice would be to choose the most likely answer, \(a^* = _a p(ao,c)\).</li>
+<li>Use your knowledge of the situation to construct a probability distribution over the relevant variables (<span class="math inline">p(o,a,c)</span>).</li>
+<li>Use the values of the observed variables <span class="math inline">c</span> and <span class="math inline">o</span> to calculate the <em>posterior probability distribution</em> over the answers: <span class="math inline">p(a\mid o,c)</span>.</li>
+<li>Use this probability distribution to make an informed choice. In this situation, reasonable choice would be to choose the most likely answer, <span class="math inline">a^* = \arg\max_a p(a\mid o,c)</span>.</li>
 </ol>
 <p>Therefore solving the problem is the same as finding the posterior distribution. The posterior distribution can be found using Bayes theorem:</p>
 <p><span class="math display">p(a\mid o,c) = \frac{p(o,a,c)}{p(o,c)} = \frac{p(o,a,c)}{\sum_{a'} p(o,a',c)}</span></p>
-<p>This is far as we can go without making any assumptions. The most basic assumptions (which aren’t that interesting) is that the game is fair (\(a\) is chosen randomly in advance) and real (the player doesn’t know anything about \(a\), so their choice is effectively random). This means that the only interesting behaviour is that of the host, who can choose which door to open, knowing both where the prize is and the player’s choice. Mathematically, this means that the distribution \(p(o,a,c)\) can be <em>factored</em> as:</p>
+<p>This is far as we can go without making any assumptions. The most basic assumptions (which aren’t that interesting) is that the game is fair (<span class="math inline">a</span> is chosen randomly in advance) and real (the player doesn’t know anything about <span class="math inline">a</span>, so their choice is effectively random). This means that the only interesting behaviour is that of the host, who can choose which door to open, knowing both where the prize is and the player’s choice. Mathematically, this means that the distribution <span class="math inline">p(o,a,c)</span> can be <em>factored</em> as:</p>
 <p><span class="math display">p(o,a,c) = p(a)p(c)p(o\mid a,c)</span></p>
-<p>Substituting this into the posterior equation above, and nothing that \(p(c)\) is a constant and cancels, we find:</p>
+<p>Substituting this into the posterior equation above, and nothing that <span class="math inline">p(c)</span> is a constant and cancels, we find:</p>
 <p><span class="math display">p(a\mid o,c) = \frac{p(o,a,c)}{\sum_{a'} p(o,a',c)} = \frac{p(o\mid a,c)p(a)p(c)}{\sum_{a'}p(o\mid a',c)p(a')p(c)} = \frac{p(o\mid a,c)p(a)}{\sum_{a'}p(o\mid a',c)p(a')}</span></p>
 <p>Assuming further that all answers are equally probable, this further simplifies to:</p>
 <p><span class="math display">p(a\mid o,c) = \frac{p(o\mid a,c)}{\sum_{a'}p(o\mid a',c)}</span></p>
-<p>This means that for this particular problem, the posterior can be computed with only 3 values: \(p(o=3a_i, c=1)\), \(i{1,2,3}\).</p>
+<p>This means that for this particular problem, the posterior can be computed with only 3 values: <span class="math inline">p(o=3\mid a_i, c=1)</span>, <span class="math inline">i\in\{1,2,3\}</span>.</p>
 </section>
 <section id="examples" class="level2">
 <h2 class="anchored" data-anchor-id="examples">Examples</h2>
@@ -263,22 +263,22 @@ window.Quarto = {
 <li>if the host can open multiple doors, they will choose one at random</li>
 </ol>
 <p>Assumptions 1-2 make sense, because otherwise the game show might not be any fun to watch. Assumption 3 isn’t necessary but is usually assumed because when people imagine this game show they usually imagine that this switching gimmick is just part of the show. Assumption 4 makes sense, since there is no reason <em>a priori</em> to assume that the host will be biased towards any particular door.</p>
-<p>With this, we can calculate the 3 values of \(p(oa,c)\):</p>
+<p>With this, we can calculate the 3 values of <span class="math inline">p(o\mid a,c)</span>:</p>
 <ol type="1">
-<li>\(p(o=3a=1,c=1)=1/2\): the host could open doors 2 or 3 here, and would therefore pick at random. This would have them pick door 3 50% of the time.</li>
-<li>\(p(o=3a=2,c=1)=1\): here the host cannot choose door 1 (since the player chose it) or door #2 (since it has the prize), so opening door #3 is the only option</li>
-<li>\(p(o=3a=3,c=1)=0\): if door #3 had the prize, the host wouldn’t have opened it, so this event isn’t possible.</li>
+<li><span class="math inline">p(o=3\mid a=1,c=1)=1/2</span>: the host could open doors 2 or 3 here, and would therefore pick at random. This would have them pick door 3 50% of the time.</li>
+<li><span class="math inline">p(o=3\mid a=2,c=1)=1</span>: here the host cannot choose door 1 (since the player chose it) or door #2 (since it has the prize), so opening door #3 is the only option</li>
+<li><span class="math inline">p(o=3\mid a=3,c=1)=0</span>: if door #3 had the prize, the host wouldn’t have opened it, so this event isn’t possible.</li>
 </ol>
-<p>So, \(p(a=2o=3,c=1) = = 2/3\), suggesting that the best choice is to pick door 2 (switch doors). This is the classic “correct answer” of 2/3.</p>
+<p>So, <span class="math inline">p(a=2\mid o=3,c=1) = \frac{1}{1/2+1} = 2/3</span>, suggesting that the best choice is to pick door 2 (switch doors). This is the classic “correct answer” of 2/3.</p>
 </section>
 <section id="biased-random-choice-of-host" class="level3">
 <h3 class="anchored" data-anchor-id="biased-random-choice-of-host">Biased random choice of host</h3>
-<p>Suppose that assumption 4 above isn’t true: when the host has multiple doors that they could choose, they don’t make a truly random decision<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. One example of this is if the host tends to pick higher numbers over lower numbers: that is, given a choice of opening doors 2 or 3, they will pick door 3 with probability \(z\), which might not be \(1/2\).</p>
-<p>This scenario is similar to the standard one, except \(p(o=3a=1,c=1)=z\), so \(p(a=2o=3,c=1)=\), which can vary between 1/2 and 1 for different values of \(z\). Already, this formulation (which isn’t completely unrealistic) gives a huge range of possible answers, all contingent on your belief about how the host picks random numbers.</p>
+<p>Suppose that assumption 4 above isn’t true: when the host has multiple doors that they could choose, they don’t make a truly random decision<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. One example of this is if the host tends to pick higher numbers over lower numbers: that is, given a choice of opening doors 2 or 3, they will pick door 3 with probability <span class="math inline">z</span>, which might not be <span class="math inline">1/2</span>.</p>
+<p>This scenario is similar to the standard one, except <span class="math inline">p(o=3\mid a=1,c=1)=z</span>, so <span class="math inline">p(a=2\mid o=3,c=1)=\frac{1}{1+z}</span>, which can vary between 1/2 and 1 for different values of <span class="math inline">z</span>. Already, this formulation (which isn’t completely unrealistic) gives a huge range of possible answers, all contingent on your belief about how the host picks random numbers.</p>
 </section>
 <section id="inattentive-host" class="level3">
 <h3 class="anchored" data-anchor-id="inattentive-host">Inattentive host</h3>
-<p>Suppose the host didn’t see what door the player chose. The host’s decision then can’t depend on \(c\) (breaking assumption 2). Instead, the host will randomly open one of the doors that doesn’t have the prize, regardless of whether the player chose this door. This means \(p(o=3a=i,c=1)=1/2\) for \(i=1,2\) (\(i=3\) remains unchanged since the host won’t open the door with the answer behind it). Therefore, \(p(a=2|o=3,c=1)=1/2\). This scenario is certainly plausible in a real game show (although fairly unlikely).</p>
+<p>Suppose the host didn’t see what door the player chose. The host’s decision then can’t depend on <span class="math inline">c</span> (breaking assumption 2). Instead, the host will randomly open one of the doors that doesn’t have the prize, regardless of whether the player chose this door. This means <span class="math inline">p(o=3\mid a=i,c=1)=1/2</span> for <span class="math inline">i=1,2</span> (<span class="math inline">i=3</span> remains unchanged since the host won’t open the door with the answer behind it). Therefore, <span class="math inline">p(a=2|o=3,c=1)=1/2</span>. This scenario is certainly plausible in a real game show (although fairly unlikely).</p>
 </section>
 <section id="no-door-as-an-option" class="level3">
 <h3 class="anchored" data-anchor-id="no-door-as-an-option">No door as an option</h3>
@@ -286,35 +286,35 @@ window.Quarto = {
 <section id="dramatic-host-1" class="level4">
 <h4 class="anchored" data-anchor-id="dramatic-host-1">Dramatic host 1</h4>
 <p>To make the show more entertaining to watch, the host wants to bait the player into switching doors, not getting the prize, and then watch them agonize over their decision to switch. One way to do this would be to only open a door if the player’s initial guess was correct.</p>
-<p>This means \(p(o=3a=1,c=1)=1/2\), and the other 2 probabilities are 0, so the posterior probability \(p(a=2o=3,c=1)=0\).</p>
+<p>This means <span class="math inline">p(o=3\mid a=1,c=1)=1/2</span>, and the other 2 probabilities are 0, so the posterior probability <span class="math inline">p(a=2\mid o=3,c=1)=0</span>.</p>
 </section>
 <section id="dramatic-host-2" class="level4">
 <h4 class="anchored" data-anchor-id="dramatic-host-2">Dramatic host 2</h4>
-<p>Dramatic host 1 is too predictable (since being offered to switch doors means you should never switch). Dramatic host 2 becomes slightly less predictable by choosing with probability \(q\) to open a wrong door if the player initially chose correctly. This means that \(p(o=3a=1,c=1)=1/2\) (like last time), but \(p(o=3a=2,c=1)=q\), making the posterior probability \(p(a=2o=3,c=1)=\), which can range from 0 to 2/3.</p>
+<p>Dramatic host 1 is too predictable (since being offered to switch doors means you should never switch). Dramatic host 2 becomes slightly less predictable by choosing with probability <span class="math inline">q</span> to open a wrong door if the player initially chose correctly. This means that <span class="math inline">p(o=3\mid a=1,c=1)=1/2</span> (like last time), but <span class="math inline">p(o=3\mid a=2,c=1)=q</span>, making the posterior probability <span class="math inline">p(a=2\mid o=3,c=1)=\frac{q}{1/2+q}</span>, which can range from 0 to 2/3.</p>
 </section>
 <section id="merciful-host" class="level4">
 <h4 class="anchored" data-anchor-id="merciful-host">Merciful host</h4>
-<p>Instead, a host could open a door only if the player’s initial choice was wrong, yielding a posterior probability \(p(a=2o=3,c=1)=1\). In this case, you would always want to switch doors if offered.</p>
+<p>Instead, a host could open a door only if the player’s initial choice was wrong, yielding a posterior probability <span class="math inline">p(a=2\mid o=3,c=1)=1</span>. In this case, you would always want to switch doors if offered.</p>
 </section>
 <section id="only-door-3-can-be-opened" class="level4">
 <h4 class="anchored" data-anchor-id="only-door-3-can-be-opened">Only door 3 can be opened</h4>
-<p>Imagine that the host will act normally (i.e.&nbsp;standard assumptions), but if the final decision is to open doors 1 or 2 they will simply not open a door at all (they are only willing to open door 3)<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. This means that \(p(o=3a=1,c=1)=1\), so the posterior \(p(a=2o=3,c=1)=1/2\).</p>
+<p>Imagine that the host will act normally (i.e.&nbsp;standard assumptions), but if the final decision is to open doors 1 or 2 they will simply not open a door at all (they are only willing to open door 3)<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. This means that <span class="math inline">p(o=3\mid a=1,c=1)=1</span>, so the posterior <span class="math inline">p(a=2\mid o=3,c=1)=1/2</span>.</p>
 </section>
 </section>
 </section>
 <section id="rigged-game-the-answer-could-be-anything" class="level2">
 <h2 class="anchored" data-anchor-id="rigged-game-the-answer-could-be-anything">Rigged game: the answer could be anything</h2>
-<p>Suppose that our initial model of the causal process is wrong, and the game is unfair. Specifically, the player chooses a door, and then the correct door is chosen afterwards with this information<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Specifically, suppose that the producers select the player’s door as correct with probability \(q\), and one of the other 2 doors with probability \(1-q\). Note that if \(q=1/3\), this corresponds to the standard assumptions of a fair game.</p>
-<p>To calculate the posterior in this scenario, we need \(p(ac)\) and \(p(oa,c)\), which are the following:</p>
+<p>Suppose that our initial model of the causal process is wrong, and the game is unfair. Specifically, the player chooses a door, and then the correct door is chosen afterwards with this information<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Specifically, suppose that the producers select the player’s door as correct with probability <span class="math inline">q</span>, and one of the other 2 doors with probability <span class="math inline">1-q</span>. Note that if <span class="math inline">q=1/3</span>, this corresponds to the standard assumptions of a fair game.</p>
+<p>To calculate the posterior in this scenario, we need <span class="math inline">p(a\mid c)</span> and <span class="math inline">p(o\mid a,c)</span>, which are the following:</p>
 <ul>
-<li>\(p(a=1c=1) = q\) (by assumption above)</li>
-<li>\(p(a=2c=1) = p(a=3c=1) = (1-q)/2\) (since the probabilities must add to 1)</li>
-<li>Since the hosts actions don’t change, \(p(oa,c)\) is the same as before (\(p(o=3a=1,c=1)=1/2\), \(p(o=3a=2,c=1)=1\), \(p(o=3a=3,c=1)=0\))</li>
+<li><span class="math inline">p(a=1\mid c=1) = q</span> (by assumption above)</li>
+<li><span class="math inline">p(a=2\mid c=1) = p(a=3\mid c=1) = (1-q)/2</span> (since the probabilities must add to 1)</li>
+<li>Since the hosts actions don’t change, <span class="math inline">p(o\mid a,c)</span> is the same as before (<span class="math inline">p(o=3\mid a=1,c=1)=1/2</span>, <span class="math inline">p(o=3\mid a=2,c=1)=1</span>, <span class="math inline">p(o=3\mid a=3,c=1)=0</span>)</li>
 </ul>
 <p>Reapplying Bayes rule, we get:</p>
 <p><span class="math display">p(a\mid o,c) = \frac{p(o\mid a,c)p(a\mid c)}{\sum_{a'}p(o\mid a',c)p(a'\mid c)}</span></p>
 <p><span class="math display">p(a=2\mid o=3,c=1) = \frac{1\times(1-q)/2}{q/2 + 1\times(1-q)/2 + 0\times(1-q)/2} = 1-q</span></p>
-<p>Since \(q\) can take on any value between 0 and 1, the posterior value can be any value between 0 and 1, meaning that the right decision could be <strong>absolutely anything</strong>. Of course, this is far from what most people assume when they encounter the Monty Hall problem, but if you were actually on such a game show in real life and offered this deal, would it not be prudent to at least consider this possibility?</p>
+<p>Since <span class="math inline">q</span> can take on any value between 0 and 1, the posterior value can be any value between 0 and 1, meaning that the right decision could be <strong>absolutely anything</strong>. Of course, this is far from what most people assume when they encounter the Monty Hall problem, but if you were actually on such a game show in real life and offered this deal, would it not be prudent to at least consider this possibility?</p>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>

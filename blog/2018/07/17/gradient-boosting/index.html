@@ -43,7 +43,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../../../site_libs/bootstrap/bootstrap-4897d45d2f75ed4f519693be625836c5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -222,19 +222,19 @@ window.Quarto = {
 </ol>
 <section id="a-brief-introduction-to-ensemble-models" class="level2">
 <h2 class="anchored" data-anchor-id="a-brief-introduction-to-ensemble-models">A brief introduction to ensemble models</h2>
-<p>Machine learning tasks can be framed as a function approximation task, where the goal is to approximate a function \(f()\) given a set of observations \((x_i, f(x_i) )_{i=1:N}\). The main difficulty is that \(f\) can be very complex, or potentially we might not have a lot of data. So a simple model (e.g.&nbsp;linear regression) might not be able to adequately model \(f\), and a sufficiently complex model would overfit the training set.</p>
+<p>Machine learning tasks can be framed as a function approximation task, where the goal is to approximate a function <span class="math inline">f(\vec{x})</span> given a set of observations <span class="math inline">\lbrace \left(\vec x_i, f(\vec x_i) \right)\rbrace _{i=1:N}</span>. The main difficulty is that <span class="math inline">f</span> can be very complex, or potentially we might not have a lot of data. So a simple model (e.g.&nbsp;linear regression) might not be able to adequately model <span class="math inline">f</span>, and a sufficiently complex model would overfit the training set.</p>
 <p>This kind of scenario is perfect for an ensemble method: where multiple models are combined together to create one superior model. Two popular methods for this are called <em>bagging</em> and <em>boosting</em>.</p>
 <section id="bagging" class="level3">
 <h3 class="anchored" data-anchor-id="bagging">Bagging</h3>
 <p>Personally, I find this method to be more intuitive. The intuition behind bagging is that different models tend to make different kinds of errors, so given many models, it is unlikely that they will all make a similar misclassification error. Therefore, you train multiple models, and to inference on a data point you inference on all the models and then average/vote on the result.</p>
 <p>However, how do you guarantee that all the models will make different kinds of errors? Most simple models are fit using deterministic algorithms, meaning that training multiple copies of the same model won’t yield any different results. The answer for this is <em>bootstrapping</em>, which is the statistical name for subsampling from your data. By training models on different subsets of your training set, each point is only seen by a fraction of the models, and therefore not all the models will be able to overfit to that point. Furthermore, since the different models will also all see different data <em>distributions</em>, they will also be unable to precisely overfit to your training set distribution. The overall effect of this is that the different models you train will be significantly less correlated, making the above objective of independent errors more true.</p>
 <p>This technique is what gives <em>bagging</em> its name: it stands for <em>“Bootstrap AGGregatING”</em>. (I used to think it was called bagging because you had a “bag of models”, but this is not the case).</p>
-<p>Moving up one level of abstraction, bagging can be thought of as a weighted averaging model: given the outputs of several models, the bagging model assigns a weight to each of the model’s predictions and sums them to get a total prediction. Assuming the bagging method uses N models, an averaging bagging model assigns a weight of \(1/N\) to each sub-model, and a mode bagging model assigns a weight of \(1/N_{mode}\).</p>
+<p>Moving up one level of abstraction, bagging can be thought of as a weighted averaging model: given the outputs of several models, the bagging model assigns a weight to each of the model’s predictions and sums them to get a total prediction. Assuming the bagging method uses N models, an averaging bagging model assigns a weight of <span class="math inline">1/N</span> to each sub-model, and a mode bagging model assigns a weight of <span class="math inline">1/N_{mode}</span>.</p>
 </section>
 <section id="boosting" class="level3">
 <h3 class="anchored" data-anchor-id="boosting">Boosting</h3>
 <p>Boosting differs from bagging in the fitting procedure, and in the goal of each model. In bagging, the goal is to train models independently so that they make less correlated errors. In boosting however, models are trained sequentially, with the goal of training each model being to correct for the errors made by the previous model.</p>
-<p>That is, if you have a model \(m_j()\) fit after \(j\) iterations, then the goal of boosting is to fit a model</p>
+<p>That is, if you have a model <span class="math inline">m_j(\vec{x})</span> fit after <span class="math inline">j</span> iterations, then the goal of boosting is to fit a model</p>
 <p><span class="math display">m_{j+1}(\vec{x}) = f(\vec{x}) - m_j(\vec{x})</span></p>
 <p>This essentially means that you are fitting a new model, such that when it is added to the previous model, perfectly corrects for its mistakes. Intuitively, you are training a model that <em>boosts</em> the performance of your previous model, hence the name boosting.</p>
 </section>
@@ -244,7 +244,7 @@ window.Quarto = {
 <p><em>Gradient boosting</em> is a specific variety of boosting, with a slightly different objective. Consider the following scenario: you would like to fit your entire dataset, but there is a specific region which you care more about, so errors in that region are more problematic than errors in other regions. One example of this kind of scenario would be medical diagnosis, where a false negative (saying no disease when there is really a disease) can have severe consequences. In this case, trying to match every point equally would not be the best choice.</p>
 <p>Typically in this kind of scenario, a <em>loss function</em> is used to capture the error preferences in a single scalar value. In this context, the goal of adding another model to your set of models is not to decrease the fitting errors, but to decrease the loss function. Specifically, you would like it so that:</p>
 <p><span class="math display">L(m_{j+1} + m_j) \leq L(m_{j+1})</span></p>
-<p>One way to do this is to make \(m_{j+1}\) proportional to the loss gradient. By making \(m_{j+1} = <em>{m_j} L(m_j)\), we know that adding (subtracting) \(m</em>{j+1}\) will cause an increase (decrease) in the loss function, because the gradient gives the direction of steepest increase.</p>
+<p>One way to do this is to make <span class="math inline">m_{j+1}</span> proportional to the loss gradient. By making <span class="math inline">m_{j+1} = \nabla_{m_j} L(m_j)</span>, we know that adding (subtracting) <span class="math inline">m_{j+1}</span> will cause an increase (decrease) in the loss function, because the gradient gives the direction of steepest increase.</p>
 <p>However, because the gradient might vary significantly within a short distance, we multiply the gradient by a small constant to improve the accuracy of this first order approximation.</p>
 <p>So in summary, the difference between gradient boosting and normal boosting is the objective function. In normal boosting, we want:</p>
 <p><span class="math display">m_{j+1}(\vec{x}) = f(\vec{x}) - m_j(\vec{x})</span></p>

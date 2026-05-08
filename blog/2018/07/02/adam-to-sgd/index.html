@@ -43,7 +43,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../../../site_libs/bootstrap/bootstrap-4897d45d2f75ed4f519693be625836c5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -210,21 +210,21 @@ window.Quarto = {
 
 <section id="motivation" class="level2">
 <h2 class="anchored" data-anchor-id="motivation">Motivation</h2>
-<p>This strange question came up when working on a machine learning project to generate embeddings. Working with the version of Pytorch available on our DGX (similar to version 0.3.1), I found there was an optimizer called <em>SparseAdam</em> but not one called <em>SparseSGD</em>. Since what I really wanted to do was use SGD, I wondered: could I turn the Adam optimizer into an SGD optimizer by setting the hyperparameters \(_1\), \(_2\), and \(\)?</p>
+<p>This strange question came up when working on a machine learning project to generate embeddings. Working with the version of Pytorch available on our DGX (similar to version 0.3.1), I found there was an optimizer called <em>SparseAdam</em> but not one called <em>SparseSGD</em>. Since what I really wanted to do was use SGD, I wondered: could I turn the Adam optimizer into an SGD optimizer by setting the hyperparameters <span class="math inline">\beta_1</span>, <span class="math inline">\beta_2</span>, and <span class="math inline">\epsilon</span>?</p>
 </section>
 <section id="the-answer" class="level2">
 <h2 class="anchored" data-anchor-id="the-answer">The Answer</h2>
 <p>Probably not. Looking at the <a href="https://arxiv.org/abs/1412.6980">original paper for Adam</a>, the formula for the parameter updates is:</p>
 <p><span class="math display">\theta_{t+1} = \theta_t - \alpha * \frac{\hat{m}}{\sqrt{\hat{v}_t}+\epsilon}</span></p>
 <p>To make this equal to gradient descent, we need the second term to equal the gradient.</p>
-<p>Luckily, \(m_t\) is directly related to the gradient, via the equation:</p>
+<p>Luckily, <span class="math inline">m_t</span> is directly related to the gradient, via the equation:</p>
 <p><span class="math display">m_t = \beta_1 m_{t-1} + ( 1- \beta_1) \nabla \theta_t</span></p>
 <p><span class="math display">\hat{m_t} = \frac{m_t}{1-\beta_1^t}</span></p>
-<p>Clearly, setting \(_1=0\) will set the value to the gradient value. Note that this will also mean the normalization doesn’t change \(m_t\).</p>
-<p>The problem is the term \(_t\), defined as:</p>
+<p>Clearly, setting <span class="math inline">\beta_1=0</span> will set the value to the gradient value. Note that this will also mean the normalization doesn’t change <span class="math inline">m_t</span>.</p>
+<p>The problem is the term <span class="math inline">\hat{v}_t</span>, defined as:</p>
 <p><span class="math display">v_t = \beta_2 * v_{t-1} + (1-\beta_2) (\nabla \theta_t)^2</span></p>
 <p><span class="math display">\hat{v_t} = \frac{v_t}{1-\beta_2^t}</span></p>
-<p>We want this term to equal 1, to disappear from the fraction. However, setting \(_2=0\) will cause it to be proportional to the square of the gradient, and setting \(_2 = 1\) will cause a division by 0 error in the normalization. So because of this, I don’t see a way to convert Adam into SGD. The gradient normalization is just build in too much into the algorithm.</p>
+<p>We want this term to equal 1, to disappear from the fraction. However, setting <span class="math inline">\beta_2=0</span> will cause it to be proportional to the square of the gradient, and setting <span class="math inline">\beta_2 = 1</span> will cause a division by 0 error in the normalization. So because of this, I don’t see a way to convert Adam into SGD. The gradient normalization is just build in too much into the algorithm.</p>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
