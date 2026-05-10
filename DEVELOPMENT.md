@@ -17,10 +17,21 @@ decisions/    # Design decision records
 3. Commit changes on a separate branch, then merge to `src`.
 4. Deploy (see below).
 
+## Python environment
+
+A top-level uv environment provides numpy, scipy, matplotlib, pandas, and Jupyter for use in blog posts with executable Python cells.
+
+```bash
+uv sync          # create/update .venv
+uv run quarto preview src/   # preview with the venv active
+```
+
+The kernel is registered as `website-blog`. Add `jupyter: website-blog` to a post's frontmatter to execute Python cells. For posts needing different packages, create a per-post uv env and register a separate kernel (see [Per-post Python environments](#per-post-python-environments)).
+
 ## How to build/serve locally
 
 ```bash
-quarto preview src/
+uv run quarto preview src/
 ```
 
 ## How to render (without serving)
@@ -63,6 +74,21 @@ Use KaTeX math anywhere — it's enabled globally.
 
 Legacy URLs `/links/` and `/about/` are handled by `scripts/generate_redirects.py`,
 which writes meta-refresh HTML into the render output directory after `quarto render`.
+
+## Per-post Python environments
+
+For a post with unique package requirements:
+
+```bash
+cd src/blog/YYYY-MM-DD-slug/
+uv init --no-package
+uv add some-special-package ipykernel
+uv run python -m ipykernel install --user --name my-post-kernel
+```
+
+Then in the post's frontmatter: `jupyter: my-post-kernel`.
+
+Note: kernel registrations live at `~/.local/share/jupyter/kernels/` and must be re-registered on a new machine.
 
 ## My thoughts on some design choices
 

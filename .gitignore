@@ -17,3 +17,7 @@ src/.quarto/
 
 # Mac files
 .DS_store
+
+# Python / uv
+.venv/
+*.pyc
