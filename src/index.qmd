@@ -59,7 +59,8 @@ or my [blog](/blog) to learn about how I think.
 
 If you like my website, please adapt it as needed for your own website. All
 code and content is available under an MIT license. You are free to fork the
-repository on GitHub or otherwise copy the source code.
+[repository on GitHub](https://github.com/AustinT/AustinT.github.io)
+or otherwise copy the source code.
 
 Some blog posts about the design of this website can be found on my [blog](/blog).
 Perhaps they will be helpful.
