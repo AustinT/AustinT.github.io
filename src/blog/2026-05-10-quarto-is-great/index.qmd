@@ -1,0 +1,112 @@
+---
+title: Quarto is great!
+date: '2026-05-10'
+categories:
+- opinion
+- _recent-highlight
+description: "Just discovered Quarto; here's what I like about it."
+---
+
+A colleague recently introduced me to Quarto and I can't believe I didn't know
+about it sooner! Quarto is a document compiler- you write plain text files in
+`.qmd` and compile them to many output formats- pdf, html, slides, etc. For the
+kinds of writing I do, it feels like a _strict upgrade_ from a set of tools
+I've already been using:
+
+- **Markdown**: quarto's syntax is a _superset_ of
+  markdown.[^markdown-complexity] Your markdown file is _already_ a quarto
+  file- no loss.
+- **LateX**: although Quarto is not a full substitute for LateX (the formatting
+  control is less precise), 75% of my LateX usage is just to write short
+  documents with a few equations and compile them into a reasonable format.
+  Quarto does this too- it supports `$...$` math blocks and basic
+  equation/section numbering, and will compile to a decent looking pdf by
+  default. Importantly, it _doesn't_ require 20 lines of boilerplate document
+  formatting code and imports to set up a template.
+- **Jupyter notebooks**: Quarto supports code cells (and actually executes
+  python via jupyter). You can write your jupyter notebook as a quarto
+  document- and enjoy plain text formatting (not a json). Vscode/cursor can run
+  these notebooks interactively. The biggest change (which for me is an upside
+  but for others could be a downside) is that code outputs are *not* stored in
+  the `.qmd` file (only in the compiled outputs).
+
+[^markdown-complexity]: Abstracting away the complexity that markdown itself
+    does not have a unified syntax and there are several variants. Looks like
+    Quarto is based on pandoc markdown.
+
+Arguably it's already a replacement for LateX and jupyter independently for
+most of what I do. However, the killer advantage is that it's the first tool
+I've used which meaningfully _combines_ LateX and jupyter: you can get
+documents with sections / equation numbers / figure numbers, but _also_ contain
+executable code. For example, here's[^caveat] a minimal `.qmd` file that uses
+all these features.
+
+[^caveat]: Technically the word `python` should be surrounded with curly
+    braces. I had to sacrifice accuracy a bit to preview quarto syntax within
+    a quarto document without that syntax actually being used and compiled!
+
+````markdown
+---
+title: "Linear plot"
+---
+
+The equation of a line is
+
+$$
+y = mx + b \ .
+$$ {#eq-line}
+
+@fig-line plots @eq-line with $m=2$, $b=1$.
+
+```python
+#| label: fig-line
+#| fig-cap: "Plot of $y = mx + b$ with $m=2$, $b=1$."
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 10, 100)
+m, b = 2, 1
+y = m * x + b
+
+plt.plot(x, y)
+plt.show()
+```
+````
+
+Here's how that renders in an actual post:
+
+---
+
+$$
+y = mx + b \ .
+$$ {#eq-line}
+
+@fig-line2 plots @eq-line with $m=2$, $b=1$.
+
+```{python}
+#| label: fig-line2
+#| fig-cap: "Plot of $y = mx + b$ with $m=2$, $b=1$."
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 10, 100)
+m, b = 2, 1
+y = m * x + b
+
+plt.plot(x, y)
+plt.show()
+```
+
+---
+
+In fact, the type of short technical documents that I sometimes write on this
+blog are a perfect use case for Quarto, so I actually just refactored my
+website to use it![^website-post] So, as a consequence, expect to see better
+technical publishing on this blog. I also imagine I'll use quarto a lot more to
+write internal technical memos at work too.
+
+[^website-post]: More details in [this other post](/blog/2026-05-10-quarto-website/)
+
+If you are a researcher like me who wants to write short technical documents
+with good code rendering, I highly recommend giving Quarto a try!
+

@@ -1,0 +1,46 @@
+---
+title: "Refactoring my website to use Quarto"
+date: '2026-05-10'
+categories:
+- website
+description: "Explanation of switching my website's backend to Quarto."
+---
+
+After switching my website's build from Jekyll to Nikola in 2024 (more details
+[here](/blog/2024-09-09-static-site-generators/)) I've decided to switch again
+to [Quarto](https://quarto.org). Unlike Nikola or Hugo, Quarto is designed for
+scientific publishing, so equations, cross-references, and code cells are all
+first-class citizens. See [my parallel blog post about
+Quarto](/blog/2026-05-10-quarto-is-great/) for more about why I like it.
+
+Technically speaking, this was much more challenging than my migration from
+Jekyll to nikola (where most of the underlying markdown files remained
+unchanged). However, the actual process was fairly smooth since I used Claude
+code the whole time. Claude:
+
+- Architected the entire transition.
+- Wrote custom migration scripts to, e.g., pull nikola tags out of my posts in
+  `ipynb` format.
+- Did a lot of tedious work like going through each post and looking for math
+  with old `\(` syntax.
+- Wrote a custom postprocessing script to generate page redirects (I try to not
+  break links to old pages that I've since moved around).
+- Helped fix some difficult issues involving things I had very little
+  experience with[^issues]
+
+[^issues]: Examples:
+    
+    - images not rendering properly
+    - using `iframe` html environments to get plotly plots to load in one of my
+      posts
+    - Figuring out why youtube embeddings weren't working (turns out youtube
+      embeds don't work on local html files with `file://` locations)
+
+This was critical- I definitely could not have done the migration in
+a reasonable amount of time without Claude (I would have had to do many tedious
+things myself, and gotten stuck on many bugs where my HTML knowledge was
+insufficient).
+
+Hopefully (🤞) this is the final form of my website- I shouldn't need any more
+features that Quarto doesn't offer.
+
