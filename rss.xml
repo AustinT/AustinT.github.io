@@ -10,7 +10,205 @@
 <atom:link href="https://austintripp.ca/blog/all/index.xml" rel="self" type="application/rss+xml"/>
 <description>Austin Tripp&#39;s personal website</description>
 <generator>quarto-1.9.37</generator>
-<lastBuildDate>Mon, 04 May 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 10 May 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Quarto is great!</title>
+  <link>https://austintripp.ca/blog/2026-05-10-quarto-is-great/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>A colleague recently introduced me to Quarto and I can’t believe I didn’t know about it sooner! Quarto is a document compiler- you write plain text files in <code>.qmd</code> and compile them to many output formats- pdf, html, slides, etc. For the kinds of writing I do, it feels like a <em>strict upgrade</em> from a set of tools I’ve already been using:</p>
+<ul>
+<li><strong>Markdown</strong>: quarto’s syntax is a <em>superset</em> of markdown.<sup>1</sup> Your markdown file is <em>already</em> a quarto file- no loss.</li>
+<li><strong>LateX</strong>: although Quarto is not a full substitute for LateX (the formatting control is less precise), 75% of my LateX usage is just to write short documents with a few equations and compile them into a reasonable format. Quarto does this too- it supports <code>$...$</code> math blocks and basic equation/section numbering, and will compile to a decent looking pdf by default. Importantly, it <em>doesn’t</em> require 20 lines of boilerplate document formatting code and imports to set up a template.</li>
+<li><strong>Jupyter notebooks</strong>: Quarto supports code cells (and actually executes python via jupyter). You can write your jupyter notebook as a quarto document- and enjoy plain text formatting (not a json). Vscode/cursor can run these notebooks interactively. The biggest change (which for me is an upside but for others could be a downside) is that code outputs are <em>not</em> stored in the <code>.qmd</code> file (only in the compiled outputs).</li>
+</ul>
+<p>Arguably it’s already a replacement for LateX and jupyter independently for most of what I do. However, the killer advantage is that it’s the first tool I’ve used which meaningfully <em>combines</em> LateX and jupyter: you can get documents with sections / equation numbers / figure numbers, but <em>also</em> contain executable code. For example, here’s<sup>2</sup> a minimal <code>.qmd</code> file that uses all these features.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">---</span></span>
+<span id="cb1-2"><span class="an" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">title:</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"> "Linear plot"</span></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">---</span></span>
+<span id="cb1-4"></span>
+<span id="cb1-5">The equation of a line is</span>
+<span id="cb1-6"></span>
+<span id="cb1-7">$$</span>
+<span id="cb1-8">y = mx + b \ .</span>
+<span id="cb1-9">$$ {#eq-line}</span>
+<span id="cb1-10"></span>
+<span id="cb1-11">@fig-line plots @eq-line with $m=2$, $b=1$.</span>
+<span id="cb1-12"></span>
+<span id="cb1-13"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```python</span></span>
+<span id="cb1-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#| label: fig-line</span></span>
+<span id="cb1-15"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#| fig-cap: "Plot of $y = mx + b$ with $m=2$, $b=1$."</span></span>
+<span id="cb1-16"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-17"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb1-18"></span>
+<span id="cb1-19">x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linspace(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>)</span>
+<span id="cb1-20">m, b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-21">y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b</span>
+<span id="cb1-22"></span>
+<span id="cb1-23">plt.plot(x, y)</span>
+<span id="cb1-24">plt.show()</span>
+<span id="cb1-25"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```</span></span></code></pre></div></div>
+<p>Here’s how that renders in an actual post:</p>
+<hr>
+<p><span id="eq-line"><img src="https://latex.codecogs.com/png.latex?%0Ay%20=%20mx%20+%20b%20%5C%20.%0A%5Ctag%7B1%7D"></span></p>
+<p>Figure&nbsp;1 plots Equation&nbsp;1 with <img src="https://latex.codecogs.com/png.latex?m=2">, <img src="https://latex.codecogs.com/png.latex?b=1">.</p>
+<div id="cell-fig-line2" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb2-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb2-3"></span>
+<span id="cb2-4">x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linspace(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>)</span>
+<span id="cb2-5">m, b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb2-6">y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b</span>
+<span id="cb2-7"></span>
+<span id="cb2-8">plt.plot(x, y)</span>
+<span id="cb2-9">plt.show()</span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div id="fig-line2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-line2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://austintripp.ca/blog/2026-05-10-quarto-is-great/index_files/figure-html/fig-line2-output-1.png" width="579" height="411" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-line2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx%20+%20b"> with <img src="https://latex.codecogs.com/png.latex?m=2">, <img src="https://latex.codecogs.com/png.latex?b=1">.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<p>In fact, the type of short technical documents that I sometimes write on this blog are a perfect use case for Quarto, so I actually just refactored my website to use it!<sup>3</sup> So, as a consequence, expect to see better technical publishing on this blog. I also imagine I’ll use quarto a lot more to write internal technical memos at work too.</p>
+<p>If you are a researcher like me who wants to write short technical documents with good code rendering, I highly recommend giving Quarto a try!</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Abstracting away the complexity that markdown itself does not have a unified syntax and there are several variants. Looks like Quarto is based on pandoc markdown.↩︎</p></li>
+<li id="fn2"><p>Technically the word <code>python</code> should be surrounded with curly braces. I had to sacrifice accuracy a bit to preview quarto syntax within a quarto document without that syntax actually being used and compiled!↩︎</p></li>
+<li id="fn3"><p>More details in <a href="../../blog/2026-05-10-quarto-website/">this other post</a>↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>opinion</category>
+  <category>_recent-highlight</category>
+  <guid>https://austintripp.ca/blog/2026-05-10-quarto-is-great/</guid>
+  <pubDate>Sun, 10 May 2026 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Refactoring my website to use Quarto</title>
+  <link>https://austintripp.ca/blog/2026-05-10-quarto-website/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>After switching my website’s build from Jekyll to Nikola in 2024 (more details <a href="../../blog/2024-09-09-static-site-generators/">here</a>) I’ve decided to switch again to <a href="https://quarto.org">Quarto</a>. Unlike Nikola or Hugo, Quarto is designed for scientific publishing, so equations, cross-references, and code cells are all first-class citizens. See <a href="../../blog/2026-05-10-quarto-is-great/">my parallel blog post about Quarto</a> for more about why I like it.</p>
+<p>Technically speaking, this was much more challenging than my migration from Jekyll to nikola (where most of the underlying markdown files remained unchanged). However, the actual process was fairly smooth since I used Claude code the whole time. Claude:</p>
+<ul>
+<li>Architected the entire transition.</li>
+<li>Wrote custom migration scripts to, e.g., pull nikola tags out of my posts in <code>ipynb</code> format.</li>
+<li>Did a lot of tedious work like going through each post and looking for math with old <code>\(</code> syntax.</li>
+<li>Wrote a custom postprocessing script to generate page redirects (I try to not break links to old pages that I’ve since moved around).</li>
+<li>Helped fix some difficult issues involving things I had very little experience with<sup>1</sup></li>
+</ul>
+<p>This was critical- I definitely could not have done the migration in a reasonable amount of time without Claude (I would have had to do many tedious things myself, and gotten stuck on many bugs where my HTML knowledge was insufficient).</p>
+<p>Hopefully (🤞) this is the final form of my website- I shouldn’t need any more features that Quarto doesn’t offer.</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Examples:</p>
+<ul>
+<li>images not rendering properly</li>
+<li>using <code>iframe</code> html environments to get plotly plots to load in one of my posts</li>
+<li>Figuring out why youtube embeddings weren’t working (turns out youtube embeds don’t work on local html files with <code>file://</code> locations)</li>
+</ul>
+↩︎</li>
+</ol>
+</section></div> ]]></description>
+  <category>website</category>
+  <guid>https://austintripp.ca/blog/2026-05-10-quarto-website/</guid>
+  <pubDate>Sun, 10 May 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Getting value out of coding agents for low-urgency, low-impact projects.</title>
   <link>https://austintripp.ca/blog/2026-05-04-llms-for-low-stakes-projects/</link>
@@ -1524,195 +1722,6 @@ The actual writing of the letter (probably it will come more from a template or 
   <category>opinion</category>
   <guid>https://austintripp.ca/blog/2025-11-16-why-podcasts/</guid>
   <pubDate>Sun, 16 Nov 2025 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Finally, an ML conference review guide!</title>
-  <link>https://austintripp.ca/blog/2025-11-04-finally-a-reviewer-guide/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>ICLR 2026 released a detailed review guide as part of its review process (<a href="https://iclr.cc/Conferences/2026/ReviewerGuide">link</a>). Let’s analyze it!</p>
-<p>Here is a copy/paste of the first bit of the guide (copied 2025-11-04):</p>
-<blockquote class="blockquote">
-<ol type="1">
-<li>Read the paper: It’s important to carefully read through the entire paper and to look up any related work and citations that will help you comprehensively evaluate it. Be sure to give yourself sufficient time for this step.</li>
-<li>While reading, consider the following:
-<ol type="1">
-<li>Objective of the work: What is the goal of the paper? Is it to better address a known application or problem, draw attention to a new application or problem, or to introduce and/or explain a new theoretical finding? A combination of these? Different objectives will require different considerations as to potential value and impact.</li>
-<li>Strong points: is the submission clear, technically correct, experimentally rigorous, reproducible, does it present novel findings (e.g.&nbsp;theoretically, algorithmically, etc.)?</li>
-<li>Weak points: is it weak in any of the aspects listed in b.? Be mindful of potential biases and try to be open-minded about the value and interest a paper can hold for the entire ICLR community, even if it may not be very interesting for you.</li>
-</ol></li>
-<li>Answer four key questions for yourself to make a recommendation to Accept or Reject:
-<ol type="1">
-<li>What is the specific question and/or problem tackled by the paper?</li>
-<li>Is the approach well motivated, including being well-placed in the literature?</li>
-<li>Does the paper support the claims? This includes determining if results, whether theoretical or empirical, are correct and if they are scientifically rigorous.</li>
-<li>What is the significance of the work? Does it contribute new knowledge and sufficient value to the community? Note, this does not necessarily require state-of-the-art results. Submissions bring value to the ICLR community when they convincingly demonstrate new, relevant, impactful knowledge (incl., empirical, theoretical, for practitioners, etc).</li>
-</ol></li>
-<li>Write and submit your initial review, organizing it as follows:
-<ol type="1">
-<li>Summarize what the paper claims to contribute. Be positive and constructive.</li>
-<li>List strong and weak points of the paper. Be as comprehensive as possible.</li>
-<li>Clearly state your initial recommendation (accept or reject) with one or two key reasons for this choice.</li>
-<li>Provide supporting arguments for your recommendation.</li>
-<li>Ask questions you would like answered by the authors to help you clarify your understanding of the paper and provide the additional evidence you need to be confident in your assessment.</li>
-<li>Provide additional feedback with the aim to improve the paper. Make it clear that these points are here to help, and not necessarily part of your decision assessment.</li>
-</ol></li>
-</ol>
-</blockquote>
-<section id="analysis" class="level2">
-<h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
-<p>As I mentioned in a <a href="../../blog/2025-06-22-ml-conference-review-guide/">previous post</a>, my internal review criteria is essentially “correct AND (result OR idea). How does this compare?</p>
-<p>Overall I think it is compatible. ICLR’s guide emphasizes understanding the goal (aka objective) of the paper, then analyzing it with this goal in mind. I don’t explicitly have that as a criteria, but I think it is implicit in the paper containing a result or an idea (presumably the goal of the paper is to present that result or idea). Step 3.3 seems essentially the same as my “correctness” criteria, and 3.4 (significance) is what I would call “result OR idea”.</p>
-</section>
-<section id="motivation" class="level2">
-<h2 class="anchored" data-anchor-id="motivation">“Motivation”</h2>
-<p>One thing they highlight which I don’t highlight is motivation and placement in the literature (3.2). This is an interesting one. I feel like a lot of empirical papers propose an interesting idea, but motivate it poorly. Here is a hypothetical example, blending together maybe ~20 papers I’ve read over the years:</p>
-<blockquote class="blockquote">
-<p>Drug discovery is an important problem [1-25], lots of people have tried ML for it [26-100]. Unfortunately, ML works best when you have a lot of data [100-200] and we don’t have a lot of data. Also, scientists know a lot of stuff and it would be useful to put it into models [200-500]. Anyway, here is our new molecular property prediction method which blends together 3 different model architectures and doesn’t actually address these problems.</p>
-</blockquote>
-<p>Essentially they point to a generic series of problems in the field, then present their model, which does not actually address most of these points. Usually I just overlook this, but perhaps I shouldn’t? Poor introductions like these definitely make papers more difficult to read.</p>
-</section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>Overall good guide, I’m happy they provided this, and it encouraged me to call out poor motivation and contextualization more than I do already.</p>
-
-
-</section>
-
- ]]></description>
-  <category>machine learning</category>
-  <category>peer review</category>
-  <guid>https://austintripp.ca/blog/2025-11-04-finally-a-reviewer-guide/</guid>
-  <pubDate>Tue, 04 Nov 2025 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Justifying expected utility maximization from first principles (Von Neumann–Morgenstern).</title>
-  <link>https://austintripp.ca/blog/2025-11-02-expected-utility/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>I’ve recently found myself arguing for expected utility maximization as an approach to practical decision making problems at work (mostly regarding molecule selection). This post is my attempt to write out an argument for using expected utility, targeted at non-mathematical (but still technical) readers.</p>
-<div class="alert alert-warning">
-<p>
-<b>Disclaimer</b>: No technical content in this post is original (I bet LLMs can explain the same content just as well).
-</p>
-</div>
-<section id="starter-the-von-neumannmorgenstern-utility-theorem" class="level2">
-<h2 class="anchored" data-anchor-id="starter-the-von-neumannmorgenstern-utility-theorem">Starter: the Von Neumann–Morgenstern utility theorem</h2>
-<p>I think the simplest path to expected utility is the Von Neumann–Morgenstern (VNM) utility theorem. The VNM utility theorem essentially states that if you have <em>preferences</em> over uncertain outcomes, and these preferences obey a set of axioms (aka rules), then there exists a utility function where maximizing expected utility will always choose your most preferred option. My argument will be to go through the axioms, and if you accept the axioms then expected utility is the natural conclusion.</p>
-<p>VNM operates specifically on preferences over “lotteries”: essentially a distribution over outcomes with known probabilities. Think of it like a “mystery box” from a video game: you are given the odds of different boxes, but must choose a box <em>without</em> knowing exactly which outcome you will get. Examples of a lunch lottery could be:</p>
-<ul>
-<li>A: 50% chance of hamburger, 50% pizza</li>
-<li>B: 25% dumplings, 25% bread, 50% sushi</li>
-</ul>
-<p>We’ll come back to framing other things as lotteries at the end of the post.</p>
-</section>
-<section id="the-vnm-axioms" class="level2">
-<h2 class="anchored" data-anchor-id="the-vnm-axioms">The VNM axioms</h2>
-<p>The first axiom is <strong>completeness</strong>: for any lotteries A and B, you will either prefer A, prefer B, or be indifferent between the options. I.e.: you can always make a choice. This seems reasonable.</p>
-<p>The second axiom of <strong>transitivity</strong>: if you prefer A to B, and B to C, then you also prefer A to C. Hopefully this also seems reasonable.</p>
-<p>The third axiom is <strong>continuity</strong>: if you prefer A &gt; B &gt; C, there is some probability p (between 0 and 1) where the “nested” lottery “A with probability p, C with probability (1-p)” is equally good as lottery B. This essentially says that you are always willing to risk getting a worse option in exchange for a chance at the best option at <em>some</em> level of risk. For example, if you like hamburger &gt; pizza &gt; sushi, for some level of risk p you would think “p chance of hamburger, (1-p) chance of sushi)” is as good as 100% chance of pizza. Hopefully this also seems reasonable.</p>
-<p>The final axiom is <strong>independence</strong>: if you prefer A &gt; B, then adding an “irrelevant” nested lottery C should not change this preference, so pC + (1-p)A &gt; pC + (1-p)B. For example, if you prefer hamburgers to pizza, then you should prefer “95% chance getting hamburger, 5% salad” to “95% of getting pizza, 5% salad” because the “5% salad” is the same on both sides. Hopefully this seems reasonable.</p>
-</section>
-<section id="possible-objections-to-these-axioms" class="level2">
-<h2 class="anchored" data-anchor-id="possible-objections-to-these-axioms">Possible objections to these axioms</h2>
-<p>I am the type of person who reads these axioms and happily accepts them all as intuitively. For readers who don’t have this reaction, or who have some objections in mind, let me try to go through common critiques.</p>
-<p>One possible critique comes from over-interpreting the goals or scope of these axioms. These axioms are:</p>
-<ul>
-<li><strong>NOT</strong> claims about how humans make decisions in the real world (humans can violate these, although it isn’t a <em>terrible</em> model either)</li>
-<li><strong>NOT</strong> claiming that you must have a fixed set of preferences which does not change with time (a common but oversimplified model used in economics)</li>
-<li><strong>NOT</strong> claiming that all <em>computer</em> algorithms must follow these guidelines</li>
-</ul>
-<p>All these axioms <strong>are</strong> is a description of preferences which (hopefully) seems “reasonable”. Here are responses to some individual sets of critiques (click to open).</p>
-<details closed="">
-<summary>
-<b>Objections to completeness</b>
-</summary>
-<ul>
-<li>
-<b>I don’t always seem to have preferences (eg: choosing what to order at a restaurant feels hard).</b> I think situations like this are an example of <i>very weak</i> preferences (or pure indifference between different options).
-</li>
-<li>
-<b>Some things seem undecidable (eg choosing between two bad options, like “lose an arm or lose a leg”).</b> I think these situations are overshadowed by the unpleasantness of the choices, and the preference of “neither option”.
-</li>
-<li>
-<b>Preferences change with time (eg sometimes I like pizza, sometimes I like sushi).</b> The axioms don’t say you as a person must hold a consistent set of preferences over time, it just says when forced to make a decision at a specific time there should be an underlying preference.
-</li>
-<ul>
-</ul></ul></details>
-<details closed="">
-<summary>
-<b>Objections to transitivity</b>
-</summary>
-<p>This one is usually the least objectionable. The most common objection is probably something like “in some situations I prefer A, in some situations I prefer B”, but this “objection” is just misinterpreting the axioms as assuming preferences don’t vary with time or context (see bullet point in previous box).</p>
-</details>
-<details closed="">
-<summary>
-<b>Objections to continuity</b>
-</summary>
-<p>This axiom probably feels unintuitive because we aren’t usually presented with choices like this in real life. However, risking worse outcomes for a chance at better outcomes is something people do all the time. Here are some scenarios/responses:</p>
-<ul>
-<li>
-<b>Extreme outcomes (eg “gain $100 vs lose your leg”)</b>. You might have the intuition that you would <i>never</i> take a gamble like that. I think in practice this intuition just means that p would need to be very high. If p is sufficiently close to 1 (eg 0.999999999999999999999999999999), the “bet” starts to look like “free $100”). Another intuition pump: if we change $100 to $1M, you might imagine taking the gamble with a slightly lower p).
-</li>
-<li>
-<b>An exact value for p isn’t obvious (eg should p be 0.51 or 0.49).</b> Fair, but if you accept some p value to be high enough that the gamble is worth it (eg p=0.9999) and some level where p is too low (eg 0.00001), there must be some p in the middle where it transitions. It might feel difficult to settle on a precise number, but this is probably because in the general range of the “right number” you would feel mostly indifferent (see “objections to completeness” above).
-</li>
-<li>
-<b>Lexicographic preferences (eg “judge on price, then on quality, in order, no trade-offs allowed”).</b> This violates continuity because it does not allow trade-offs. My objection to this is that being unwilling to make trade-offs is, in most cases, very silly. Intuitions about “not having trade-offs” are probably just intuitions that the trade-offs are very steep.
-</li>
-</ul>
-</details>
-<details closed="">
-<summary>
-<b>Objections to independence</b>
-</summary>
-<p>Historically this axiom has received a lot of criticism and debate in the academic literature, but as far as I can tell most of this criticism is directed at <i>utility maximization as a description of human decision making</i>. Famous counter-examples like the Allais paradox show that humans can violate independence in real-world gambling contexts. To resolve this, remember that these axioms are <i>not</i> meant to be a description of real human decision-making: instead they are descriptions of <i>rational</i> decision making. I simply don’t see how a decision maker violating independence could be seen as an “intelligent” choice.</p>
-</details>
-<p><br> <br></p>
-</section>
-<section id="accepting-the-axioms-leads-to-expected-utility" class="level2">
-<h2 class="anchored" data-anchor-id="accepting-the-axioms-leads-to-expected-utility">Accepting the axioms leads to expected utility</h2>
-<p>I will not write out a proof here (<a href="https://en.wikipedia.org/wiki/Von_Neumann%E2%80%93Morgenstern_utility_theorem#Proof_sketch">Wikipedia has a pretty good one</a>), but accepting these axioms directly implies the existence of a utility function such that decisions for any lottery are made by maximizing expected utility. Believing in these axioms <em>is</em> believing in expected utility.</p>
-<p>Of course, the VNM theorem is not stating that decision-makers operate by <em>explicitly calculating</em> expected utility (clearly they do not need to). It only says that an expected-utility agent can <em>replicate</em> the behaviour of another agent by doing explicit expected utility calculations.</p>
-</section>
-<section id="does-this-mean-ai-algorithms-should-calculate-and-maximize-expected-utility" class="level2">
-<h2 class="anchored" data-anchor-id="does-this-mean-ai-algorithms-should-calculate-and-maximize-expected-utility">Does this mean AI algorithms should calculate and maximize expected utility?</h2>
-<p>Sort of: it says it is a viable option. If decisions are made through a complex process (eg human thought) but satisfy the VNM axioms, it means that direct calculation is a viable alternative. However, there are many situations where this is not possible:</p>
-<ul>
-<li>The odds of different outcomes are unknown (or hard/impossible to specify numerically)</li>
-<li>In a high-dimensional space it might be difficult to directly construct a utility function which represents a user’s preferences (eg, think of learning art preferences directly in pixel space).</li>
-<li>In repeated rounds of decision making there is an exploration-exploitation trade-off which expected utility does not address</li>
-</ul>
-<p>That being said, I am convinced that expected utility is a reasonable first approach for many problems.</p>
-</section>
-<section id="epilogue-how-does-this-apply-to-molecules-and-other-scientific-problems" class="level2">
-<h2 class="anchored" data-anchor-id="epilogue-how-does-this-apply-to-molecules-and-other-scientific-problems">Epilogue: how does this apply to molecules and other scientific problems?</h2>
-<p>In the context of such <em>scientific design</em> problems (like molecule design in drug discovery), scientists design high-dimensional objects (ie molecules) with multiple (conflicting) objectives (eg potency, toxicity, solubility), each of which is difficult to predict (and also difficult to measure experimentally). I think each molecule can be thought of as a <em>lottery</em>, and its <em>properties</em> are the potentially uncertain outcomes.</p>
-<p>The advantage of expected utility in this context is that it allows you to decouple <em>uncertainty in outcomes</em> from <em>preferences across multiple objectives</em>, specify each one separately, then bring them together into a principled decision-making algorithm. This is possible <em>if</em> the chemists’ preferences satisfy the VNM axioms. Being humans, their past decisions might not always follow it, but if the chemists agree that these axioms are reasonable then it means constructing a utility function <em>is</em> possible (at least in theory).</p>
-<p>Also, elucidating chemists preferences for hypothetical molecules with <em>known</em> properties is much easier than for real molecules with unknown properties, because their decisions will be a mix of preferences and property predictions.</p>
-<p>I am personally hopeful that this approach (or an approach with this general flavour) can be useful for getting AI to “work” for drug discovery, at least to a degree that medicinal chemists are happy with!</p>
-<hr>
-</section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<p>For this post I mostly referred to Wikipedia’s page on this, which is very good: <a href="https://en.wikipedia.org/wiki/Von_Neumann%E2%80%93Morgenstern_utility_theorem" class="uri">https://en.wikipedia.org/wiki/Von_Neumann%E2%80%93Morgenstern_utility_theorem</a>.</p>
-
-
-</section>
-
- ]]></description>
-  <category>machine learning</category>
-  <category>statistics</category>
-  <category>opinion</category>
-  <category>_recent-highlight</category>
-  <guid>https://austintripp.ca/blog/2025-11-02-expected-utility/</guid>
-  <pubDate>Sun, 02 Nov 2025 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
