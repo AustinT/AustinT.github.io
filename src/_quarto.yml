@@ -32,6 +32,6 @@ format:
     html-math-method: katex
 
 execute:
-  freeze: true
+  freeze: auto
 jupyter:
   daemon: false
