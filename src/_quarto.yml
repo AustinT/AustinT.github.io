@@ -33,3 +33,5 @@ format:
 
 execute:
   freeze: true
+jupyter:
+  daemon: false
