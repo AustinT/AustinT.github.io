@@ -13,6 +13,7 @@
 <lastBuildDate>Sun, 10 May 2026 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Quarto is great!</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-05-10-quarto-is-great/</link>
   <description><![CDATA[ 
 
@@ -164,7 +165,16 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 <li id="fn2"><p>Technically the word <code>python</code> should be surrounded with curly braces. I had to sacrifice accuracy a bit to preview quarto syntax within a quarto document without that syntax actually being used and compiled!↩︎</p></li>
 <li id="fn3"><p>More details in <a href="../../blog/2026-05-10-quarto-website/">this other post</a>↩︎</p></li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {Quarto Is Great!},
+  date = {2026-05-10},
+  url = {https://austintripp.ca/blog/2026-05-10-quarto-is-great/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“Quarto Is Great!”</span> May 10. <a href="https://austintripp.ca/blog/2026-05-10-quarto-is-great/">https://austintripp.ca/blog/2026-05-10-quarto-is-great/</a>.
+</div></div></section></div> ]]></description>
   <category>opinion</category>
   <category>_recent-highlight</category>
   <guid>https://austintripp.ca/blog/2026-05-10-quarto-is-great/</guid>
@@ -172,6 +182,7 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 </item>
 <item>
   <title>Refactoring my website to use Quarto</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-05-10-quarto-website/</link>
   <description><![CDATA[ 
 
@@ -204,13 +215,24 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 </ul>
 ↩︎</li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {Refactoring My Website to Use {Quarto}},
+  date = {2026-05-10},
+  url = {https://austintripp.ca/blog/2026-05-10-quarto-website/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“Refactoring My Website to Use
+Quarto.”</span> May 10. <a href="https://austintripp.ca/blog/2026-05-10-quarto-website/">https://austintripp.ca/blog/2026-05-10-quarto-website/</a>.
+</div></div></section></div> ]]></description>
   <category>website</category>
   <guid>https://austintripp.ca/blog/2026-05-10-quarto-website/</guid>
   <pubDate>Sun, 10 May 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Getting value out of coding agents for low-urgency, low-impact projects.</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-05-04-llms-for-low-stakes-projects/</link>
   <description><![CDATA[ 
 
@@ -269,7 +291,18 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 </ol>
 ↩︎</li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {Getting Value Out of Coding Agents for Low-Urgency,
+    Low-Impact Projects.},
+  date = {2026-05-04},
+  url = {https://austintripp.ca/blog/2026-05-04-llms-for-low-stakes-projects/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“Getting Value Out of Coding Agents for
+Low-Urgency, Low-Impact Projects.”</span> May 4. <a href="https://austintripp.ca/blog/2026-05-04-llms-for-low-stakes-projects/">https://austintripp.ca/blog/2026-05-04-llms-for-low-stakes-projects/</a>.
+</div></div></section></div> ]]></description>
   <category>using large language models</category>
   <category>website</category>
   <guid>https://austintripp.ca/blog/2026-05-04-llms-for-low-stakes-projects/</guid>
@@ -277,6 +310,7 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 </item>
 <item>
   <title>Write research papers to be skimmed</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-05-04-skimmable-papers/</link>
   <description><![CDATA[ 
 
@@ -323,7 +357,17 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 <ol>
 <li id="fn1"><p>Unfortunately I forget the source: I think it was a podcast?↩︎</p></li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {Write Research Papers to Be *Skimmed*},
+  date = {2026-05-04},
+  url = {https://austintripp.ca/blog/2026-05-04-skimmable-papers/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“Write Research Papers to Be
+*Skimmed*.”</span> May 4. <a href="https://austintripp.ca/blog/2026-05-04-skimmable-papers/">https://austintripp.ca/blog/2026-05-04-skimmable-papers/</a>.
+</div></div></section></div> ]]></description>
   <category>writing</category>
   <category>research papers</category>
   <category>opinion</category>
@@ -333,6 +377,7 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 </item>
 <item>
   <title>First time encountering a hallucinated citation of my paper.</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-05-01-first-hallucinated-citation/</link>
   <description><![CDATA[ 
 
@@ -375,13 +420,24 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 <ol>
 <li id="fn1"><p>One might encounter these when deploying Tanimoto Kernel Gaussian Processes on large datasets.↩︎</p></li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {First Time Encountering a Hallucinated Citation of My Paper.},
+  date = {2026-05-01},
+  url = {https://austintripp.ca/blog/2026-05-01-first-hallucinated-citation/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“First Time Encountering a Hallucinated
+Citation of My Paper.”</span> May 1. <a href="https://austintripp.ca/blog/2026-05-01-first-hallucinated-citation/">https://austintripp.ca/blog/2026-05-01-first-hallucinated-citation/</a>.
+</div></div></section></div> ]]></description>
   <category>research papers</category>
   <guid>https://austintripp.ca/blog/2026-05-01-first-hallucinated-citation/</guid>
   <pubDate>Fri, 01 May 2026 08:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Book review: The Drug Hunters</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-03-11-drug-hunters/</link>
   <description><![CDATA[ 
 
@@ -415,7 +471,17 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 
 
 
- ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {Book Review: {The} {Drug} {Hunters}},
+  date = {2026-03-11},
+  url = {https://austintripp.ca/blog/2026-03-11-drug-hunters/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“Book Review: The Drug Hunters.”</span> March
+11. <a href="https://austintripp.ca/blog/2026-03-11-drug-hunters/">https://austintripp.ca/blog/2026-03-11-drug-hunters/</a>.
+</div></div></section></div> ]]></description>
   <category>book</category>
   <category>drug discovery</category>
   <guid>https://austintripp.ca/blog/2026-03-11-drug-hunters/</guid>
@@ -423,6 +489,7 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 </item>
 <item>
   <title>Behaviour-based evaluations in Bayesian optimization</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-02-21-behaviour-based-BO-evals/</link>
   <description><![CDATA[ 
 
@@ -500,7 +567,17 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 
 </section>
 
- ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {Behaviour-Based Evaluations in {Bayesian} Optimization},
+  date = {2026-02-21},
+  url = {https://austintripp.ca/blog/2026-02-21-behaviour-based-BO-evals/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“Behaviour-Based Evaluations in Bayesian
+Optimization.”</span> February 21. <a href="https://austintripp.ca/blog/2026-02-21-behaviour-based-BO-evals/">https://austintripp.ca/blog/2026-02-21-behaviour-based-BO-evals/</a>.
+</div></div></section></div> ]]></description>
   <category>machine learning</category>
   <category>bayesian optimization</category>
   <category>opinion</category>
@@ -510,6 +587,7 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 </item>
 <item>
   <title>Rebranding BO away from “black-box” and towards “model-based”</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-02-16-bo-rebrand/</link>
   <description><![CDATA[ 
 
@@ -583,7 +661,19 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 
 </section>
 
- ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {Rebranding {BO} Away from “Black-Box” and Towards
+    “Model-Based”},
+  date = {2026-02-16},
+  url = {https://austintripp.ca/blog/2026-02-16-bo-rebrand/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“Rebranding BO Away from
+<span>‘Black-Box’</span> and Towards <span>‘Model-Based’</span>.”</span>
+February 16. <a href="https://austintripp.ca/blog/2026-02-16-bo-rebrand/">https://austintripp.ca/blog/2026-02-16-bo-rebrand/</a>.
+</div></div></section></div> ]]></description>
   <category>machine learning</category>
   <category>bayesian optimization</category>
   <category>opinion</category>
@@ -593,6 +683,7 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 </item>
 <item>
   <title>Clarifying noise vs model misspecification in Gaussian Process models (and its importance in BO)</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-02-14-noise-in-gp-models/</link>
   <description><![CDATA[ 
 
@@ -645,7 +736,19 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 <ol>
 <li id="fn1"><p>If done on <img src="https://latex.codecogs.com/png.latex?f">. There is another version of Thompson sampling done on <img src="https://latex.codecogs.com/png.latex?y"> which would behave differently.↩︎</p></li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {Clarifying Noise Vs Model Misspecification in {Gaussian}
+    {Process} Models (and Its Importance in {BO)}},
+  date = {2026-02-14},
+  url = {https://austintripp.ca/blog/2026-02-14-noise-in-gp-models/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“Clarifying Noise Vs Model Misspecification
+in Gaussian Process Models (and Its Importance in BO).”</span> February
+14. <a href="https://austintripp.ca/blog/2026-02-14-noise-in-gp-models/">https://austintripp.ca/blog/2026-02-14-noise-in-gp-models/</a>.
+</div></div></section></div> ]]></description>
   <category>machine learning</category>
   <category>bayesian optimization</category>
   <category>_recent-highlight</category>
@@ -654,6 +757,7 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 </item>
 <item>
   <title>Tyler Cowen’s book on talent</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-02-13-talent/</link>
   <description><![CDATA[ 
 
@@ -665,12 +769,23 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 
 
 
- ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {Tyler {Cowen’s} Book on Talent},
+  date = {2026-02-13},
+  url = {https://austintripp.ca/blog/2026-02-13-talent/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“Tyler Cowen’s Book on Talent.”</span>
+February 13. <a href="https://austintripp.ca/blog/2026-02-13-talent/">https://austintripp.ca/blog/2026-02-13-talent/</a>.
+</div></div></section></div> ]]></description>
   <guid>https://austintripp.ca/blog/2026-02-13-talent/</guid>
   <pubDate>Fri, 13 Feb 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>We are underselling the modularity of Bayesian optimization</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-02-09-bo-modularity/</link>
   <description><![CDATA[ 
 
@@ -749,7 +864,18 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 </ol>
 ↩︎</li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {We Are Underselling the Modularity of {Bayesian}
+    Optimization},
+  date = {2026-02-09},
+  url = {https://austintripp.ca/blog/2026-02-09-bo-modularity/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“We Are Underselling the Modularity of
+Bayesian Optimization.”</span> February 9. <a href="https://austintripp.ca/blog/2026-02-09-bo-modularity/">https://austintripp.ca/blog/2026-02-09-bo-modularity/</a>.
+</div></div></section></div> ]]></description>
   <category>machine learning</category>
   <category>bayesian optimization</category>
   <category>opinion</category>
@@ -759,6 +885,7 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 </item>
 <item>
   <title>Why I don’t care about toy benchmarks in BO</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-02-08-bo-benchmarks/</link>
   <description><![CDATA[ 
 
@@ -836,7 +963,17 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 <ol>
 <li id="fn1"><p>I liked the paper <a href="https://doi.org/10.48550/arXiv.2405.02200">Position: Why We Must Rethink Empirical Research in Machine Learning</a> for its explanation of this (even though the paper was a bit too verbose). To paraphrase, other sciences usually have an explicit goal of what they are trying to measure, and try to establish “validity” of the metric they are using (ie “does it actually measure what we want to measure”). Not only does ML not really try to establish the validity of its metrics, it usually doesn’t even specify what it is trying to measure.↩︎</p></li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {Why {I} Don’t Care about Toy Benchmarks in {BO}},
+  date = {2026-02-08},
+  url = {https://austintripp.ca/blog/2026-02-08-bo-benchmarks/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“Why I Don’t Care about Toy Benchmarks in
+BO.”</span> February 8. <a href="https://austintripp.ca/blog/2026-02-08-bo-benchmarks/">https://austintripp.ca/blog/2026-02-08-bo-benchmarks/</a>.
+</div></div></section></div> ]]></description>
   <category>machine learning</category>
   <category>bayesian optimization</category>
   <category>opinion</category>
@@ -846,6 +983,7 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 </item>
 <item>
   <title>We have forgotten about utility functions in BO (whoops!)</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/</link>
   <description><![CDATA[ 
 
@@ -931,7 +1069,17 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 <li id="fn4"><p>Original paper: <a href="https://proceedings.neurips.cc/paper/2003/hash/6b5754d737784b51ec5075c0dc437bf0-Abstract.html">Warped Gaussian Processes, NeurIPS 2003</a>.↩︎</p></li>
 <li id="fn5"><p>Eg for UCB I imagine the equivalent notion would be an upper bound on the <em>utility</em> (rather than an upper bound on the function), but I’m not sure if all the desirable properties of UCB would transfer to this case.↩︎</p></li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {We Have Forgotten about Utility Functions in {BO} (Whoops!)},
+  date = {2026-01-27},
+  url = {https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“We Have Forgotten about Utility Functions in
+BO (Whoops!).”</span> January 27. <a href="https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/">https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/</a>.
+</div></div></section></div> ]]></description>
   <category>machine learning</category>
   <category>bayesian optimization</category>
   <category>opinion</category>
@@ -941,6 +1089,7 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 </item>
 <item>
   <title>My model-centric view of Bayesian optimization</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-01-25-model-centric-bo/</link>
   <description><![CDATA[ 
 
@@ -1105,7 +1254,17 @@ Optimization of the acquisition function being hard to get right.
 <li id="fn8"><p>Chemists reading this are probably cringing at my simplified example. Just so I don’t seem totally clueless about drug discovery, the example I had in mind was a “covalent warhead” with a ketone, which is a desirable feature for some drugs but not all, and I am told that ketones also have a lot of non-specific interactions (binding to various things) which can cause toxic side effects. More generally, I don’t think that these drug discovery tasks should even be posed as single-objective optimization tasks to begin with, but that’s a separate story.↩︎</p></li>
 <li id="fn9"><p>Or maybe never was the default model, or maybe still is. I’m not an active <code>botorch</code> user, despite liking the library and having a high opinion of the team developing it.↩︎</p></li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {My Model-Centric View of {Bayesian} Optimization},
+  date = {2026-01-25},
+  url = {https://austintripp.ca/blog/2026-01-25-model-centric-bo/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“My Model-Centric View of Bayesian
+Optimization.”</span> January 25. <a href="https://austintripp.ca/blog/2026-01-25-model-centric-bo/">https://austintripp.ca/blog/2026-01-25-model-centric-bo/</a>.
+</div></div></section></div> ]]></description>
   <category>machine learning</category>
   <category>bayesian optimization</category>
   <category>opinion</category>
@@ -1115,6 +1274,7 @@ Optimization of the acquisition function being hard to get right.
 </item>
 <item>
   <title>Predictions for ML/AI in 2026 (and 2025 predictions re-visited).</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-01-05-predictions26/</link>
   <description><![CDATA[ 
 
@@ -1241,7 +1401,18 @@ Optimization of the acquisition function being hard to get right.
 <ol>
 <li id="fn1"><p>I’ll highlight predictions from the <a href="https://www.stateof.ai/2025-report-launch">State of AI report</a>.↩︎</p></li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {Predictions for {ML/AI} in 2026 (and 2025 Predictions
+    Re-Visited).},
+  date = {2026-01-05},
+  url = {https://austintripp.ca/blog/2026-01-05-predictions26/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“Predictions for ML/AI in 2026 (and 2025
+Predictions Re-Visited).”</span> January 5. <a href="https://austintripp.ca/blog/2026-01-05-predictions26/">https://austintripp.ca/blog/2026-01-05-predictions26/</a>.
+</div></div></section></div> ]]></description>
   <category>machine learning</category>
   <category>speculation</category>
   <category>_recent-highlight</category>
@@ -1250,6 +1421,7 @@ Optimization of the acquisition function being hard to get right.
 </item>
 <item>
   <title>New Year’s Resolutions for 2026 (and scoring 2025 resolutions)</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-01-05-resolutions26/</link>
   <description><![CDATA[ 
 
@@ -1309,7 +1481,18 @@ Optimization of the acquisition function being hard to get right.
 <ol>
 <li id="fn1"><p>Good chance this will happen via my work anyway.↩︎</p></li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {New {Year’s} {Resolutions} for 2026 (and Scoring 2025
+    Resolutions)},
+  date = {2026-01-05},
+  url = {https://austintripp.ca/blog/2026-01-05-resolutions26/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“New Year’s Resolutions for 2026 (and Scoring
+2025 Resolutions).”</span> January 5. <a href="https://austintripp.ca/blog/2026-01-05-resolutions26/">https://austintripp.ca/blog/2026-01-05-resolutions26/</a>.
+</div></div></section></div> ]]></description>
   <category>personal development</category>
   <category>_recent-highlight</category>
   <guid>https://austintripp.ca/blog/2026-01-05-resolutions26/</guid>
@@ -1317,6 +1500,7 @@ Optimization of the acquisition function being hard to get right.
 </item>
 <item>
   <title>Some odd requests I’ve received to put links on my website.</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2026-01-04-odd-link-requests/</link>
   <description><![CDATA[ 
 
@@ -1434,13 +1618,25 @@ Optimization of the acquisition function being hard to get right.
 
 </section>
 
- ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {Some Odd Requests {I’ve} Received to Put Links on My
+    Website.},
+  date = {2026-01-04},
+  url = {https://austintripp.ca/blog/2026-01-04-odd-link-requests/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“Some Odd Requests I’ve Received to Put Links
+on My Website.”</span> January 4. <a href="https://austintripp.ca/blog/2026-01-04-odd-link-requests/">https://austintripp.ca/blog/2026-01-04-odd-link-requests/</a>.
+</div></div></section></div> ]]></description>
   <category>website</category>
   <guid>https://austintripp.ca/blog/2026-01-04-odd-link-requests/</guid>
   <pubDate>Sun, 04 Jan 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Thoughts on writing PhD reference letters.</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2025-12-30-phd-reference-letter/</link>
   <description><![CDATA[ 
 
@@ -1638,7 +1834,17 @@ The actual writing of the letter (probably it will come more from a template or 
 <li id="fn3"><p>For example, when <a href="../../blog/2025-12-18-neurips25">attending NeurIPS this year</a> I had ~3 days of non-stop conference activities (talks, poster sessions, evening socials), then 2 days of holidays with family (who I hadn’t seen in a long time), then another travel day. During the few breaks I did have I had some analysis tasks to complete as part of my work at Valence. This would have been an incredibly difficult time to also write a good reference letter!!↩︎</p></li>
 <li id="fn4"><p>I already got a round of feedback from Claude 4.5 (they suggested I add examples).↩︎</p></li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2025,
+  author = {Tripp, Austin},
+  title = {Thoughts on Writing {PhD} Reference Letters.},
+  date = {2025-12-30},
+  url = {https://austintripp.ca/blog/2025-12-30-phd-reference-letter/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2025" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2025. <span>“Thoughts on Writing PhD Reference
+Letters.”</span> December 30. <a href="https://austintripp.ca/blog/2025-12-30-phd-reference-letter/">https://austintripp.ca/blog/2025-12-30-phd-reference-letter/</a>.
+</div></div></section></div> ]]></description>
   <category>employment</category>
   <category>opinion</category>
   <category>PhD</category>
@@ -1647,6 +1853,7 @@ The actual writing of the letter (probably it will come more from a template or 
 </item>
 <item>
   <title>Review of NeurIPS 2025</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2025-12-18-neurips25/</link>
   <description><![CDATA[ 
 
@@ -1685,7 +1892,17 @@ The actual writing of the letter (probably it will come more from a template or 
 <ol>
 <li id="fn1"><p>but I was there for some nice company parties during the week 😀↩︎</p></li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2025,
+  author = {Tripp, Austin},
+  title = {Review of {NeurIPS} 2025},
+  date = {2025-12-18},
+  url = {https://austintripp.ca/blog/2025-12-18-neurips25/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2025" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2025. <span>“Review of NeurIPS 2025.”</span> December 18.
+<a href="https://austintripp.ca/blog/2025-12-18-neurips25/">https://austintripp.ca/blog/2025-12-18-neurips25/</a>.
+</div></div></section></div> ]]></description>
   <category>machine learning</category>
   <category>_recent-highlight</category>
   <guid>https://austintripp.ca/blog/2025-12-18-neurips25/</guid>
@@ -1693,6 +1910,7 @@ The actual writing of the letter (probably it will come more from a template or 
 </item>
 <item>
   <title>Why listen to podcasts?</title>
+  <dc:creator>Austin Tripp</dc:creator>
   <link>https://austintripp.ca/blog/2025-11-16-why-podcasts/</link>
   <description><![CDATA[ 
 
@@ -1718,7 +1936,17 @@ The actual writing of the letter (probably it will come more from a template or 
 
 
 
- ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2025,
+  author = {Tripp, Austin},
+  title = {Why Listen to Podcasts?},
+  date = {2025-11-16},
+  url = {https://austintripp.ca/blog/2025-11-16-why-podcasts/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2025" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2025. <span>“Why Listen to Podcasts?”</span> November 16.
+<a href="https://austintripp.ca/blog/2025-11-16-why-podcasts/">https://austintripp.ca/blog/2025-11-16-why-podcasts/</a>.
+</div></div></section></div> ]]></description>
   <category>opinion</category>
   <guid>https://austintripp.ca/blog/2025-11-16-why-podcasts/</guid>
   <pubDate>Sun, 16 Nov 2025 00:00:00 GMT</pubDate>
