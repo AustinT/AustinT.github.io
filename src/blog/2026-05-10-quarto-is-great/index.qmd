@@ -110,3 +110,8 @@ write internal technical memos at work too.
 If you are a researcher like me who wants to write short technical documents
 with good code rendering, I highly recommend giving Quarto a try!
 
+---
+
+**EDIT 2026-05-21**:
+[This recent blog post by Kieran Healy](https://kieranhealy.org/blog/archives/2026/03/09/using-quarto-to-write-a-book/)
+makes a similar  point and describes it in more detail- I quite enjoyed it!
