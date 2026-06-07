@@ -1,38 +1,5 @@
 [
   {
-    "listing": "/blog/index.html",
-    "items": [
-      "/blog/2026-05-10-quarto-is-great/index.html",
-      "/blog/2026-05-04-skimmable-papers/index.html",
-      "/blog/2026-02-21-behaviour-based-BO-evals/index.html",
-      "/blog/2026-02-16-bo-rebrand/index.html",
-      "/blog/2026-02-14-noise-in-gp-models/index.html",
-      "/blog/2026-02-09-bo-modularity/index.html",
-      "/blog/2026-02-08-bo-benchmarks/index.html",
-      "/blog/2026-01-27-forgotten-utility-bo/index.html",
-      "/blog/2026-01-25-model-centric-bo/index.html",
-      "/blog/2026-01-05-predictions26/index.html",
-      "/blog/2026-01-05-resolutions26/index.html",
-      "/blog/2025-12-18-neurips25/index.html",
-      "/blog/2025-11-02-expected-utility/index.html",
-      "/blog/2025-08-10-mutual-information-introduction/index.html",
-      "/blog/2025-06-23-blog-in-llm-age/index.html",
-      "/blog/2025-06-22-ml-conference-review-guide/index.html",
-      "/blog/2025-05-12-chebyshev-scalarization/index.html",
-      "/blog/2025-02-14-is-offline-mbo-realistic/index.html",
-      "/blog/2025-01-12-gauche-kernels-pd/index.html",
-      "/blog/2024-12-30-international-english/index.html",
-      "/blog/2024-12-10-when-should-bo-work/index.html",
-      "/blog/2024-11-04-nsga-ii/index.html",
-      "/blog/2024-10-27-ai4sci-phi/index.html",
-      "/blog/2024-10-13-vizier-bayesopt/index.html",
-      "/blog/2024-10-07-problems-with-topk-diversity/index.html",
-      "/blog/2020/02/10/monty-hall/index.html",
-      "/blog/2018/09/12/sparse-matrices-tips1/index.html",
-      "/blog/2018/08/21/bayes-no-certain-priors/index.html"
-    ]
-  },
-  {
     "listing": "/blog/all/index.html",
     "items": [
       "/blog/2026-05-10-quarto-is-great/index.html",
@@ -109,6 +76,60 @@
       "/blog/2018/07/01/organization_structure_paper/index.html",
       "/blog/2018/06/25/onyomi/index.html",
       "/blog/2018/03/24/website-launch/index.html"
+    ]
+  },
+  {
+    "listing": "/blog/index.html",
+    "items": [
+      "/blog/2026-05-10-quarto-is-great/index.html",
+      "/blog/2026-05-04-skimmable-papers/index.html",
+      "/blog/2026-02-21-behaviour-based-BO-evals/index.html",
+      "/blog/2026-02-16-bo-rebrand/index.html",
+      "/blog/2026-02-14-noise-in-gp-models/index.html",
+      "/blog/2026-02-09-bo-modularity/index.html",
+      "/blog/2026-02-08-bo-benchmarks/index.html",
+      "/blog/2026-01-27-forgotten-utility-bo/index.html",
+      "/blog/2026-01-25-model-centric-bo/index.html",
+      "/blog/2026-01-05-predictions26/index.html",
+      "/blog/2026-01-05-resolutions26/index.html",
+      "/blog/2025-12-18-neurips25/index.html",
+      "/blog/2025-11-02-expected-utility/index.html",
+      "/blog/2025-08-10-mutual-information-introduction/index.html",
+      "/blog/2025-06-23-blog-in-llm-age/index.html",
+      "/blog/2025-06-22-ml-conference-review-guide/index.html",
+      "/blog/2025-05-12-chebyshev-scalarization/index.html",
+      "/blog/2025-02-14-is-offline-mbo-realistic/index.html",
+      "/blog/2025-01-12-gauche-kernels-pd/index.html",
+      "/blog/2024-12-30-international-english/index.html",
+      "/blog/2024-12-10-when-should-bo-work/index.html",
+      "/blog/2024-11-04-nsga-ii/index.html",
+      "/blog/2024-10-27-ai4sci-phi/index.html",
+      "/blog/2024-10-13-vizier-bayesopt/index.html",
+      "/blog/2024-10-07-problems-with-topk-diversity/index.html",
+      "/blog/2020/02/10/monty-hall/index.html",
+      "/blog/2018/09/12/sparse-matrices-tips1/index.html",
+      "/blog/2018/08/21/bayes-no-certain-priors/index.html"
+    ]
+  },
+  {
+    "listing": "/research/index.html",
+    "items": [
+      "/research/papers/hash-collisions-fingerprints/index.html",
+      "/research/papers/basic-bo-underrated/index.html",
+      "/research/papers/retro-fallback/index.html",
+      "/research/papers/adaptive-deep-kernel-gp/index.html",
+      "/research/papers/genetic-algorithm-strong-baselines/index.html",
+      "/research/papers/syntheseus-retrosynthesis/index.html",
+      "/research/papers/tanimoto-random-features/index.html",
+      "/research/papers/dockstring/index.html",
+      "/research/papers/latent-space-weighted-retraining/index.html",
+      "/research/papers/ehvi-vs-scalarization/index.html",
+      "/research/papers/qPO-batch-bo/index.html",
+      "/research/papers/sgd-gaussian-processes/index.html",
+      "/research/papers/dual-value-networks-retrosynthesis/index.html",
+      "/research/papers/gauche-gp-package/index.html",
+      "/research/papers/volatile-sensing-2023/index.html",
+      "/research/papers/oil-sands-photocatalysts/index.html"
     ]
   }
 ]

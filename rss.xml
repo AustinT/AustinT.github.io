@@ -9,7 +9,7 @@
 <link>https://austintripp.ca/blog/all/</link>
 <atom:link href="https://austintripp.ca/blog/all/index.xml" rel="self" type="application/rss+xml"/>
 <description>Austin Tripp&#39;s personal website</description>
-<generator>quarto-1.9.37</generator>
+<generator>quarto-1.9.38</generator>
 <lastBuildDate>Sun, 10 May 2026 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Quarto is great!</title>
@@ -154,6 +154,8 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 <hr>
 <p>In fact, the type of short technical documents that I sometimes write on this blog are a perfect use case for Quarto, so I actually just refactored my website to use it!<sup>3</sup> So, as a consequence, expect to see better technical publishing on this blog. I also imagine I’ll use quarto a lot more to write internal technical memos at work too.</p>
 <p>If you are a researcher like me who wants to write short technical documents with good code rendering, I highly recommend giving Quarto a try!</p>
+<hr>
+<p><strong>EDIT 2026-05-21</strong>: <a href="https://kieranhealy.org/blog/archives/2026/03/09/using-quarto-to-write-a-book/">This recent blog post by Kieran Healy</a> makes a similar point and describes it in more detail- I quite enjoyed it!</p>
 
 
 
