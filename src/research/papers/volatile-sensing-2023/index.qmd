@@ -1,0 +1,27 @@
+---
+title: "Nonequilibrium sensing of volatile compounds using active and passive analyte delivery"
+year: 2023
+order: 999999
+authors: "Soeren Brandt, Ida Pavlichenko, Anna V. Shneidman, Haritosh Patel, Austin Tripp, Timothy S. B. Wong, Sean Lazaro, Ethan Thompson, Aubrey Maltz, Thomas Storwick, Holden Beggs, Katalin Szendrei-Temesi, Bettina V. Lotsch, C. Nadir Kaplan, Claas W. Visser, Michael P. Brenner, Venkatesh N. Murthy, Joanna Aizenberg"
+venue: "Proceedings of the National Academy of Sciences"
+paper_url: "https://www.pnas.org/doi/abs/10.1073/pnas.2303928120"
+categories: [paper]
+---
+
+[Read the paper](https://www.pnas.org/doi/abs/10.1073/pnas.2303928120){.btn .btn-primary .btn-sm}
+
+## Summary
+
+A sensor to analyze mixtures of volatile organic compounds using time-dependent diffusion and absorption into a photonic crystal.
+
+## My contribution
+
+I worked on this project during an internship from 2016-2017 (long before it was published). I did some analysis and designed some early machine learning algorithms to analyze the data (mostly SVMs).
+
+## Thoughts
+
+(as of 2023-11-24)
+
+I think this was a cool project and that the underlying sensing technology could one day be deployed.
+However, the project evolved and changed a lot between the time I did my internship and the time it was published
+so I don't think I am in a good position to comment on the work as a whole.

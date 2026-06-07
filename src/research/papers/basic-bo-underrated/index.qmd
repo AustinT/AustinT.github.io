@@ -1,0 +1,23 @@
+---
+title: "Basic Bayesian Optimization is Underrated for Molecule Design"
+year: 2024
+order: 1000
+authors: "Austin Tripp, José Miguel Hernández-Lobato"
+venue: "ICML 2024 AI for Science Workshop"
+paper_url: "https://openreview.net/forum?id=V4aG4wsoIt"
+categories: [workshop]
+---
+
+[Read the paper](https://openreview.net/forum?id=V4aG4wsoIt){.btn .btn-primary .btn-sm}
+
+## Summary
+
+<!-- TODO --> (no content here yet)
+
+## My contribution
+
+<!-- TODO --> (no content here yet)
+
+## Thoughts
+
+<!-- TODO --> (no content here yet)

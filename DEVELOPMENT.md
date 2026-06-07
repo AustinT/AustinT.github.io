@@ -8,6 +8,7 @@ Notes on how to work on this website.
 src/          # Quarto project root (website source)
 scripts/      # Build utilities
 decisions/    # Design decision records
+publications/ # Git submodule: AustinT/austin-tripp-publications (.bib files)
 ```
 
 ## Checklist for updating the website
@@ -16,6 +17,38 @@ decisions/    # Design decision records
 2. Check that pages render correctly locally: `quarto preview src/`
 3. Commit changes on a separate branch, then merge to `src`.
 4. Deploy (see below).
+
+## Adding paper pages
+
+Paper pages live in `src/research/papers/` and are scaffolded from the `publications/` submodule
+(`github.com/AustinT/austin-tripp-publications`), which contains multiple `.bib` files.
+
+After cloning the repo, initialise the submodule:
+
+```bash
+git submodule update --init
+```
+
+To generate pages for new `.bib` entries (existing pages are never overwritten):
+
+```bash
+python3 scripts/generate_paper_pages.py
+```
+
+Each BibTeX entry must have two custom fields or the script will complain:
+
+- `website_exclude = {true|false}` — if absent, the script warns loudly and skips the entry.
+  Set to `false` to generate a page; `true` to skip.
+- `website_slug = {my-slug}` — required when `website_exclude = false`. Determines the page
+  URL (`/research/papers/my-slug/`).
+
+An optional third field controls an extra button on the paper page:
+
+- `authoritative_link = {https://...}` — when present alongside the standard URL/DOI, the page
+  shows two buttons: "Authoritative version" and "Official version".
+
+If a `.bib` field contains a LaTeX accent not in the script's lookup table, the script raises
+an error identifying the entry and field. Convert it to Unicode in the `.bib` file and re-run.
 
 ## Python environment
 

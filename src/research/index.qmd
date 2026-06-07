@@ -1,13 +1,15 @@
 ---
 title: Research
+listing:
+  - id: papers-list
+    contents: "papers/**/index.qmd"
+    sort: ["order asc", "year desc"]
+    type: table
+    fields: [title, year, venue, categories]
+    field-display-names:
+      year: "Year"
+      venue: "Venue"
 ---
-
-## Publications
-
-For an updated list of my research publications,
-please visit my
-[Google Scholar page](https://scholar.google.com/citations?user=WAvRaxMAAAAJ).
-For my thoughts on my own papers, please see [here](/misc/paper-retrospectives).
 
 ## Current work (as of 2024)
 
@@ -44,3 +46,24 @@ working on (or have worked on recently) are:
 - Uncertainty quantification
 - Evaluation of machine learning algorithms in a way that reflects their practical usage
 - AI safety/alignment
+
+## Publications
+
+For a complete list see my [Google Scholar page](https://scholar.google.com/citations?user=WAvRaxMAAAAJ).
+For some of my papers I have a dedicated webpage with more details (and retrospective thoughts).
+Click any paper title below for more detail.
+
+::: {#papers-list}
+:::
+
+## Retrospective thoughts on my papers
+
+On each paper's page
+I have tried to provide an honest evaluation of the paper.
+I added this because:
+
+1. It might be hard to tell at a glance whether something in an academic paper will work in real life.
+2. Because updating scientific papers is relatively uncommon, there isn't really a proper place for an author to state how their work looks in hindsight.
+
+If you would like me to write about a specific article that is missing or would like an update
+on an existing article, please send me an email and I will write an update.

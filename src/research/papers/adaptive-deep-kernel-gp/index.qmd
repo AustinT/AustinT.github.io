@@ -1,0 +1,28 @@
+---
+title: "Meta-learning Adaptive Deep Kernel Gaussian Processes for Molecular Property Prediction"
+year: 2023
+order: 1000
+authors: "Wenlin Chen, Austin Tripp, José Miguel Hernández-Lobato"
+venue: "The Eleventh International Conference on Learning Representations"
+authoritative_url: "https://arxiv.org/abs/2205.02708"
+paper_url: "https://openreview.net/forum?id=KXRSh0sdVTP"
+categories: [paper]
+---
+
+[Official version](https://openreview.net/forum?id=KXRSh0sdVTP){.btn .btn-outline-primary .btn-sm} [Version I consider authoritative](https://arxiv.org/abs/2205.02708){.btn .btn-primary .btn-sm}
+
+## Summary
+
+Meta-learning algorithm using GPs. General in scope but with molecular property prediction as the primary application.
+
+## My contribution
+
+I had the idea and wrote a prototype algorithm, but Wenlin did the rest of the work.
+
+## Thoughts
+
+(as of 2023-11-24)
+
+I think this is a solid algorithm which could be used for real-life problems,
+_if_ there is a relevant meta-dataset.
+I would be hesitant to just take our pre-trained model and apply it on a random new problem.

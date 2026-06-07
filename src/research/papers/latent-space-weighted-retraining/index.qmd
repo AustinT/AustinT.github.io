@@ -1,0 +1,46 @@
+---
+title: "Sample-Efficient Optimization in the Latent Space of Deep Generative Models via Weighted Retraining"
+year: 2020
+order: 1000
+authors: "Austin Tripp, Erik Daxberger, José Miguel Hernández-Lobato"
+venue: "Advances in Neural Information Processing Systems"
+authoritative_url: "https://arxiv.org/abs/2006.09191"
+paper_url: "https://proceedings.neurips.cc/paper_files/paper/2020/file/81e3225c6ad49623167a4309eb4b2e75-Paper.pdf"
+categories: [paper]
+---
+
+[Official version](https://proceedings.neurips.cc/paper_files/paper/2020/file/81e3225c6ad49623167a4309eb4b2e75-Paper.pdf){.btn .btn-outline-primary .btn-sm} [Version I consider authoritative](https://arxiv.org/abs/2006.09191){.btn .btn-primary .btn-sm}
+
+## Summary
+
+ML algorithm to optimize structured inputs (e.g. molecules) via weighted retraining of a generative model.
+
+## My contribution
+
+I conceived the project and performed the experiments / did writing jointly with Erik.
+
+## Thoughts
+
+(as of 2023-11-24)
+
+This is the first paper that was really "mine".
+While there is nothing explicitly wrong in the paper,
+in hindsight the approach and methodology is more naive and less original than I previously thought.
+The algorithm proposed in the paper has two parts.
+
+- _The "weighted retraining"_: I think this is sensible and would expect it to work well on other problems.
+  However, I do think it is basically an instance of an ["Estimation of distribution algorithm"](https://en.wikipedia.org/wiki/Estimation_of_distribution_algorithm)
+  and am unsure whether it would work really better in practice than other EDAs.
+- _The "latent space optimization" (LSO)_: I tried to extend the LSO to other problems for ~1 year
+  but had poor results. I think the fundamental difficulty is that it is at least as hard
+  to create an informative probabilistic model in a continuous latent space
+  as it is in a discrete space like molecules.
+  In fact, it might even be harder: e.g. it is probably easier to specify a prior for smoothness with respect to molecular structure directly in molecule space than in some abstract latent space.
+  I think the reason this method got strong results in our paper is because the objective we optimized,
+  logP, is essentially just a proxy for molecular size and is easy to optimize by finding large out-of-distribution molecules.
+
+  Overall I would _not_ recommend using LSO:
+  instead I would create a model directly in whatever discrete input space is being used
+  (e.g. a GP with the Tanimoto kernel for molecules) and optimize acquisition functions using genetic algorithms.
+  I know there has been subsequent work on LSO which is more positive, but I think these works just
+  lack strong BO baselines which don't use a latent space.

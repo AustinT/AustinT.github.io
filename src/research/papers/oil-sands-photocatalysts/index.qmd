@@ -1,0 +1,26 @@
+---
+title: "Petroleomic analysis of the treatment of naphthenic organics in oil sands process-affected water with buoyant photocatalysts"
+year: 2018
+order: 999999
+authors: "Tim Leshuk, Kerry M. Peru, Diogo de Oliveira Livera, Austin Tripp, Patrick Bardo, John V. Headley, Frank Gu"
+venue: "Water Research"
+paper_url: "http://www.sciencedirect.com/science/article/pii/S0043135418303737"
+categories: [paper]
+---
+
+[Read the paper](http://www.sciencedirect.com/science/article/pii/S0043135418303737){.btn .btn-primary .btn-sm}
+
+## Summary
+
+Uses floating nanoparticles to treat contaminated water. This is the first paper I contributed towards.
+
+## My contribution
+
+I did some experiments for this paper during an internship in 2016.
+
+## Thoughts
+
+(as of 2023-11-24)
+
+I did not participate in the writing so I don't have any strong opinions on the paper's claims and text.
+I did personally see the nanoparticles working though!

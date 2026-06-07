@@ -1,0 +1,23 @@
+---
+title: "Stochastic Gradient Descent for Gaussian Processes Done Right"
+year: 2024
+order: 999999
+authors: "Jihao Andreas Lin, Shreyas Padhy, Javier Antoran, Austin Tripp, Alexander Terenin, Csaba Szepesvari, José Miguel Hernández-Lobato, David Janz"
+venue: "The Twelfth International Conference on Learning Representations"
+paper_url: "https://openreview.net/forum?id=fj2E5OcLFn"
+categories: [paper]
+---
+
+[Read the paper](https://openreview.net/forum?id=fj2E5OcLFn){.btn .btn-primary .btn-sm}
+
+## Summary
+
+<!-- TODO --> (no content here yet)
+
+## My contribution
+
+<!-- TODO --> (no content here yet)
+
+## Thoughts
+
+<!-- TODO --> (no content here yet)

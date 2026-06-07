@@ -1,0 +1,23 @@
+---
+title: "Re-evaluating Retrosynthesis Algorithms with Syntheseus"
+year: 2023
+order: 1000
+authors: "Krzysztof Maziarz, Austin Tripp, Guoqing Liu, Megan Stanley, Shufang Xie, Piotr Gaiński, Philipp Seidl, Marwin Segler"
+venue: "arXiv preprint"
+paper_url: "https://arxiv.org/abs/2310.19796"
+categories: [preprint]
+---
+
+[Read the paper](https://arxiv.org/abs/2310.19796){.btn .btn-primary .btn-sm}
+
+## Summary
+
+<!-- TODO --> (no content here yet)
+
+## My contribution
+
+<!-- TODO --> (no content here yet)
+
+## Thoughts
+
+<!-- TODO --> (no content here yet)

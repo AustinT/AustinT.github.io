@@ -1,0 +1,28 @@
+---
+title: "Retro-fallback: retrosynthetic planning in an uncertain world"
+year: 2024
+order: 1000
+authors: "Austin Tripp, Krzysztof Maziarz, Sarah Lewis, Marwin Segler, José Miguel Hernández-Lobato"
+venue: "The Twelfth International Conference on Learning Representations"
+authoritative_url: "https://arxiv.org/abs/2310.09270"
+paper_url: "https://openreview.net/forum?id=dl0u4ODCuW"
+categories: [paper]
+---
+
+[Official version](https://openreview.net/forum?id=dl0u4ODCuW){.btn .btn-outline-primary .btn-sm} [Version I consider authoritative](https://arxiv.org/abs/2310.09270){.btn .btn-primary .btn-sm}
+
+## Summary
+
+An algorithm to suggest synthesis routes for molecules using reaction uncertainty.
+
+## My contribution
+
+Co-lead of the project and primary developer of the algorithm. Details in the paper's author contribution section.
+
+## Thoughts
+
+(as of 2023-11-24)
+
+This is ongoing work so I cannot really offer a "retrospective",
+but barring significant advancements in single-step reaction prediction I think retro-fallback could
+be really useful in practice!

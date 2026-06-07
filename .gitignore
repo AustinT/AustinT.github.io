@@ -21,3 +21,6 @@ src/.quarto/
 # Python / uv
 .venv/
 *.pyc
+
+/.quarto/
+**/*.quarto_ipynb

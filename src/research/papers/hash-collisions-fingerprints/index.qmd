@@ -1,0 +1,23 @@
+---
+title: "Hash Collisions in Molecular Fingerprints: Effects on Property Prediction and Bayesian Optimization"
+year: 2025
+order: 1000
+authors: "Walter Virany, Austin Tripp"
+venue: "arXiv preprint"
+paper_url: "https://arxiv.org/abs/2511.17078"
+categories: [preprint]
+---
+
+[Read the paper](https://arxiv.org/abs/2511.17078){.btn .btn-primary .btn-sm}
+
+## Summary
+
+<!-- TODO --> (no content here yet)
+
+## My contribution
+
+<!-- TODO --> (no content here yet)
+
+## Thoughts
+
+<!-- TODO --> (no content here yet)

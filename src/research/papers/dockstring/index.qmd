@@ -1,0 +1,27 @@
+---
+title: "DOCKSTRING: easy molecular docking yields better benchmarks for ligand design"
+year: 2022
+order: 1000
+authors: "Miguel García-Ortegón, Gregor NC Simm, Austin J Tripp, José Miguel Hernández-Lobato, Andreas Bender, Sergio Bacallado"
+venue: "Journal of Chemical Information and Modeling"
+paper_url: "https://pubs.acs.org/doi/full/10.1021/acs.jcim.1c01334"
+categories: [paper]
+---
+
+[Read the paper](https://pubs.acs.org/doi/full/10.1021/acs.jcim.1c01334){.btn .btn-primary .btn-sm}
+
+## Summary
+
+Benchmark to measure performance of machine learning algorithms for small molecules.
+
+## My contribution
+
+I implemented most of the algorithms whose scores on the benchmark we reported.
+
+## Thoughts
+
+(as of 2023-11-24)
+
+Although docking scores are not a great proxy for real assay data,
+I think this benchmark is a huge improvement over many common benchmarks
+and is currently underused by the community!

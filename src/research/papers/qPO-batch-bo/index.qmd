@@ -1,0 +1,23 @@
+---
+title: "Batched Bayesian Optimization by Maximizing the Probability of Including the Optimum"
+year: 2025
+order: 999999
+authors: "Jenna Fromer, Runzhong Wang, Mrunali Manjrekar, Austin Tripp, José Miguel Hernández-Lobato, Connor W Coley"
+venue: "Journal of Chemical Information and Modeling"
+paper_url: "https://doi.org/10.1021/acs.jcim.5c00214"
+categories: [paper]
+---
+
+[Read the paper](https://doi.org/10.1021/acs.jcim.5c00214){.btn .btn-primary .btn-sm}
+
+## Summary
+
+<!-- TODO --> (no content here yet)
+
+## My contribution
+
+<!-- TODO --> (no content here yet)
+
+## Thoughts
+
+<!-- TODO --> (no content here yet)

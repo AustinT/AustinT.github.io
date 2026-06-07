@@ -1,0 +1,30 @@
+---
+title: "GAUCHE: A Library for Gaussian Processes in Chemistry"
+year: 2023
+order: 999999
+authors: "Ryan-Rhys Griffiths, Leo Klarner, Henry Moss, Aditya Ravuri, Sang Truong, Yuanqi Du, Samuel Stanton, Gary Tom, Bojana Rankovic, Arian Jamasb, Aryan Deshwal, Julius Schwartz, Austin Tripp, Gregory Kell, Simon Frieder, Anthony Bourached, Alex Chan, Jacob Moss, Chengzhi Guo, Johannes Peter Dürholt, Saudamini Chaurasia, Ji Won Park, Felix Strieth-Kalthoff, Alpha Lee, Bingqing Cheng, Alan Aspuru-Guzik, Philippe Schwaller, Jian Tang"
+venue: "Advances in Neural Information Processing Systems"
+authoritative_url: "https://arxiv.org/abs/2212.04450"
+paper_url: "https://proceedings.neurips.cc/paper_files/paper/2023/file/f2b1b2e974fa5ea622dd87f22815f423-Paper-Conference.pdf"
+categories: [paper]
+---
+
+[Official version](https://proceedings.neurips.cc/paper_files/paper/2023/file/f2b1b2e974fa5ea622dd87f22815f423-Paper-Conference.pdf){.btn .btn-outline-primary .btn-sm} [Version I consider authoritative](https://arxiv.org/abs/2212.04450){.btn .btn-primary .btn-sm}
+
+## Summary
+
+Paper accompanying a software library for Gaussian processes on molecules.
+
+## My contribution
+
+I contributed an implementation of the Tanimoto kernel.
+
+## Thoughts
+
+(as of 2025-01-12)
+
+I have not really used this library (I mostly just use my own GP code).
+Although in the past installation with `pip` failed for me,
+this seems to have been resolved now.
+However, I did find a significant [bug](https://github.com/leojklarner/gauche/issues/74)
+last time I looked at the code, which is a bit frustrating.

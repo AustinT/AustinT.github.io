@@ -1,0 +1,23 @@
+---
+title: "Genetic algorithms are strong baselines for molecule generation"
+year: 2023
+order: 1000
+authors: "Austin Tripp, José Miguel Hernández-Lobato"
+venue: "arXiv preprint"
+paper_url: "https://arxiv.org/abs/2310.09267"
+categories: [preprint]
+---
+
+[Read the paper](https://arxiv.org/abs/2310.09267){.btn .btn-primary .btn-sm}
+
+## Summary
+
+<!-- TODO --> (no content here yet)
+
+## My contribution
+
+<!-- TODO --> (no content here yet)
+
+## Thoughts
+
+<!-- TODO --> (no content here yet)

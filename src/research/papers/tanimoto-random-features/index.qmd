@@ -1,0 +1,28 @@
+---
+title: "Tanimoto Random Features for Scalable Molecular Machine Learning"
+year: 2023
+order: 1000
+authors: "Austin Tripp, Sergio Bacallado, Sukriti Singh, José Miguel Hernández-Lobato"
+venue: "Advances in Neural Information Processing Systems"
+authoritative_url: "https://arxiv.org/abs/2306.14809"
+paper_url: "https://proceedings.neurips.cc/paper_files/paper/2023/file/6a69d44b3386e50c06f7107ef4f29302-Paper-Conference.pdf"
+categories: [paper]
+---
+
+[Official version](https://proceedings.neurips.cc/paper_files/paper/2023/file/6a69d44b3386e50c06f7107ef4f29302-Paper-Conference.pdf){.btn .btn-outline-primary .btn-sm} [Version I consider authoritative](https://arxiv.org/abs/2306.14809){.btn .btn-primary .btn-sm}
+
+## Summary
+
+Scalable approximation for the Tanimoto kernel (useful for GPs on molecules).
+
+## My contribution
+
+Initiated project, co-developed minmax random features, did writing + experiments.
+
+## Thoughts
+
+(as of 2023-11-24)
+
+This paper does what it says it does: provides an approximation to this kernel.
+I am happy that this paper made modest claims and demonstrated them,
+in contrast to many papers which support bold claims with shaky experiments.
