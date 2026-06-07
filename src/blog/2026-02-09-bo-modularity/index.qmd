@@ -6,7 +6,8 @@ categories:
 - bayesian optimization
 - opinion
 - _recent-highlight
-description: ""
+description: "This post argues that Bayesian optimization's decomposition into a surrogate model, acquisition function, and inner-loop optimizer is a practically valuable form of modularity that the research community consistently undersells."
+google-scholar: true
 ---
 
 I think the Bayesian optimization (BO) community is vastly underselling one of

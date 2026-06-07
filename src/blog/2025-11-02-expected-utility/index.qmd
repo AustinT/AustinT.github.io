@@ -6,7 +6,8 @@ categories:
 - statistics
 - opinion
 - _recent-highlight
-description: ""
+description: "An accessible argument for expected utility maximization as a principled approach to decision-making under uncertainty, grounded in the Von Neumann–Morgenstern utility theorem."
+google-scholar: true
 ---
 
 I've recently found myself arguing for expected utility maximization as an

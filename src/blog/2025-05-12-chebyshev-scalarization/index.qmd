@@ -5,7 +5,8 @@ categories:
 - machine learning
 - bayesian optimization
 - _all-time-best
-description: ""
+description: "A self-contained explanation of Chebyshev scalarization for multi-objective optimization."
+google-scholar: true
 ---
 
 I've been reading about multi-objective optimization recently.[^surprise]

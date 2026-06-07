@@ -5,7 +5,8 @@ categories:
 - machine learning
 - speculation
 - _recent-highlight
-description: ""
+description: "A critical examination of offline model-based optimization (OMBO) as a problem setting."
+google-scholar: true
 ---
 
 <div class="alert alert-info">

@@ -6,7 +6,8 @@ categories:
 - bayesian optimization
 - opinion
 - _recent-highlight
-description: ""
+description: "This post articulates a \"model-centric\" view of Bayesian optimization (BO) in which the surrogate model is treated as a user-provided input rather than an internal algorithmic component."
+google-scholar: true
 ---
 
 A lot of conversations at NeurIPS this year made me think that I view the role

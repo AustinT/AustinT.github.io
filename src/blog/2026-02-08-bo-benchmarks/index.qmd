@@ -6,7 +6,8 @@ categories:
 - bayesian optimization
 - opinion
 - _recent-highlight
-description: ""
+description: "A critique of toy benchmark functions (Ackley, Branin, Hartmann, etc.) as evaluation tools for Bayesian optimization."
+google-scholar: true
 ---
 
 A lot of Bayesian optimization (BO) papers include experiments on "toy"

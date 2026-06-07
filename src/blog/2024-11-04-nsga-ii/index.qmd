@@ -4,7 +4,8 @@ date: 2024-11-04
 categories:
 - research papers
 - _all-time-highlight
-description: ""
+description: "An explanation of the NSGA-II genetic algorithm."
+google-scholar: true
 ---
 
 Nondominated sorting genetic algorithm version 2,

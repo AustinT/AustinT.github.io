@@ -4,7 +4,8 @@ date: 2025-01-12
 categories:
 - machine learning
 - _recent-highlight
-description: ""
+description: "A mathematical analysis of whether the fingerprint kernels in the GAUCHE library for Gaussian processes in chemistry are positive definite (PD)."
+google-scholar: true
 ---
 
 [GAUCHE](https://github.com/leojklarner/gauche) is a library for Gaussian
