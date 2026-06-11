@@ -10,7 +10,28 @@
 <atom:link href="https://austintripp.ca/blog/all/index.xml" rel="self" type="application/rss+xml"/>
 <description>Austin Tripp&#39;s personal website</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Sun, 10 May 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 11 Jun 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>How AI Experts Can Drive Better Collaboration in Drug Discovery</title>
+  <dc:creator>Austin Tripp</dc:creator>
+  <link>https://austintripp.ca/blog/2026-06-11-ai-experts-better-collab/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I just wrote an article <a href="https://valencelabs.substack.com/p/how-ai-experts-can-drive-better-collaboration">How AI Experts Can Drive Better Collaboration in Drug Discovery</a> on Valence’s substack, reflecting on some experiences I’ve had at Valence/Recursion. Please read it on substack!</p>
+<p>Essentially I argue that, on the margin, AI experts should be more assertive when formulating the problem, since domain experts don’t always get it right. Even though they know the <em>problem</em> well, formalization itself is a skill, and AI experts are probably better on average.</p>
+
+
+
+ ]]></description>
+  <category>drug discovery</category>
+  <category>opinion</category>
+  <category>_recent-highlight</category>
+  <guid>https://austintripp.ca/blog/2026-06-11-ai-experts-better-collab/</guid>
+  <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Quarto is great!</title>
   <dc:creator>Austin Tripp</dc:creator>
@@ -1909,49 +1930,6 @@ Tripp, Austin. 2025. <span>“Review of NeurIPS 2025.”</span> December 18.
   <category>_recent-highlight</category>
   <guid>https://austintripp.ca/blog/2025-12-18-neurips25/</guid>
   <pubDate>Thu, 18 Dec 2025 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Why listen to podcasts?</title>
-  <dc:creator>Austin Tripp</dc:creator>
-  <link>https://austintripp.ca/blog/2025-11-16-why-podcasts/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>Although everybody seems to listen to podcasts these days, some people do not, and I’ve found myself explaining several times why I choose to listen to them (as opposed to just listening to music or audiobooks). This post is essentially my stock response.</p>
-<p>My overall pitch for podcasts is basically <em>opportunity cost</em>: if you have some downtime that you can’t fill with something else (eg while brushing your teeth), and have the mental energy to listen to something, podcasts can be an interesting way to make productive use of this time.</p>
-<p>Importantly, I won’t recommend listening to just <em>any</em> podcast. I’m sure there are many bad podcasts out there. However, the podcasts which I <em>enjoy</em> all have some commonalities:</p>
-<ul>
-<li>They sound like a conversation between two people; it’s like listening in on an interesting conversation.</li>
-<li>The people in the conversation are either people who I respect/admire, or people who I would never normally talk to.</li>
-<li>I can tune in and out, it doesn’t need 100% of my attention. If I miss a point then it’s ok.</li>
-<li>It consumes &lt;80% of my mental energy, so I can listen to the podcast while doing something else (eg cooking, running)</li>
-</ul>
-<p>Here are a couple of my favourite podcasts and a blurb about why I like them:</p>
-<ul>
-<li><strong>Conversations with Tyler</strong>: First, Tyler interviews a wide range of guests who all tend to have smart things to say, so basically every podcast is an opportunity to hear from an interesting person who I would never normally seek out independently. Second, Tyler usually knows a good amount about whatever subject his guest is an expert in, and he just asks about things <em>he</em> doesn’t know. It often makes the conversation hard to follow, but not so hard that I get nothing out of it. The podcast feels like listening to a conversation between two experts, but one that you can at least follow (even if it is just because he abruptly jumps to the next question).</li>
-<li><strong>Acquired</strong>: basically two friends telling a story of a company. Feels like listening to a good friend tell a story at a bar (albeit a long story).</li>
-<li><strong>Complex systems</strong> (Patrick McKenzie): he tells stories about tech/finance in sarcastically funny ways (makes boring topics interesting). His podcasts are short enough that I don’t lose interest.</li>
-</ul>
-<p>So, if you aren’t already a podcast listener, I think you should give it a try!</p>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2025,
-  author = {Tripp, Austin},
-  title = {Why Listen to Podcasts?},
-  date = {2025-11-16},
-  url = {https://austintripp.ca/blog/2025-11-16-why-podcasts/},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2025" class="csl-entry quarto-appendix-citeas">
-Tripp, Austin. 2025. <span>“Why Listen to Podcasts?”</span> November 16.
-<a href="https://austintripp.ca/blog/2025-11-16-why-podcasts/">https://austintripp.ca/blog/2025-11-16-why-podcasts/</a>.
-</div></div></section></div> ]]></description>
-  <category>opinion</category>
-  <guid>https://austintripp.ca/blog/2025-11-16-why-podcasts/</guid>
-  <pubDate>Sun, 16 Nov 2025 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

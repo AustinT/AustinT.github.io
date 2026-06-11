@@ -1,7 +1,29 @@
 [
   {
+    "listing": "/research/index.html",
+    "items": [
+      "/research/papers/hash-collisions-fingerprints/index.html",
+      "/research/papers/basic-bo-underrated/index.html",
+      "/research/papers/retro-fallback/index.html",
+      "/research/papers/adaptive-deep-kernel-gp/index.html",
+      "/research/papers/genetic-algorithm-strong-baselines/index.html",
+      "/research/papers/syntheseus-retrosynthesis/index.html",
+      "/research/papers/tanimoto-random-features/index.html",
+      "/research/papers/dockstring/index.html",
+      "/research/papers/latent-space-weighted-retraining/index.html",
+      "/research/papers/ehvi-vs-scalarization/index.html",
+      "/research/papers/qPO-batch-bo/index.html",
+      "/research/papers/sgd-gaussian-processes/index.html",
+      "/research/papers/dual-value-networks-retrosynthesis/index.html",
+      "/research/papers/gauche-gp-package/index.html",
+      "/research/papers/volatile-sensing-2023/index.html",
+      "/research/papers/oil-sands-photocatalysts/index.html"
+    ]
+  },
+  {
     "listing": "/blog/all/index.html",
     "items": [
+      "/blog/2026-06-11-ai-experts-better-collab/index.html",
       "/blog/2026-05-10-quarto-is-great/index.html",
       "/blog/2026-05-10-quarto-website/index.html",
       "/blog/2026-05-04-llms-for-low-stakes-projects/index.html",
@@ -81,6 +103,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/2026-06-11-ai-experts-better-collab/index.html",
       "/blog/2026-05-10-quarto-is-great/index.html",
       "/blog/2026-05-04-skimmable-papers/index.html",
       "/blog/2026-02-21-behaviour-based-BO-evals/index.html",
@@ -109,27 +132,6 @@
       "/blog/2020/02/10/monty-hall/index.html",
       "/blog/2018/09/12/sparse-matrices-tips1/index.html",
       "/blog/2018/08/21/bayes-no-certain-priors/index.html"
-    ]
-  },
-  {
-    "listing": "/research/index.html",
-    "items": [
-      "/research/papers/hash-collisions-fingerprints/index.html",
-      "/research/papers/basic-bo-underrated/index.html",
-      "/research/papers/retro-fallback/index.html",
-      "/research/papers/adaptive-deep-kernel-gp/index.html",
-      "/research/papers/genetic-algorithm-strong-baselines/index.html",
-      "/research/papers/syntheseus-retrosynthesis/index.html",
-      "/research/papers/tanimoto-random-features/index.html",
-      "/research/papers/dockstring/index.html",
-      "/research/papers/latent-space-weighted-retraining/index.html",
-      "/research/papers/ehvi-vs-scalarization/index.html",
-      "/research/papers/qPO-batch-bo/index.html",
-      "/research/papers/sgd-gaussian-processes/index.html",
-      "/research/papers/dual-value-networks-retrosynthesis/index.html",
-      "/research/papers/gauche-gp-package/index.html",
-      "/research/papers/volatile-sensing-2023/index.html",
-      "/research/papers/oil-sands-photocatalysts/index.html"
     ]
   }
 ]
