@@ -1,0 +1,21 @@
+---
+title: "How AI Experts Can Drive Better Collaboration in Drug Discovery"
+date: '2026-06-11'
+categories:
+- drug discovery
+- opinion
+- _recent-highlight
+description: "Substack post Arguing that AI experts should own the problem formulation."
+citation: false
+---
+
+I just wrote an article [How AI Experts Can Drive Better Collaboration in Drug
+Discovery](https://valencelabs.substack.com/p/how-ai-experts-can-drive-better-collaboration)
+on Valence's substack, reflecting on some experiences I've had at
+Valence/Recursion. Please read it on substack!
+
+Essentially I argue that, on the margin, AI experts should be more assertive
+when formulating the problem, since domain experts don't always get it right.
+Even though they know the _problem_ well, formalization itself is a skill, and
+AI experts are probably better on average.
+
