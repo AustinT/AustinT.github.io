@@ -21,7 +21,7 @@ website:
       - {href: blog/index.qmd, text: Blog}
   page-footer:
     center: |
-      [Email](mailto:austin.james.tripp[at]gmail.com) | [GitHub](https://github.com/AustinT) | [Scholar](https://scholar.google.com/citations?user=WAvRaxMAAAAJ) | [Bluesky](https://bsky.app/profile/austinjtripp.bsky.social) | [Twitter/X](https://twitter.com/austinjtripp)
+      [Email](mailto:austin.james.tripp[at]gmail.com) | [GitHub](https://github.com/AustinT) | [Scholar](https://scholar.google.com/citations?user=WAvRaxMAAAAJ) | [Semantic Scholar](https://www.semanticscholar.org/author/Austin-Tripp/115766771) | [Bluesky](https://bsky.app/profile/austinjtripp.bsky.social) | [Twitter/X](https://twitter.com/austinjtripp)
 
       © Austin Tripp · All opinions are my own (not my employer's). · Website powered by [Quarto](https://quarto.org).
 
