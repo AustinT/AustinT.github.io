@@ -1,0 +1,134 @@
+---
+title: 'Thoughts on "Grand Challenges for Predictive Modeling in Small Molecule Drug Discovery"'
+date: "2026-07-12"
+categories:
+- drug discovery
+- machine learning
+- chemistry
+- research papers
+- opinion
+description: "My thoughts on this survey paper."
+citation: true
+---
+
+I recently read the paper[^link] "Grand Challenges for Predictive Modeling in
+Small Molecule Drug Discovery", which aims to survey all the challenges in the
+field I work in. About half of the paper was what I expected, the other half
+was either new or something I was exposed to but didn't really think about. In
+this post I'll briefly outline what I learned.
+
+[^link]: Link: <https://chemrxiv.org/doi/full/10.26434/chemrxiv.15000615/v1>
+
+## Things I learned
+
+### New aspects of binding
+
+While binding affinity prediction is arguably the number one task in machine
+learning for molecules, it seems like some aspects of the problem are still
+neglected.
+
+- **Covalent inhibitors**: some drugs bind to their target by forming
+  a covalent bond, instead of traditional inhibitors which use entirely
+  non-covalent interactions. This means pure MD-type approaches can't work:
+  there are actual bond changes that need to be accounted for.
+- **Cryptic pockets**: binding to "non-standard" pockets, e.g. pockets that
+  only appear when something else is bound or transiently.
+- **Kinetics**: the affinity is related to the equilibrium constant, i.e.
+  equilibrium between bound and unbound states. However, the actual rates of
+  binding and unbinding can be just as important as the equilibrium,
+  particularly if they are slow, since drug dosing is a transient exposure, and
+  sufficiently slow binding might mean that a drug is ineffective, even if
+  hypothetically a longer exposure would have led to more binding. Similarly,
+  a slow rate of unbinding can make the drug's effect last for a very long
+  time.
+- Predicting how binding impacts the overall structure of the protein (changes
+  in this structure are often what actually causes the biological effect,
+  instead of the binding itself).
+
+### Physical properties
+
+There are intrinsic properties of small molecules themselves (i.e. unrelated to
+their interactions with proteins) that are surprisingly important:
+
+- Beyond just synthesizing a molecule, how to synthesize it _at scale_
+  ("process chemistry")
+- Predicting pKa: it determines the molecule's ionization state in the body,
+  which affects its general properties (e.g. solubility, permeability through
+  membranes) and its interactions with proteins (e.g. whether a site is charged
+  determines whether it will have a favourable interaction with a charged amino
+  acid)
+- Predicting crystal structures and polymorphs, which can affect solubility
+  rates and ultimately dose response (e.g. tightly packed crystals might lead
+  to slow dissolution and therefore low exposure before it is eliminated from
+  the body, even if at equilibrium the solubility is high)
+- Predicting stability and degradation products (e.g. if left on the shelf will
+  the molecule spontaneously decompose, and if so what does it decompose into).
+  This is important for shelf life.
+- Predicting aggregation (a multi-phase system, hard to simulate, if there is
+  aggregation then most of the drug will not be free to actually have the
+  intended effect)
+
+### ADMET
+
+- **Metabolism:** beyond just predicting overall metabolic rate, understand
+  which specific reactions are occurring and at which sites, and by which
+  enzymes. This helps understand whether any metabolites could be toxic,
+  whether there will be drug-drug interactions if the presence of another drug
+  changes the metabolism, and whether individual differences in enzyme
+  structures / frequencies will cause different patients to react differently
+- **Toxicity:** the paper had a good description
+
+  > Predicting toxicity is inherently difficult because “toxicity” does not
+  represent a single biological phenomenon, but rather a heterogeneous
+  collection of mechanistically distinct endpoints.
+
+  This should best be viewed as a collection of related but distinct biological
+  effects. Overall agrees with [my previous post about another
+  paper](/blog/2025-05-13-ml-toxicity-pred/).
+
+### Combined properties
+
+Ultimately many of these tasks are elements of the overarching tasks:
+
+1. **Dose prediction**: what's a safe and effective dose?
+2. **PK/PD**: if you give a patient a dose of X, what does the drug do to the
+   body over time (pharmacodynamics) and how will the body
+   absorb/distribute/metabolize the drug (pharmacokinetics)
+
+_These_ are what ultimately matter in drug discovery. It's worth remembering
+that the split into subtasks like predicting binding affinity is itself a
+modelling choice, and one we might not always want to make.
+
+## What's my role in the grand challenges?
+
+I'm not explicitly working on any one of these prediction tasks,
+but rather on ways to _use_ models to make decisions, all with a probabilistic flavour.
+I do see a connection though.
+
+Most of the prediction tasks above are very hard: that's why they are grand
+challenges. In my own experience I've noticed that when models are too
+inaccurate people stop even trying to predict things, falling back to things
+they can predict better. For example, instead of predicting in vivo efficacy
+people might predict protein binding.  This creates a disconnect between what
+is being predicted / optimized and what we actually want (success in the
+clinic), which I think is one of the reasons drug programs can advance far and
+then fail close to the clinic.
+
+I think probabilistic ML can help with this. In standard supervised ML the
+assumption is usually that the inputs $x_i \overset{\text{i.i.d.}}{\sim} p(x)$,
+and labels $y_i \sim \mathcal N(f(x_i), \sigma^2_{\text{noise}})$. This
+requires homogeneous data with consistent labels, which under a fixed budget
+creates a tension between more data with "cheaper" labels or less data with
+more expensive labels, where most people end up choosing the option with more
+data. In contrast, a joint probabilistic model can model relationships between
+different properties without assuming the relationship needs to be simple (e.g.
+a GP allows for a large amount of variation within its input space), ultimately
+allowing you to predict whatever properties you want from whatever data you
+want: no need for homogeneous unimodal data.
+
+I know this is a very high level explanation, and maybe I should write another
+post explaining it more clearly. In summary, I hope my work allows us to
+_connect_ these grand challenges in a better way, ultimately allowing us to use
+models effectively even when their predictions are highly imperfect because
+these tasks are hard.
+
