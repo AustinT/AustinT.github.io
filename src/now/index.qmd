@@ -1,0 +1,11 @@
+---
+title: Now
+description: "What I'm currently working on / thinking about / up to."
+---
+
+**Last updated: 2026-07-12**
+
+- **Work:** adapting BO-type algorithms for drug discovery
+- **Learning:** keeping up with ML progress, using agentic coding tools better, reading a textbook on medicinal chemistry, Vecchia GP approximation.
+- **Near term plans:** learn about prior-fitted networks
+- **Location:** 🇬🇧

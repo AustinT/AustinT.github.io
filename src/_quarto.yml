@@ -19,6 +19,7 @@ website:
       - {href: research/index.qmd, text: Research}
       - {href: resources/index.qmd, text: Resources}
       - {href: blog/index.qmd, text: Blog}
+      - {href: now/index.qmd, text: Now}
   page-footer:
     center: |
       [Email](mailto:austin.james.tripp[at]gmail.com) | [GitHub](https://github.com/AustinT) | [Scholar](https://scholar.google.com/citations?user=WAvRaxMAAAAJ) | [Semantic Scholar](https://www.semanticscholar.org/author/Austin-Tripp/115766771) | [Bluesky](https://bsky.app/profile/austinjtripp.bsky.social) | [Twitter/X](https://twitter.com/austinjtripp)
