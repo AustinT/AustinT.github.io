@@ -7,9 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Austin Tripp">
-<meta name="dcterms.date" content="2026-02-13">
+<meta name="dcterms.date" content="2026-07-12">
+<meta name="description" content="My thoughts on this survey paper.">
 
-<title>Tyler Cowen’s book on talent – Austin Tripp's website</title>
+<title>Thoughts on “Grand Challenges for Predictive Modeling in Small Molecule Drug Discovery” – Austin Tripp's website</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -73,6 +74,49 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -128,17 +172,42 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#things-i-learned" id="toc-things-i-learned" class="nav-link active" data-scroll-target="#things-i-learned">Things I learned</a>
+  <ul class="collapse">
+  <li><a href="#new-aspects-of-binding" id="toc-new-aspects-of-binding" class="nav-link" data-scroll-target="#new-aspects-of-binding">New aspects of binding</a></li>
+  <li><a href="#physical-properties" id="toc-physical-properties" class="nav-link" data-scroll-target="#physical-properties">Physical properties</a></li>
+  <li><a href="#admet" id="toc-admet" class="nav-link" data-scroll-target="#admet">ADMET</a></li>
+  <li><a href="#combined-properties" id="toc-combined-properties" class="nav-link" data-scroll-target="#combined-properties">Combined properties</a></li>
+  </ul></li>
+  <li><a href="#whats-my-role-in-the-grand-challenges" id="toc-whats-my-role-in-the-grand-challenges" class="nav-link" data-scroll-target="#whats-my-role-in-the-grand-challenges">What’s my role in the grand challenges?</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tyler Cowen’s book on talent</h1>
-</div>
+<h1 class="title">Thoughts on “Grand Challenges for Predictive Modeling in Small Molecule Drug Discovery”</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">drug discovery</div>
+    <div class="quarto-category">machine learning</div>
+    <div class="quarto-category">chemistry</div>
+    <div class="quarto-category">research papers</div>
+    <div class="quarto-category">opinion</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    My thoughts on this survey paper.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -153,7 +222,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 13, 2026</p>
+      <p class="date">July 12, 2026</p>
     </div>
   </div>
   
@@ -165,21 +234,79 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Cross-posting my summary of the book “Talent: How to Identify Energizers, Creatives, and Winners Around the World” from my GitHub: <a href="https://github.com/AustinT/book-summaries/blob/master/non-fiction/2026-02-01-talent.md">link</a>.</p>
-<p>This is a good book, I appreciated the heterodox advice about how to run interviews and spot “undervalued” candidates, even if only some of it is backed by data (this is a field with generally poor data).</p>
+<p>I recently read the paper<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> “Grand Challenges for Predictive Modeling in Small Molecule Drug Discovery”, which aims to survey all the challenges in the field I work in. About half of the paper was what I expected, the other half was either new or something I was exposed to but didn’t really think about. In this post I’ll briefly outline what I learned.</p>
+<section id="things-i-learned" class="level2">
+<h2 class="anchored" data-anchor-id="things-i-learned">Things I learned</h2>
+<section id="new-aspects-of-binding" class="level3">
+<h3 class="anchored" data-anchor-id="new-aspects-of-binding">New aspects of binding</h3>
+<p>While binding affinity prediction is arguably the number one task in machine learning for molecules, it seems like some aspects of the problem are still neglected.</p>
+<ul>
+<li><strong>Covalent inhibitors</strong>: some drugs bind to their target by forming a covalent bond, instead of traditional inhibitors which use entirely non-covalent interactions. This means pure MD-type approaches can’t work: there are actual bond changes that need to be accounted for.</li>
+<li><strong>Cryptic pockets</strong>: binding to “non-standard” pockets, e.g.&nbsp;pockets that only appear when something else is bound or transiently.</li>
+<li><strong>Kinetics</strong>: the affinity is related to the equilibrium constant, i.e. equilibrium between bound and unbound states. However, the actual rates of binding and unbinding can be just as important as the equilibrium, particularly if they are slow, since drug dosing is a transient exposure, and sufficiently slow binding might mean that a drug is ineffective, even if hypothetically a longer exposure would have led to more binding. Similarly, a slow rate of unbinding can make the drug’s effect last for a very long time.</li>
+<li>Predicting how binding impacts the overall structure of the protein (changes in this structure are often what actually causes the biological effect, instead of the binding itself).</li>
+</ul>
+</section>
+<section id="physical-properties" class="level3">
+<h3 class="anchored" data-anchor-id="physical-properties">Physical properties</h3>
+<p>There are intrinsic properties of small molecules themselves (i.e.&nbsp;unrelated to their interactions with proteins) that are surprisingly important:</p>
+<ul>
+<li>Beyond just synthesizing a molecule, how to synthesize it <em>at scale</em> (“process chemistry”)</li>
+<li>Predicting pKa: it determines the molecule’s ionization state in the body, which affects its general properties (e.g.&nbsp;solubility, permeability through membranes) and its interactions with proteins (e.g.&nbsp;whether a site is charged determines whether it will have a favourable interaction with a charged amino acid)</li>
+<li>Predicting crystal structures and polymorphs, which can affect solubility rates and ultimately dose response (e.g.&nbsp;tightly packed crystals might lead to slow dissolution and therefore low exposure before it is eliminated from the body, even if at equilibrium the solubility is high)</li>
+<li>Predicting stability and degradation products (e.g.&nbsp;if left on the shelf will the molecule spontaneously decompose, and if so what does it decompose into). This is important for shelf life.</li>
+<li>Predicting aggregation (a multi-phase system, hard to simulate, if there is aggregation then most of the drug will not be free to actually have the intended effect)</li>
+</ul>
+</section>
+<section id="admet" class="level3">
+<h3 class="anchored" data-anchor-id="admet">ADMET</h3>
+<ul>
+<li><p><strong>Metabolism:</strong> beyond just predicting overall metabolic rate, understand which specific reactions are occurring and at which sites, and by which enzymes. This helps understand whether any metabolites could be toxic, whether there will be drug-drug interactions if the presence of another drug changes the metabolism, and whether individual differences in enzyme structures / frequencies will cause different patients to react differently</p></li>
+<li><p><strong>Toxicity:</strong> the paper had a good description</p>
+<blockquote class="blockquote">
+<p>Predicting toxicity is inherently difficult because “toxicity” does not represent a single biological phenomenon, but rather a heterogeneous collection of mechanistically distinct endpoints.</p>
+</blockquote>
+<p>This should best be viewed as a collection of related but distinct biological effects. Overall agrees with <a href="../../blog/2025-05-13-ml-toxicity-pred/">my previous post about another paper</a>.</p></li>
+</ul>
+</section>
+<section id="combined-properties" class="level3">
+<h3 class="anchored" data-anchor-id="combined-properties">Combined properties</h3>
+<p>Ultimately many of these tasks are elements of the overarching tasks:</p>
+<ol type="1">
+<li><strong>Dose prediction</strong>: what’s a safe and effective dose?</li>
+<li><strong>PK/PD</strong>: if you give a patient a dose of X, what does the drug do to the body over time (pharmacodynamics) and how will the body absorb/distribute/metabolize the drug (pharmacokinetics)</li>
+</ol>
+<p><em>These</em> are what ultimately matter in drug discovery. It’s worth remembering that the split into subtasks like predicting binding affinity is itself a modelling choice, and one we might not always want to make.</p>
+</section>
+</section>
+<section id="whats-my-role-in-the-grand-challenges" class="level2">
+<h2 class="anchored" data-anchor-id="whats-my-role-in-the-grand-challenges">What’s my role in the grand challenges?</h2>
+<p>I’m not explicitly working on any one of these prediction tasks, but rather on ways to <em>use</em> models to make decisions, all with a probabilistic flavour. I do see a connection though.</p>
+<p>Most of the prediction tasks above are very hard: that’s why they are grand challenges. In my own experience I’ve noticed that when models are too inaccurate people stop even trying to predict things, falling back to things they can predict better. For example, instead of predicting in vivo efficacy people might predict protein binding. This creates a disconnect between what is being predicted / optimized and what we actually want (success in the clinic), which I think is one of the reasons drug programs can advance far and then fail close to the clinic.</p>
+<p>I think probabilistic ML can help with this. In standard supervised ML the assumption is usually that the inputs <span class="math inline">x_i \overset{\text{i.i.d.}}{\sim} p(x)</span>, and labels <span class="math inline">y_i \sim \mathcal N(f(x_i), \sigma^2_{\text{noise}})</span>. This requires homogeneous data with consistent labels, which under a fixed budget creates a tension between more data with “cheaper” labels or less data with more expensive labels, where most people end up choosing the option with more data. In contrast, a joint probabilistic model can model relationships between different properties without assuming the relationship needs to be simple (e.g. a GP allows for a large amount of variation within its input space), ultimately allowing you to predict whatever properties you want from whatever data you want: no need for homogeneous unimodal data.</p>
+<p>I know this is a very high level explanation, and maybe I should write another post explaining it more clearly. In summary, I hope my work allows us to <em>connect</em> these grand challenges in a better way, ultimately allowing us to use models effectively even when their predictions are highly imperfect because these tasks are hard.</p>
 
 
+</section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Link: <a href="https://chemrxiv.org/doi/full/10.26434/chemrxiv.15000615/v1" class="uri">https://chemrxiv.org/doi/full/10.26434/chemrxiv.15000615/v1</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
-  title = {Tyler {Cowen’s} Book on Talent},
-  date = {2026-02-13},
-  url = {https://austintripp.ca/blog/2026-02-13-talent/},
+  title = {Thoughts on “{Grand} {Challenges} for {Predictive} {Modeling}
+    in {Small} {Molecule} {Drug} {Discovery}”},
+  date = {2026-07-12},
+  url = {https://austintripp.ca/blog/2026-07-12-grand-challenges-small-molecules/},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas" role="listitem">
-Tripp, Austin. 2026. <span>“Tyler Cowen’s Book on Talent.”</span>
-February 13. <a href="https://austintripp.ca/blog/2026-02-13-talent/">https://austintripp.ca/blog/2026-02-13-talent/</a>.
+Tripp, Austin. 2026. <span>“Thoughts on <span>‘Grand Challenges for
+Predictive Modeling in Small Molecule Drug Discovery’</span>.”</span>
+July 12. <a href="https://austintripp.ca/blog/2026-07-12-grand-challenges-small-molecules/">https://austintripp.ca/blog/2026-07-12-grand-challenges-small-molecules/</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
