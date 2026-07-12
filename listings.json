@@ -23,6 +23,7 @@
   {
     "listing": "/blog/all/index.html",
     "items": [
+      "/blog/2026-07-03-vecchia/index.html",
       "/blog/2026-06-11-ai-experts-better-collab/index.html",
       "/blog/2026-05-10-quarto-is-great/index.html",
       "/blog/2026-05-10-quarto-website/index.html",
@@ -103,6 +104,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/2026-07-03-vecchia/index.html",
       "/blog/2026-06-11-ai-experts-better-collab/index.html",
       "/blog/2026-05-10-quarto-is-great/index.html",
       "/blog/2026-05-04-skimmable-papers/index.html",
