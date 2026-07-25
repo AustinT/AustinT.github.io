@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Claude Fable">
+<meta name="author" content="Austin Tripp">
+<meta name="dcterms.date" content="2026-07-25">
+<meta name="description" content="An (AI-driven) empirical investigation of arXiv 2512.00170">
+
+<title>Why does spherical-linear Bayesian optimization work? – Austin Tripp’s website</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-189549ecd294ed9837df383a4b42e31c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Austin Tripp’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../now/index.html"> 
+<span class="menu-text">Now</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">1. Setup</a></li>
+  <li><a href="#h1-pathologies-supported-and-sharpened" id="toc-h1-pathologies-supported-and-sharpened" class="nav-link" data-scroll-target="#h1-pathologies-supported-and-sharpened">2. H1: pathologies — supported, and sharpened</a></li>
+  <li><a href="#h2-calibration-refuted" id="toc-h2-calibration-refuted" class="nav-link" data-scroll-target="#h2-calibration-refuted">3. H2: calibration — refuted</a></li>
+  <li><a href="#h3-benchmark-linearity-partially-supported-in-a-refined-form" id="toc-h3-benchmark-linearity-partially-supported-in-a-refined-form" class="nav-link" data-scroll-target="#h3-benchmark-linearity-partially-supported-in-a-refined-form">4. H3: benchmark linearity — partially supported, in a refined form</a></li>
+  <li><a href="#the-overlooked-mechanism-what-the-projection-actually-does" id="toc-the-overlooked-mechanism-what-the-projection-actually-does" class="nav-link" data-scroll-target="#the-overlooked-mechanism-what-the-projection-actually-does">5. The overlooked mechanism: what the projection actually does</a>
+  <ul class="collapse">
+  <li><a href="#a.-for-the-linear-kernel-a-bowl-feature-weight-space-derivation" id="toc-a.-for-the-linear-kernel-a-bowl-feature-weight-space-derivation" class="nav-link" data-scroll-target="#a.-for-the-linear-kernel-a-bowl-feature-weight-space-derivation">5a. For the linear kernel: a bowl feature (weight-space derivation)</a></li>
+  <li><a href="#b.-for-the-rbf-kernel-a-compactified-center-weighted-metric" id="toc-b.-for-the-rbf-kernel-a-compactified-center-weighted-metric" class="nav-link" data-scroll-target="#b.-for-the-rbf-kernel-a-compactified-center-weighted-metric">5b. For the RBF kernel: a compactified, center-weighted metric</a></li>
+  </ul></li>
+  <li><a href="#testing-the-geometric-account-three-experiments" id="toc-testing-the-geometric-account-three-experiments" class="nav-link" data-scroll-target="#testing-the-geometric-account-three-experiments">6. Testing the geometric account: three experiments</a>
+  <ul class="collapse">
+  <li><a href="#a.-optimum-location-sweep-the-advantage-flips-sign-at-the-corner" id="toc-a.-optimum-location-sweep-the-advantage-flips-sign-at-the-corner" class="nav-link" data-scroll-target="#a.-optimum-location-sweep-the-advantage-flips-sign-at-the-corner">6a. Optimum-location sweep: the advantage flips sign at the corner</a></li>
+  <li><a href="#b.-deconfounded-ablation-the-projection-itself-not-the-pipeline-priors" id="toc-b.-deconfounded-ablation-the-projection-itself-not-the-pipeline-priors" class="nav-link" data-scroll-target="#b.-deconfounded-ablation-the-projection-itself-not-the-pipeline-priors">6b. Deconfounded ablation: the projection itself, not the pipeline priors</a></li>
+  <li><a href="#c.-variance-autopsy-the-corner-exploration-bonus-watched-dying" id="toc-c.-variance-autopsy-the-corner-exploration-bonus-watched-dying" class="nav-link" data-scroll-target="#c.-variance-autopsy-the-corner-exploration-bonus-watched-dying">6c. Variance autopsy: the corner exploration bonus, watched dying</a></li>
+  </ul></li>
+  <li><a href="#synthesis-why-the-method-works" id="toc-synthesis-why-the-method-works" class="nav-link" data-scroll-target="#synthesis-why-the-method-works">7. Synthesis: why the method works</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">8. Limitations</a></li>
+  <li><a href="#reproducing" id="toc-reproducing" class="nav-link" data-scroll-target="#reproducing">9. Reproducing</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Why does spherical-linear Bayesian optimization work?</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">machine learning</div>
+    <div class="quarto-category">research papers</div>
+    <div class="quarto-category">bayesian optimization</div>
+    <div class="quarto-category">_recent-highlight</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    An (AI-driven) empirical investigation of arXiv 2512.00170
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-contents">
+             <p>Claude Fable </p>
+             <p>Austin Tripp </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 25, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>This post was the result of me putting Claude Fable to the test in early July when it was made available to the public again and was included in my personal Claude Pro subscription. I gave it a question and some hypotheses about a paper that had been on my radar for a while, and it ran experiments and produced the report below. I reviewed it with roughly the same thoroughness that I would review an ML conference paper (NeurIPS/ICML/ICLR/similar): I’ve looked at the experiments and results and judged them to be reasonable, but did not dig into the code myself.</p>
+<p>The actual scientific takeaway is as follows: the reason linear BO with an inverse stereographic projection works well on benchmarks is mostly because of the projection, which implicitly gives a mild inductive bias towards the optimum being in the center (at least for a linear model). The linear model seems to not be the key ingredient.</p>
+<p>Of course, the analysis below is on cheaper experiments, so could be extended and made more robust.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Seeking collaborators
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If any students want to take these results and extend it into a paper, I’m happy for somebody to take the lead! I don’t have time to turn this into a strong paper myself. If you are interested, feel free to email me 🙂</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Content below is ≈100% AI generated
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Even though it’s on my blog, it’s not my writing, so I don’t necessarily endorse every word of it. I didn’t feel I had time to edit and check it in great detail (otherwise I would just turn this into a paper myself), but thought it was high quality enough to put online rather than let it sit indefinitely on my hard drive.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p><strong>Question.</strong> The paper <a href="https://arxiv.org/abs/2512.00170"><em>We Still Don’t Understand High-Dimensional Bayesian Optimization</em></a> shows that Bayesian linear regression — after inverse-stereographic projection of lengthscale-scaled inputs onto the unit sphere — matches highly-engineered HDBO methods. Why? Three candidate hypotheses were tested:</p>
+<ul>
+<li><strong>H1</strong> — all methods are bad; the linear one suffers the fewest pathologies.</li>
+<li><strong>H2</strong> — the linear model wins through better <em>calibration</em>.</li>
+<li><strong>H3</strong> — the benchmarks are close to linear, so the linear prior happens to fit.</li>
+</ul>
+<p><strong>Verdicts (details below):</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 60%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Hypothesis</th>
+<th>Verdict</th>
+<th>One-line summary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>H1 (fewest pathologies)</td>
+<td><strong>Supported, with a mechanism</strong></td>
+<td>The projection removes the boundary/corner pathology; beyond that, <em>any</em> sane surrogate ties in the <span class="math inline">N \approx D</span> regime. The active ingredient is the projection pipeline, not linearity: RBF-on-sphere ≥ spherical-linear everywhere we tested.</td>
+</tr>
+<tr class="even">
+<td>H2 (calibration)</td>
+<td><strong>Refuted</strong></td>
+<td>Spherical-linear wins <em>while being the most overconfident model online</em> (z-std 2.3–8.8, 90%-interval coverage 32–66%). The catastrophically failing standard linear kernel is often the <em>best</em>-calibrated.</td>
+</tr>
+<tr class="odd">
+<td>H3 (benchmarks near-linear)</td>
+<td><strong>Partially supported, in a refined form</strong></td>
+<td>Some benchmarks are globally quite linear (rover <span class="math inline">R^2 = 0.72</span>), others are not at all (SVM <span class="math inline">R^2 = 0.15</span>) yet linear still ties. The refined claim: at <span class="math inline">N \approx D</span> sample sizes, capacity beyond <span class="math inline">\sim D</span> parameters is unusable, and dimension-scaled smoothness priors make even “nonlinear” objectives substantially linear over the search box. Linear is <em>sufficient for the data budget</em>, not a match to the functions.</td>
+</tr>
+</tbody>
+</table>
+<p>Plus two mechanistic findings not in the paper (derivations in §5, direct experimental tests in §6): <strong>the spherical projection secretly grants the “linear” model an isotropic-quadratic (bowl) feature</strong>, which is what lets it converge to interior optima at all; and for RBF it is a <strong>conformal compactification of the metric</strong> that deletes the boundary exploration bonus of stationary kernels. Both amount to a <em>prior that the optimum is interior</em> — slide the optimum to a corner and the projected methods become the worst in the pool while “pathological” vanilla RBF becomes the best (§6a).</p>
+<hr>
+</section>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">1. Setup</h2>
+<p>Six methods, all sharing the paper’s BO loop (LogEI, MLE refits, Sobol init 30):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 40%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>method</th>
+<th>model</th>
+<th>purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>spherical_linear</code></td>
+<td>the paper’s kernel</td>
+<td>the method under investigation</td>
+</tr>
+<tr class="even">
+<td><code>standard_linear</code></td>
+<td>same kernel, projection removed</td>
+<td>the paper’s failing baseline (Theorem-1 regime)</td>
+</tr>
+<tr class="odd">
+<td><code>vanilla_rbf</code></td>
+<td>RBF ARD, Hvarfner dimension-scaled prior</td>
+<td>the strong conventional baseline</td>
+</tr>
+<tr class="even">
+<td><code>rbf_sphere</code></td>
+<td>RBF applied <em>after</em> the same projection pipeline</td>
+<td><strong>isolates projection geometry from linear function class</strong></td>
+</tr>
+<tr class="odd">
+<td><code>rbf_noproject</code></td>
+<td>rbf_sphere’s pipeline with the projection switched off</td>
+<td>isolates the projection from the pipeline’s hyperpriors (§6b)</td>
+</tr>
+<tr class="even">
+<td><code>local_linear</code></td>
+<td>non-Bayesian: ridge fit on neighbors + trust-region gradient step</td>
+<td>is the Bayesian machinery doing anything?</td>
+</tr>
+<tr class="odd">
+<td><code>sobol</code></td>
+<td>quasi-random</td>
+<td>failure floor</td>
+</tr>
+</tbody>
+</table>
+<p>Benchmarks: three real (rover 60D, lasso-DNA 180D, SVM 388D) and five synthetic controls with <em>known</em> structure: <code>hartmann_emb</code> (Hartmann-6 in 100D: sparse, nonlinear), <code>gpmix_a{0,50,100}</code> (100D GP draws with an exact linear-variance fraction <span class="math inline">\alpha \in \{0, 0.5, 1\}</span>), <code>sphere100</code> (interior quadratic bowl: zero linear signal at the optimum), and <code>sphere_t{00,50,80,100}</code> (bowl with the optimum slid from box center to a corner — the §6a sweep). 3 seeds × 150 evaluations each (trimmed from the paper’s 1000 — see Limitations). Offline linearity probes use ~2000 extra evaluations per benchmark. All 202 runs completed with <strong>zero model-fit failures for any method</strong> — whatever goes wrong in HDBO here is behavioral, not numerical.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/regret.png" class="img-fluid figure-img"></p>
+<figcaption>Optimization performance across the benchmark suite (mean ± SEM over seeds).</figcaption>
+</figure>
+</div>
+<p>Final best values (mean over seeds; ± is SEM):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>benchmark</th>
+<th>spherical_linear</th>
+<th>vanilla_rbf</th>
+<th>rbf_sphere</th>
+<th>standard_linear</th>
+<th>local_linear</th>
+<th>sobol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>rover</td>
+<td>−1.28 ±0.41</td>
+<td>−0.70 ±0.88</td>
+<td><strong>+0.73 ±0.37</strong></td>
+<td>−1.35 ±0.03</td>
+<td>−6.06</td>
+<td>−9.03</td>
+</tr>
+<tr class="even">
+<td>lasso_dna</td>
+<td>−0.309</td>
+<td>−0.307</td>
+<td><strong>−0.305</strong></td>
+<td>−0.333</td>
+<td>−0.328</td>
+<td>−0.331</td>
+</tr>
+<tr class="odd">
+<td>svm</td>
+<td>−0.134 ±0.006</td>
+<td>−0.151 ±0.008</td>
+<td><strong>−0.124 ±0.003</strong></td>
+<td>−0.233</td>
+<td>−0.218</td>
+<td>−0.231</td>
+</tr>
+<tr class="even">
+<td>hartmann_emb</td>
+<td>3.18</td>
+<td>3.26</td>
+<td>3.24</td>
+<td>2.29</td>
+<td>3.14</td>
+<td>2.29</td>
+</tr>
+<tr class="odd">
+<td>gpmix_a0 (nonlinear)</td>
+<td>5.29 ±0.75</td>
+<td>7.68 ±0.19</td>
+<td><strong>7.92 ±0.39</strong></td>
+<td>4.09</td>
+<td>3.40</td>
+<td>1.91</td>
+</tr>
+<tr class="even">
+<td>gpmix_a100 (linear)</td>
+<td>12.12</td>
+<td><strong>13.26</strong></td>
+<td>12.91</td>
+<td><strong>13.26</strong></td>
+<td>6.84</td>
+<td>2.76</td>
+</tr>
+<tr class="odd">
+<td>sphere100 (bowl)</td>
+<td><strong>−1.12 ±0.09</strong></td>
+<td>−1.90 ±0.23</td>
+<td>−1.21 ±0.08</td>
+<td>−8.15</td>
+<td>−4.36</td>
+<td>−7.97</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="h1-pathologies-supported-and-sharpened" class="level2">
+<h2 class="anchored" data-anchor-id="h1-pathologies-supported-and-sharpened">2. H1: pathologies — supported, and sharpened</h2>
+<p><strong>The standard linear kernel has exactly the pathology the paper’s Theorem 1 predicts, and it is fatal only when the optimum is interior.</strong> Its boundary fraction is ≈1.00 on every benchmark (figure below); its max-LogEI collapses (to −250 on sphere100 — the acquisition is <em>dead</em>, points are chosen by boundary-inflated variance alone); its OTSD on SVM (934) is indistinguishable from random search (921). Consequences track the geometry of the optimum exactly: on <code>sphere100</code> (interior optimum) and SVM it performs <em>at the Sobol floor</em>; on <code>gpmix_a100</code>, whose optimum genuinely lies at a corner because the function is linear, corner-seeking is optimal and standard linear is the <strong>best</strong> method. The pathology is not “linear models are bad” — it is “linear models hard-code the assumption that the optimum is at a corner.”</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/boundary_otsd.png" class="img-fluid figure-img"></p>
+<figcaption>Boundary fraction and observation-TSP distance (OTSD) per method and benchmark.</figcaption>
+</figure>
+</div>
+<p><strong>Beyond removing that one pathology, the field is flat.</strong> On all three real benchmarks and hartmann_emb, the three non-pathological GP surrogates (spherical-linear, vanilla RBF, RBF-on-sphere) are within ~2 SEM of each other. No baseline exhibited a crash, lengthscale collapse, or vanishing-EI failure — vanilla RBF’s fitted lengthscales sit stably near the prior mode. In this budget regime the “highly engineered methods vs simple methods” contrast largely evaporates once nobody is corner-seeking.</p>
+<p><strong>The most discriminative result in the whole study:</strong> <code>rbf_sphere</code> ≥ <code>spherical_linear</code> on effectively every benchmark, dramatically so on the genuinely nonlinear control (gpmix_a0: 7.92 vs 5.29). Per the pre-registered interpretation matrix, this says the <strong>active ingredient is the projection + decoupled-lengthscale pipeline, not the linear function class</strong>. Linearity is not the source of the paper’s success — it is the <em>price</em> the paper pays (cheerfully, since it buys <span class="math inline">O(ND^2)</span> scaling and exact Thompson sampling), and in the <span class="math inline">N \approx D</span> regime the price is ≈ zero.</p>
+<p><strong>The Bayesian machinery is not incidental.</strong> The non-Bayesian <code>local_linear</code> baseline — which shares the “fit a linear model, follow its gradient” heart of the method but has no posterior and no EI — loses badly everywhere (e.g.&nbsp;rover −6.1 vs −1.3; it cannot even solve hartmann_emb, final 3.14 only after getting stuck at the Sobol plateau). Pure locality is also not the mechanism: <code>local_linear</code> has the <em>smallest</em> OTSD of all methods and still fails, while spherical-linear’s OTSD is actually <em>higher</em> than vanilla RBF’s on 5 of 8 benchmarks (contrary to the paper’s “similarly local” reading — at least at this budget, spherical-linear explores more globally than RBF, not equally locally).</p>
+</section>
+<section id="h2-calibration-refuted" class="level2">
+<h2 class="anchored" data-anchor-id="h2-calibration-refuted">3. H2: calibration — refuted</h2>
+<p>Online reliability (does the model’s predictive interval at the point it <em>chooses</em> cover the value it then <em>observes</em>?):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/reliability.png" class="img-fluid figure-img"></p>
+<figcaption>Online reliability curves per method and benchmark.</figcaption>
+</figure>
+</div>
+<p>The pattern is the opposite of H2. <strong>Spherical-linear is the most miscalibrated method in the pool</strong> — online z-score std between 2.3 (rover) and 8.8 (SVM), 90%-interval coverage as low as 32% — and it wins anyway. Vanilla RBF is consistently the best-calibrated (z-std 0.65–1.8) and does not win because of it. Most damning: <strong>standard linear is often closest to the diagonal</strong> (z-std ~1.7, coverage ~85% on rover/svm/lasso) <em>while performing at the random-search floor</em> — its enormous boundary-point variances honestly cover its enormous errors. Honest uncertainty about bad predictions does not optimize functions. There is also no dissociation of the kind that would rescue H2 (well-calibrated online / poorly calibrated globally): the online-vs-holdout NLL scatter shows spherical-linear among the worst on <em>both</em> axes on several benchmarks it wins (online NLL ≈ 59 std-units on rover, ≈ 31 on sphere100).</p>
+<p>If anything, the data suggest mild <em>overconfidence helps</em>: the winning methods systematically under-cover at acquired points, i.e.&nbsp;they exploit their (locally decent) mean estimates more aggressively than their posteriors justify.</p>
+</section>
+<section id="h3-benchmark-linearity-partially-supported-in-a-refined-form" class="level2">
+<h2 class="anchored" data-anchor-id="h3-benchmark-linearity-partially-supported-in-a-refined-form">4. H3: benchmark linearity — partially supported, in a refined form</h2>
+<p>Offline probes (ridge test-<span class="math inline">R^2</span> on ~2000 Sobol points, vs a quadratic-diagonal fit and a vanilla-RBF GP reference):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/linearity.png" class="img-fluid figure-img"></p>
+<figcaption>Linearity spectrum of the benchmarks: global ridge R² vs quadratic and GP references, plus local R² at several radii.</figcaption>
+</figure>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 35%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>benchmark</th>
+<th><span class="math inline">R^2</span> (linear)</th>
+<th><span class="math inline">R^2</span> (GP-RBF)</th>
+<th>linear “enough”?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>rover</td>
+<td>0.72</td>
+<td>0.70</td>
+<td>globally — yes, fully</td>
+</tr>
+<tr class="even">
+<td>gpmix_a50</td>
+<td>0.74</td>
+<td>0.70</td>
+<td>yes (by construction, α=0.5 → but see below)</td>
+</tr>
+<tr class="odd">
+<td><strong>gpmix_a0</strong></td>
+<td><strong>0.40</strong></td>
+<td>0.33</td>
+<td>“fully nonlinear” control is 40% linear!</td>
+</tr>
+<tr class="even">
+<td>sphere100</td>
+<td>0.57</td>
+<td>0.95</td>
+<td>linear part = off-center bowl’s tilt</td>
+</tr>
+<tr class="odd">
+<td>lasso_dna</td>
+<td>0.26</td>
+<td>0.60</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>hartmann_emb</td>
+<td>0.18</td>
+<td>0.96</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>svm</td>
+<td>0.15</td>
+<td>0.91</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p>Three observations replace the naive version of H3:</p>
+<ol type="1">
+<li><p><strong>H3-naive is false.</strong> SVM, lasso-DNA and hartmann_emb are strongly nonlinear and <em>learnably</em> so (an RBF GP reaches <span class="math inline">R^2</span> 0.60–0.96 with 1600 points), yet spherical-linear ties or beats vanilla RBF on all three BO tasks. Global linearity of the objective is not necessary for the linear surrogate to compete.</p></li>
+<li><p><strong>The “nonlinear” regime everyone tests in is substantially linear anyway.</strong> <code>gpmix_a0</code> is a <em>pure RBF-kernel draw</em> using the standard dimension-scaled lengthscale (<span class="math inline">\ell \propto \sqrt{D}</span>) — the convention that modern HDBO (Hvarfner, and this paper) is built on — and a plain linear model explains 40% of its variance over the whole box. With <span class="math inline">\ell \sim \sqrt{D}</span> and box diameter <span class="math inline">\sim \sqrt{D}</span>, GP draws vary by <span class="math inline">O(1)</span> across the reachable domain and are dominated by their low-order components. This directly reframes the paper’s α-mix ablation: their method “still making progress at α = 0” is less surprising when α = 0 functions are two-fifths linear. The smoothness convention that fixed high-dimensional BO also quietly <em>linearized</em> it.</p></li>
+<li><p><strong>What fails is capacity you cannot use.</strong> At <span class="math inline">N \approx D \approx 150</span> observations in 60–388 dimensions, no surrogate can identify more than <span class="math inline">\sim D</span> effective parameters; the linear model has exactly <span class="math inline">D+2</span>. Where extra capacity <em>could</em> be exploited within budget (gpmix_a0, where the RBF variants beat linear by ~2.5 units), linearity has a real cost — visible only because the synthetic control isolates it. On the real <span class="math inline">N \approx D</span> benchmarks the cost is invisible. H3, refined: <em>the benchmarks aren’t linear — the evaluation budget is.</em></p></li>
+</ol>
+<p>The “EI acquires where local Taylor suffices” conjecture from the paper found no support: local linear fits at the step sizes the methods actually take (median 0.5–3.0 in normalized units) have <span class="math inline">R^2 \approx 0</span> on every benchmark, with ~30 local samples (the honest in-BO sample size). The linear model’s edge is a global trend + one global bowl (next section), not local gradient estimation.</p>
+</section>
+<section id="the-overlooked-mechanism-what-the-projection-actually-does" class="level2">
+<h2 class="anchored" data-anchor-id="the-overlooked-mechanism-what-the-projection-actually-does">5. The overlooked mechanism: what the projection actually does</h2>
+<p>The projection turns out to give the two kernels two <em>different</em> gifts, and both are derivable in closed form. Throughout, <span class="math inline">z = (x - \tfrac{1}{2})/\ell</span> denotes the centered, ARD-lengthscale-scaled input, and the inverse-stereographic map is</p>
+<p><span class="math display">
+P(z) \;=\; \frac{1}{\lVert z\rVert^2 + 1}\begin{bmatrix} 2z \\ \lVert z\rVert^2 - 1 \end{bmatrix} \in \mathbb{R}^{D+1},
+\qquad \lVert P(z)\rVert = 1 \text{ identically.}
+</span></p>
+<section id="a.-for-the-linear-kernel-a-bowl-feature-weight-space-derivation" class="level3">
+<h3 class="anchored" data-anchor-id="a.-for-the-linear-kernel-a-bowl-feature-weight-space-derivation">5a. For the linear kernel: a bowl feature (weight-space derivation)</h3>
+<p>A GP with a linear kernel in features <span class="math inline">\varphi</span> is exactly Bayesian linear regression on those features: every sample is <span class="math inline">f(z) = w^\top \varphi(z)</span> with Gaussian <span class="math inline">w</span>. Here <span class="math inline">\varphi = P</span>, so writing <span class="math inline">w = (v, c)</span> — first <span class="math inline">D</span> weights and the last one —</p>
+<p><span class="math display">
+f(z) \;=\; \frac{2 v^\top z + c\,(\lVert z\rVert^2 - 1)}{\lVert z\rVert^2 + 1}.
+</span></p>
+<p>The last coordinate of <span class="math inline">P</span> is <span class="math inline">g(\lVert z\rVert^2)</span> where</p>
+<p><span class="math display">
+g(s) = \frac{s - 1}{s + 1}:
+</span></p>
+<p>a monotone, saturating (range <span class="math inline">(-1, 1)</span>), <em>radially symmetric</em> feature of the input — it depends on <span class="math inline">z</span> only through its norm. That single extra feature is the whole story. Completing the square in the numerator (for <span class="math inline">c \neq 0</span>):</p>
+<p><span class="math display">
+2 v^\top z + c\lVert z\rVert^2 - c \;=\; c\left( \Big\lVert z + \tfrac{v}{c}\Big\rVert^2 - \tfrac{\lVert v\rVert^2}{c^2} - 1 \right),
+</span></p>
+<p>so with <span class="math inline">c &lt; 0</span> the model represents a <strong>downward bowl whose center <span class="math inline">-v/c</span> and depth are set by learned weights</strong> — an interior maximum placeable anywhere. In the small-norm regime, expanding <span class="math inline">1/(1+\lVert z\rVert^2) \approx 1 - \lVert z\rVert^2</span> gives <span class="math inline">f(z) \approx -c + 2v^\top z + 2c\lVert z\rVert^2 + O(\lVert z\rVert^3)</span>: linear plus isotropic quadratic, to leading order. Three refinements:</p>
+<ul>
+<li>“Isotropic” is in <span class="math inline">z</span>-space; since <span class="math inline">\lVert z\rVert^2 = \sum_i (x_i - \tfrac{1}{2})^2/\ell_i^2</span>, in original coordinates the bowl is an <em>axis-aligned ellipsoid</em> shaped by the ARD lengthscales. What the model cannot do: cross-terms <span class="math inline">x_i x_j</span>, or a second independent direction of curvature — one feature, one curvature degree of freedom.</li>
+<li>It is not an exact quadratic: as <span class="math inline">\lVert z\rVert \to \infty</span>, <span class="math inline">f</span> saturates to <span class="math inline">c</span> instead of diverging. Hence spherical-linear regression on <code>sphere100</code> (exactly <span class="math inline">-\lVert x - x^*\rVert^2</span>) reaches <span class="math inline">R^2 = 0.999</span> rather than 1.0, and our unit test on an exactly-<em>linear</em> function had ~6.6% RMSE — the shared <span class="math inline">1/(1+\lVert z\rVert^2)</span> denominator bends everything slightly.</li>
+<li>Both halves of Theorem 1 die at once. <em>Variance</em>: <span class="math inline">k(z,z) = b_0 + b_1 \lVert P(z)\rVert^2 = b_0 + b_1</span> is <strong>constant</strong> (unprojected: <span class="math inline">b_0 + b_1\lVert z\rVert^2</span>, monotone in norm — the variance half of corner-seeking). <em>Mean</em>: <span class="math inline">w^\top P(z)</span> is a linear function on the sphere, maximized at <span class="math inline">w/\lVert w\rVert</span>; <span class="math inline">P</span> is a bijection onto the sphere minus the north pole, so unless <span class="math inline">w</span> points exactly at the pole the argmax pulls back to a <strong>finite</strong> interior point — the bowl center <span class="math inline">-v/c</span> (unprojected: <span class="math inline">w^\top z</span> is maximized at infinity along <span class="math inline">w</span>).</li>
+</ul>
+<p>Empirically: on <code>sphere100</code>, plain ridge gets <span class="math inline">R^2 = 0.57</span> (only the tilt an off-center bowl shows across the box) while spherical-linear GP regression gets <span class="math inline">R^2 = 0.999</span>; in BO it converges to the interior optimum <em>faster than vanilla RBF</em> (−1.12 vs −1.90) while standard linear, lacking the feature, dies at the boundary (−8.15).</p>
+<p>This qualifies the paper’s §5.2 claim that the projection adds no meaningful expressiveness (their check — regression RMSE on random smooth functions — cannot see a single radial direction of curvature; it is a measure-zero improvement on generic functions but the load-bearing degree of freedom for <em>optimization</em>). A “linear” model that can represent <em>trend + bowl</em> has exactly the two behaviors a smooth optimizer needs: ride the gradient while far away, stop and refine at an interior optimum.</p>
+</section>
+<section id="b.-for-the-rbf-kernel-a-compactified-center-weighted-metric" class="level3">
+<h3 class="anchored" data-anchor-id="b.-for-the-rbf-kernel-a-compactified-center-weighted-metric">5b. For the RBF kernel: a compactified, center-weighted metric</h3>
+<p>RBF-on-sphere is not “RBF with vaguely rescaled distances” — the chordal distance between projected points has a closed form (numerically verified to machine precision):</p>
+<p><span class="math display">
+\lVert P(z) - P(z')\rVert^2 \;=\; \frac{4\,\lVert z - z'\rVert^2}{(1 + \lVert z\rVert^2)(1 + \lVert z'\rVert^2)}.
+</span></p>
+<p>So <span class="math inline">\exp(-\tfrac{1}{2}\lVert P(z) - P(z')\rVert^2)</span> is an ordinary RBF in a <strong>conformally rescaled metric</strong>: local distances at <span class="math inline">z</span> shrink by <span class="math inline">2/(1+\lVert z\rVert^2)</span>, i.e.&nbsp;the effective lengthscale is <span class="math inline">\ell_{\mathrm{eff}}(z) \propto (1+\lVert z\rVert^2)/2</span> — <strong>fine resolution at the box center, quadratically coarser toward the corners</strong>. And since the sphere has diameter 2, the metric has <em>bounded diameter</em>: no two points in the domain ever decorrelate below <span class="math inline">\exp(-\tfrac{1}{2} \cdot 2^2) \approx 0.135</span> (at unit post-projection scale) — a hard <strong>correlation floor</strong>.</p>
+<p>Why that matters: vanilla RBF’s high-D failure mode is not corner-<em>seeking</em> (its mean is not monotone in magnitude) but corner-<em>bleeding via the variance</em>. A box in <span class="math inline">D = 100</span> has <span class="math inline">2^D</span> corners, mutually far apart; under a stationary kernel every unexplored far region sits at full prior variance forever, so EI’s exploration term has an inexhaustible frontier of “novel” boundary regions to pay. The projection fixes this structurally, twice over: (i) all large-norm points crowd toward the north-pole cap and become mutually correlated, so sampling one corner-ward point collapses posterior variance across the <em>entire</em> far field — <span class="math inline">2^D</span> corners become approximately one; (ii) the radial direction saturates (<span class="math inline">g'(s) \to 0</span>), so the magnitude direction — exactly where the boundary pathology lives — is metrically compressed while angular structure keeps its resolution. Section 6 tests this account directly.</p>
+<p>(Prior art note: this is essentially the mechanism behind BOCK’s cylindrical kernels — <a href="https://arxiv.org/abs/1806.01619">Oh, Gavves &amp; Welling 2018</a> — which warp geometry to expand the center and shrink the boundary for the same reason. The inverse-stereographic map is the smooth cousin of their transform; the paper does not make the connection.)</p>
+<p><strong>Same geometric move, two doors.</strong> For the linear kernel the new coordinate is a bowl <em>feature</em> (the mean can peak inside); for the RBF it is a metric <em>compactification</em> (the variance stops paying the boundary). That, plus honest-to-goodness EI on top, appears to be the whole trick.</p>
+</section>
+</section>
+<section id="testing-the-geometric-account-three-experiments" class="level2">
+<h2 class="anchored" data-anchor-id="testing-the-geometric-account-three-experiments">6. Testing the geometric account: three experiments</h2>
+<p>Section 5b makes falsifiable predictions. Three experiments test them; all three came out as predicted.</p>
+<section id="a.-optimum-location-sweep-the-advantage-flips-sign-at-the-corner" class="level3">
+<h3 class="anchored" data-anchor-id="a.-optimum-location-sweep-the-advantage-flips-sign-at-the-corner">6a. Optimum-location sweep: the advantage flips sign at the corner</h3>
+<p>On <span class="math inline">-\lVert x - x^*\rVert^2</span> (<span class="math inline">D = 100</span>), we slid the optimum from the box center to the <span class="math inline">(1,\dots,1)</span> corner: <span class="math inline">x^* = \tfrac{1}{2} + t \cdot \tfrac{1}{2}</span> per coordinate, <span class="math inline">t \in \{0, 0.5, 0.8, 1\}</span>. The boundary-compression account predicts the projected kernels’ advantage decreases in <span class="math inline">t</span> and <em>inverts</em> near <span class="math inline">t = 1</span> (suppressing boundary exploration is exactly wrong when the optimum is a corner); any prior-fit or calibration account predicts no <span class="math inline">t</span>-dependence. 3 seeds × 150 evals:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/sweep_optimum_location.png" class="img-fluid figure-img"></p>
+<figcaption>Optimum-location sweep. Left: final best value vs t. Right: gap to the best method at each t.</figcaption>
+</figure>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>t (0=center, 1=corner)</th>
+<th>rbf_sphere</th>
+<th>vanilla_rbf</th>
+<th>rbf_noproject</th>
+<th>spherical_linear</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.0</td>
+<td><strong>−0.19 ±0.03</strong></td>
+<td>−1.47 ±0.09</td>
+<td>−0.65 ±0.18</td>
+<td>−0.23 ±0.03</td>
+</tr>
+<tr class="even">
+<td>0.5</td>
+<td>−3.51 ±0.06</td>
+<td>−3.46 ±0.04</td>
+<td>−4.23 ±0.21</td>
+<td><strong>−3.14 ±0.12</strong></td>
+</tr>
+<tr class="odd">
+<td>0.8</td>
+<td>−6.33 ±0.79</td>
+<td><strong>−1.68 ±0.17</strong></td>
+<td>−6.68 ±0.81</td>
+<td>−7.83 ±0.31</td>
+</tr>
+<tr class="even">
+<td>1.0</td>
+<td>−9.35 ±0.63</td>
+<td><strong>−1.16 ±0.44</strong></td>
+<td>−5.37 ±0.80</td>
+<td>−12.69 ±0.44</td>
+</tr>
+</tbody>
+</table>
+<p>The rbf_sphere-minus-vanilla gap goes +1.3 → −0.05 → −4.7 → −8.2: monotone in <span class="math inline">t</span>, sign flip included. At the corner, the <em>paper’s method is the worst GP method in the pool</em> (−12.69), and vanilla RBF — whose “pathological” boundary bleeding is now aimed at the optimum — is best. Boundary fractions confirm the mechanism operates through acquisition location: at <span class="math inline">t = 1</span>, vanilla RBF puts 65% of its evaluations on the boundary and wins; rbf_sphere is structurally capped at 18% and loses; the projected linear model at 6% (<span class="math inline">t = 0.8</span>) loses hardest. The projection is not a generic improvement — it is a <em>prior that the optimum is interior</em>, which HDBO benchmarks (and their box-normalization conventions) happen to satisfy.</p>
+</section>
+<section id="b.-deconfounded-ablation-the-projection-itself-not-the-pipeline-priors" class="level3">
+<h3 class="anchored" data-anchor-id="b.-deconfounded-ablation-the-projection-itself-not-the-pipeline-priors">6b. Deconfounded ablation: the projection itself, not the pipeline priors</h3>
+<p><code>rbf_sphere</code> differs from <code>vanilla_rbf</code> in two bundled ways: the projection, and the paper’s hyperparameter pipeline (sigmoid global lengthscale, softmax constant+kernel coefficients, LogNormal ARD prior). The new <code>rbf_noproject</code> method runs the identical pipeline with the projection switched off. Where rbf_sphere beat vanilla_rbf:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>benchmark</th>
+<th>vanilla_rbf</th>
+<th>rbf_noproject</th>
+<th>rbf_sphere</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sphere100 (interior bowl)</td>
+<td>−1.90 ±0.18</td>
+<td>−2.07 ±0.15</td>
+<td><strong>−1.21 ±0.06</strong></td>
+</tr>
+<tr class="even">
+<td>rover</td>
+<td>−0.70 ±0.72</td>
+<td>+0.32 ±0.51</td>
+<td><strong>+0.73 ±0.30</strong></td>
+</tr>
+<tr class="odd">
+<td>gpmix_a0 (stationary GP draw)</td>
+<td>7.68 ±0.15</td>
+<td>7.79 ±0.23</td>
+<td>7.92 ±0.32</td>
+</tr>
+</tbody>
+</table>
+<p>On sphere100 the pipeline priors contribute <em>nothing</em> (no-project ≈ vanilla) — the projection is the entire gap. On rover both contribute, with the projection on top. On the stationary GP draw all three tie — the projection is neutral where there is no interior-optimum structure to exploit, consistent with 6a’s <span class="math inline">t = 0.5</span> row.</p>
+</section>
+<section id="c.-variance-autopsy-the-corner-exploration-bonus-watched-dying" class="level3">
+<h3 class="anchored" data-anchor-id="c.-variance-autopsy-the-corner-exploration-bonus-watched-dying">6c. Variance autopsy: the corner exploration bonus, watched dying</h3>
+<p>All four kernels were refit to the <em>same</em> data (the Sobol run’s first <span class="math inline">n</span> points — so differences are pure kernel geometry, not data-path) and the posterior-to-prior uncertainty ratio <span class="math inline">\sigma_{\mathrm{post}}/\sigma_{\mathrm{prior}}</span> profiled along center→corner rays <span class="math inline">x(s) = \tfrac{1}{2} + s\,(w - \tfrac{1}{2})</span>, <span class="math inline">w</span> a random corner:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/variance_profile.png" class="img-fluid figure-img"></p>
+<figcaption>Posterior uncertainty along center→corner rays, all kernels fit to the same Sobol data. Dotted line: radius of a typical uniform box point.</figcaption>
+</figure>
+</div>
+<p>At the corners (<span class="math inline">s = 1</span>), vanilla RBF retains <strong>0.95–0.99</strong> of its prior uncertainty after 30 observations and still <strong>0.83–0.95 after 150</strong> — the steeply rising profile is the “inexhaustible exploration frontier” made visible; no realistic budget ever exhausts it. RBF-on-sphere, fit to the same points, has corners already down to 0.59–0.65 at <span class="math inline">n = 30</span> (informed <em>before ever being sampled</em>, via the correlation floor) and a far flatter profile — on hartmann_emb it even decreases toward corners by <span class="math inline">n = 150</span>. The two linear models bracket the story: spherical linear collapses uncertainty <em>globally</em> (0.02 everywhere on sphere100 at <span class="math inline">n = 150</span> — with <span class="math inline">D+1</span> effective features, 150 observations pin the whole posterior), while standard linear’s flat <em>ratio</em> hides that its prior <span class="math inline">\sigma</span> grows like <span class="math inline">\lVert z\rVert</span>, so its absolute uncertainty is still maximal at corners — the variance half of Theorem 1.</p>
+<p>Together: 6c shows the projection deletes the boundary variance bonus, 6b shows that deletion (not the priors) is what separates the RBF variants, and 6a shows the deletion helps exactly when — and only when — the optimum is not on the boundary.</p>
+</section>
+</section>
+<section id="synthesis-why-the-method-works" class="level2">
+<h2 class="anchored" data-anchor-id="synthesis-why-the-method-works">7. Synthesis: why the method works</h2>
+<p>Stitching the hypotheses together into one narrative:</p>
+<ol type="1">
+<li>In the <span class="math inline">N \approx D</span> budget regime, with dimension-scaled smoothness priors, <strong>every non-pathological surrogate ties on real benchmarks</strong> — the objectives are substantially linear over the reachable box (H3-refined), and no model can use capacity beyond <span class="math inline">\sim D</span> parameters anyway.</li>
+<li>What separates methods is therefore <strong>pathology avoidance</strong> (H1). The classical linear kernel has a fatal, <em>structural</em> one: it provably acquires corners, which is wrong whenever the optimum is interior. The spherical projection removes it — not by adding “locality” (its search is no more local than RBF’s) and not by improving calibration (it is the <em>least</em> calibrated model in the pool, H2 refuted), but by (a) bounding the variance so magnitude stops paying, and (b) donating a bowl-shaped feature that can place a maximum anywhere in the interior.</li>
+<li>The result is a model exactly rich enough for what the budget can identify (trend + bowl), too poor to overfit, with no corner bias — “least pathological sufficient model.” The linear choice itself is close to free at this budget; RBF-on-the-same-pipeline is marginally <em>better</em> everywhere we measured, so the paper’s framing “linear models are surprisingly good” might be more precisely “the projection pipeline is good, and at <span class="math inline">N \approx D</span> even a linear head on it loses nothing (while gaining <span class="math inline">O(ND^2)</span> cost and exact Thompson sampling).”</li>
+<li>There is no free lunch hiding in any of this. The projection is, mechanically, a <strong>prior that the optimum is interior</strong> (§5b, §6): it reallocates model resolution and exploration variance from the boundary to the interior. On every benchmark in this suite — and, we suspect, in the paper’s — that prior is correct, partly by construction (box normalization tends to center the interesting region). Slide the optimum to a corner and the ranking inverts outright (§6a): the paper’s method becomes the worst GP in the pool and vanilla RBF, whose boundary “pathology” is now aimed at the target, the best. “Fewest pathologies” is thus not an intrinsic property of the method but a fit between its geometric prior and where these benchmarks put their optima.</li>
+</ol>
+<p>The paper’s title thesis survives, though: the <em>conventional intuitions</em> (locality, calibration, expressiveness) indeed do not predict any of this — we found each of them either irrelevant or anti-correlated with success.</p>
+</section>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">8. Limitations</h2>
+<ul>
+<li><strong>Budget</strong>: 150 evaluations vs the paper’s 1000; 3 seeds (4 for one cell). Long-horizon behavior could reorder the top group (the four 400-eval rover runs we have look qualitatively identical, but that is one benchmark). All “tie” claims are within-2-SEM claims at n=3.</li>
+<li><strong>Baselines</strong>: no TuRBO/SAASBO/BAxUS — the paper already documents them; our H1 analysis covers pathologies of the surrogates we ran, so “fewest pathologies among all published methods” is not directly tested.</li>
+<li>MOPTA08, MuJoCo and GuacaMol benchmarks were not runnable on this machine (Linux binaries / Apptainer / cost); conclusions about latent-space or <span class="math inline">N \gg D</span> regimes are out of scope.</li>
+<li>Local-linearity probes at small radii are limited by <span class="math inline">k \approx 16</span>–32 samples in high-D (deliberately: that is the in-loop sample size), so they measure <em>usable</em> local linearity, not asymptotic smoothness.</li>
+<li>The <code>rbf_noproject</code> ablation (§6b) isolates the projection from the rest of the pipeline, but the pipeline’s individual pieces (softmax constant+kernel mixture, sigmoid global lengthscale, LogNormal ARD prior) remain bundled with each other; on rover they contribute meaningfully as a group and were not further decomposed.</li>
+<li>The §6a sweep moves the optimum along the center→corner <em>diagonal</em> of an isotropic quadratic; other paths to the boundary (face centers, anisotropic bowls) were not tested, though the mechanism does not distinguish them.</li>
+</ul>
+</section>
+<section id="reproducing" class="level2">
+<h2 class="anchored" data-anchor-id="reproducing">9. Reproducing</h2>
+<p>All code, configs, and analysis scripts are available at <strong><a href="https://github.com/AustinT/2026-07-high-dim-bo" class="uri">https://github.com/AustinT/2026-07-high-dim-bo</a></strong> — a fork of the paper’s official implementation extended with the comparison surrogates, synthetic control benchmarks, per-iteration run recording, and the analysis tooling behind every figure in this post. The README there contains step-by-step reproduction instructions (~3–4 hours on a laptop CPU at parallelism 6 for the full run matrix).</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin and Fable, Claude},
+  title = {Why Does Spherical-Linear {Bayesian} Optimization Work?},
+  date = {2026-07-25},
+  url = {https://austintripp.ca/blog/2026-07-25-spherical-linear-high-dim-bo/},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas" role="listitem">
+Tripp, Austin, and Claude Fable. 2026. <span>“Why Does Spherical-Linear
+Bayesian Optimization Work?”</span> July 25. <a href="https://austintripp.ca/blog/2026-07-25-spherical-linear-high-dim-bo/">https://austintripp.ca/blog/2026-07-25-spherical-linear-high-dim-bo/</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/austintripp\.ca");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="mailto:austin.james.tripp%5Bat%5Dgmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://www.semanticscholar.org/author/Austin-Tripp/115766771">Semantic Scholar</a> | <a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a></p>
+<p>© Austin Tripp · All opinions are my own (not my employer’s). · Website powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
