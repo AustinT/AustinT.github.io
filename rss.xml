@@ -6647,8 +6647,15 @@ Tripp, Austin. 2026. <span>“Write Research Papers to Be
 <p>I view this partly as an accomplishment- the LLMs have clearly internalized the existence of my paper and its core idea, without needing to rely on RAG. The offending paper does vaguely describe my papers’ contribution correctly, so it hasn’t <em>completely</em> misinterpreted it (although admittedly the contribution is basically in the title).</p>
 <p>The rest of the offending paper is a bit confusing: aside from the hallucinated references, it also contains the phrase “Table??” 4 times, suggesting a LaTeX compilation error. I almost think this is too <em>bad</em> to have been done by AI- if anything AI seems overly eager to always lint and recompile things. I wonder whether the authors just used AI for their references, or are just bad at using AI… 🤔</p>
 <p>Nonetheless, this is ultimately a sad state for science to be in. The journal Behaviormetrika is apparently an established an reputable journal, so I’m surprised this slipped through…</p>
+<hr>
+<section id="update-2026-08-02--correction-issued" class="level2">
+<h2 class="anchored" data-anchor-id="update-2026-08-02--correction-issued">Update 2026-08-02- correction issued</h2>
+<p>After emailing the journal in June (after not hearing from the authors), a correction was issued a few days ago:</p>
+<p><a href="https://link.springer.com/article/10.1007/s41237-026-00314-8" class="uri">https://link.springer.com/article/10.1007/s41237-026-00314-8</a></p>
+<p>Good to see!</p>
 
 
+</section>
 
 
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
