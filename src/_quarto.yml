@@ -26,11 +26,15 @@ website:
 
       © Austin Tripp · All opinions are my own (not my employer's). · Website powered by [Quarto](https://quarto.org).
 
+filters:
+  - filters/badges.lua
+
 format:
   html:
     theme: flatly
     toc: true
     html-math-method: katex
+    css: assets/badges.css
 
 execute:
   freeze: auto
