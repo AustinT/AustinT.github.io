@@ -8,6 +8,12 @@ categories:
 - _recent-highlight
 description: "The Bayesian optimization community has neglected utility functions by defaulting to u(y) = y, which encodes a specific risk/reward preference that rarely matches real users' needs."
 google-scholar: true
+
+# Custom badges
+confidence: high
+effort: high
+originality: high
+originality-note: "Adding a utility function is of course not my original idea, but in the ML community I don't think the consequences of excluding it are appreciated at all."
 ---
 
 Bayesian decision theory is one of the best justifications for BO- particularly

@@ -7,6 +7,11 @@ categories:
 - _recent-highlight
 description: "Substack post Arguing that AI experts should own the problem formulation."
 citation: false
+
+confidence: medium
+effort: high
+originality: high
+originality-note: "While there are many guides on how to collaborate, I didn't come across this specific advice articulated this way."
 ---
 
 I just wrote an article [How AI Experts Can Drive Better Collaboration in Drug

@@ -5,6 +5,8 @@ categories:
 - opinion
 - _recent-highlight
 description: "Just discovered Quarto; here's what I like about it."
+
+originality: low
 ---
 
 A colleague recently introduced me to Quarto and I can't believe I didn't know

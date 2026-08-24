@@ -7,6 +7,8 @@ categories:
 - opinion
 - _recent-highlight
 description: ""
+
+effort: low
 ---
 
 Don't write your paper for somebody to _read_ it, write for somebody to _skim_

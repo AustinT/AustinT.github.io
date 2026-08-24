@@ -7,6 +7,11 @@ categories:
 - opinion
 - _recent-highlight
 description: ""
+
+# Badges
+confidence: medium
+effort: medium
+originality: medium
 ---
 
 In a recent blog post ([link](/blog/2026-01-25-model-centric-bo/)) I described

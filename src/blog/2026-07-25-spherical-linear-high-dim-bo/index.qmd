@@ -14,6 +14,15 @@ categories:
 - research papers
 - bayesian optimization
 - _recent-highlight
+
+# Badges
+confidence: medium
+confidence-note: "Checked conclusions reasonably well but not the code"
+ai-involvement: "co-written"
+ai-involvement-note: "As explained below, most of the post is directly written by Fable."
+effort: medium
+originality: high
+originality-note: "This is commenting on a paper from last year; I have not seen this comment made anywhere else."
 ---
 
 ## Preamble

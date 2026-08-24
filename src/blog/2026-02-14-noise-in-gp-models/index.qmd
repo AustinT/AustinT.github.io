@@ -8,6 +8,11 @@ categories:
 - _recent-highlight
 description: "This post identifies a subtle but consequential issue in standard Gaussian process models: the noise parameter conflates genuine measurement noise with model misspecification, causing the model to underestimate epistemic uncertainty."
 google-scholar: true
+
+# Tags
+confidence: high
+effort: medium
+originality: low
 ---
 
 The most common kind of Gaussian process (GP) model is:

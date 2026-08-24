@@ -8,6 +8,10 @@ categories:
 - _recent-highlight
 description: "This post argues that regret-based evaluations are insufficient for assessing Bayesian optimization algorithms when users bring their own surrogate models, because similar regret values can arise from qualitatively different algorithm behaviours."
 google-scholar: true
+
+confidence: medium
+effort: medium
+originality: medium
 ---
 
 I think the Bayesian optimization (BO) research community needs to change its

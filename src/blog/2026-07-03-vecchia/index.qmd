@@ -5,8 +5,14 @@ categories:
 - _recent-highlight
 - machine learning
 - statistics
-
 description: "Explanation of the Vecchia GP approximation (with code)."
+
+# Custom badges
+confidence: high
+effort: high
+originality: medium
+originality-note: "Vecchia is not original but I didn't come across a comparable tutorial despite intentionally searching for it."
+ai-involvement: assisted
 
 # Sort of custom for this post
 # ====

@@ -7,6 +7,13 @@ categories:
 - _all-time-best
 description: "A self-contained explanation of Chebyshev scalarization for multi-objective optimization."
 google-scholar: true
+
+# Custom badges
+confidence: high
+effort: high
+effort-note: "I took a lot of time to understand this and write a proof."
+originality: medium
+originality-note: "Of course Chebyshev scalarization isn't my original idea and I'm sure a comparable proof exists somewhere, but I didn't find it (with conditions clearly stated), and definitely not alongside interactive examples."
 ---
 
 I've been reading about multi-objective optimization recently.[^surprise]

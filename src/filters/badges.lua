@@ -39,9 +39,9 @@ local dimensions = {
     note_key = "originality-note",
     class_prefix = "badge-originality-",
     labels = {
-      low = { emoji = "🪞", text = "Low originality.", note = "" },
-      medium = { emoji = "🧩", text = "Medium originality.", note = "" },
-      high = { emoji = "💡", text = "High originality.", note = "" },
+      low = { emoji = "🪞", text = "Low originality", note = "" },
+      medium = { emoji = "🧩", text = "Medium originality", note = "" },
+      high = { emoji = "💡", text = "High originality", note = "" },
     },
   },
 }
