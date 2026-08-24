@@ -13,6 +13,9 @@ jobs:
       - uses: astral-sh/setup-uv@v6
       - run: uv sync
       - run: uv run python -m ipykernel install --user --name website-blog
+      - run: |
+          echo "VIRTUAL_ENV=$PWD/.venv" >> "$GITHUB_ENV"
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
       - uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
