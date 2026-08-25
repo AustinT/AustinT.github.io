@@ -398,7 +398,7 @@ than $\Sigma$.
 #| code-summary: "Code: compute the covariance and U, D for different kernels and lengthscales on a grid in [0, 1]"
 SPARSITY_THRESHOLD = 1e-4
 
-def get_U_and_D_exact(Sigma: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+def get_U_and_D_exact(Sigma: np.ndarray, *, jitter: float = 1e-13) -> tuple[np.ndarray, np.ndarray]:
     U_T = np.eye(Sigma.shape[0])  # unit diagonal
     D = np.empty(Sigma.shape[0])
 
@@ -407,7 +407,11 @@ def get_U_and_D_exact(Sigma: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     for i in range(1, Sigma.shape[0]):
         Sigma_prev = Sigma[:i, :i]
         Sigma_slice = Sigma[i, :i]
-        c_i = np.linalg.solve(Sigma_prev, Sigma_slice)
+        # Smooth kernels (e.g. RBF) with a large lengthscale produce Sigma_prev
+        # with a condition number beyond double precision, which some LAPACK
+        # backends flag as exactly singular. A tiny diagonal jitter keeps the
+        # solve numerically stable without materially changing the result.
+        c_i = np.linalg.solve(Sigma_prev + jitter * np.eye(i), Sigma_slice)
         U_T[i, :i] = -c_i
         D[i] = Sigma[i, i] - np.dot(c_i, Sigma_slice)
 
@@ -760,9 +764,13 @@ explained by its neighbours, and also implies that the covariance matrix is
 nearly singular.
 
 $\min(D)$ is smallest for the RBF kernels with large lengthscales. The last
-rows of @tbl-ud-cov-sparsity-by-kernel show _negative_ numbers, which is a sign
-of numerical error (it should never be negative). In such situations, the
-Vecchia approximation may not work very well.
+rows of @tbl-ud-cov-sparsity-by-kernel are effectively zero, at the limits of
+double-precision floating point — rounding error dominates the true value
+there. Depending on the exact BLAS/LAPACK backend, this computation can come
+out tiny-positive, tiny-negative, or fail outright with a "singular matrix"
+error (the code adds a small jitter to the diagonal before solving, mainly to
+avoid that last case). In such situations, the Vecchia approximation may not
+work very well.
 
 :::
 
@@ -1193,7 +1201,9 @@ neighbourhood sets.
 #| label: vecchia-function
 #| code-summary: "Code: simple implementation of the Vecchia approximation"
 
-def get_U_and_D_vecchia(Sigma, neighbourhood_sets: dict[int, list[int]]) -> tuple[np.ndarray, np.ndarray]:
+def get_U_and_D_vecchia(
+    Sigma, neighbourhood_sets: dict[int, list[int]], *, jitter: float = 1e-13
+) -> tuple[np.ndarray, np.ndarray]:
 
     # Validate neighbourhood sets
     for i in range(len(Sigma)):
@@ -1216,7 +1226,9 @@ def get_U_and_D_vecchia(Sigma, neighbourhood_sets: dict[int, list[int]]) -> tupl
         # Use np.ix_ to extract the submatrix (avoids advanced-indexing diagonal behavior).
         Sigma_prev = Sigma[np.ix_(idx, idx)]
         Sigma_slice = Sigma[i, idx]
-        c_i = np.linalg.solve(Sigma_prev, Sigma_slice)
+        # See get_U_and_D_exact: tiny jitter avoids spurious "singular matrix"
+        # errors on ill-conditioned submatrices (smooth kernel, large neighbourhood).
+        c_i = np.linalg.solve(Sigma_prev + jitter * np.eye(len(idx)), Sigma_slice)
         U_T[i, idx] = -c_i
         D[i] = Sigma[i, i] - np.dot(c_i, Sigma_slice)
 
