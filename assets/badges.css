@@ -1,0 +1,85 @@
+.post-badges {
+  margin-bottom: 1.5rem;
+}
+
+.post-badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  margin-right: 0.4rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  cursor: default;
+  border: 1px solid transparent;
+}
+
+.badge-confidence-low {
+  background-color: #fdecea;
+  border-color: #f5c2c0;
+  color: #a94442;
+}
+
+.badge-confidence-medium {
+  background-color: #fff8e1;
+  border-color: #ffe08a;
+  color: #8a6d1a;
+}
+
+.badge-confidence-high {
+  background-color: #e6f4ea;
+  border-color: #b7dfc1;
+  color: #2e6b3e;
+}
+
+.badge-fresh {
+  background-color: #e8f0fe;
+  border-color: #b7cdf5;
+  color: #1a4a8a;
+}
+
+.badge-ai-assisted {
+  background-color: #f3e8fd;
+  border-color: #d9b8f7;
+  color: #6a3593;
+}
+
+.badge-ai-co-written {
+  background-color: #e3caf7;
+  border-color: #b877ea;
+  color: #4a1968;
+}
+
+.badge-effort-low {
+  background-color: #eef0fb;
+  border-color: #c7cdf0;
+  color: #33397d;
+}
+
+.badge-effort-medium {
+  background-color: #dde1f6;
+  border-color: #a9b3e6;
+  color: #262d70;
+}
+
+.badge-effort-high {
+  background-color: #ccd2f0;
+  border-color: #8b98da;
+  color: #1a2160;
+}
+
+.badge-originality-low {
+  background-color: #e3f6f5;
+  border-color: #a9dedb;
+  color: #1f6e68;
+}
+
+.badge-originality-medium {
+  background-color: #cdeeec;
+  border-color: #7ecdc8;
+  color: #175650;
+}
+
+.badge-originality-high {
+  background-color: #b3e4e0;
+  border-color: #55b8b0;
+  color: #0f3d39;
+}

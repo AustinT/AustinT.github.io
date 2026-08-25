@@ -48,7 +48,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-189549ecd294ed9837df383a4b42e31c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-3c9c489b3365030a08823a85c71cd1a4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -78,6 +78,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
+<link rel="stylesheet" href="../../assets/badges.css">
 <meta name="citation_title" content="Why I don&amp;amp;#039;t care about toy benchmarks in BO">
 <meta name="citation_author" content="Austin Tripp">
 <meta name="citation_publication_date" content="2026-02-08">
@@ -204,6 +205,9 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<div class="post-badges">
+<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-effort-medium" title="A normal amount of drafting and revision.">🔧 Moderate effort</span> <span class="post-badge badge-originality-medium" title="">🧩 Medium originality</span></p>
+</div>
 <p>A lot of Bayesian optimization (BO) papers include experiments on “toy” functions. Examples of such toy functions are Ackley, Rosenbrock, Hartmann, and Branin. I basically ignore these experiments when I read papers and skip to the next section. When I review papers (and therefore cannot simply skip sections), I find my eyes glazing over and feel bored: I don’t care about these functions, don’t care about the results, and don’t really understand why the authors ran this experiment.</p>
 <p>For a while I assumed every BO researcher feels this way, but a bunch of recent conversations have made it clear to me that many people do care. So, in this post I explain why I don’t care at all about benchmarks on toy functions (and why you shouldn’t either).</p>
 <section id="the-main-issue-is-transferability" class="level2">

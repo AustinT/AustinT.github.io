@@ -102,7 +102,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-189549ecd294ed9837df383a4b42e31c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-3c9c489b3365030a08823a85c71cd1a4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -185,6 +185,7 @@ window.Quarto = {
 };
 </script>
 
+<link rel="stylesheet" href="../../assets/badges.css">
 <meta name="citation_title" content="The Vecchia Gaussian Process Approximation Explained">
 <meta name="citation_author" content="Austin Tripp">
 <meta name="citation_publication_date" content="2026-07-03">
@@ -324,6 +325,9 @@ window.Quarto = {
 </header>
 
 
+<div class="post-badges">
+<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-ai-assisted" title="AI helped with research, editing, or drafting parts of this.">🤖 AI-assisted</span> <span class="post-badge badge-effort-high" title="Carefully researched, drafted, and revised.">💎 High effort</span> <span class="post-badge badge-originality-medium" title="Vecchia is not original but I didn’t come across a comparable tutorial despite intentionally searching for it.">🧩 Medium originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+</div>
 <p>I recently found myself wanting to use the Vecchia GP approximation for a problem at work where low-rank approximation methods were a poor fit. I had vaguely heard about this approximation from a conversation with <a href="https://scholar.google.com/citations?user=RHRJtmgAAAAJ">Marcus Noack</a>, and I understood that it was a <em>sparse</em> approximation to the GP covariance. I always assumed this meant rounding near-zero entries in a GP covariance matrix to be exactly zero, thereby creating a sparse matrix.</p>
 <p>The Vecchia approximation is not well-supported in most GP packages, so I needed to implement it myself.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> In doing so, I realize I had completely misunderstood it: it’s not a sparse approximation of the <em>covariance</em> matrix, but a sparse approximation of the <em>factorization</em> of the <em>precision</em> matrix (the name for the inverse of the covariance matrix).</p>
 <p>Although there are many papers on the Vecchia approximation, in my opinion they have a couple of problems:</p>
@@ -546,7 +550,7 @@ y_1\sim \mathcal N(0, \Sigma_{11}) \ .
 <summary>Code: compute the covariance and U, D for different kernels and lengthscales on a grid in [0, 1]</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>SPARSITY_THRESHOLD <span class="op">=</span> <span class="fl">1e-4</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_U_and_D_exact(Sigma: np.ndarray) <span class="op">-&gt;</span> <span class="bu">tuple</span>[np.ndarray, np.ndarray]:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_U_and_D_exact(Sigma: np.ndarray, <span class="op">*</span>, jitter: <span class="bu">float</span> <span class="op">=</span> <span class="fl">1e-13</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[np.ndarray, np.ndarray]:</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    U_T <span class="op">=</span> np.eye(Sigma.shape[<span class="dv">0</span>])  <span class="co"># unit diagonal</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    D <span class="op">=</span> np.empty(Sigma.shape[<span class="dv">0</span>])</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
@@ -555,69 +559,73 @@ y_1\sim \mathcal N(0, \Sigma_{11}) \ .
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, Sigma.shape[<span class="dv">0</span>]):</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        Sigma_prev <span class="op">=</span> Sigma[:i, :i]</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        Sigma_slice <span class="op">=</span> Sigma[i, :i]</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        c_i <span class="op">=</span> np.linalg.solve(Sigma_prev, Sigma_slice)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        U_T[i, :i] <span class="op">=</span> <span class="op">-</span>c_i</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        D[i] <span class="op">=</span> Sigma[i, i] <span class="op">-</span> np.dot(c_i, Sigma_slice)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    U <span class="op">=</span> U_T.T.copy()</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    U[np.tril_indices(Sigma.shape[<span class="dv">0</span>], k<span class="op">=-</span><span class="dv">1</span>)] <span class="op">=</span> np.nan</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> U, D</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Smooth kernels (e.g. RBF) with a large lengthscale produce Sigma_prev</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># with a condition number beyond double precision, which some LAPACK</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># backends flag as exactly singular. A tiny diagonal jitter keeps the</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># solve numerically stable without materially changing the result.</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        c_i <span class="op">=</span> np.linalg.solve(Sigma_prev <span class="op">+</span> jitter <span class="op">*</span> np.eye(i), Sigma_slice)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        U_T[i, :i] <span class="op">=</span> <span class="op">-</span>c_i</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        D[i] <span class="op">=</span> Sigma[i, i] <span class="op">-</span> np.dot(c_i, Sigma_slice)</span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> frac_small_abs(x: np.ndarray, <span class="op">*</span>, thresh: <span class="bu">float</span> <span class="op">=</span> SPARSITY_THRESHOLD) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    mask <span class="op">=</span> <span class="op">~</span>np.isnan(x)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    denom <span class="op">=</span> <span class="bu">int</span>(mask.<span class="bu">sum</span>())</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> denom <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">float</span>(<span class="st">"nan"</span>)</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    num <span class="op">=</span> <span class="bu">int</span>(((np.<span class="bu">abs</span>(x) <span class="op">&lt;</span> thresh) <span class="op">&amp;</span> mask).<span class="bu">sum</span>())</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> num <span class="op">/</span> denom</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> num_nnz_per_col(A: np.ndarray, <span class="op">*</span>, thresh: <span class="bu">float</span> <span class="op">=</span> SPARSITY_THRESHOLD) <span class="op">-&gt;</span> np.ndarray:</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Column i of U holds the coefficient vector c_i, which is what Vecchia truncates.</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> np.array(</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        [</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>            <span class="bu">int</span>((((np.<span class="bu">abs</span>(A[:, j]) <span class="op">&gt;=</span> thresh) <span class="op">&amp;</span> <span class="op">~</span>np.isnan(A[:, j])).<span class="bu">sum</span>()))</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(A.shape[<span class="dv">1</span>])</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        dtype<span class="op">=</span><span class="bu">float</span>,</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Create kernel objects (compute for all; plot a subset).</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>params_to_kernel: <span class="bu">dict</span>[<span class="bu">tuple</span>[<span class="bu">float</span>, <span class="bu">int</span>], <span class="bu">tuple</span>[Matern, <span class="bu">str</span>]] <span class="op">=</span> {}</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nu, base_name <span class="kw">in</span> [</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">0.5</span>, <span class="st">"Exponential"</span>),</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">1.5</span>, <span class="st">"Matern 3/2"</span>),</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">2.5</span>, <span class="st">"Matern 5/2"</span>),</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    (math.inf, <span class="st">"RBF"</span>),</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>]:</span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> inv_lengthscale <span class="kw">in</span> [<span class="dv">4</span>, <span class="dv">16</span>, <span class="dv">32</span>, <span class="dv">64</span>]:</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        lengthscale <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> inv_lengthscale</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>        name <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>base_name<span class="sc">}</span><span class="ss"> (lengthscale=1/</span><span class="sc">{</span>inv_lengthscale<span class="sc">}</span><span class="ss">)"</span></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        params_to_kernel[(nu, inv_lengthscale)] <span class="op">=</span> (Matern(nu<span class="op">=</span>nu, length_scale<span class="op">=</span>lengthscale), name)</span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute cov/U/D + sparsity + stability metrics for all kernels.</span></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">64</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>results: <span class="bu">dict</span>[<span class="bu">tuple</span>[<span class="bu">float</span>, <span class="bu">int</span>], <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">object</span>]] <span class="op">=</span> {}</span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, (kernel, name) <span class="kw">in</span> params_to_kernel.items():</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    cov <span class="op">=</span> kernel(x, x)</span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    U, D <span class="op">=</span> get_U_and_D_exact(cov)</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    U_col_nnz <span class="op">=</span> num_nnz_per_col(U)</span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    U_col_nnz_q1, U_col_nnz_q2, U_col_nnz_q3 <span class="op">=</span> np.quantile(U_col_nnz, [<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>], method<span class="op">=</span><span class="st">"nearest"</span>)</span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    results[key] <span class="op">=</span> {</span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>        <span class="st">"name"</span>: name,</span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        <span class="st">"cov"</span>: cov,</span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>        <span class="st">"U"</span>: U,</span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        <span class="st">"D"</span>: D,</span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>        <span class="st">"cov_avg_sparsity"</span>: frac_small_abs(cov, thresh<span class="op">=</span>SPARSITY_THRESHOLD),</span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        <span class="st">"U_avg_sparsity"</span>: frac_small_abs(U, thresh<span class="op">=</span>SPARSITY_THRESHOLD),</span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        <span class="st">"U_col_nnz_q1"</span>: <span class="bu">float</span>(U_col_nnz_q1),</span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>        <span class="st">"U_col_nnz_q2"</span>: <span class="bu">float</span>(U_col_nnz_q2),</span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>        <span class="st">"U_col_nnz_q3"</span>: <span class="bu">float</span>(U_col_nnz_q3),</span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        <span class="st">"min_D"</span>: <span class="bu">float</span>(np.<span class="bu">min</span>(D)),</span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        <span class="st">"min_pos_D"</span>: (<span class="bu">float</span>(np.<span class="bu">min</span>(D[D <span class="op">&gt;</span> <span class="dv">0</span>])) <span class="cf">if</span> np.<span class="bu">any</span>(D <span class="op">&gt;</span> <span class="dv">0</span>) <span class="cf">else</span> <span class="bu">float</span>(<span class="st">"nan"</span>)),</span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    U <span class="op">=</span> U_T.T.copy()</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    U[np.tril_indices(Sigma.shape[<span class="dv">0</span>], k<span class="op">=-</span><span class="dv">1</span>)] <span class="op">=</span> np.nan</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> U, D</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> frac_small_abs(x: np.ndarray, <span class="op">*</span>, thresh: <span class="bu">float</span> <span class="op">=</span> SPARSITY_THRESHOLD) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    mask <span class="op">=</span> <span class="op">~</span>np.isnan(x)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    denom <span class="op">=</span> <span class="bu">int</span>(mask.<span class="bu">sum</span>())</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> denom <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">float</span>(<span class="st">"nan"</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    num <span class="op">=</span> <span class="bu">int</span>(((np.<span class="bu">abs</span>(x) <span class="op">&lt;</span> thresh) <span class="op">&amp;</span> mask).<span class="bu">sum</span>())</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> num <span class="op">/</span> denom</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> num_nnz_per_col(A: np.ndarray, <span class="op">*</span>, thresh: <span class="bu">float</span> <span class="op">=</span> SPARSITY_THRESHOLD) <span class="op">-&gt;</span> np.ndarray:</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Column i of U holds the coefficient vector c_i, which is what Vecchia truncates.</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> np.array(</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        [</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>            <span class="bu">int</span>((((np.<span class="bu">abs</span>(A[:, j]) <span class="op">&gt;=</span> thresh) <span class="op">&amp;</span> <span class="op">~</span>np.isnan(A[:, j])).<span class="bu">sum</span>()))</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(A.shape[<span class="dv">1</span>])</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        dtype<span class="op">=</span><span class="bu">float</span>,</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Create kernel objects (compute for all; plot a subset).</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>params_to_kernel: <span class="bu">dict</span>[<span class="bu">tuple</span>[<span class="bu">float</span>, <span class="bu">int</span>], <span class="bu">tuple</span>[Matern, <span class="bu">str</span>]] <span class="op">=</span> {}</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nu, base_name <span class="kw">in</span> [</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">0.5</span>, <span class="st">"Exponential"</span>),</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">1.5</span>, <span class="st">"Matern 3/2"</span>),</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">2.5</span>, <span class="st">"Matern 5/2"</span>),</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    (math.inf, <span class="st">"RBF"</span>),</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> inv_lengthscale <span class="kw">in</span> [<span class="dv">4</span>, <span class="dv">16</span>, <span class="dv">32</span>, <span class="dv">64</span>]:</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        lengthscale <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> inv_lengthscale</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        name <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>base_name<span class="sc">}</span><span class="ss"> (lengthscale=1/</span><span class="sc">{</span>inv_lengthscale<span class="sc">}</span><span class="ss">)"</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        params_to_kernel[(nu, inv_lengthscale)] <span class="op">=</span> (Matern(nu<span class="op">=</span>nu, length_scale<span class="op">=</span>lengthscale), name)</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute cov/U/D + sparsity + stability metrics for all kernels.</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">64</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>results: <span class="bu">dict</span>[<span class="bu">tuple</span>[<span class="bu">float</span>, <span class="bu">int</span>], <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">object</span>]] <span class="op">=</span> {}</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, (kernel, name) <span class="kw">in</span> params_to_kernel.items():</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    cov <span class="op">=</span> kernel(x, x)</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    U, D <span class="op">=</span> get_U_and_D_exact(cov)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    U_col_nnz <span class="op">=</span> num_nnz_per_col(U)</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    U_col_nnz_q1, U_col_nnz_q2, U_col_nnz_q3 <span class="op">=</span> np.quantile(U_col_nnz, [<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>], method<span class="op">=</span><span class="st">"nearest"</span>)</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>    results[key] <span class="op">=</span> {</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>        <span class="st">"name"</span>: name,</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        <span class="st">"cov"</span>: cov,</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        <span class="st">"U"</span>: U,</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>        <span class="st">"D"</span>: D,</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>        <span class="st">"cov_avg_sparsity"</span>: frac_small_abs(cov, thresh<span class="op">=</span>SPARSITY_THRESHOLD),</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        <span class="st">"U_avg_sparsity"</span>: frac_small_abs(U, thresh<span class="op">=</span>SPARSITY_THRESHOLD),</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        <span class="st">"U_col_nnz_q1"</span>: <span class="bu">float</span>(U_col_nnz_q1),</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        <span class="st">"U_col_nnz_q2"</span>: <span class="bu">float</span>(U_col_nnz_q2),</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>        <span class="st">"U_col_nnz_q3"</span>: <span class="bu">float</span>(U_col_nnz_q3),</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>        <span class="st">"min_D"</span>: <span class="bu">float</span>(np.<span class="bu">min</span>(D)),</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>        <span class="st">"min_pos_D"</span>: (<span class="bu">float</span>(np.<span class="bu">min</span>(D[D <span class="op">&gt;</span> <span class="dv">0</span>])) <span class="cf">if</span> np.<span class="bu">any</span>(D <span class="op">&gt;</span> <span class="dv">0</span>) <span class="cf">else</span> <span class="bu">float</span>(<span class="st">"nan"</span>)),</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>As an example, let’s consider covariance matrices formed by common GP kernels on an evenly spaced grid on <span class="math inline">[0, 1]</span> (code to generate this is above). Specifically we use the exponential, Matérn {3/2, 5/2}, and RBF kernels. All these kernels have a positive lengthscale parameter <span class="math inline">\ell</span> which controls the decay rate and therefore the shape of the covariance matrix. As <span class="math inline">\ell\to\infty</span> the covariance will be 1 for all pairs of points (a constant covariance matrix), and as <span class="math inline">\ell\to 0</span> the covariance approaches the Kronecker delta <span class="math inline">\delta_{x,x'}</span> (an identity matrix). See <a href="#nte-kernels-explained" class="quarto-xref">Note&nbsp;2</a> for more about these kernels.</p>
@@ -926,17 +934,17 @@ Table&nbsp;1: Near-sparsity (fraction of entries with abs(x) &lt; 1e-4), column-
 <style type="text/css">
 </style>
 
-<table id="T_adaaf" class="cell centered-output caption-top table table-sm table-striped small">
+<table id="T_accb4" class="cell centered-output caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th class="blank" data-quarto-table-cell-role="th">&nbsp;</th>
 <th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
-<th id="T_adaaf_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">∑ avg sparsity</th>
-<th id="T_adaaf_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">U avg sparsity</th>
-<th id="T_adaaf_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">U col nnz Q1</th>
-<th id="T_adaaf_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">U col nnz Q2</th>
-<th id="T_adaaf_level0_col4" class="col_heading level0 col4" data-quarto-table-cell-role="th">U col nnz Q3</th>
-<th id="T_adaaf_level0_col5" class="col_heading level0 col5" data-quarto-table-cell-role="th">min(D)</th>
+<th id="T_accb4_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">∑ avg sparsity</th>
+<th id="T_accb4_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">U avg sparsity</th>
+<th id="T_accb4_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">U col nnz Q1</th>
+<th id="T_accb4_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">U col nnz Q2</th>
+<th id="T_accb4_level0_col4" class="col_heading level0 col4" data-quarto-table-cell-role="th">U col nnz Q3</th>
+<th id="T_accb4_level0_col5" class="col_heading level0 col5" data-quarto-table-cell-role="th">min(D)</th>
 </tr>
 <tr class="even">
 <th class="index_name level0" data-quarto-table-cell-role="th">kernel</th>
@@ -951,152 +959,152 @@ Table&nbsp;1: Near-sparsity (fraction of entries with abs(x) &lt; 1e-4), column-
 </thead>
 <tbody>
 <tr class="odd">
-<th rowspan="4" id="T_adaaf_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Exponential</th>
-<th id="T_adaaf_level1_row0" class="row_heading level1 row0" data-quarto-table-cell-role="th">1/64</th>
-<td id="T_adaaf_row0_col0" class="data row0 col0">72.5%</td>
-<td id="T_adaaf_row0_col1" class="data row0 col1">93.9%</td>
-<td id="T_adaaf_row0_col2" class="data row0 col2">2</td>
-<td id="T_adaaf_row0_col3" class="data row0 col3">2</td>
-<td id="T_adaaf_row0_col4" class="data row0 col4">2</td>
-<td id="T_adaaf_row0_col5" class="data row0 col5">8.69e-01</td>
+<th rowspan="4" id="T_accb4_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Exponential</th>
+<th id="T_accb4_level1_row0" class="row_heading level1 row0" data-quarto-table-cell-role="th">1/64</th>
+<td id="T_accb4_row0_col0" class="data row0 col0">72.5%</td>
+<td id="T_accb4_row0_col1" class="data row0 col1">93.9%</td>
+<td id="T_accb4_row0_col2" class="data row0 col2">2</td>
+<td id="T_accb4_row0_col3" class="data row0 col3">2</td>
+<td id="T_accb4_row0_col4" class="data row0 col4">2</td>
+<td id="T_accb4_row0_col5" class="data row0 col5">8.69e-01</td>
 </tr>
 <tr class="even">
-<th id="T_adaaf_level1_row1" class="row_heading level1 row1" data-quarto-table-cell-role="th">1/32</th>
-<td id="T_adaaf_row1_col0" class="data row1 col0">50.5%</td>
-<td id="T_adaaf_row1_col1" class="data row1 col1">93.9%</td>
-<td id="T_adaaf_row1_col2" class="data row1 col2">2</td>
-<td id="T_adaaf_row1_col3" class="data row1 col3">2</td>
-<td id="T_adaaf_row1_col4" class="data row1 col4">2</td>
-<td id="T_adaaf_row1_col5" class="data row1 col5">6.38e-01</td>
+<th id="T_accb4_level1_row1" class="row_heading level1 row1" data-quarto-table-cell-role="th">1/32</th>
+<td id="T_accb4_row1_col0" class="data row1 col0">50.5%</td>
+<td id="T_accb4_row1_col1" class="data row1 col1">93.9%</td>
+<td id="T_accb4_row1_col2" class="data row1 col2">2</td>
+<td id="T_accb4_row1_col3" class="data row1 col3">2</td>
+<td id="T_accb4_row1_col4" class="data row1 col4">2</td>
+<td id="T_accb4_row1_col5" class="data row1 col5">6.38e-01</td>
 </tr>
 <tr class="odd">
-<th id="T_adaaf_level1_row2" class="row_heading level1 row2" data-quarto-table-cell-role="th">1/16</th>
-<td id="T_adaaf_row2_col0" class="data row2 col0">18.5%</td>
-<td id="T_adaaf_row2_col1" class="data row2 col1">93.9%</td>
-<td id="T_adaaf_row2_col2" class="data row2 col2">2</td>
-<td id="T_adaaf_row2_col3" class="data row2 col3">2</td>
-<td id="T_adaaf_row2_col4" class="data row2 col4">2</td>
-<td id="T_adaaf_row2_col5" class="data row2 col5">3.98e-01</td>
+<th id="T_accb4_level1_row2" class="row_heading level1 row2" data-quarto-table-cell-role="th">1/16</th>
+<td id="T_accb4_row2_col0" class="data row2 col0">18.5%</td>
+<td id="T_accb4_row2_col1" class="data row2 col1">93.9%</td>
+<td id="T_accb4_row2_col2" class="data row2 col2">2</td>
+<td id="T_accb4_row2_col3" class="data row2 col3">2</td>
+<td id="T_accb4_row2_col4" class="data row2 col4">2</td>
+<td id="T_accb4_row2_col5" class="data row2 col5">3.98e-01</td>
 </tr>
 <tr class="even">
-<th id="T_adaaf_level1_row3" class="row_heading level1 row3" data-quarto-table-cell-role="th">1/4</th>
-<td id="T_adaaf_row3_col0" class="data row3 col0">0.0%</td>
-<td id="T_adaaf_row3_col1" class="data row3 col1">93.9%</td>
-<td id="T_adaaf_row3_col2" class="data row3 col2">2</td>
-<td id="T_adaaf_row3_col3" class="data row3 col3">2</td>
-<td id="T_adaaf_row3_col4" class="data row3 col4">2</td>
-<td id="T_adaaf_row3_col5" class="data row3 col5">1.19e-01</td>
+<th id="T_accb4_level1_row3" class="row_heading level1 row3" data-quarto-table-cell-role="th">1/4</th>
+<td id="T_accb4_row3_col0" class="data row3 col0">0.0%</td>
+<td id="T_accb4_row3_col1" class="data row3 col1">93.9%</td>
+<td id="T_accb4_row3_col2" class="data row3 col2">2</td>
+<td id="T_accb4_row3_col3" class="data row3 col3">2</td>
+<td id="T_accb4_row3_col4" class="data row3 col4">2</td>
+<td id="T_accb4_row3_col5" class="data row3 col5">1.19e-01</td>
 </tr>
 <tr class="odd">
-<th rowspan="4" id="T_adaaf_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">Matern 3/2</th>
-<th id="T_adaaf_level1_row4" class="row_heading level1 row4" data-quarto-table-cell-role="th">1/64</th>
-<td id="T_adaaf_row4_col0" class="data row4 col0">80.7%</td>
-<td id="T_adaaf_row4_col1" class="data row4 col1">79.5%</td>
-<td id="T_adaaf_row4_col2" class="data row4 col2">7</td>
-<td id="T_adaaf_row4_col3" class="data row4 col3">7</td>
-<td id="T_adaaf_row4_col4" class="data row4 col4">7</td>
-<td id="T_adaaf_row4_col5" class="data row4 col5">7.63e-01</td>
+<th rowspan="4" id="T_accb4_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">Matern 3/2</th>
+<th id="T_accb4_level1_row4" class="row_heading level1 row4" data-quarto-table-cell-role="th">1/64</th>
+<td id="T_accb4_row4_col0" class="data row4 col0">80.7%</td>
+<td id="T_accb4_row4_col1" class="data row4 col1">79.5%</td>
+<td id="T_accb4_row4_col2" class="data row4 col2">7</td>
+<td id="T_accb4_row4_col3" class="data row4 col3">7</td>
+<td id="T_accb4_row4_col4" class="data row4 col4">7</td>
+<td id="T_accb4_row4_col5" class="data row4 col5">7.63e-01</td>
 </tr>
 <tr class="even">
-<th id="T_adaaf_level1_row5" class="row_heading level1 row5" data-quarto-table-cell-role="th">1/32</th>
-<td id="T_adaaf_row5_col0" class="data row5 col0">62.3%</td>
-<td id="T_adaaf_row5_col1" class="data row5 col1">76.7%</td>
-<td id="T_adaaf_row5_col2" class="data row5 col2">8</td>
-<td id="T_adaaf_row5_col3" class="data row5 col3">8</td>
-<td id="T_adaaf_row5_col4" class="data row5 col4">8</td>
-<td id="T_adaaf_row5_col5" class="data row5 col5">3.44e-01</td>
+<th id="T_accb4_level1_row5" class="row_heading level1 row5" data-quarto-table-cell-role="th">1/32</th>
+<td id="T_accb4_row5_col0" class="data row5 col0">62.3%</td>
+<td id="T_accb4_row5_col1" class="data row5 col1">76.7%</td>
+<td id="T_accb4_row5_col2" class="data row5 col2">8</td>
+<td id="T_accb4_row5_col3" class="data row5 col3">8</td>
+<td id="T_accb4_row5_col4" class="data row5 col4">8</td>
+<td id="T_accb4_row5_col5" class="data row5 col5">3.44e-01</td>
 </tr>
 <tr class="odd">
-<th id="T_adaaf_level1_row6" class="row_heading level1 row6" data-quarto-table-cell-role="th">1/16</th>
-<td id="T_adaaf_row6_col0" class="data row6 col0">34.3%</td>
-<td id="T_adaaf_row6_col1" class="data row6 col1">74.0%</td>
-<td id="T_adaaf_row6_col2" class="data row6 col2">9</td>
-<td id="T_adaaf_row6_col3" class="data row6 col3">9</td>
-<td id="T_adaaf_row6_col4" class="data row6 col4">9</td>
-<td id="T_adaaf_row6_col5" class="data row6 col5">9.16e-02</td>
+<th id="T_accb4_level1_row6" class="row_heading level1 row6" data-quarto-table-cell-role="th">1/16</th>
+<td id="T_accb4_row6_col0" class="data row6 col0">34.3%</td>
+<td id="T_accb4_row6_col1" class="data row6 col1">74.0%</td>
+<td id="T_accb4_row6_col2" class="data row6 col2">9</td>
+<td id="T_accb4_row6_col3" class="data row6 col3">9</td>
+<td id="T_accb4_row6_col4" class="data row6 col4">9</td>
+<td id="T_accb4_row6_col5" class="data row6 col5">9.16e-02</td>
 </tr>
 <tr class="even">
-<th id="T_adaaf_level1_row7" class="row_heading level1 row7" data-quarto-table-cell-role="th">1/4</th>
-<td id="T_adaaf_row7_col0" class="data row7 col0">0.0%</td>
-<td id="T_adaaf_row7_col1" class="data row7 col1">71.4%</td>
-<td id="T_adaaf_row7_col2" class="data row7 col2">10</td>
-<td id="T_adaaf_row7_col3" class="data row7 col3">10</td>
-<td id="T_adaaf_row7_col4" class="data row7 col4">10</td>
-<td id="T_adaaf_row7_col5" class="data row7 col5">2.66e-03</td>
+<th id="T_accb4_level1_row7" class="row_heading level1 row7" data-quarto-table-cell-role="th">1/4</th>
+<td id="T_accb4_row7_col0" class="data row7 col0">0.0%</td>
+<td id="T_accb4_row7_col1" class="data row7 col1">71.4%</td>
+<td id="T_accb4_row7_col2" class="data row7 col2">10</td>
+<td id="T_accb4_row7_col3" class="data row7 col3">10</td>
+<td id="T_accb4_row7_col4" class="data row7 col4">10</td>
+<td id="T_accb4_row7_col5" class="data row7 col5">2.66e-03</td>
 </tr>
 <tr class="odd">
-<th rowspan="4" id="T_adaaf_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">Matern 5/2</th>
-<th id="T_adaaf_level1_row8" class="row_heading level1 row8" data-quarto-table-cell-role="th">1/64</th>
-<td id="T_adaaf_row8_col0" class="data row8 col0">83.5%</td>
-<td id="T_adaaf_row8_col1" class="data row8 col1">74.0%</td>
-<td id="T_adaaf_row8_col2" class="data row8 col2">9</td>
-<td id="T_adaaf_row8_col3" class="data row8 col3">9</td>
-<td id="T_adaaf_row8_col4" class="data row8 col4">9</td>
-<td id="T_adaaf_row8_col5" class="data row8 col5">7.09e-01</td>
+<th rowspan="4" id="T_accb4_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">Matern 5/2</th>
+<th id="T_accb4_level1_row8" class="row_heading level1 row8" data-quarto-table-cell-role="th">1/64</th>
+<td id="T_accb4_row8_col0" class="data row8 col0">83.5%</td>
+<td id="T_accb4_row8_col1" class="data row8 col1">74.0%</td>
+<td id="T_accb4_row8_col2" class="data row8 col2">9</td>
+<td id="T_accb4_row8_col3" class="data row8 col3">9</td>
+<td id="T_accb4_row8_col4" class="data row8 col4">9</td>
+<td id="T_accb4_row8_col5" class="data row8 col5">7.09e-01</td>
 </tr>
 <tr class="even">
-<th id="T_adaaf_level1_row9" class="row_heading level1 row9" data-quarto-table-cell-role="th">1/32</th>
-<td id="T_adaaf_row9_col0" class="data row9 col0">67.3%</td>
-<td id="T_adaaf_row9_col1" class="data row9 col1">66.2%</td>
-<td id="T_adaaf_row9_col2" class="data row9 col2">12</td>
-<td id="T_adaaf_row9_col3" class="data row9 col3">12</td>
-<td id="T_adaaf_row9_col4" class="data row9 col4">12</td>
-<td id="T_adaaf_row9_col5" class="data row9 col5">2.22e-01</td>
+<th id="T_accb4_level1_row9" class="row_heading level1 row9" data-quarto-table-cell-role="th">1/32</th>
+<td id="T_accb4_row9_col0" class="data row9 col0">67.3%</td>
+<td id="T_accb4_row9_col1" class="data row9 col1">66.2%</td>
+<td id="T_accb4_row9_col2" class="data row9 col2">12</td>
+<td id="T_accb4_row9_col3" class="data row9 col3">12</td>
+<td id="T_accb4_row9_col4" class="data row9 col4">12</td>
+<td id="T_accb4_row9_col5" class="data row9 col5">2.22e-01</td>
 </tr>
 <tr class="odd">
-<th id="T_adaaf_level1_row10" class="row_heading level1 row10" data-quarto-table-cell-role="th">1/16</th>
-<td id="T_adaaf_row10_col0" class="data row10 col0">40.0%</td>
-<td id="T_adaaf_row10_col1" class="data row10 col1">61.3%</td>
-<td id="T_adaaf_row10_col2" class="data row10 col2">14</td>
-<td id="T_adaaf_row10_col3" class="data row10 col3">14</td>
-<td id="T_adaaf_row10_col4" class="data row10 col4">14</td>
-<td id="T_adaaf_row10_col5" class="data row10 col5">2.85e-02</td>
+<th id="T_accb4_level1_row10" class="row_heading level1 row10" data-quarto-table-cell-role="th">1/16</th>
+<td id="T_accb4_row10_col0" class="data row10 col0">40.0%</td>
+<td id="T_accb4_row10_col1" class="data row10 col1">61.3%</td>
+<td id="T_accb4_row10_col2" class="data row10 col2">14</td>
+<td id="T_accb4_row10_col3" class="data row10 col3">14</td>
+<td id="T_accb4_row10_col4" class="data row10 col4">14</td>
+<td id="T_accb4_row10_col5" class="data row10 col5">2.85e-02</td>
 </tr>
 <tr class="even">
-<th id="T_adaaf_level1_row11" class="row_heading level1 row11" data-quarto-table-cell-role="th">1/4</th>
-<td id="T_adaaf_row11_col0" class="data row11 col0">0.0%</td>
-<td id="T_adaaf_row11_col1" class="data row11 col1">58.9%</td>
-<td id="T_adaaf_row11_col2" class="data row11 col2">15</td>
-<td id="T_adaaf_row11_col3" class="data row11 col3">15</td>
-<td id="T_adaaf_row11_col4" class="data row11 col4">15</td>
-<td id="T_adaaf_row11_col5" class="data row11 col5">9.08e-05</td>
+<th id="T_accb4_level1_row11" class="row_heading level1 row11" data-quarto-table-cell-role="th">1/4</th>
+<td id="T_accb4_row11_col0" class="data row11 col0">0.0%</td>
+<td id="T_accb4_row11_col1" class="data row11 col1">58.9%</td>
+<td id="T_accb4_row11_col2" class="data row11 col2">15</td>
+<td id="T_accb4_row11_col3" class="data row11 col3">15</td>
+<td id="T_accb4_row11_col4" class="data row11 col4">15</td>
+<td id="T_accb4_row11_col5" class="data row11 col5">9.08e-05</td>
 </tr>
 <tr class="odd">
-<th rowspan="4" id="T_adaaf_level0_row12" class="row_heading level0 row12" data-quarto-table-cell-role="th">RBF</th>
-<th id="T_adaaf_level1_row12" class="row_heading level1 row12" data-quarto-table-cell-role="th">1/64</th>
-<td id="T_adaaf_row12_col0" class="data row12 col0">86.4%</td>
-<td id="T_adaaf_row12_col1" class="data row12 col1">47.8%</td>
-<td id="T_adaaf_row12_col2" class="data row12 col2">17</td>
-<td id="T_adaaf_row12_col3" class="data row12 col3">20</td>
-<td id="T_adaaf_row12_col4" class="data row12 col4">20</td>
-<td id="T_adaaf_row12_col5" class="data row12 col5">5.23e-01</td>
+<th rowspan="4" id="T_accb4_level0_row12" class="row_heading level0 row12" data-quarto-table-cell-role="th">RBF</th>
+<th id="T_accb4_level1_row12" class="row_heading level1 row12" data-quarto-table-cell-role="th">1/64</th>
+<td id="T_accb4_row12_col0" class="data row12 col0">86.4%</td>
+<td id="T_accb4_row12_col1" class="data row12 col1">47.8%</td>
+<td id="T_accb4_row12_col2" class="data row12 col2">17</td>
+<td id="T_accb4_row12_col3" class="data row12 col3">20</td>
+<td id="T_accb4_row12_col4" class="data row12 col4">20</td>
+<td id="T_accb4_row12_col5" class="data row12 col5">5.23e-01</td>
 </tr>
 <tr class="even">
-<th id="T_adaaf_level1_row13" class="row_heading level1 row13" data-quarto-table-cell-role="th">1/32</th>
-<td id="T_adaaf_row13_col0" class="data row13 col0">75.2%</td>
-<td id="T_adaaf_row13_col1" class="data row13 col1">0.0%</td>
-<td id="T_adaaf_row13_col2" class="data row13 col2">17</td>
-<td id="T_adaaf_row13_col3" class="data row13 col3">33</td>
-<td id="T_adaaf_row13_col4" class="data row13 col4">48</td>
-<td id="T_adaaf_row13_col5" class="data row13 col5">8.49e-03</td>
+<th id="T_accb4_level1_row13" class="row_heading level1 row13" data-quarto-table-cell-role="th">1/32</th>
+<td id="T_accb4_row13_col0" class="data row13 col0">75.2%</td>
+<td id="T_accb4_row13_col1" class="data row13 col1">0.0%</td>
+<td id="T_accb4_row13_col2" class="data row13 col2">17</td>
+<td id="T_accb4_row13_col3" class="data row13 col3">33</td>
+<td id="T_accb4_row13_col4" class="data row13 col4">48</td>
+<td id="T_accb4_row13_col5" class="data row13 col5">8.49e-03</td>
 </tr>
 <tr class="odd">
-<th id="T_adaaf_level1_row14" class="row_heading level1 row14" data-quarto-table-cell-role="th">1/16</th>
-<td id="T_adaaf_row14_col0" class="data row14 col0">55.1%</td>
-<td id="T_adaaf_row14_col1" class="data row14 col1">0.0%</td>
-<td id="T_adaaf_row14_col2" class="data row14 col2">17</td>
-<td id="T_adaaf_row14_col3" class="data row14 col3">33</td>
-<td id="T_adaaf_row14_col4" class="data row14 col4">48</td>
-<td id="T_adaaf_row14_col5" class="data row14 col5">-9.22e-08</td>
+<th id="T_accb4_level1_row14" class="row_heading level1 row14" data-quarto-table-cell-role="th">1/16</th>
+<td id="T_accb4_row14_col0" class="data row14 col0">55.1%</td>
+<td id="T_accb4_row14_col1" class="data row14 col1">0.1%</td>
+<td id="T_accb4_row14_col2" class="data row14 col2">17</td>
+<td id="T_accb4_row14_col3" class="data row14 col3">33</td>
+<td id="T_accb4_row14_col4" class="data row14 col4">48</td>
+<td id="T_accb4_row14_col5" class="data row14 col5">1.15e-07</td>
 </tr>
 <tr class="even">
-<th id="T_adaaf_level1_row15" class="row_heading level1 row15" data-quarto-table-cell-role="th">1/4</th>
-<td id="T_adaaf_row15_col0" class="data row15 col0">0.0%</td>
-<td id="T_adaaf_row15_col1" class="data row15 col1">0.0%</td>
-<td id="T_adaaf_row15_col2" class="data row15 col2">17</td>
-<td id="T_adaaf_row15_col3" class="data row15 col3">33</td>
-<td id="T_adaaf_row15_col4" class="data row15 col4">48</td>
-<td id="T_adaaf_row15_col5" class="data row15 col5">-5.68e-13</td>
+<th id="T_accb4_level1_row15" class="row_heading level1 row15" data-quarto-table-cell-role="th">1/4</th>
+<td id="T_accb4_row15_col0" class="data row15 col0">0.0%</td>
+<td id="T_accb4_row15_col1" class="data row15 col1">0.0%</td>
+<td id="T_accb4_row15_col2" class="data row15 col2">17</td>
+<td id="T_accb4_row15_col3" class="data row15 col3">33</td>
+<td id="T_accb4_row15_col4" class="data row15 col4">48</td>
+<td id="T_accb4_row15_col5" class="data row15 col5">4.19e-12</td>
 </tr>
 </tbody>
 </table>
@@ -1118,7 +1126,7 @@ Note&nbsp;3: More on min(D)
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Remember that the matrix factor is not <span class="math inline">U</span>, it is <span class="math inline">UD^{-1/2}</span>, effectively scaling the columns of <span class="math inline">U</span> by <span class="math inline">\frac{1}{\sqrt{D_{ii}}}</span>. Very small entries in <span class="math inline">D</span> will cause this scaling to be large and amplifies rounding error. Intuitively, small <span class="math inline">D_{ii}</span> means that point <span class="math inline">i</span> is almost deterministically explained by its neighbours, and also implies that the covariance matrix is nearly singular.</p>
-<p><span class="math inline">\min(D)</span> is smallest for the RBF kernels with large lengthscales. The last rows of <a href="#tbl-ud-cov-sparsity-by-kernel" class="quarto-xref">Table&nbsp;1</a> show <em>negative</em> numbers, which is a sign of numerical error (it should never be negative). In such situations, the Vecchia approximation may not work very well.</p>
+<p><span class="math inline">\min(D)</span> is smallest for the RBF kernels with large lengthscales. The last rows of <a href="#tbl-ud-cov-sparsity-by-kernel" class="quarto-xref">Table&nbsp;1</a> are effectively zero, at the limits of double-precision floating point — rounding error dominates the true value there. Depending on the exact BLAS/LAPACK backend, this computation can come out tiny-positive, tiny-negative, or fail outright with a “singular matrix” error (the code adds a small jitter to the diagonal before solving, mainly to avoid that last case). In such situations, the Vecchia approximation may not work very well.</p>
 </div>
 </div>
 </div>
@@ -1460,36 +1468,40 @@ L = \begin{pmatrix}
 <div id="vecchia-function" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code: simple implementation of the Vecchia approximation</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_U_and_D_vecchia(Sigma, neighbourhood_sets: <span class="bu">dict</span>[<span class="bu">int</span>, <span class="bu">list</span>[<span class="bu">int</span>]]) <span class="op">-&gt;</span> <span class="bu">tuple</span>[np.ndarray, np.ndarray]:</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Validate neighbourhood sets</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(Sigma)):</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> i <span class="kw">in</span> neighbourhood_sets, <span class="ss">f"Point </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> does not have a neighbourhood set"</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> neighbourhood_sets[i]:</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">assert</span> j <span class="op">&lt;</span> i, <span class="st">"Neighbourhood set must contain only previous points"</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Construct U and D like before</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    U_T <span class="op">=</span> np.eye(Sigma.shape[<span class="dv">0</span>])  <span class="co"># unit diagonal</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    D <span class="op">=</span> np.empty(Sigma.shape[<span class="dv">0</span>])</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    D[<span class="dv">0</span>] <span class="op">=</span> Sigma[<span class="dv">0</span>, <span class="dv">0</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_U_and_D_vecchia(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    Sigma, neighbourhood_sets: <span class="bu">dict</span>[<span class="bu">int</span>, <span class="bu">list</span>[<span class="bu">int</span>]], <span class="op">*</span>, jitter: <span class="bu">float</span> <span class="op">=</span> <span class="fl">1e-13</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[np.ndarray, np.ndarray]:</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Validate neighbourhood sets</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(Sigma)):</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> i <span class="kw">in</span> neighbourhood_sets, <span class="ss">f"Point </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> does not have a neighbourhood set"</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> neighbourhood_sets[i]:</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">assert</span> j <span class="op">&lt;</span> i, <span class="st">"Neighbourhood set must contain only previous points"</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Construct U and D like before</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    U_T <span class="op">=</span> np.eye(Sigma.shape[<span class="dv">0</span>])  <span class="co"># unit diagonal</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    D <span class="op">=</span> np.empty(Sigma.shape[<span class="dv">0</span>])</span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, Sigma.shape[<span class="dv">0</span>]):</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        idx <span class="op">=</span> neighbourhood_sets[i]</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(idx) <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>            D[i] <span class="op">=</span> Sigma[i, i]</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Use np.ix_ to extract the submatrix (avoids advanced-indexing diagonal behavior).</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        Sigma_prev <span class="op">=</span> Sigma[np.ix_(idx, idx)]</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        Sigma_slice <span class="op">=</span> Sigma[i, idx]</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        c_i <span class="op">=</span> np.linalg.solve(Sigma_prev, Sigma_slice)</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>        U_T[i, idx] <span class="op">=</span> <span class="op">-</span>c_i</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        D[i] <span class="op">=</span> Sigma[i, i] <span class="op">-</span> np.dot(c_i, Sigma_slice)</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    U <span class="op">=</span> U_T.T.copy()</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    U[np.tril_indices(Sigma.shape[<span class="dv">0</span>], k<span class="op">=-</span><span class="dv">1</span>)] <span class="op">=</span> np.nan</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> U, D</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    D[<span class="dv">0</span>] <span class="op">=</span> Sigma[<span class="dv">0</span>, <span class="dv">0</span>]</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, Sigma.shape[<span class="dv">0</span>]):</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        idx <span class="op">=</span> neighbourhood_sets[i]</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(idx) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>            D[i] <span class="op">=</span> Sigma[i, i]</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Use np.ix_ to extract the submatrix (avoids advanced-indexing diagonal behavior).</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        Sigma_prev <span class="op">=</span> Sigma[np.ix_(idx, idx)]</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>        Sigma_slice <span class="op">=</span> Sigma[i, idx]</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># See get_U_and_D_exact: tiny jitter avoids spurious "singular matrix"</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># errors on ill-conditioned submatrices (smooth kernel, large neighbourhood).</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        c_i <span class="op">=</span> np.linalg.solve(Sigma_prev <span class="op">+</span> jitter <span class="op">*</span> np.eye(<span class="bu">len</span>(idx)), Sigma_slice)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>        U_T[i, idx] <span class="op">=</span> <span class="op">-</span>c_i</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        D[i] <span class="op">=</span> Sigma[i, i] <span class="op">-</span> np.dot(c_i, Sigma_slice)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    U <span class="op">=</span> U_T.T.copy()</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    U[np.tril_indices(Sigma.shape[<span class="dv">0</span>], k<span class="op">=-</span><span class="dv">1</span>)] <span class="op">=</span> np.nan</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> U, D</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <section id="varying-the-number-of-neighbours" class="level4" data-number="3.4.1">
@@ -1735,7 +1747,7 @@ Figure&nbsp;4: Vecchia approximation of ∑ and U for different neighbourhood si
 <div id="fig-vecchia-l2-errors-vs-m" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vecchia-l2-errors-vs-m-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-vecchia-l2-errors-vs-m-output-1.png" class="quarto-figure quarto-figure-center figure-img" width="683" height="491">
+<img src="index_files/figure-html/fig-vecchia-l2-errors-vs-m-output-1.png" class="quarto-figure quarto-figure-center figure-img" width="687" height="491">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vecchia-l2-errors-vs-m-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5: Relative L2 reconstruction error vs neighbourhood size <span class="math inline">m</span> (log-x, log-y; y-axis capped at 1).

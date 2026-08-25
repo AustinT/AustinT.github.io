@@ -7,9 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Austin Tripp">
-<meta name="dcterms.date" content="2026-02-13">
+<meta name="dcterms.date" content="2026-08-24">
+<meta name="description" content="Post explaining the new badge system.">
 
-<title>Tyler Cowen’s book on talent – Austin Tripp's website</title>
+<title>Replacing disclaimers with badges on my blog. – Austin Tripp’s website</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -140,9 +141,18 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tyler Cowen’s book on talent</h1>
-</div>
+<h1 class="title">Replacing disclaimers with badges on my blog.</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">blog</div>
+    <div class="quarto-category">announcement</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Post explaining the new badge system.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -157,7 +167,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 13, 2026</p>
+      <p class="date">August 24, 2026</p>
     </div>
   </div>
   
@@ -169,21 +179,40 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Cross-posting my summary of the book “Talent: How to Identify Energizers, Creatives, and Winners Around the World” from my GitHub: <a href="https://github.com/AustinT/book-summaries/blob/master/non-fiction/2026-02-01-talent.md">link</a>.</p>
-<p>This is a good book, I appreciated the heterodox advice about how to run interviews and spot “undervalued” candidates, even if only some of it is backed by data (this is a field with generally poor data).</p>
+<div class="post-badges">
+<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-effort-high" title="Thought a lot about what I wanted to convey with my blog.">💎 High effort</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+</div>
+<p>My content standards for this blog have changed over time. Originally I aimed for all the content to be unique and (possibly?) valuable: questions or observations that I thought were original (or at least not easy to find). This included <a href="../../blog/2018/07/02/adam-to-sgd/">the relationship between Adam and SGD</a>, <a href="../../blog/2018/09/12/sparse-matrices-tips1/">tips and tricks for using sparse matrices in scipy</a>, and even <a href="../../blog/2018/10/08/communal-fridge/">some theories about how to manage a communal fridge in a decentralized way</a>. These were not groundbreaking discoveries or anything, maybe just the result of a day of reading, but I thought there was genuine value in distilling my reading into a 10 minute read. I have benefited many times from people explaining clearly in ~15 minutes what would otherwise take hours or days to understand and wanted to contribute.</p>
+<p>Of course, LLMs have changed this a lot. There is now very little value to working out the solutions to small mathematical problems like relating Adam to SGD: LLMs can do that pretty easily. There is also much less value in distilling key insights from documentation or research papers: LLMs can do that too. And I’m also less willing to put half-baked opinion posts online now, at least without asking an LLM “is there an obviously reason why this is dumb”.</p>
+<p>All this has led me away from posting “small original insights” and towards:</p>
+<ol type="1">
+<li><em>Promoting</em> ideas I agree with or find interesting (regardless of originality).</li>
+<li><em>Explaining</em> things I don’t see explained well elsewhere- particularly visually. LLMs generate good explanations without much effort, but <em>great</em> ones (including visuals) take a lot more prompt guidance, which is hard to do <em>before</em> you understand what to ask for.</li>
+<li>Pushing <em>myself</em> to understand things by writing about them to a standard that I would be willing to post online.</li>
+</ol>
+<p>Posts in categories #1 and #3 are more likely to not be as valuable to read, while occasional posts in category #2 hopefully <em>are</em> uniquely valuable resources on the internet. I don’t want these to be “hidden gems” scattered indiscriminately among a bunch of less valuable posts, so in the past year or so I tried adding disclaimers to posts that I thought were <em>not</em> uniquely valuable resources. The first disclaimer, the “quickpost” (see <a href="../../blog/2025-02-11-lowering-quality/">this post</a>) was a quickly written post without much editing and polishing. I used this mainly for <em>promotion</em> posts: I thought it was better to put out the idea in some form rather than not at all, so I pushed myself to publish a bit prematurely. The second disclaimer was “low LLM alpha” (see <a href="../../blog/2025-02-24-llm-alpha/">this post</a>), which I used mostly for posts where I re-explained ideas to ensure I understood them, or sometimes for explanation posts where the content itself was unoriginal, just the explanation style.</p>
+<p>However, I don’t think this system will scale well into the future. The first reason is that I’ve become much more willing to put AI-generated content on my website. AI is great at making visuals quickly, which is good for explanations, and can be a good way to create posts for ideas I want to promote if I don’t have time to write a good post myself.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The existing “LLM alpha” disclaimer does not clearly distinguish between AI generated content and content that already exists on the internet and can be regurgitated with AI. The second reason is that “quickpost” is too much of a binary label.</p>
+<p>So, I’ve decided to try out a different system of <em>badges</em> for posts, reporting confidence (new field), AI involvement (part of LLM alpha), effort (replaces quickpost disclaimer), and originality (also part of LLM alpha). I’ve seen this on multiple websites,<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and Claude was able to write a lua script that implemented this in just a couple of minutes. I can also add a note for each of these badges, as you can see at the top of this post for the “effort” badge. I’ve gone back and retroactively added badges to roughly my past year of posts, but decided not to go back any farther or let AI do it automatically (I tried and it made some questionable decisions). I may go back and add more tags in the future though. I hope people who stumble across my blog find this badge system useful!</p>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>For “promotion” posts it’s the idea itself I want to promote, not my personal description of the idea.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Most recently <a href="https://danmackinlay.name/">Dan MacKinlay</a>’s website, which I like I lot!<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
-  title = {Tyler {Cowen’s} Book on Talent},
-  date = {2026-02-13},
-  url = {https://austintripp.ca/blog/2026-02-13-talent/},
+  title = {Replacing Disclaimers with Badges on My Blog.},
+  date = {2026-08-24},
+  url = {https://austintripp.ca/blog/2026-08-24-blog-badges/},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas" role="listitem">
-Tripp, Austin. 2026. <span>“Tyler Cowen’s Book on Talent.”</span>
-February 13. <a href="https://austintripp.ca/blog/2026-02-13-talent/">https://austintripp.ca/blog/2026-02-13-talent/</a>.
+Tripp, Austin. 2026. <span>“Replacing Disclaimers with Badges on My
+Blog.”</span> August 24. <a href="https://austintripp.ca/blog/2026-08-24-blog-badges/">https://austintripp.ca/blog/2026-08-24-blog-badges/</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

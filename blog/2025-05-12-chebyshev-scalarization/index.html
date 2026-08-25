@@ -48,7 +48,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-189549ecd294ed9837df383a4b42e31c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-3c9c489b3365030a08823a85c71cd1a4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -121,6 +121,7 @@ window.Quarto = {
 };
 </script>
 
+<link rel="stylesheet" href="../../assets/badges.css">
 <meta name="citation_title" content="Chebyshev Scalarization Explained">
 <meta name="citation_author" content="Austin Tripp">
 <meta name="citation_publication_date" content="2025-05-12">
@@ -261,6 +262,9 @@ window.Quarto = {
 </header>
 
 
+<div class="post-badges">
+<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-effort-high" title="I took a lot of time to understand this and write a proof.">💎 High effort</span> <span class="post-badge badge-originality-medium" title="Of course Chebyshev scalarization isn’t my original idea and I’m sure a comparable proof exists somewhere, but I didn’t find it (with conditions clearly stated), and definitely not alongside interactive examples.">🧩 Medium originality</span></p>
+</div>
 <p>I’ve been reading about multi-objective optimization recently.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Many papers state limitations of “linear scalarization” approaches, mainly that it might not be able to represent all Pareto-optimal solutions (if this sentence does not make sense to you, see <a href="#background-to-multi-objective-optimization">background</a>). Chebyshev scalarization is sometimes mentioned as an alternative which <em>can</em> represent all solutions. However, these papers mention it in passing without a proper explanation, and I did not find a good explanation of it online.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>After doing a bit of my own research,<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> I found that Chebyshev scalarization is actually not too complicated, so I thought <em>I</em> would explain it online. In this post, I:</p>
 <ul>
