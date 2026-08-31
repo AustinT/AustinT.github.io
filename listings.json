@@ -1,7 +1,29 @@
 [
   {
+    "listing": "/research/index.html",
+    "items": [
+      "/research/papers/hash-collisions-fingerprints/index.html",
+      "/research/papers/basic-bo-underrated/index.html",
+      "/research/papers/retro-fallback/index.html",
+      "/research/papers/adaptive-deep-kernel-gp/index.html",
+      "/research/papers/genetic-algorithm-strong-baselines/index.html",
+      "/research/papers/syntheseus-retrosynthesis/index.html",
+      "/research/papers/tanimoto-random-features/index.html",
+      "/research/papers/dockstring/index.html",
+      "/research/papers/latent-space-weighted-retraining/index.html",
+      "/research/papers/ehvi-vs-scalarization/index.html",
+      "/research/papers/qPO-batch-bo/index.html",
+      "/research/papers/sgd-gaussian-processes/index.html",
+      "/research/papers/dual-value-networks-retrosynthesis/index.html",
+      "/research/papers/gauche-gp-package/index.html",
+      "/research/papers/volatile-sensing-2023/index.html",
+      "/research/papers/oil-sands-photocatalysts/index.html"
+    ]
+  },
+  {
     "listing": "/blog/all/index.html",
     "items": [
+      "/blog/2026-08-31-fpsketch/index.html",
       "/blog/2026-08-24-blog-badges/index.html",
       "/blog/2026-07-25-spherical-linear-high-dim-bo/index.html",
       "/blog/2026-07-12-grand-challenges-small-molecules/index.html",
@@ -81,27 +103,6 @@
       "/blog/2018/07/01/organization_structure_paper/index.html",
       "/blog/2018/06/25/onyomi/index.html",
       "/blog/2018/03/24/website-launch/index.html"
-    ]
-  },
-  {
-    "listing": "/research/index.html",
-    "items": [
-      "/research/papers/hash-collisions-fingerprints/index.html",
-      "/research/papers/basic-bo-underrated/index.html",
-      "/research/papers/retro-fallback/index.html",
-      "/research/papers/adaptive-deep-kernel-gp/index.html",
-      "/research/papers/genetic-algorithm-strong-baselines/index.html",
-      "/research/papers/syntheseus-retrosynthesis/index.html",
-      "/research/papers/tanimoto-random-features/index.html",
-      "/research/papers/dockstring/index.html",
-      "/research/papers/latent-space-weighted-retraining/index.html",
-      "/research/papers/ehvi-vs-scalarization/index.html",
-      "/research/papers/qPO-batch-bo/index.html",
-      "/research/papers/sgd-gaussian-processes/index.html",
-      "/research/papers/dual-value-networks-retrosynthesis/index.html",
-      "/research/papers/gauche-gp-package/index.html",
-      "/research/papers/volatile-sensing-2023/index.html",
-      "/research/papers/oil-sands-photocatalysts/index.html"
     ]
   },
   {

@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Austin Tripp">
+<meta name="dcterms.date" content="2026-08-31">
+<meta name="description" content="Blog post introducing fpsketch library to compress fingerprints better than folding.">
+
+<title>fpsketch: a better fingerprint compression algorithm – Austin Tripp’s website</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-3c9c489b3365030a08823a85c71cd1a4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../assets/badges.css">
+<meta name="citation_title" content="fpsketch: a better fingerprint compression algorithm">
+<meta name="citation_author" content="Austin Tripp">
+<meta name="citation_publication_date" content="2026-08-31">
+<meta name="citation_cover_date" content="2026-08-31">
+<meta name="citation_year" content="2026">
+<meta name="citation_online_date" content="2026-08-31">
+<meta name="citation_fulltext_html_url" content="https://austintripp.ca/blog/2026-08-31-fpsketch/">
+<meta name="citation_language" content="en">
+<meta name="citation_reference" content="citation_title=Count your bits: Fingerprint benchmarking to assess broad chemical space representation;,citation_author=Florian Huber;,citation_author=Julian Pollmann;,citation_publication_date=2026;,citation_cover_date=2026;,citation_year=2026;,citation_issue=1;,citation_volume=18;,citation_journal_title=Journal of Cheminformatics;,citation_publisher=Springer;">
+<meta name="citation_reference" content="citation_title=Tanimoto random features for scalable molecular machine learning;,citation_author=Austin Tripp;,citation_author=Sergio Bacallado;,citation_author=Sukriti Singh;,citation_author=José Miguel Hernández-Lobato;,citation_fulltext_html_url=https://proceedings.neurips.cc/paper_files/paper/2023/file/6a69d44b3386e50c06f7107ef4f29302-Paper-Conference.pdf;,citation_conference_title=Advances in neural information processing systems;,citation_conference=Curran Associates, Inc.;">
+<meta name="citation_reference" content="citation_title=Finding frequent items in data streams;,citation_author=Moses Charikar;,citation_author=Kevin Chen;,citation_author=Martin Farach-Colton;,citation_publication_date=2002;,citation_cover_date=2002;,citation_year=2002;,citation_conference_title=International colloquium on automata, languages, and programming;,citation_conference=Springer;">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Austin Tripp’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources/index.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../now/index.html"> 
+<span class="menu-text">Now</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview-of-fpsketch-less-technical" id="toc-overview-of-fpsketch-less-technical" class="nav-link active" data-scroll-target="#overview-of-fpsketch-less-technical"><span class="header-section-number">1</span> Overview of fpsketch (less technical)</a></li>
+  <li><a href="#technical-overview-of-fpsketch" id="toc-technical-overview-of-fpsketch" class="nav-link" data-scroll-target="#technical-overview-of-fpsketch"><span class="header-section-number">2</span> Technical overview of fpsketch</a>
+  <ul class="collapse">
+  <li><a href="#countsketch" id="toc-countsketch" class="nav-link" data-scroll-target="#countsketch"><span class="header-section-number">2.1</span> CountSketch</a></li>
+  <li><a href="#unary-encoding-of-count-fingerprints" id="toc-unary-encoding-of-count-fingerprints" class="nav-link" data-scroll-target="#unary-encoding-of-count-fingerprints"><span class="header-section-number">2.2</span> Unary encoding of count fingerprints</a></li>
+  <li><a href="#fpsketch" id="toc-fpsketch" class="nav-link" data-scroll-target="#fpsketch"><span class="header-section-number">2.3</span> fpsketch</a></li>
+  </ul></li>
+  <li><a href="#demonstration" id="toc-demonstration" class="nav-link" data-scroll-target="#demonstration"><span class="header-section-number">3</span> Demonstration</a>
+  <ul class="collapse">
+  <li><a href="#basic-use" id="toc-basic-use" class="nav-link" data-scroll-target="#basic-use"><span class="header-section-number">3.1</span> Basic use</a></li>
+  <li><a href="#reconstructing-the-tanimoto-similarity-matrix" id="toc-reconstructing-the-tanimoto-similarity-matrix" class="nav-link" data-scroll-target="#reconstructing-the-tanimoto-similarity-matrix"><span class="header-section-number">3.2</span> Reconstructing the Tanimoto similarity matrix</a></li>
+  <li><a href="#enabling-giant-fingerprints" id="toc-enabling-giant-fingerprints" class="nav-link" data-scroll-target="#enabling-giant-fingerprints"><span class="header-section-number">3.3</span> Enabling giant fingerprints</a></li>
+  </ul></li>
+  <li><a href="#sec-conclusion" id="toc-sec-conclusion" class="nav-link" data-scroll-target="#sec-conclusion"><span class="header-section-number">4</span> Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">fpsketch: a better fingerprint compression algorithm</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">machine learning</div>
+    <div class="quarto-category">drug discovery</div>
+    <div class="quarto-category">chemistry</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Blog post introducing fpsketch library to compress fingerprints better than folding.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Austin Tripp </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 31, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="post-badges">
+<p><span class="post-badge badge-confidence-high" title="I went through the idea myself in detail">☀️ High confidence</span> <span class="post-badge badge-ai-assisted" title="I wrote some initial messy code, then Claude polished it. Text is my own with light AI help for editing.">🤖 AI-assisted</span> <span class="post-badge badge-effort-high" title="This was a weekend project (excluding thinking time).">💎 High effort</span> <span class="post-badge badge-originality-high" title="Seems like nobody has applied CountSketch to fingerprints before!">💡 High originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+</div>
+<p>During a discussion<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> with Claude, it raised the idea of using <em>sketching</em> (random linear projections) to compress molecular fingerprints. After thinking this over a bit, I think it’s actually an amazing idea. This weekend I prototyped the idea in a new Python package <code>fpsketch</code>, and it seems very effective! I think this might be a strict improvement over the default of “folding” fingerprints. I’m excited to try it out and would love for others to try too.</p>
+<p><code>fpsketch</code> <a href="https://pypi.org/project/fpsketch/">is on PyPI</a>: if you work in cheminformatics, please try it out!</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Collaboration opportunity (2026-08-31)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I would love to test this idea with other people: testing <code>fpsketch</code> features as inputs to machine learning models, improving the sketches, and exploring semi-learned fingerprints. More in <a href="#sec-conclusion" class="quarto-xref">Section&nbsp;4</a>.</p>
+<p>If you are interested, please reach out by email!</p>
+</div>
+</div>
+<section id="overview-of-fpsketch-less-technical" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="overview-of-fpsketch-less-technical"><span class="header-section-number">1</span> Overview of fpsketch (less technical)</h2>
+<p>Molecular fingerprints are collections of substructures in a molecule (e.g. subgraphs, functional groups). Molecules can have a lot of substructures: too many to realistically give each possible substructure its own dedicated dimension. Therefore, people typically compress fingerprints to a smaller dimension <span class="math inline">d</span>.</p>
+<p>Here’s an analogy of how this compression normally works (using the <em>folding</em> method, the default in packages like <code>rdkit</code>): each substructure gets a “dart” and throws it (pseudo-)randomly at a fixed size dart board. The resulting fingerprint is either a collection of which slots on the board are occupied (binary fingerprints) or how many darts are in each slot (count fingerprints). As you can imagine, the end result is often that there are darts everywhere and it’s hard to distinguish between each molecule’s filled board. As a result, practitioners compensate by using larger dart boards (larger <span class="math inline">d</span>) or by giving each molecule fewer darts (using fingerprints that capture fewer substructures).</p>
+<p><code>fpsketch</code> uses a different mechanism. In the dart analogy, whenever a dart hits a slot that already has a dart, we (pseudo-)randomly flip a coin to choose between adding the new dart (the same as folding) or <em>removing both the new dart and one of the existing darts in that slot</em>. Essentially, each dart has an equal chance of adding to a slot and knocking an existing dart out of a slot. This procedure leaves the dart board far emptier at the end, and still produces a fairly unique fingerprint that depends on all the darts. The only disadvantage is that an empty slot no longer implies that no dart ever hit that slot (i.e.&nbsp;you can’t use the fingerprint for a reverse substructure search). However, when fingerprints are used as inputs to machine learning models rather than for retrieval, this is arguably not relevant anyway.</p>
+</section>
+<section id="technical-overview-of-fpsketch" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="technical-overview-of-fpsketch"><span class="header-section-number">2</span> Technical overview of fpsketch</h2>
+<section id="countsketch" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="countsketch"><span class="header-section-number">2.1</span> CountSketch</h3>
+<p>The dart analogy is essentially a description of CountSketch <span class="citation" data-cites="charikar2002finding">(<a href="#ref-charikar2002finding" role="doc-biblioref">Charikar et al. 2002</a>)</span>. To reduce from dimension <span class="math inline">D</span> to dimension <span class="math inline">d</span>, CountSketch forms a <span class="math inline">d\times D</span> matrix <span class="math inline">A</span> with entries</p>
+<p><span class="math display">
+A_{ij} = \sigma(j) \mathbb I \left[h(j) = i \right] \ .
+</span></p>
+<p><span class="math inline">\mathbb I</span> is the indicator function, while <span class="math inline">\sigma</span> and <span class="math inline">h</span> are two hash functions with different output spaces:</p>
+<ul>
+<li><span class="math inline">\sigma: \{1, \ldots, D\} \mapsto \{-1, +1\}</span></li>
+<li><span class="math inline">h: \{1, \ldots, D\} \mapsto \{1, \ldots, d\}</span></li>
+</ul>
+<p>CountSketch is very closely related to standard “folding” of fingerprints: if we set <span class="math inline">\sigma(\cdot) = 1</span> to be a constant function, it is actually exactly folding. However, the fact that <span class="math inline">\sigma</span> can be negative gives CountSketch a very appealing property: if the hash functions <span class="math inline">\sigma, h</span> are chosen randomly from suitable<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> distributions, then <span class="math inline">A</span> will on average preserve inner products. This means for any vectors <span class="math inline">x,y\in\mathbb R^D</span></p>
+<p><span class="math display">
+\mathbb E_{\sigma,h}
+\left [ (Ax) \cdot (Ay) \right]
+=
+x\cdot y \ ,
+</span></p>
+<p>where <span class="math inline">A</span> inside the expectation is formed using the randomly drawn hash functions <span class="math inline">(\sigma,h)</span>. Since inner products are preserved on average, this means any similarity metric computed with inner products (like dot-product Tanimoto similarity defined below in <a href="#eq-tanidot" class="quarto-xref">Equation&nbsp;2</a>) won’t be systematically inflated (a common side-effect of folding).</p>
+</section>
+<section id="unary-encoding-of-count-fingerprints" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="unary-encoding-of-count-fingerprints"><span class="header-section-number">2.2</span> Unary encoding of count fingerprints</h3>
+<p>Count fingerprints tend to perform better in most practical applications than binary ones.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Count fingerprints are normally compared with the <em>Jaccard</em> (aka “minmax”) similarity metric</p>
+<p><span id="eq-minmax"><span class="math display">
+J(x, y) = \frac{
+   \sum_i \min(x_i, y_i)
+}{
+   \sum_i \max(x_i, y_i)
+} \ .
+\tag{1}</span></span></p>
+<p>Unfortunately, there is no guarantee that a mapping preserving inner products will preserve <span class="math inline">J</span>. However, there is a way around this: <em>unary encoding</em>, which converts a count fingerprint to an even higher dimensional binary fingerprint (explained in <a href="#nte-unary-encoding" class="quarto-xref">Note&nbsp;1</a>, hidden by default). This allows us to use an alternative formula for <span class="math inline">J</span> which is <em>only</em> valid for binary fingerprints and relies on inner products:</p>
+<p><span id="eq-tanidot"><span class="math display">
+J_{\text{bin}}(x, y) = \frac{
+   x \cdot y
+}{
+   \|x\|^2 + \|y\|^2 - x\cdot y
+} \ .
+\tag{2}</span></span></p>
+<div id="nte-unary-encoding" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;1: Unary encoding explained
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The easiest way to think of unary encoding is as a <em>matrix</em>. If <span class="math inline">x</span> is a count fingerprint where <span class="math inline">x_i</span> is the count of substructure <span class="math inline">i</span>, replace it with a matrix <span class="math inline">X</span> where <span class="math inline">X_{ij} = 1</span> if and only if <span class="math inline">x_i \geq j</span>. <span class="math inline">j</span> spans all of <span class="math inline">\mathbb N = \{1, 2, \ldots\}</span>, although any vector with bounded counts will of course only have a finite number of entries. Since integer tuples can be mapped bijectively to integers, it is possible to flatten <span class="math inline">X</span> into a 1D vector, although we won’t actually do it here.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="fpsketch" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="fpsketch"><span class="header-section-number">2.3</span> fpsketch</h3>
+<p><code>fpsketch</code> applies a CountSketch to a unary encoding of an input fingerprint <span class="math inline">x</span> (doing both the sketch and the unary encoding internally). Because CountSketch’s matrix <span class="math inline">A</span> is sparse, we never actually need to form the matrix <span class="math inline">A</span> (important because it would require terabytes of memory). Instead, we iterate over the non-zero entries of the fingerprints, hash them with <span class="math inline">h</span> and <span class="math inline">\sigma</span>, then increment the appropriate entry of the compressed fingerprint. This makes it incredibly fast (even faster because I implemented vectorized hashing with Claude’s help).</p>
+<p>To reduce the likelihood of getting a “bad seed” (a pick of <span class="math inline">\sigma,h</span> that happens to do poorly for your specific input fingerprints), by default <code>fpsketch</code> divides the <span class="math inline">d</span> dimensions into <span class="math inline">m</span> blocks and performs <span class="math inline">m</span> independent CountSketches with different hash functions, each writing to a smaller <span class="math inline">(d/m)</span>-dimensional output.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> This doesn’t affect the variance of the inner products, but does reduce the higher-order moments (e.g. kurtosis). We set <span class="math inline">m</span> to 4 by default.</p>
+<p>The source code for the repo is <a href="https://github.com/AustinT/fpsketch">here</a>, and the code for the hashing is <a href="https://github.com/AustinT/fpsketch/blob/545be1ad6834eda7e4d6806eb2c57dd1773a4e9c/src/fpsketch/sketching.py#L276-L394">here</a><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> if you are interested.</p>
+</section>
+</section>
+<section id="demonstration" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="demonstration"><span class="header-section-number">3</span> Demonstration</h2>
+<p>I’ll demonstrate <code>fpsketch</code> on some drug-like molecules from ZINC. You can follow along by installing:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="st">"fpsketch[chem]"</span> numpy matplotlib</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We’ll start by loading the molecules:</p>
+<div id="imports" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rdkit <span class="im">import</span> Chem</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rdkit.Chem <span class="im">import</span> rdFingerprintGenerator</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fpsketch <span class="im">import</span> encode_sparse, encode_mols</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"./ZINC-100.smiles"</span>) <span class="im">as</span> f:</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>   smiles <span class="op">=</span> [line.strip() <span class="cf">for</span> line <span class="kw">in</span> f.readlines()]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(smiles)<span class="sc">}</span><span class="ss"> SMILES loaded. First few:"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>pprint(smiles[:<span class="dv">5</span>])</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to rdkit mols</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>mols <span class="op">=</span> [Chem.MolFromSmiles(s) <span class="cf">for</span> s <span class="kw">in</span> smiles]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>100 SMILES loaded. First few:
+['O=C(c1ccccc1[N+](=O)[O-])c1nc2ccccc2n1-c1ccccc1',
+ 'COc1ccc(SCCC(=O)N2CCC[C@@H]2C)cc1OC',
+ 'O=C(CC1(O)CCCCC1)NNc1cccc(C(F)(F)F)n1',
+ 'C[C@@H]1CCC[C@@H](CNC(=O)c2ccc(C(=O)N(C)C)cc2)C1',
+ 'C=C1C(=O)O[C@@H]2[C@H]1[C@H](O)C[C@]1(C)[C@@H](O)CC[C@H](C=O)[C@@H]21']</code></pre>
+</div>
+</div>
+<div id="plot-style" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code: set a consistent plot style and per-method colors (boilerplate, hidden by default)</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Colorblind-friendly palette (ColorBrewer "Dark2"), used consistently for</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># each method throughout the post.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>METHOD_COLORS <span class="op">=</span> {</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>   <span class="st">"folding"</span>: <span class="st">"#d95f02"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>   <span class="st">"sort &amp; slice"</span>: <span class="st">"#7570b3"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>   <span class="st">"fpsketch"</span>: <span class="st">"#1b9e77"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update({</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>   <span class="st">"figure.dpi"</span>: <span class="dv">120</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>   <span class="st">"font.size"</span>: <span class="dv">11</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>   <span class="st">"axes.spines.top"</span>: <span class="va">False</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>   <span class="st">"axes.spines.right"</span>: <span class="va">False</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>   <span class="st">"axes.grid"</span>: <span class="va">True</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>   <span class="st">"grid.alpha"</span>: <span class="fl">0.3</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>   <span class="st">"legend.frameon"</span>: <span class="va">False</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="helpers" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Code: helper functions: folding, Jaccard/Tanimoto similarity (hidden by default)</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fold_fingerprint_dict(fp: <span class="bu">dict</span>[<span class="bu">int</span>, <span class="bu">int</span>], dim: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>[<span class="bu">int</span>, <span class="bu">int</span>]:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>   out <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> feature, count <span class="kw">in</span> fp.items():</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      folded_feature <span class="op">=</span> feature <span class="op">%</span> dim</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      out[folded_feature] <span class="op">=</span> out.get(folded_feature, <span class="dv">0</span>) <span class="op">+</span> count</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> out</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> jaccard_sim(fp1: <span class="bu">dict</span>[<span class="bu">int</span>, <span class="bu">int</span>], fp2: <span class="bu">dict</span>[<span class="bu">int</span>, <span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>   all_keys <span class="op">=</span> <span class="bu">set</span>(fp1.keys()) <span class="op">|</span> <span class="bu">set</span>(fp2.keys())</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>   feature_pairs <span class="op">=</span> [(fp1.get(k, <span class="dv">0</span>), fp2.get(k, <span class="dv">0</span>)) <span class="cf">for</span> k <span class="kw">in</span> all_keys]</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> (</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      <span class="bu">sum</span>(<span class="bu">min</span>(pair) <span class="cf">for</span> pair <span class="kw">in</span> feature_pairs) <span class="op">/</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="bu">sum</span>(<span class="bu">max</span>(pair) <span class="cf">for</span> pair <span class="kw">in</span> feature_pairs)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> jaccard_sim_matrix(fps1: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">int</span>, <span class="bu">int</span>]], fps2: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">int</span>, <span class="bu">int</span>]]) <span class="op">-&gt;</span> np.ndarray:</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>   out <span class="op">=</span> np.zeros((<span class="bu">len</span>(fps1), <span class="bu">len</span>(fps2)))</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> i, fp1 <span class="kw">in</span> <span class="bu">enumerate</span>(fps1):</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> j, fp2 <span class="kw">in</span> <span class="bu">enumerate</span>(fps2):</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>         out[i, j] <span class="op">=</span> jaccard_sim(fp1, fp2)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> out</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dot_product_tanimoto(x1: np.ndarray, x2: np.ndarray) <span class="op">-&gt;</span> np.ndarray:</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>   dot <span class="op">=</span> x1 <span class="op">@</span> x2.T</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>   eps <span class="op">=</span> <span class="fl">1e-12</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>   norm1 <span class="op">=</span> (x1 <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>(axis<span class="op">=-</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>   norm2 <span class="op">=</span> (x2 <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>(axis<span class="op">=-</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> (dot <span class="op">+</span> eps) <span class="op">/</span> (norm1 <span class="op">+</span> norm2.T <span class="op">-</span> dot <span class="op">+</span> eps)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_error_stats(estimated: np.ndarray, true: np.ndarray) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>   <span class="co">"""Summary stats of |estimated - true|: mean (MAE), median, min, and max."""</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>   abs_err <span class="op">=</span> np.<span class="bu">abs</span>(estimated <span class="op">-</span> true)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> <span class="bu">dict</span>(</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>      mae<span class="op">=</span>abs_err.mean(),</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>      median<span class="op">=</span>np.median(abs_err),</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>      <span class="bu">min</span><span class="op">=</span>abs_err.<span class="bu">min</span>(),</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>      <span class="bu">max</span><span class="op">=</span>abs_err.<span class="bu">max</span>(),</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>   )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="basic-use" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="basic-use"><span class="header-section-number">3.1</span> Basic use</h3>
+<p>At its simplest, <code>fpsketch</code> is a 1-line encoding:</p>
+<div id="basic-use" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> encode_mols(mols, dim<span class="op">=</span><span class="dv">256</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Shape: "</span>, z.shape)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Shape:  (100, 256)
+[[-0.5  0.  -1.  ... -0.5  0.   0. ]
+ [ 0.  -1.  -1.  ... -0.5  0.5 -0.5]
+ [ 0.   0.  -0.5 ... -1.5  0.   0. ]
+ ...
+ [ 0.   0.  -0.5 ... -0.5  0.   0. ]
+ [ 1.5 -0.5 -1.5 ...  0.   0.5  0.5]
+ [ 0.   0.  -0.5 ... -0.5  0.   0. ]]</code></pre>
+</div>
+</div>
+<p>You can also call it with a custom generator or pre-computed fingerprint dicts:</p>
+<div id="custom-generator" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom generator</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>custom_morgan_generator <span class="op">=</span> rdFingerprintGenerator.GetMorganGenerator(radius<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> encode_mols(mols, dim<span class="op">=</span><span class="dv">256</span>, generator<span class="op">=</span>custom_morgan_generator)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Shape: "</span>, z.shape)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Shape:  (100, 256)
+[[-0.5  0.  -1.  ... -0.5  0.   0. ]
+ [-0.5 -1.  -0.5 ...  0.   1.   0. ]
+ [ 0.  -0.5 -1.5 ... -2.5  0.5  0. ]
+ ...
+ [ 0.5 -0.5 -1.  ...  0.  -1.5  0. ]
+ [ 1.  -0.5 -1.  ... -0.5  0.5  0. ]
+ [ 0.5  0.5  0.5 ... -0.5  0.5  0. ]]</code></pre>
+</div>
+</div>
+<div id="pre-computed-dicts" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your own dicts</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fp_dicts <span class="op">=</span> [</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>   custom_morgan_generator.GetSparseCountFingerprint(mol).GetNonzeroElements()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> mol <span class="kw">in</span> mols</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ... customize features however you want</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># (without customization it is identical to encode_mols above)</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> encode_sparse(fp_dicts, dim<span class="op">=</span><span class="dv">256</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Shape: "</span>, z.shape)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Shape:  (100, 256)
+[[-0.5  0.  -1.  ... -0.5  0.   0. ]
+ [-0.5 -1.  -0.5 ...  0.   1.   0. ]
+ [ 0.  -0.5 -1.5 ... -2.5  0.5  0. ]
+ ...
+ [ 0.5 -0.5 -1.  ...  0.  -1.5  0. ]
+ [ 1.  -0.5 -1.  ... -0.5  0.5  0. ]
+ [ 0.5  0.5  0.5 ... -0.5  0.5  0. ]]</code></pre>
+</div>
+</div>
+</section>
+<section id="reconstructing-the-tanimoto-similarity-matrix" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="reconstructing-the-tanimoto-similarity-matrix"><span class="header-section-number">3.2</span> Reconstructing the Tanimoto similarity matrix</h3>
+<p>Let’s reconstruct the Tanimoto similarity matrix between our radius 6 fingerprints for various sizes <span class="math inline">d</span>, comparing <code>fpsketch</code> and folding. Code below:</p>
+<div id="tanimoto-errors-compute" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>true_jaccard_sims <span class="op">=</span> jaccard_sim_matrix(fp_dicts, fp_dicts)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>d_to_res <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>d_arr <span class="op">=</span> [<span class="dv">32</span>, <span class="dv">64</span>, <span class="dv">128</span>, <span class="dv">256</span>, <span class="dv">512</span>, <span class="dv">1024</span>, <span class="dv">2048</span>, <span class="dv">4096</span>]</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> d_arr:</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Folded baseline</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>   fps_folded <span class="op">=</span> [fold_fingerprint_dict(fp, d) <span class="cf">for</span> fp <span class="kw">in</span> fp_dicts]</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>   folded_jaccard_sims <span class="op">=</span> jaccard_sim_matrix(fps_folded, fps_folded)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>   <span class="co"># fpsketch</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>   z <span class="op">=</span> encode_sparse(fp_dicts, dim<span class="op">=</span>d)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>   fpsketch_sims <span class="op">=</span> dot_product_tanimoto(z, z)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Get errors</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>   d_to_res[d] <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> method, arr <span class="kw">in</span> [(<span class="st">"folding"</span>, folded_jaccard_sims), (<span class="st">"fpsketch"</span>, fpsketch_sims)]:</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>      d_to_res[d][method] <span class="op">=</span> (arr, compute_error_stats(arr, true_jaccard_sims))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details class="code-fold">
+<summary>Code: plot error-magnitude range and true-vs-reconstructed similarity (boilerplate, hidden by default).</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="fl">6.4</span>, <span class="fl">3.2</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Median error magnitude, with min/max range</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">0</span>]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> method <span class="kw">in</span> [<span class="st">"folding"</span>, <span class="st">"fpsketch"</span>]:</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>   medians <span class="op">=</span> np.array([d_to_res[d][method][<span class="dv">1</span>][<span class="st">"median"</span>] <span class="cf">for</span> d <span class="kw">in</span> d_arr])</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>   mins <span class="op">=</span> np.array([d_to_res[d][method][<span class="dv">1</span>][<span class="st">"min"</span>] <span class="cf">for</span> d <span class="kw">in</span> d_arr])</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>   maxs <span class="op">=</span> np.array([d_to_res[d][method][<span class="dv">1</span>][<span class="st">"max"</span>] <span class="cf">for</span> d <span class="kw">in</span> d_arr])</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>   ax.errorbar(</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>      d_arr, medians, yerr<span class="op">=</span>[medians <span class="op">-</span> mins, maxs <span class="op">-</span> medians],</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>      marker<span class="op">=</span><span class="st">"o"</span>, capsize<span class="op">=</span><span class="dv">3</span>, color<span class="op">=</span>METHOD_COLORS[method], label<span class="op">=</span>method,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>ax.set_xscale(<span class="st">"log"</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"$d$"</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"|error|"</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Error magnitude vs. $d$"</span>)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co"># True vs. reconstructed similarity, top 25x25 submatrix</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>d_scatter <span class="op">=</span> <span class="dv">256</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>n_scatter <span class="op">=</span> <span class="dv">25</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">1</span>]</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>ax.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">"gray"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, linewidth<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>true_sub <span class="op">=</span> true_jaccard_sims[:n_scatter, :n_scatter].ravel()</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> method <span class="kw">in</span> [<span class="st">"folding"</span>, <span class="st">"fpsketch"</span>]:</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>   pred_sub <span class="op">=</span> d_to_res[d_scatter][method][<span class="dv">0</span>][:n_scatter, :n_scatter].ravel()</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>   ax.scatter(</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>      true_sub, pred_sub, s<span class="op">=</span><span class="dv">8</span>, alpha<span class="op">=</span><span class="fl">0.4</span>,</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>      color<span class="op">=</span>METHOD_COLORS[method], label<span class="op">=</span>method,</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="fl">1.05</span>)</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="fl">1.05</span>)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">"equal"</span>)</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"True similarity"</span>)</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Reconstructed"</span>)</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"True vs. reconstructed"</span>)</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>fig.tight_layout(rect<span class="op">=</span>[<span class="dv">0</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>handles, labels <span class="op">=</span> axes[<span class="dv">0</span>].get_legend_handles_labels()</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>fig.legend(handles, labels, loc<span class="op">=</span><span class="st">"lower center"</span>, ncol<span class="op">=</span><span class="dv">2</span>, frameon<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="cell-fig-tanimoto-results" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="8">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-tanimoto-results" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tanimoto-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-tanimoto-results-output-1.png" width="729" height="379" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tanimoto-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Accuracy of reconstructed Tanimoto similarity vs.&nbsp;output dimension <span class="math inline">d</span>: median error magnitude with min/max range (left), and true vs.&nbsp;reconstructed similarity for the top 25 molecules at <span class="math inline">d=256</span> (right).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p><a href="#fig-tanimoto-results" class="quarto-xref">Figure&nbsp;1</a> shows the results. At low <span class="math inline">d</span>, <code>fpsketch</code> preserves Tanimoto similarities substantially better than folding. At <span class="math inline">d=32</span> (absolutely tiny by fingerprint standards), <code>fpsketch</code> has a median error of only ~0.1, compared to ~0.4 for folding. As <span class="math inline">d</span> increases, the error profiles become similar. The rightmost figure shows that the errors are mostly caused by folding <em>overestimating</em> similarity, while <code>fpsketch</code> has a mix of overestimation and underestimation.</p>
+</section>
+<section id="enabling-giant-fingerprints" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="enabling-giant-fingerprints"><span class="header-section-number">3.3</span> Enabling giant fingerprints</h3>
+<p>CountSketch is unbiased, <em>regardless</em> of the size (or sparsity) of the input dimension. This enables fingerprints with many features to be used with small output dimensions <span class="math inline">d</span>. To show this, we will construct giant binary fingerprints combining Morgan fingerprints of radius 10 (basically including the whole molecule), Atom Pair fingerprints, and the classic RDKit (topological/Daylight-style) fingerprint, to make the fingerprint even richer. The standard binary version of folding would map these to low dimension and then binarize them. Because so many substructures are captured, we expect the fingerprints to be mostly 1s, causing them all to be very similar to each other and therefore catastrophically fail at differentiating molecules. On the other hand, <code>fpsketch</code> should give a reasonable (but definitely imperfect) encoding (which will not be binary). Here is the code to construct these fingerprints:</p>
+<div id="giant-fp-setup" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Form giant fingerprints (count for now, we will binarize)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>gen_morgan10 <span class="op">=</span> rdFingerprintGenerator.GetMorganGenerator(radius<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>gen_atom_pair <span class="op">=</span> rdFingerprintGenerator.GetAtomPairGenerator()</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>gen_rdkit <span class="op">=</span> rdFingerprintGenerator.GetRDKitFPGenerator()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>giant_fp_dicts <span class="op">=</span> []</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> mol <span class="kw">in</span> mols:</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>   fp <span class="op">=</span> gen_morgan10.GetSparseCountFingerprint(mol).GetNonzeroElements()</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>   fp.update(gen_atom_pair.GetSparseCountFingerprint(mol).GetNonzeroElements())</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>   fp.update(gen_rdkit.GetSparseCountFingerprint(mol).GetNonzeroElements())</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>   giant_fp_dicts.append({k: <span class="dv">1</span> <span class="cf">for</span> k <span class="kw">in</span> fp})  <span class="co"># binarize</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>n_unique <span class="op">=</span> <span class="bu">len</span>(<span class="bu">set</span>().union(<span class="op">*</span>[fp.keys() <span class="cf">for</span> fp <span class="kw">in</span> giant_fp_dicts]))</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>   <span class="st">"Mean substructures per molecule: "</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>   <span class="ss">f"</span><span class="sc">{</span>np<span class="sc">.</span>mean([<span class="bu">len</span>(fp) <span class="cf">for</span> fp <span class="kw">in</span> giant_fp_dicts])<span class="sc">:.1f}</span><span class="ss">"</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Unique substructures across the sample: </span><span class="sc">{</span>n_unique<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean substructures per molecule: 1119.1
+Unique substructures across the sample: 50631</code></pre>
+</div>
+</div>
+<p>Notice we have <strong>over 1000</strong> unique substructures per molecule on average. This means that if <span class="math inline">d&lt;1000</span> the fingerprints should be (mostly) saturated. We now use <code>fpsketch</code> and folding to reduce the dimension and compare.</p>
+<div id="giant-fp-errors" class="cell" data-execution_count="10">
+<details class="code-fold">
+<summary>Code: compute reconstruction error and output occupancy across dimensions (code hidden because it is nearly identical to code from the previous subsection).</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>true_giant_jaccard_sims <span class="op">=</span> jaccard_sim_matrix(giant_fp_dicts, giant_fp_dicts)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>giant_d_arr <span class="op">=</span> [<span class="dv">2</span><span class="op">**</span>i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>, <span class="dv">15</span>)]</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>giant_d_to_res <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>occupancy <span class="op">=</span> {<span class="st">"folding"</span>: [], <span class="st">"fpsketch"</span>: []}</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> giant_d_arr:</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Folded baseline (re-binarize after folding: binary folding is an OR of</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>   <span class="co"># colliding bits, not a sum of them)</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>   fps_folded <span class="op">=</span> [</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>      {k: <span class="dv">1</span> <span class="cf">for</span> k <span class="kw">in</span> fold_fingerprint_dict(fp, d)} <span class="cf">for</span> fp <span class="kw">in</span> giant_fp_dicts</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>   ]</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>   folded_jaccard_sims <span class="op">=</span> jaccard_sim_matrix(fps_folded, fps_folded)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>   <span class="co"># fpsketch</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>   z <span class="op">=</span> encode_sparse(giant_fp_dicts, dim<span class="op">=</span>d)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>   fpsketch_sims <span class="op">=</span> dot_product_tanimoto(z, z)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Get errors</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>   giant_d_to_res[d] <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> method, arr <span class="kw">in</span> [(<span class="st">"folding"</span>, folded_jaccard_sims), (<span class="st">"fpsketch"</span>, fpsketch_sims)]:</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>      giant_d_to_res[d][method] <span class="op">=</span> (arr, compute_error_stats(arr, true_giant_jaccard_sims))</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Fraction of output dimensions that are non-zero, on average</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>   occupancy[<span class="st">"folding"</span>].append(np.mean([<span class="bu">len</span>(fp) <span class="op">/</span> d <span class="cf">for</span> fp <span class="kw">in</span> fps_folded]))</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>   occupancy[<span class="st">"fpsketch"</span>].append(np.mean(z <span class="op">!=</span> <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<details class="code-fold">
+<summary>Plot error-magnitude range, true-vs-reconstructed similarity, and occupancy</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>d_example <span class="op">=</span> <span class="dv">256</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">3.2</span>))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Median error magnitude, with min/max range</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">0</span>]</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> method <span class="kw">in</span> [<span class="st">"folding"</span>, <span class="st">"fpsketch"</span>]:</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>   medians <span class="op">=</span> np.array([giant_d_to_res[d][method][<span class="dv">1</span>][<span class="st">"median"</span>] <span class="cf">for</span> d <span class="kw">in</span> giant_d_arr])</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>   mins <span class="op">=</span> np.array([giant_d_to_res[d][method][<span class="dv">1</span>][<span class="st">"min"</span>] <span class="cf">for</span> d <span class="kw">in</span> giant_d_arr])</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>   maxs <span class="op">=</span> np.array([giant_d_to_res[d][method][<span class="dv">1</span>][<span class="st">"max"</span>] <span class="cf">for</span> d <span class="kw">in</span> giant_d_arr])</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>   ax.errorbar(</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>      giant_d_arr, medians, yerr<span class="op">=</span>[medians <span class="op">-</span> mins, maxs <span class="op">-</span> medians],</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>      marker<span class="op">=</span><span class="st">"o"</span>, capsize<span class="op">=</span><span class="dv">3</span>, color<span class="op">=</span>METHOD_COLORS[method], label<span class="op">=</span>method,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>ax.set_xscale(<span class="st">"log"</span>)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"$d$"</span>)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"|error|"</span>)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Error magnitude vs. $d$"</span>)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co"># True vs. reconstructed similarity, top 25x25 submatrix</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>n_scatter <span class="op">=</span> <span class="dv">25</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">1</span>]</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>ax.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">"gray"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, linewidth<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>true_sub <span class="op">=</span> true_giant_jaccard_sims[:n_scatter, :n_scatter].ravel()</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> method <span class="kw">in</span> [<span class="st">"folding"</span>, <span class="st">"fpsketch"</span>]:</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>   pred_sub <span class="op">=</span> giant_d_to_res[d_example][method][<span class="dv">0</span>][:n_scatter, :n_scatter].ravel()</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>   ax.scatter(</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>      true_sub, pred_sub, s<span class="op">=</span><span class="dv">8</span>, alpha<span class="op">=</span><span class="fl">0.4</span>,</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>      color<span class="op">=</span>METHOD_COLORS[method], label<span class="op">=</span>method,</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="fl">1.05</span>)</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="fl">1.05</span>)</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">"equal"</span>)</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"True similarity"</span>)</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Reconstructed"</span>)</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"True vs. reconstructed"</span>)</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Occupancy</span></span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">2</span>]</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> method <span class="kw">in</span> [<span class="st">"folding"</span>, <span class="st">"fpsketch"</span>]:</span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>   ax.semilogx(</span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>      giant_d_arr, occupancy[method],</span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>      marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span>METHOD_COLORS[method], label<span class="op">=</span>method,</span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"$d$"</span>)</span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Non-zero fraction"</span>)</span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="fl">1.05</span>)</span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Occupancy"</span>)</span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a>fig.tight_layout(rect<span class="op">=</span>[<span class="dv">0</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">1</span>], w_pad<span class="op">=</span><span class="fl">2.0</span>)</span>
+<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>handles, labels <span class="op">=</span> axes[<span class="dv">0</span>].get_legend_handles_labels()</span>
+<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a>fig.legend(handles, labels, loc<span class="op">=</span><span class="st">"lower center"</span>, ncol<span class="op">=</span><span class="dv">2</span>, frameon<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="cell-fig-giant-results" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="11">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-giant-results" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-giant-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-giant-results-output-1.png" width="824" height="379" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-giant-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Accuracy of reconstructed Tanimoto similarity vs.&nbsp;output dimension <span class="math inline">d</span> for the giant fingerprint: median error magnitude with min/max range (left), true vs.&nbsp;reconstructed similarity for the top 25 molecules at <span class="math inline">d=256</span> (middle), and output occupancy (right).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p><a href="#fig-giant-results" class="quarto-xref">Figure&nbsp;2</a> shows the results. The difference is even more dramatic than <a href="#fig-tanimoto-results" class="quarto-xref">Figure&nbsp;1</a> (as expected). At low <span class="math inline">d</span>, the median error is close to 1 for folding, compared to ~0.1 for <code>fpsketch</code>. At high <span class="math inline">d</span>, the difference narrows, although <code>fpsketch</code> is still significantly better than folding even for <span class="math inline">d\approx 10^4</span>. The middle and right subfigures suggest that the effect is driven by the high occupancy rates of folded fingerprints causing significant overestimation of similarities, although occupancy alone is clearly not the whole story, since <code>fpsketch</code>’s fingerprints also have high occupancy (in fact <em>higher</em> occupancy for high <span class="math inline">d</span>). However, since <code>fpsketch</code>’s entries are both positive and <em>negative</em>, high occupancy does not directly translate into high similarity: some negative and positive entries cancel in the dot products.</p>
+<p><a href="#fig-giant-heatmap" class="quarto-xref">Figure&nbsp;3</a> visualizes the differences between the reconstructed matrices at <span class="math inline">d=256</span>, highlighting <code>fpsketch</code>’s improvements.</p>
+<details class="code-fold">
+<summary>Plot similarity matrix heatmaps at d=256</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>n_show <span class="op">=</span> <span class="dv">40</span>  <span class="co"># subset of molecules, for a readable heatmap</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>mats <span class="op">=</span> [</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>   (<span class="st">"True Jaccard"</span>, true_giant_jaccard_sims),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>   (<span class="st">"Folding"</span>, giant_d_to_res[d_example][<span class="st">"folding"</span>][<span class="dv">0</span>]),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>   (<span class="st">"fpsketch"</span>, giant_d_to_res[d_example][<span class="st">"fpsketch"</span>][<span class="dv">0</span>]),</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="fl">9.5</span>, <span class="fl">3.4</span>), constrained_layout<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>gs <span class="op">=</span> fig.add_gridspec(<span class="dv">1</span>, <span class="dv">4</span>, width_ratios<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">0.06</span>])</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> [fig.add_subplot(gs[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>)]</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>cax <span class="op">=</span> fig.add_subplot(gs[<span class="dv">3</span>])</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (title, mat) <span class="kw">in</span> <span class="bu">zip</span>(axes, mats):</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>   im <span class="op">=</span> ax.imshow(mat[:n_show, :n_show], vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>, cmap<span class="op">=</span><span class="st">"plasma"</span>)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>   ax.set_title(title)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>   ax.set_xticks([])</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>   ax.set_yticks([])</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>cbar <span class="op">=</span> fig.colorbar(im, cax<span class="op">=</span>cax, label<span class="op">=</span><span class="st">"Jaccard similarity"</span>)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co"># The colorbar's own column keeps the heatmaps at equal size, but (being a</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="co"># plain axes, not an equal-aspect image) it doesn't shrink to match their</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co"># height on its own -- force a layout pass, then align it to match exactly.</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>fig.canvas.draw()</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>img_pos <span class="op">=</span> axes[<span class="op">-</span><span class="dv">1</span>].get_position()</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>cax_pos <span class="op">=</span> cax.get_position()</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>fig.set_layout_engine(<span class="va">None</span>)</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>cax.set_position([cax_pos.x0, img_pos.y0, cax_pos.width, img_pos.height])</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="cell-fig-giant-heatmap" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="12">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-giant-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-giant-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-giant-heatmap-output-1.png" width="1154" height="400" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-giant-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Reconstructed similarity matrices at <span class="math inline">d=256</span> for a subset of molecules: true Jaccard similarity, folding, and fpsketch (shared color scale).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-conclusion" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="sec-conclusion"><span class="header-section-number">4</span> Conclusion</h2>
+<p>I’m convinced that <code>fpsketch</code> is essentially a strict improvement over folding, at least for the purposes of similarity calculation.</p>
+<p>After trying this and seeing it work so well, I’m honestly surprised this hasn’t been tried earlier (at least I couldn’t find evidence of anybody using CountSketch for fingerprints). CountSketch is a 20-year-old algorithm after all. After thinking about it, my best guess is that the field is still mentally stuck with the model of binary fingerprints, and uses compression methods (like folding) which also work with binary fingerprints. CountSketch outputs a mix of positive and negative entries in its compressed vectors, so it requires a floating point representation. It’s only fairly recently that people use floating-point fingerprints as inputs to machine learning models, so perhaps it never occurred to anybody that this enables compression algorithms which use more of this floating-point range.</p>
+<p>There are three follow-up directions I’m excited about:</p>
+<ol type="1">
+<li><p><strong>Trying <code>fpsketch</code> in machine learning models</strong>: I expect it to work better, especially for methods like kNN and GP which only use comparisons between fingerprints (and so matching similarity scores exactly is a sufficient condition to match the performance of sparse fingerprints).</p>
+<p>For neural networks, I am less confident, but still optimistic that it will improve performance. Deep learning embeddings of molecules are likely already non-linear mixtures of graph features. <code>fpsketch</code>’s fingerprints have the advantage of being low-dimensional <strong>and</strong> potentially using a richer set of features, which I suspect are the main things that give deep learning embeddings an edge over fingerprints in property prediction tasks (although they don’t always seem to have an edge).</p></li>
+<li><p><strong>Learnable fingerprints</strong>: because <code>fpsketch</code> is a linear map, it is differentiable. This could allow, for example, a <em>weight</em> to be learned for each input subgraph, allowing a model to adaptively learn which features to pay attention to more than others. I think this would be an interesting (and interpretable) way of making fingerprints a bit more like deep learning embeddings, which allow the model to learn which substructures to pay attention to.</p>
+<p><code>fpsketch</code> is written in numpy and assumes that inputs are all integers, but it wouldn’t be too difficult to rewrite it in <code>torch</code> or <code>jax</code> to allow for autodiff.</p></li>
+<li><p><strong>Other sketches</strong>: is the default of 4 CountSketches optimal? Is it worth exploring other sketching techniques like SRHT? I’m not familiar enough with sketches to pick one optimally (I chose CountSketch after discussing options with Claude and being persuaded by the <span class="math inline">O(\mathrm{nnz})</span> runtime mostly). Since <code>fpsketch</code> is more likely to be combined with Tanimoto similarity rather than a plain dot product, does that change which sketch is optimal?</p>
+<p>These are all theory questions beyond my expertise. I’d love for a more theory-oriented person to take a look at this!</p></li>
+</ol>
+<p>I would love to have help answering these questions. If you’re interested in working together, please reach out!<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-charikar2002finding" class="csl-entry" role="listitem">
+Charikar, Moses, Kevin Chen, and Martin Farach-Colton. 2002. <span>“Finding Frequent Items in Data Streams.”</span> <em>International Colloquium on Automata, Languages, and Programming</em>, 693–703.
+</div>
+<div id="ref-huber2026count" class="csl-entry" role="listitem">
+Huber, Florian, and Julian Pollmann. 2026. <span>“Count Your Bits: Fingerprint Benchmarking to Assess Broad Chemical Space Representation.”</span> <em>Journal of Cheminformatics</em> 18 (1): 83.
+</div>
+<div id="ref-tripp2023tanimoto" class="csl-entry" role="listitem">
+Tripp, Austin, Sergio Bacallado, Sukriti Singh, and José Miguel Hernández-Lobato. n.d. <span>“Tanimoto Random Features for Scalable Molecular Machine Learning.”</span> <em>Advances in Neural Information Processing Systems</em>, 33656–86. <a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/6a69d44b3386e50c06f7107ef4f29302-Paper-Conference.pdf">https://proceedings.neurips.cc/paper_files/paper/2023/file/6a69d44b3386e50c06f7107ef4f29302-Paper-Conference.pdf</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Here’s a more precise story:</p>
+<p>Earlier this summer I read a good paper which extensively studied the performance of various molecular fingerprints <span class="citation" data-cites="huber2026count">(<a href="#ref-huber2026count" role="doc-biblioref">Huber and Pollmann 2026</a>)</span>. One of their conclusions was that log-scaling of count fingerprints was often beneficial. This reminded me of an experiment I did in one of my PhD papers <span class="citation" data-cites="tripp2023tanimoto">(<a href="#ref-tripp2023tanimoto" role="doc-biblioref">Tripp et al., n.d.</a>)</span> where I tried <em>square root</em> scaling of fingerprint counts. I decided to prompt Claude to study this question autonomously. After some iteration it looks like square root scaling was indeed effective, but without prompting it proposed CountSketch as a baseline and noted it worked well. I followed up on the idea, leading to this post.</p>
+<p>It also produced an interesting result on square root scaling, although I think it is overall less effective than <code>fpsketch</code>, so it will need to wait for a future post.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The details of this are beyond this post and exceed my understanding of CountSketch.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>See for example <span class="citation" data-cites="huber2026count">Huber and Pollmann (<a href="#ref-huber2026count" role="doc-biblioref">2026</a>)</span> who recently concluded this in a systematic study.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>If <span class="math inline">d/m</span> is not an integer, the last sketch gets the leftover dimensions.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Note this is a permalink to a specific commit for the first release version; this code may change in the future.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Admittedly, this would probably just be light advising from me — my day job at Valence/Recursion keeps me pretty busy.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {Fpsketch: A Better Fingerprint Compression Algorithm},
+  date = {2026-08-31},
+  url = {https://austintripp.ca/blog/2026-08-31-fpsketch/},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas" role="listitem">
+Tripp, Austin. 2026. <span>“Fpsketch: A Better Fingerprint Compression
+Algorithm.”</span> August 31. <a href="https://austintripp.ca/blog/2026-08-31-fpsketch/">https://austintripp.ca/blog/2026-08-31-fpsketch/</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/austintripp\.ca");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="mailto:austin.james.tripp%5Bat%5Dgmail.com">Email</a> | <a href="https://github.com/AustinT">GitHub</a> | <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Scholar</a> | <a href="https://www.semanticscholar.org/author/Austin-Tripp/115766771">Semantic Scholar</a> | <a href="https://bsky.app/profile/austinjtripp.bsky.social">Bluesky</a> | <a href="https://twitter.com/austinjtripp">Twitter/X</a></p>
+<p>© Austin Tripp · All opinions are my own (not my employer’s). · Website powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
