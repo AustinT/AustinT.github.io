@@ -17,6 +17,7 @@ categories:
 - machine learning
 - drug discovery
 - chemistry
+- _recent-highlight
 
 # Badges
 confidence: high
