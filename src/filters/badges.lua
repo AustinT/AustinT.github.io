@@ -1,8 +1,9 @@
 -- Renders small epistemic-status badges under a post's title, driven by
 -- frontmatter fields. Each dimension below is independent and optional: a
 -- badge only appears if its frontmatter field is set to a recognized value,
--- so untagged posts (and non-post pages) render unchanged. `freshness` is
--- the one exception -- it's derived automatically from the post's `date`.
+-- so untagged posts (and non-post pages) render unchanged. The age badge
+-- (new/old/ancient) is the one exception -- it's derived automatically
+-- from the post's `date`.
 
 local dimensions = {
   {
@@ -22,6 +23,7 @@ local dimensions = {
     labels = {
       assisted = { emoji = "🤖", text = "AI-assisted", note = "AI helped with research, editing, or drafting parts of this." },
       ["co-written"] = { emoji = "🤖", text = "AI co-written", note = "Substantial portions were AI-generated or AI-co-authored." },
+      human = { emoji = "✍️", text = "Entirely human", note = "Certified organic: no AI assistance was used." },
     },
   },
   {
@@ -47,6 +49,8 @@ local dimensions = {
 }
 
 local FRESHNESS_WINDOW_DAYS = 60
+local OLD_THRESHOLD_DAYS = 365 * 2
+local ANCIENT_THRESHOLD_DAYS = 365 * 10
 
 local MONTH_NUMBERS = {
   January = 1, February = 2, March = 3, April = 4, May = 5, June = 6,
@@ -83,7 +87,7 @@ local function make_badge(class, emoji, label, tooltip)
   )
 end
 
-local function freshness_badge(meta)
+local function age_badge(meta)
   local date_str = meta_to_str(meta.date)
   if not date_str then return nil end
 
@@ -92,12 +96,26 @@ local function freshness_badge(meta)
 
   local post_time = os.time({ year = y, month = m, day = d, hour = 12 })
   local days_old = os.difftime(os.time(), post_time) / 86400
-  if days_old < 0 or days_old >= FRESHNESS_WINDOW_DAYS then return nil end
+  if days_old < 0 then return nil end
 
-  return make_badge(
-    "badge-fresh", "🌱", "New",
-    "Published within the last " .. FRESHNESS_WINDOW_DAYS .. " days."
-  )
+  if days_old < FRESHNESS_WINDOW_DAYS then
+    return make_badge(
+      "badge-fresh", "🌱", "New",
+      "Published within the last " .. FRESHNESS_WINDOW_DAYS .. " days."
+    )
+  elseif days_old >= ANCIENT_THRESHOLD_DAYS then
+    return make_badge(
+      "badge-ancient", "🦕", "Ancient",
+      "Published more than 10 years ago."
+    )
+  elseif days_old >= OLD_THRESHOLD_DAYS then
+    return make_badge(
+      "badge-old", "🍂", "Old",
+      "Published more than 2 years ago."
+    )
+  end
+
+  return nil
 end
 
 function Pandoc(doc)
@@ -113,8 +131,8 @@ function Pandoc(doc)
     end
   end
 
-  local fresh = freshness_badge(meta)
-  if fresh then table.insert(badges, fresh) end
+  local age = age_badge(meta)
+  if age then table.insert(badges, age) end
 
   if #badges == 0 then
     return doc
