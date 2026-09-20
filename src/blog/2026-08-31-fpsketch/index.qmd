@@ -66,8 +66,8 @@ If you are interested, please reach out by email!
       to this post.
 
       It also produced an interesting result on square root scaling, although
-      I think it is overall less effective than `fpsketch`, so it will need to
-      wait for a future post.
+      I think it is overall less effective than `fpsketch`. That result is now
+      written up in [a companion post](/blog/2026-09-18-sqrt-count-fingerprints/).
 
 ## Overview of fpsketch (less technical)
 

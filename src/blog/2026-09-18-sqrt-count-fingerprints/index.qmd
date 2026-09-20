@@ -1,0 +1,526 @@
+---
+title: "Square-root scaling of count fingerprints: the best elementwise trick, and why it can't be exact"
+description: "Companion to the fpsketch post: an (AI-driven) study of rescaling count fingerprints so that dot-product Tanimoto approximates min-max Tanimoto."
+date: 2026-09-18
+
+author:
+- "Claude Fable"
+- "Austin Tripp"
+
+# Formatting
+toc-depth: 3
+number-sections: true
+
+# Bibliography and citations:
+# (make this post citable)
+bibliography: references.bib
+citation: true
+google-scholar: true
+
+categories:
+- machine learning
+- drug discovery
+- chemistry
+
+# Badges
+confidence: medium
+confidence-note: "I checked the theory myself. I reviewed the experiments like a paper review, but did not audit the code."
+originality: medium
+originality-note: "Square-root scaling itself is folklore. I have not seen the one-sided bound, the impossibility proof, or the ceiling measurement elsewhere."
+effort: medium
+effort-note: "Mostly done by Claude"
+ai-involvement: "co-written"
+ai-involvement-note: "Everything after the callout is written by Claude Fable."
+---
+
+::: {.callout-caution}
+## Austin's intro to a ≈100% AI generated post
+
+This post explains an idea that I think is worse than `fpsketch`,
+but still worth putting up on the internet in some form,
+so I wrote up a post with Claude (hence the distinctive AI writing style).
+Everything below is AI-generated.
+
+:::
+
+## Introduction
+
+This post is a companion to [my post on
+`fpsketch`](/blog/2026-08-31-fpsketch/). As I explained in a footnote there,
+`fpsketch` came out of a study that started with a different question. In my
+Tanimoto random features paper [@tripp2023tanimoto] I had briefly tried
+_square-root scaling_ of count fingerprints, so that the fast dot-product
+Tanimoto similarity would better approximate the standard min-max Tanimoto
+similarity. When @huber2026count later reported that _log_-scaling of counts was
+often beneficial, I asked Claude to investigate the question properly: what is
+the best elementwise rescaling, and how close can it get?
+
+The answers turned out to be cleaner than I expected:
+
+1. **Square-root scaling is provably the "right" elementwise idea.** It makes
+   the denominators match exactly, and its error is one-sided (it always
+   over-estimates the true similarity).
+2. **No elementwise rescaling can be exact**, and the whole class has a
+   measurable ceiling. A plain power law already reaches it, so there is no
+   cleverer transform waiting to be found.
+3. **Leaving the elementwise class fixes the problem**, which is what
+   `fpsketch` does.
+
+If you only need the recommendation: if you must rescale counts elementwise,
+use $\sqrt{x}$ (or $x^{0.55}$ if only the _ranking_ of similarities matters).
+However, most likely you will never be constrained to elementwise rescaling
+of counts, so in that case use `fpsketch`.
+
+---
+
+## Setup
+
+For non-negative vectors $x, x' \in \mathbb{R}^d_{\geq 0}$, define the min-max
+(Jaccard) Tanimoto similarity and the dot-product Tanimoto similarity:
+
+$$
+T_{\mathrm{MM}}(x, x') = \frac{\sum_i \min(x_i, x'_i)}{\sum_i \max(x_i, x'_i)} \ ,
+$$ {#eq-mm}
+
+$$
+T_{\mathrm{DP}}(x, x') = \frac{x \cdot x'}{\|x\|^2 + \|x'\|^2 - x \cdot x'} \ .
+$$ {#eq-dp}
+
+$T_{\mathrm{MM}}$ is the standard similarity for count fingerprints in
+cheminformatics, and it is what RDKit computes when you call
+`BulkTanimotoSimilarity` on count fingerprints. $T_{\mathrm{DP}}$ is far cheaper
+because a full similarity matrix is one matrix product, and it has an
+inner-product structure that makes it compatible with sketching and random
+features [@tripp2023tanimoto]. The two coincide on binary vectors but not on
+counts.
+
+The question in this post is:
+
+> Is there an elementwise map $\varphi: \mathbb{R}_{\geq 0} \to \mathbb{R}$
+> (applied coordinate by coordinate) such that
+> $T_{\mathrm{DP}}(\varphi(x), \varphi(x')) \approx T_{\mathrm{MM}}(x, x')$
+> for count fingerprints?
+
+Two remarks before starting. First, $T_{\mathrm{DP}}$ is invariant to scaling
+both inputs by the same constant, so we may fix $\varphi(1) = 1$ without loss of
+generality. Second, for integer counts, $\varphi$ is nothing more than a lookup
+table $\varphi(1), \varphi(2), \ldots$: this is what makes it possible to
+measure the _best possible_ elementwise transform later on.
+
+## Theory
+
+### Both similarities have the same functional form
+
+Since $\min(a, b) + \max(a, b) = a + b$, the denominator of @eq-mm can be
+rewritten as $\sum_i \max(x_i, x'_i) = \sum_i x_i + \sum_i x'_i - \sum_i
+\min(x_i, x'_i)$. Both similarities are therefore instances of the same
+formula,
+
+$$
+F(s) = \frac{s}{a + b - s} \ ,
+$$
+
+with an "overlap" term $s$ and "self" terms $a, b$:
+
+| | overlap $s$ | self term $a$ (and likewise $b$) |
+|---|---|---|
+| $T_{\mathrm{MM}}(x, x')$ | $\sum_i \min(x_i, x'_i)$ | $\sum_i x_i = \|x\|_1$ |
+| $T_{\mathrm{DP}}(\varphi(x), \varphi(x'))$ | $\sum_i \varphi(x_i)\varphi(x'_i)$ | $\sum_i \varphi(x_i)^2$ |
+
+: The two similarities differ only in how the overlap and self terms are computed. {#tbl-form}
+
+$F$ is strictly increasing in $s$ on $0 \leq s < a + b$. So matching the two
+similarities reduces to matching two _elementwise_ quantities:
+
+$$
+\varphi(u)\varphi(v) \leftrightarrow \min(u, v)
+\qquad \text{and} \qquad
+\varphi(u)^2 \leftrightarrow u \ .
+$$ {#eq-conditions}
+
+Everything below follows from this observation.
+
+### Square root: exact self term, one-sided error
+
+The transform $\varphi(u) = \sqrt{u}$ satisfies the second condition in
+@eq-conditions _exactly_: $\varphi(u)^2 = u$, so $\|\sqrt{x}\|^2 = \|x\|_1$ and
+the denominators of $T_{\mathrm{DP}}(\sqrt{x}, \sqrt{x'})$ and
+$T_{\mathrm{MM}}(x, x')$ share the same $a + b$. The only remaining mismatch is
+in the overlap: a geometric mean $\sqrt{uv}$ in place of $\min(u, v)$. This has
+a clean consequence.
+
+::: {#thm-sqrt-bound}
+## Square-root scaling never under-estimates
+
+For all $x, x' \in \mathbb{R}^d_{\geq 0}$,
+$$
+T_{\mathrm{DP}}(\sqrt{x}, \sqrt{x'}) \geq T_{\mathrm{MM}}(x, x') \ ,
+$$
+with equality if and only if every coordinate has $x_i = x'_i$ or
+$\min(x_i, x'_i) = 0$.
+:::
+
+::: {.callout-note collapse="true"}
+## Proof
+
+By the AM-GM inequality, $\sqrt{uv} \geq \min(u, v)$ for $u, v \geq 0$, with
+equality iff $u = v$ or $\min(u, v) = 0$. Summing over coordinates,
+$s_{\mathrm{DP}} := \sum_i \sqrt{x_i x'_i} \geq \sum_i \min(x_i, x'_i) =:
+s_{\mathrm{MM}}$. Both similarities equal $F(s) = s / (A - s)$ with the _same_
+$A = \sum_i x_i + \sum_i x'_i$ (because $\varphi(u)^2 = u$), and $F$ is strictly
+increasing. Hence $T_{\mathrm{DP}}(\sqrt{x}, \sqrt{x'}) = F(s_{\mathrm{DP}})
+\geq F(s_{\mathrm{MM}}) = T_{\mathrm{MM}}(x, x')$, with equality iff
+$s_{\mathrm{DP}} = s_{\mathrm{MM}}$, i.e. iff the AM-GM equality condition holds
+in every coordinate. $\blacksquare$
+:::
+
+There is also a pleasant distance interpretation. Using $\sum \max - \sum \min
+= \|x - x'\|_1$, and writing $H^2(x, x') = \sum_i (\sqrt{x_i} - \sqrt{x'_i})^2$
+for the squared Hellinger distance,
+
+$$
+T_{\mathrm{MM}}(x, x') = \frac{1}{1 + \|x - x'\|_1 \big/ \sum_i \min(x_i, x'_i)}
+\ , \qquad
+T_{\mathrm{DP}}(\sqrt{x}, \sqrt{x'}) = \frac{1}{1 + H^2(x, x') \big/ \sum_i \sqrt{x_i x'_i}} \ .
+$$
+
+**Square-root scaling swaps the pair ($L_1$ distance, min) for the pair
+(squared Hellinger distance, geometric mean)**, and changes nothing else.
+
+Empirically, on the ZINC Morgan fingerprints described in @sec-experiment, the
+mean gap $T_{\mathrm{DP}}(\sqrt{x}, \sqrt{x'}) - T_{\mathrm{MM}}(x, x')$ is
+$+0.046$, and the mean _absolute_ error is also $0.046$: the two agree to all
+printed digits, which is the numerical signature of a purely one-sided error.
+The bound was also checked to be tight on exactly the pairs
+@thm-sqrt-bound predicts.
+
+### No elementwise transform is exact, even in one dimension
+
+::: {#thm-impossible}
+## Impossibility
+
+There is no function $\varphi: \mathbb{Z}_{\geq 0} \to \mathbb{R}$ such that
+$T_{\mathrm{DP}}(\varphi(x), \varphi(x')) = T_{\mathrm{MM}}(x, x')$ for all
+non-negative integer vectors $x, x'$, even when $d = 1$.
+:::
+
+::: {.callout-note collapse="true"}
+## Proof
+
+Take $d = 1$ and write $a = \varphi(1)$, $b = \varphi(2)$, $c = \varphi(4)$.
+None of these can be $0$ (otherwise the corresponding $T_{\mathrm{DP}}$ would be
+$0$ while $T_{\mathrm{MM}}$ is not). In one dimension, with $t = \varphi(v) /
+\varphi(u)$,
+
+$$
+T_{\mathrm{DP}} = \frac{\varphi(u)\varphi(v)}{\varphi(u)^2 + \varphi(v)^2 - \varphi(u)\varphi(v)}
+= \frac{t}{1 - t + t^2} \ .
+$$
+
+- $T_{\mathrm{MM}}(1, 2) = 1/2$ forces $t / (1 - t + t^2) = 1/2$, i.e. $t^2 - 3t
+  + 1 = 0$, so $b / a \in \{\tau, 1/\tau\}$ with $\tau = (3 + \sqrt{5}) / 2
+  \approx 2.618$.
+- $T_{\mathrm{MM}}(2, 4) = 1/2$ forces $c / b \in \{\tau, 1/\tau\}$ by the same
+  computation.
+- Therefore $c / a = (b / a)(c / b) \in \{\tau^2, 1, \tau^{-2}\} \approx
+  \{6.854, 1, 0.146\}$.
+- But $T_{\mathrm{MM}}(1, 4) = 1/4$ forces $s / (1 - s + s^2) = 1/4$ with $s = c
+  / a$, i.e. $s^2 - 5s + 1 = 0$, so $c / a \in \{(5 \pm \sqrt{21}) / 2\} \approx
+  \{4.791, 0.209\}$.
+
+The two requirements on $c / a$ are incompatible. $\blacksquare$
+:::
+
+Note that the proof assumes nothing about $\varphi$ (no monotonicity, no
+continuity) and only uses the counts $\{1, 2, 4\}$, which occur constantly in
+real fingerprints. Any elementwise transform can therefore only ever
+_approximate_ $T_{\mathrm{MM}}$; the experiment below measures how close the
+best one gets.
+
+### Why, and how to sidestep it
+
+The structural reason is a mismatch in smoothness. The distance term of
+$T_{\mathrm{MM}}$ is $\|x - x'\|_1$, which has a _kink_: near $u = v$ it grows
+like $|u - v|$. Any differentiable $\varphi$ produces the distance term $\sum_i
+(\varphi(x_i) - \varphi(x'_i))^2$, which grows like $\varphi'(u)^2 (u - v)^2$,
+i.e. to second order. **A smooth elementwise transform is necessarily too flat
+exactly where $T_{\mathrm{MM}}$ is sharpest**, and no choice of $\varphi$ fixes
+it, because the mismatch is in the order of contact rather than the scale. This
+predicts that the error of any elementwise transform concentrates on pairs
+sharing features at nearby but unequal counts.
+
+The fix is to leave the elementwise class. $\min(u, v)$ is a positive-definite
+kernel (the covariance of Brownian motion) and for integer counts it has a
+finite feature map:
+
+$$
+\min(u, v) = \sum_{k \geq 0} \mathbb{I}[u > k] \, \mathbb{I}[v > k] \ .
+$$
+
+Define the _unary_ (thermometer) encoding $\psi(x)_{i, k} = \mathbb{I}[x_i >
+k]$. Then $\langle \psi(x), \psi(x') \rangle = \sum_i \min(x_i, x'_i)$ and
+$\|\psi(x)\|^2 = \sum_i x_i$, _both exactly_, so both conditions in
+@eq-conditions are met at once:
+
+::: {#thm-unary}
+## Unary encoding is exact
+
+$T_{\mathrm{DP}}(\psi(x), \psi(x')) = T_{\mathrm{MM}}(x, x')$ identically, for
+every pair of non-negative integer vectors.
+:::
+
+The proof is immediate from @tbl-form: numerator and denominator agree term by
+term. The price is dimension: $\psi(x)$ has $d \times (\max \text{count})$
+coordinates. However, $\psi(x)$ is binary and sparse, with exactly $\sum_i x_i$
+non-zeros (about 46% more than the original fingerprint on the data below), and
+that is exactly the situation in which a CountSketch [@charikar2002finding] is
+cheap and unbiased. That combination is what
+[`fpsketch`](/blog/2026-08-31-fpsketch/) implements; the unary encoding is
+explained there too.
+
+## Experiment: the ceiling on elementwise transforms {#sec-experiment}
+
+**Setup.** 2000 distinct molecules were sampled from ZINC250k, and Morgan count
+fingerprints were computed with RDKit at radius 2 (radius 3 was also run and
+agrees throughout; only radius 2 is reported here) and folded to 2048
+dimensions, RDKit's default. Any fitting used 1000 "training" molecules; every
+number below is computed on the other 1000 held-out molecules, i.e. on about
+500,000 pairs. The reference is the exact $T_{\mathrm{MM}}$ of these
+fingerprints.
+
+**Metrics.** Mean absolute error (MAE) against $T_{\mathrm{MM}}$; MAE after a
+_monotone recalibration_ (an isotonic regression fitted on training pairs and
+applied to held-out pairs, which separates ordering error from calibration
+error); Spearman rank correlation $\rho$ between approximate and true
+similarities; and top-10 neighbour recall (the average overlap between each
+molecule's ten nearest neighbours under the true and approximate similarity).
+
+**Transforms.** Powers $x^p$ for $p \in [0.05, 1.5]$, binary $\mathbb{I}[x >
+0]$, $\sqrt{\log(1 + \alpha x)}$ for several $\alpha$, and hard and soft
+saturations $\sqrt{\min(x, c)}$ and $\sqrt{x / (1 + x / c)}$. In addition, since
+counts here never exceed 15, a **free-form lookup table** $\varphi(1), \ldots,
+\varphi(15)$ was fitted directly on training pairs (with $\varphi(1) = 1$) to
+minimise MAE or to maximise Spearman $\rho$. The fitted lookup table is an
+_upper bound on the entire elementwise class_: no elementwise transform can do
+better on the training objective, and the train/held-out gap was about
+$0.0005$, so the held-out numbers are representative.
+
+### Results
+
+| transform | MAE | MAE after recalibration | Spearman $\rho$ | recall@10 |
+|---|---|---|---|---|
+| raw counts ($\varphi(x) = x$) | 0.159 | 0.018 | 0.907 | 0.59 |
+| binary | 0.038 | 0.025 | 0.803 | 0.58 |
+| $x^{0.3}$ (best raw MAE) | 0.018 | 0.017 | 0.916 | 0.65 |
+| $\sqrt{x}$ | 0.046 | 0.012 | 0.960 | 0.70 |
+| $x^{0.55}$ (best ranking) | 0.057 | 0.011 | 0.963 | 0.71 |
+| **best possible elementwise** (fitted lookup table) | **0.016** | **0.011** | **0.969** | **0.72** |
+| CountSketch of unary encoding, $d = 2048$ (`fpsketch`) | 0.010 | — | 0.973 | 0.81 |
+| unary encoding, exact ($d = 30720$) | 0 | — | 1 | 1 |
+
+: Held-out accuracy of $T_{\mathrm{DP}}$ on transformed fingerprints as an approximation of $T_{\mathrm{MM}}$ (ZINC, Morgan radius 2, 2048 bits, 1000 held-out molecules). The lookup-table row reports the best value in each column across the MAE- and $\rho$-optimised tables. {#tbl-results}
+
+![Results of the elementwise sweep (reproduced from the original study; not rendered by this post). Left: MAE against $T_{\mathrm{MM}}$ as a function of the power $p$ in $\varphi(x) = x^p$, before and after monotone recalibration, with the fitted lookup-table ceiling as horizontal lines. Middle: Spearman $\rho$ and top-10 recall against $p$. Right: the shape of the optimal lookup table under a monotonicity constraint, compared with $x^{0.25}$ and $x^{0.5}$. The vertical red line marks $p = 0.5$.](fig-elementwise-ceiling.png){#fig-ceiling}
+
+Three findings stand out.
+
+1. **The tension between pointwise error and ranking is a calibration
+   artifact.** $x^{0.25}$ to $x^{0.3}$ wins on raw MAE only because it happens
+   to cancel bias: its errors are a mix of over- and under-estimates that
+   average out. $x^{0.5}$ to $x^{0.6}$ has about four times the raw MAE but far
+   better _ordering_ ($\rho$ 0.96 vs 0.92, recall 0.70 vs 0.65). After a
+   monotone recalibration, $x^{0.55}$ reaches MAE 0.011 while $x^{0.3}$ only
+   reaches 0.017. In other words, most of the square root's apparent error is
+   a systematic, removable over-estimate, exactly the one-sided bias
+   @thm-sqrt-bound predicts. **$\sqrt{x}$ is genuinely the better transform.**
+2. **A plain power law essentially saturates the class.** The optimal lookup
+   table reaches MAE 0.0156 versus 0.0181 for $x^{0.3}$ (13% better) and $\rho
+   = 0.9685$ versus $0.9628$ for $x^{0.6}$ (0.6% better). This is the empirical
+   counterpart of @thm-impossible: **there is nothing meaningful to gain from
+   a cleverer elementwise transform.**
+3. **The optimal transform has an interpretable shape.** The ranking-optimal
+   monotone lookup table (right panel of @fig-ceiling) rises like
+   $x^{0.55}$ up to a count of about 5 and then saturates flat at about 3.0
+   (3.03 at radius 2, 3.00 at radius 3, so this is not fitting noise). Counts
+   above roughly 6 carry no additional useful signal for reproducing
+   $T_{\mathrm{MM}}$. The log-scaling reported to work well by @huber2026count
+   is qualitatively this shape: concave, and nearly flat for large counts.
+
+### A caveat about the reference
+
+The "true" $T_{\mathrm{MM}}$ in @tbl-results is that of the 2048-bit _folded_
+fingerprint, because that is what practitioners typically compute. In a
+follow-up, the same comparison was made against the $T_{\mathrm{MM}}$ of the
+_unfolded_ fingerprint (RDKit's full sparse count fingerprint). Simply using
+a standard 2048-bit count fingerprint already costs MAE about 0.007 against
+that reference, and 1024 bits costs 0.013. This is comparable to the entire
+elementwise ceiling. So the numbers above are a ceiling relative to a
+representation that is itself lossy. Sketching the _unfolded_ fingerprint
+directly, in a single hashing step, avoids this: it is what `fpsketch` does by
+default, and it beat fold-then-sketch on every metric at every dimension in
+that follow-up.
+
+## Leaving the elementwise class
+
+The last two rows of @tbl-results are the point of the whole exercise. The
+exact unary encoding reproduces $T_{\mathrm{MM}}$ with zero error, but costs
+$15 \times 2048 = 30720$ dimensions. A CountSketch of the unary encoding at
+the _same_ 2048 dimensions as the original fingerprint beats the theoretical
+ceiling of every elementwise transform on every metric: MAE 35% lower, top-10
+recall 12% higher, and $\rho$ higher. At 4096 dimensions it reaches MAE 0.006,
+about 2.6 times better than anything elementwise can achieve. This is not
+a property of the specific sketch: the unary encoding turns the min-max
+similarity into an inner product, after which any unbiased inner-product
+sketch will do, and CountSketch is simply the cheapest one that never needs to
+materialise the input dimension.
+
+The one thing the unary encoding gives up is differentiability in the counts
+$x$. If you need gradients with respect to the counts, for example to learn
+per-feature weights, an elementwise transform is still what you want, and
+$\sqrt{x}$ is the one to use.
+
+## Verify it yourself {#sec-verify}
+
+The study's code is not published, but the headline claims are easy to check.
+The cell below reproduces the power sweep, the binary and `fpsketch` baselines,
+and the one-sided bound of @thm-sqrt-bound on the 100 ZINC molecules used in
+the `fpsketch` post. Two differences from the study: the fingerprints here are
+_unfolded_ (so the reference is the true $T_{\mathrm{MM}}$), and there are only
+4950 pairs, so the numbers differ slightly. You can run it with
+
+```{.bash}
+pip install "fpsketch[chem]" numpy scipy matplotlib
+```
+
+```{python}
+#| label: verify-compute
+#| code-summary: "Code: compute T_MM, T_DP of rescaled counts, and T_DP of fpsketch on 100 ZINC molecules"
+#| code-fold: true
+
+import numpy as np
+from scipy.stats import spearmanr
+from rdkit import Chem
+from rdkit.Chem import rdFingerprintGenerator
+from fpsketch import encode_sparse
+
+# Unfolded Morgan count fingerprints, radius 2
+with open("./ZINC-100.smiles") as f:
+   smiles = [line.strip() for line in f]
+mols = [Chem.MolFromSmiles(s) for s in smiles]
+gen = rdFingerprintGenerator.GetMorganGenerator(radius=2)
+fp_dicts = [gen.GetSparseCountFingerprint(m).GetNonzeroElements() for m in mols]
+
+# Dense count matrix over the observed features
+features = sorted(set().union(*[fp.keys() for fp in fp_dicts]))
+col = {f: i for i, f in enumerate(features)}
+X = np.zeros((len(mols), len(features)))
+for row, fp in enumerate(fp_dicts):
+   for f, count in fp.items():
+      X[row, col[f]] = count
+
+def t_mm(X):
+   smin = np.minimum(X[:, None, :], X[None, :, :]).sum(-1)
+   smax = np.maximum(X[:, None, :], X[None, :, :]).sum(-1)
+   return smin / smax
+
+def t_dp(Z):
+   gram = Z @ Z.T
+   sq_norms = np.diag(gram)
+   return gram / (sq_norms[:, None] + sq_norms[None, :] - gram)
+
+iu = np.triu_indices(len(mols), 1)  # distinct pairs
+K_true = t_mm(X)
+
+def evaluate(K_approx):
+   err = K_approx[iu] - K_true[iu]
+   return dict(
+      mae=np.abs(err).mean(),
+      bias=err.mean(),
+      spearman=spearmanr(K_approx[iu], K_true[iu]).statistic,
+   )
+
+powers = [0.1, 0.2, 0.3, 0.4, 0.5, 0.55, 0.6, 0.7, 0.8, 1.0, 1.25, 1.5]
+results = {f"x^{p}": evaluate(t_dp(X ** p)) for p in powers}
+results["binary"] = evaluate(t_dp((X > 0).astype(float)))
+for d in [1024, 2048, 4096]:
+   results[f"fpsketch d={d}"] = evaluate(t_dp(encode_sparse(fp_dicts, dim=d)))
+
+print(f"{len(mols)} molecules, {len(features)} distinct features, max count {int(X.max())}")
+print(f"{'transform':<16}{'MAE':>8}{'bias':>9}{'Spearman':>10}")
+for name, r in results.items():
+   print(f"{name:<16}{r['mae']:8.4f}{r['bias']:+9.4f}{r['spearman']:10.4f}")
+
+# The one-sided bound: T_DP(sqrt x, sqrt x') >= T_MM(x, x') on every pair
+gap = t_dp(np.sqrt(X)) - K_true
+assert gap.min() >= -1e-12
+print(f"\nsqrt gap: min {gap.min():.1e}, mean over pairs {gap[iu].mean():.4f}")
+```
+
+The ordering from @tbl-results reproduces: raw counts are by far the worst,
+$x^{0.3}$ minimises raw MAE, $x^{0.5}$ to $x^{0.6}$ maximises rank agreement,
+and `fpsketch` at 2048 dimensions beats all of them on both. The bias column
+shows the square root's error is entirely positive, and the assertion confirms
+the bound holds on every single pair. @fig-verify plots the sweep.
+
+```{python}
+#| label: fig-verify
+#| fig-cap: "Reproduction of the power sweep on 100 unfolded ZINC fingerprints: MAE (left) and Spearman $\\rho$ (right) of $T_{\\mathrm{DP}}(x^p, x'^p)$ against $T_{\\mathrm{MM}}(x, x')$, with binary and fpsketch ($d = 2048$) baselines as horizontal lines."
+#| code-summary: "Code: plot MAE and Spearman rho against the power p (boilerplate, hidden by default)"
+#| code-fold: true
+
+import matplotlib.pyplot as plt
+
+plt.rcParams.update({
+   "figure.dpi": 120,
+   "font.size": 11,
+   "axes.spines.top": False,
+   "axes.spines.right": False,
+   "axes.grid": True,
+   "grid.alpha": 0.3,
+   "legend.frameon": False,
+})
+COLORS = {"power": "#7570b3", "binary": "#d95f02", "fpsketch": "#1b9e77"}
+
+fig, axes = plt.subplots(1, 2, figsize=(6.4, 3.0))
+for ax, metric, label in [(axes[0], "mae", "MAE vs $T_{MM}$"), (axes[1], "spearman", "Spearman $\\rho$")]:
+   ax.plot(powers, [results[f"x^{p}"][metric] for p in powers], "o-", color=COLORS["power"], label="$x^p$")
+   ax.axhline(results["binary"][metric], color=COLORS["binary"], linestyle="--", label="binary")
+   ax.axhline(results["fpsketch d=2048"][metric], color=COLORS["fpsketch"], linestyle="-", label="fpsketch, $d=2048$")
+   ax.axvline(0.5, color="gray", linewidth=1, alpha=0.5)
+   ax.set_xlabel("power $p$")
+   ax.set_ylabel(label)
+axes[0].set_yscale("log")
+fig.tight_layout(rect=[0, 0.12, 1, 1])
+handles, labels = axes[0].get_legend_handles_labels()
+fig.legend(handles, labels, loc="lower center", ncol=3, frameon=False)
+plt.show()
+```
+
+## Recommendations
+
+- **If you are locked into an elementwise transform**, for example because
+  you need differentiability with respect to the counts, **use $\sqrt{x}$**,
+  or $x^{0.55}$ if only the ordering of similarities matters. Its error is
+  provably one-sided, it is within about 5% of the elementwise ceiling on
+  ranking metrics, and a monotone recalibration removes most of its remaining
+  error (MAE 0.046 to 0.012).
+- **Do not use raw counts** with $T_{\mathrm{DP}}$ as a stand-in for
+  $T_{\mathrm{MM}}$: MAE 0.159, and the error in the similarity matrix is
+  larger than the matrix itself in operator norm.
+- **Do not search for a cleverer elementwise $\varphi$.** The class is capped
+  at MAE about 0.016 and $\rho$ about 0.969 on this data, and a plain power
+  law already reaches it.
+- **If you are not locked into an elementwise transform, use the unary
+  encoding**, sketched down to a convenient dimension with
+  [`fpsketch`](/blog/2026-08-31-fpsketch/). At the same dimension as the
+  original fingerprint it beats the entire elementwise class on every metric.
+
+One caveat on the framing. Table 1 of @tripp2023tanimoto found that
+$T_{\mathrm{DP}}$ on raw counts _outperformed_ $T_{\mathrm{MM}}$ on some
+downstream regression tasks. Nothing here contradicts that: this post asks
+only how to make $T_{\mathrm{DP}}$ _reproduce_ $T_{\mathrm{MM}}$, not which of
+the two is the better kernel. If $T_{\mathrm{DP}}$ on some transform of the
+counts is genuinely a better inductive bias, faithfully approximating
+$T_{\mathrm{MM}}$ is not always what you want. Measuring downstream accuracy
+for these encodings, rather than kernel fidelity, is the natural next step and
+is not covered by this study.
