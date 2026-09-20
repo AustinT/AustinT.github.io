@@ -10,7 +10,1050 @@
 <atom:link href="https://austintripp.ca/blog/all/index.xml" rel="self" type="application/rss+xml"/>
 <description>Austin Tripp&#39;s personal website</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Mon, 31 Aug 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 18 Sep 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Square-root scaling of count fingerprints: the best elementwise trick, and why it can’t be exact</title>
+  <dc:creator>Austin Tripp</dc:creator>
+  <dc:creator>Claude Fable</dc:creator>
+  <link>https://austintripp.ca/blog/2026-09-18-sqrt-count-fingerprints/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="post-badges">
+<p><span class="post-badge badge-confidence-medium" title="I checked the theory myself. I reviewed the experiments like a paper review, but did not audit the code.">⛅ Medium confidence</span> <span class="post-badge badge-ai-co-written" title="Everything after the callout is written by Claude Fable.">🤖 AI co-written</span> <span class="post-badge badge-effort-medium" title="Mostly done by Claude">🔧 Moderate effort</span> <span class="post-badge badge-originality-medium" title="Square-root scaling itself is folklore. I have not seen the one-sided bound, the impossibility proof, or the ceiling measurement elsewhere.">🧩 Medium originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Austin’s intro to a ≈100% AI generated post
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This post explains an idea that I think is worse than <code>fpsketch</code>, but still worth putting up on the internet in some form, so I wrote up a post with Claude (hence the distinctive AI writing style). Everything below is AI-generated.</p>
+</div>
+</div>
+<section id="introduction" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<p>This post is a companion to <a href="../../blog/2026-08-31-fpsketch/">my post on <code>fpsketch</code></a>. As I explained in a footnote there, <code>fpsketch</code> came out of a study that started with a different question. In my Tanimoto random features paper <span class="citation" data-cites="tripp2023tanimoto">(Tripp et al. 2023)</span> I had briefly tried <em>square-root scaling</em> of count fingerprints, so that the fast dot-product Tanimoto similarity would better approximate the standard min-max Tanimoto similarity. When <span class="citation" data-cites="huber2026count">Huber and Pollmann (2026)</span> later reported that <em>log</em>-scaling of counts was often beneficial, I asked Claude to investigate the question properly: what is the best elementwise rescaling, and how close can it get?</p>
+<p>The answers turned out to be cleaner than I expected:</p>
+<ol type="1">
+<li><strong>Square-root scaling is provably the “right” elementwise idea.</strong> It makes the denominators match exactly, and its error is one-sided (it always over-estimates the true similarity).</li>
+<li><strong>No elementwise rescaling can be exact</strong>, and the whole class has a measurable ceiling. A plain power law already reaches it, so there is no cleverer transform waiting to be found.</li>
+<li><strong>Leaving the elementwise class fixes the problem</strong>, which is what <code>fpsketch</code> does.</li>
+</ol>
+<p>If you only need the recommendation: if you must rescale counts elementwise, use <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Bx%7D"> (or <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.55%7D"> if only the <em>ranking</em> of similarities matters). However, most likely you will never be constrained to elementwise rescaling of counts, so in that case use <code>fpsketch</code>.</p>
+<hr>
+</section>
+<section id="setup" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="setup"><span class="header-section-number">2</span> Setup</h2>
+<p>For non-negative vectors <img src="https://latex.codecogs.com/png.latex?x,%20x'%20%5Cin%20%5Cmathbb%7BR%7D%5Ed_%7B%5Cgeq%200%7D">, define the min-max (Jaccard) Tanimoto similarity and the dot-product Tanimoto similarity:</p>
+<p><span id="eq-mm"><img src="https://latex.codecogs.com/png.latex?%0AT_%7B%5Cmathrm%7BMM%7D%7D(x,%20x')%20=%20%5Cfrac%7B%5Csum_i%20%5Cmin(x_i,%20x'_i)%7D%7B%5Csum_i%20%5Cmax(x_i,%20x'_i)%7D%20%5C%20,%0A%5Ctag%7B1%7D"></span></p>
+<p><span id="eq-dp"><img src="https://latex.codecogs.com/png.latex?%0AT_%7B%5Cmathrm%7BDP%7D%7D(x,%20x')%20=%20%5Cfrac%7Bx%20%5Ccdot%20x'%7D%7B%5C%7Cx%5C%7C%5E2%20+%20%5C%7Cx'%5C%7C%5E2%20-%20x%20%5Ccdot%20x'%7D%20%5C%20.%0A%5Ctag%7B2%7D"></span></p>
+<p><img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D"> is the standard similarity for count fingerprints in cheminformatics, and it is what RDKit computes when you call <code>BulkTanimotoSimilarity</code> on count fingerprints. <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D"> is far cheaper because a full similarity matrix is one matrix product, and it has an inner-product structure that makes it compatible with sketching and random features <span class="citation" data-cites="tripp2023tanimoto">(Tripp et al. 2023)</span>. The two coincide on binary vectors but not on counts.</p>
+<p>The question in this post is:</p>
+<blockquote class="blockquote">
+<p>Is there an elementwise map <img src="https://latex.codecogs.com/png.latex?%5Cvarphi:%20%5Cmathbb%7BR%7D_%7B%5Cgeq%200%7D%20%5Cto%20%5Cmathbb%7BR%7D"> (applied coordinate by coordinate) such that <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D(%5Cvarphi(x),%20%5Cvarphi(x'))%20%5Capprox%20T_%7B%5Cmathrm%7BMM%7D%7D(x,%20x')"> for count fingerprints?</p>
+</blockquote>
+<p>Two remarks before starting. First, <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D"> is invariant to scaling both inputs by the same constant, so we may fix <img src="https://latex.codecogs.com/png.latex?%5Cvarphi(1)%20=%201"> without loss of generality. Second, for integer counts, <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> is nothing more than a lookup table <img src="https://latex.codecogs.com/png.latex?%5Cvarphi(1),%20%5Cvarphi(2),%20%5Cldots">: this is what makes it possible to measure the <em>best possible</em> elementwise transform later on.</p>
+</section>
+<section id="theory" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="theory"><span class="header-section-number">3</span> Theory</h2>
+<section id="both-similarities-have-the-same-functional-form" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="both-similarities-have-the-same-functional-form"><span class="header-section-number">3.1</span> Both similarities have the same functional form</h3>
+<p>Since <img src="https://latex.codecogs.com/png.latex?%5Cmin(a,%20b)%20+%20%5Cmax(a,%20b)%20=%20a%20+%20b">, the denominator of Equation&nbsp;1 can be rewritten as <img src="https://latex.codecogs.com/png.latex?%5Csum_i%20%5Cmax(x_i,%20x'_i)%20=%20%5Csum_i%20x_i%20+%20%5Csum_i%20x'_i%20-%20%5Csum_i%0A%5Cmin(x_i,%20x'_i)">. Both similarities are therefore instances of the same formula,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AF(s)%20=%20%5Cfrac%7Bs%7D%7Ba%20+%20b%20-%20s%7D%20%5C%20,%0A"></p>
+<p>with an “overlap” term <img src="https://latex.codecogs.com/png.latex?s"> and “self” terms <img src="https://latex.codecogs.com/png.latex?a,%20b">:</p>
+<div id="tbl-form" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-form-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: The two similarities differ only in how the overlap and self terms are computed.
+</figcaption>
+<div aria-describedby="tbl-form-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>overlap <img src="https://latex.codecogs.com/png.latex?s"></th>
+<th>self term <img src="https://latex.codecogs.com/png.latex?a"> (and likewise <img src="https://latex.codecogs.com/png.latex?b">)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D(x,%20x')"></td>
+<td><img src="https://latex.codecogs.com/png.latex?%5Csum_i%20%5Cmin(x_i,%20x'_i)"></td>
+<td><img src="https://latex.codecogs.com/png.latex?%5Csum_i%20x_i%20=%20%5C%7Cx%5C%7C_1"></td>
+</tr>
+<tr class="even">
+<td><img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D(%5Cvarphi(x),%20%5Cvarphi(x'))"></td>
+<td><img src="https://latex.codecogs.com/png.latex?%5Csum_i%20%5Cvarphi(x_i)%5Cvarphi(x'_i)"></td>
+<td><img src="https://latex.codecogs.com/png.latex?%5Csum_i%20%5Cvarphi(x_i)%5E2"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><img src="https://latex.codecogs.com/png.latex?F"> is strictly increasing in <img src="https://latex.codecogs.com/png.latex?s"> on <img src="https://latex.codecogs.com/png.latex?0%20%5Cleq%20s%20%3C%20a%20+%20b">. So matching the two similarities reduces to matching two <em>elementwise</em> quantities:</p>
+<p><span id="eq-conditions"><img src="https://latex.codecogs.com/png.latex?%0A%5Cvarphi(u)%5Cvarphi(v)%20%5Cleftrightarrow%20%5Cmin(u,%20v)%0A%5Cqquad%20%5Ctext%7Band%7D%20%5Cqquad%0A%5Cvarphi(u)%5E2%20%5Cleftrightarrow%20u%20%5C%20.%0A%5Ctag%7B3%7D"></span></p>
+<p>Everything below follows from this observation.</p>
+</section>
+<section id="square-root-exact-self-term-one-sided-error" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="square-root-exact-self-term-one-sided-error"><span class="header-section-number">3.2</span> Square root: exact self term, one-sided error</h3>
+<p>The transform <img src="https://latex.codecogs.com/png.latex?%5Cvarphi(u)%20=%20%5Csqrt%7Bu%7D"> satisfies the second condition in Equation&nbsp;3 <em>exactly</em>: <img src="https://latex.codecogs.com/png.latex?%5Cvarphi(u)%5E2%20=%20u">, so <img src="https://latex.codecogs.com/png.latex?%5C%7C%5Csqrt%7Bx%7D%5C%7C%5E2%20=%20%5C%7Cx%5C%7C_1"> and the denominators of <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D(%5Csqrt%7Bx%7D,%20%5Csqrt%7Bx'%7D)"> and <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D(x,%20x')"> share the same <img src="https://latex.codecogs.com/png.latex?a%20+%20b">. The only remaining mismatch is in the overlap: a geometric mean <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Buv%7D"> in place of <img src="https://latex.codecogs.com/png.latex?%5Cmin(u,%20v)">. This has a clean consequence.</p>
+<div id="thm-sqrt-bound" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Square-root scaling never under-estimates)</strong></span> For all <img src="https://latex.codecogs.com/png.latex?x,%20x'%20%5Cin%20%5Cmathbb%7BR%7D%5Ed_%7B%5Cgeq%200%7D">, <img src="https://latex.codecogs.com/png.latex?%0AT_%7B%5Cmathrm%7BDP%7D%7D(%5Csqrt%7Bx%7D,%20%5Csqrt%7Bx'%7D)%20%5Cgeq%20T_%7B%5Cmathrm%7BMM%7D%7D(x,%20x')%20%5C%20,%0A"> with equality if and only if every coordinate has <img src="https://latex.codecogs.com/png.latex?x_i%20=%20x'_i"> or <img src="https://latex.codecogs.com/png.latex?%5Cmin(x_i,%20x'_i)%20=%200">.</p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>By the AM-GM inequality, <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Buv%7D%20%5Cgeq%20%5Cmin(u,%20v)"> for <img src="https://latex.codecogs.com/png.latex?u,%20v%20%5Cgeq%200">, with equality iff <img src="https://latex.codecogs.com/png.latex?u%20=%20v"> or <img src="https://latex.codecogs.com/png.latex?%5Cmin(u,%20v)%20=%200">. Summing over coordinates, <img src="https://latex.codecogs.com/png.latex?s_%7B%5Cmathrm%7BDP%7D%7D%20:=%20%5Csum_i%20%5Csqrt%7Bx_i%20x'_i%7D%20%5Cgeq%20%5Csum_i%20%5Cmin(x_i,%20x'_i)%20=:%0As_%7B%5Cmathrm%7BMM%7D%7D">. Both similarities equal <img src="https://latex.codecogs.com/png.latex?F(s)%20=%20s%20/%20(A%20-%20s)"> with the <em>same</em> <img src="https://latex.codecogs.com/png.latex?A%20=%20%5Csum_i%20x_i%20+%20%5Csum_i%20x'_i"> (because <img src="https://latex.codecogs.com/png.latex?%5Cvarphi(u)%5E2%20=%20u">), and <img src="https://latex.codecogs.com/png.latex?F"> is strictly increasing. Hence <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D(%5Csqrt%7Bx%7D,%20%5Csqrt%7Bx'%7D)%20=%20F(s_%7B%5Cmathrm%7BDP%7D%7D)%0A%5Cgeq%20F(s_%7B%5Cmathrm%7BMM%7D%7D)%20=%20T_%7B%5Cmathrm%7BMM%7D%7D(x,%20x')">, with equality iff <img src="https://latex.codecogs.com/png.latex?s_%7B%5Cmathrm%7BDP%7D%7D%20=%20s_%7B%5Cmathrm%7BMM%7D%7D">, i.e.&nbsp;iff the AM-GM equality condition holds in every coordinate. <img src="https://latex.codecogs.com/png.latex?%5Cblacksquare"></p>
+</div>
+</div>
+</div>
+<p>There is also a pleasant distance interpretation. Using <img src="https://latex.codecogs.com/png.latex?%5Csum%20%5Cmax%20-%20%5Csum%20%5Cmin%0A=%20%5C%7Cx%20-%20x'%5C%7C_1">, and writing <img src="https://latex.codecogs.com/png.latex?H%5E2(x,%20x')%20=%20%5Csum_i%20(%5Csqrt%7Bx_i%7D%20-%20%5Csqrt%7Bx'_i%7D)%5E2"> for the squared Hellinger distance,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AT_%7B%5Cmathrm%7BMM%7D%7D(x,%20x')%20=%20%5Cfrac%7B1%7D%7B1%20+%20%5C%7Cx%20-%20x'%5C%7C_1%20%5Cbig/%20%5Csum_i%20%5Cmin(x_i,%20x'_i)%7D%0A%5C%20,%20%5Cqquad%0AT_%7B%5Cmathrm%7BDP%7D%7D(%5Csqrt%7Bx%7D,%20%5Csqrt%7Bx'%7D)%20=%20%5Cfrac%7B1%7D%7B1%20+%20H%5E2(x,%20x')%20%5Cbig/%20%5Csum_i%20%5Csqrt%7Bx_i%20x'_i%7D%7D%20%5C%20.%0A"></p>
+<p><strong>Square-root scaling swaps the pair (<img src="https://latex.codecogs.com/png.latex?L_1"> distance, min) for the pair (squared Hellinger distance, geometric mean)</strong>, and changes nothing else.</p>
+<p>Empirically, on the ZINC Morgan fingerprints described in Section&nbsp;4, the mean gap <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D(%5Csqrt%7Bx%7D,%20%5Csqrt%7Bx'%7D)%20-%20T_%7B%5Cmathrm%7BMM%7D%7D(x,%20x')"> is <img src="https://latex.codecogs.com/png.latex?+0.046">, and the mean <em>absolute</em> error is also <img src="https://latex.codecogs.com/png.latex?0.046">: the two agree to all printed digits, which is the numerical signature of a purely one-sided error. The bound was also checked to be tight on exactly the pairs Theorem&nbsp;1 predicts.</p>
+</section>
+<section id="no-elementwise-transform-is-exact-even-in-one-dimension" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="no-elementwise-transform-is-exact-even-in-one-dimension"><span class="header-section-number">3.3</span> No elementwise transform is exact, even in one dimension</h3>
+<div id="thm-impossible" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2 (Impossibility)</strong></span> There is no function <img src="https://latex.codecogs.com/png.latex?%5Cvarphi:%20%5Cmathbb%7BZ%7D_%7B%5Cgeq%200%7D%20%5Cto%20%5Cmathbb%7BR%7D"> such that <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D(%5Cvarphi(x),%20%5Cvarphi(x'))%20=%20T_%7B%5Cmathrm%7BMM%7D%7D(x,%20x')"> for all non-negative integer vectors <img src="https://latex.codecogs.com/png.latex?x,%20x'">, even when <img src="https://latex.codecogs.com/png.latex?d%20=%201">.</p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Take <img src="https://latex.codecogs.com/png.latex?d%20=%201"> and write <img src="https://latex.codecogs.com/png.latex?a%20=%20%5Cvarphi(1)">, <img src="https://latex.codecogs.com/png.latex?b%20=%20%5Cvarphi(2)">, <img src="https://latex.codecogs.com/png.latex?c%20=%20%5Cvarphi(4)">. None of these can be <img src="https://latex.codecogs.com/png.latex?0"> (otherwise the corresponding <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D"> would be <img src="https://latex.codecogs.com/png.latex?0"> while <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D"> is not). In one dimension, with <img src="https://latex.codecogs.com/png.latex?t%20=%20%5Cvarphi(v)%20/%0A%5Cvarphi(u)">,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AT_%7B%5Cmathrm%7BDP%7D%7D%20=%20%5Cfrac%7B%5Cvarphi(u)%5Cvarphi(v)%7D%7B%5Cvarphi(u)%5E2%20+%20%5Cvarphi(v)%5E2%20-%20%5Cvarphi(u)%5Cvarphi(v)%7D%0A=%20%5Cfrac%7Bt%7D%7B1%20-%20t%20+%20t%5E2%7D%20%5C%20.%0A"></p>
+<ul>
+<li><img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D(1,%202)%20=%201/2"> forces <img src="https://latex.codecogs.com/png.latex?t%20/%20(1%20-%20t%20+%20t%5E2)%20=%201/2">, i.e.&nbsp;<img src="https://latex.codecogs.com/png.latex?t%5E2%20-%203t%0A+%201%20=%200">, so <img src="https://latex.codecogs.com/png.latex?b%20/%20a%20%5Cin%20%5C%7B%5Ctau,%201/%5Ctau%5C%7D"> with <img src="https://latex.codecogs.com/png.latex?%5Ctau%20=%20(3%20+%20%5Csqrt%7B5%7D)%20/%202%0A%5Capprox%202.618">.</li>
+<li><img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D(2,%204)%20=%201/2"> forces <img src="https://latex.codecogs.com/png.latex?c%20/%20b%20%5Cin%20%5C%7B%5Ctau,%201/%5Ctau%5C%7D"> by the same computation.</li>
+<li>Therefore <img src="https://latex.codecogs.com/png.latex?c%20/%20a%20=%20(b%20/%20a)(c%20/%20b)%20%5Cin%20%5C%7B%5Ctau%5E2,%201,%20%5Ctau%5E%7B-2%7D%5C%7D%20%5Capprox%0A%5C%7B6.854,%201,%200.146%5C%7D">.</li>
+<li>But <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D(1,%204)%20=%201/4"> forces <img src="https://latex.codecogs.com/png.latex?s%20/%20(1%20-%20s%20+%20s%5E2)%20=%201/4"> with <img src="https://latex.codecogs.com/png.latex?s%20=%20c%0A/%20a">, i.e.&nbsp;<img src="https://latex.codecogs.com/png.latex?s%5E2%20-%205s%20+%201%20=%200">, so <img src="https://latex.codecogs.com/png.latex?c%20/%20a%20%5Cin%20%5C%7B(5%20%5Cpm%20%5Csqrt%7B21%7D)%20/%202%5C%7D%20%5Capprox%0A%5C%7B4.791,%200.209%5C%7D">.</li>
+</ul>
+<p>The two requirements on <img src="https://latex.codecogs.com/png.latex?c%20/%20a"> are incompatible. <img src="https://latex.codecogs.com/png.latex?%5Cblacksquare"></p>
+</div>
+</div>
+</div>
+<p>Note that the proof assumes nothing about <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> (no monotonicity, no continuity) and only uses the counts <img src="https://latex.codecogs.com/png.latex?%5C%7B1,%202,%204%5C%7D">, which occur constantly in real fingerprints. Any elementwise transform can therefore only ever <em>approximate</em> <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D">; the experiment below measures how close the best one gets.</p>
+</section>
+<section id="why-and-how-to-sidestep-it" class="level3" data-number="3.4">
+<h3 data-number="3.4" class="anchored" data-anchor-id="why-and-how-to-sidestep-it"><span class="header-section-number">3.4</span> Why, and how to sidestep it</h3>
+<p>The structural reason is a mismatch in smoothness. The distance term of <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D"> is <img src="https://latex.codecogs.com/png.latex?%5C%7Cx%20-%20x'%5C%7C_1">, which has a <em>kink</em>: near <img src="https://latex.codecogs.com/png.latex?u%20=%20v"> it grows like <img src="https://latex.codecogs.com/png.latex?%7Cu%20-%20v%7C">. Any differentiable <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> produces the distance term <img src="https://latex.codecogs.com/png.latex?%5Csum_i%0A(%5Cvarphi(x_i)%20-%20%5Cvarphi(x'_i))%5E2">, which grows like <img src="https://latex.codecogs.com/png.latex?%5Cvarphi'(u)%5E2%20(u%20-%20v)%5E2">, i.e.&nbsp;to second order. <strong>A smooth elementwise transform is necessarily too flat exactly where <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D"> is sharpest</strong>, and no choice of <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> fixes it, because the mismatch is in the order of contact rather than the scale. This predicts that the error of any elementwise transform concentrates on pairs sharing features at nearby but unequal counts.</p>
+<p>The fix is to leave the elementwise class. <img src="https://latex.codecogs.com/png.latex?%5Cmin(u,%20v)"> is a positive-definite kernel (the covariance of Brownian motion) and for integer counts it has a finite feature map:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cmin(u,%20v)%20=%20%5Csum_%7Bk%20%5Cgeq%200%7D%20%5Cmathbb%7BI%7D%5Bu%20%3E%20k%5D%20%5C,%20%5Cmathbb%7BI%7D%5Bv%20%3E%20k%5D%20%5C%20.%0A"></p>
+<p>Define the <em>unary</em> (thermometer) encoding <img src="https://latex.codecogs.com/png.latex?%5Cpsi(x)_%7Bi,%20k%7D%20=%20%5Cmathbb%7BI%7D%5Bx_i%20%3E%0Ak%5D">. Then <img src="https://latex.codecogs.com/png.latex?%5Clangle%20%5Cpsi(x),%20%5Cpsi(x')%20%5Crangle%20=%20%5Csum_i%20%5Cmin(x_i,%20x'_i)"> and <img src="https://latex.codecogs.com/png.latex?%5C%7C%5Cpsi(x)%5C%7C%5E2%20=%20%5Csum_i%20x_i">, <em>both exactly</em>, so both conditions in Equation&nbsp;3 are met at once:</p>
+<div id="thm-unary" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 3 (Unary encoding is exact)</strong></span> <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D(%5Cpsi(x),%20%5Cpsi(x'))%20=%20T_%7B%5Cmathrm%7BMM%7D%7D(x,%20x')"> identically, for every pair of non-negative integer vectors.</p>
+</div>
+<p>The proof is immediate from Table&nbsp;1: numerator and denominator agree term by term. The price is dimension: <img src="https://latex.codecogs.com/png.latex?%5Cpsi(x)"> has <img src="https://latex.codecogs.com/png.latex?d%20%5Ctimes%20(%5Cmax%20%5Ctext%7Bcount%7D)"> coordinates. However, <img src="https://latex.codecogs.com/png.latex?%5Cpsi(x)"> is binary and sparse, with exactly <img src="https://latex.codecogs.com/png.latex?%5Csum_i%20x_i"> non-zeros (about 46% more than the original fingerprint on the data below), and that is exactly the situation in which a CountSketch <span class="citation" data-cites="charikar2002finding">(Charikar et al. 2002)</span> is cheap and unbiased. That combination is what <a href="../../blog/2026-08-31-fpsketch/"><code>fpsketch</code></a> implements; the unary encoding is explained there too.</p>
+</section>
+</section>
+<section id="sec-experiment" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="sec-experiment"><span class="header-section-number">4</span> Experiment: the ceiling on elementwise transforms</h2>
+<p><strong>Setup.</strong> 2000 distinct molecules were sampled from ZINC250k, and Morgan count fingerprints were computed with RDKit at radius 2 (radius 3 was also run and agrees throughout; only radius 2 is reported here) and folded to 2048 dimensions, RDKit’s default. Any fitting used 1000 “training” molecules; every number below is computed on the other 1000 held-out molecules, i.e.&nbsp;on about 500,000 pairs. The reference is the exact <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D"> of these fingerprints.</p>
+<p><strong>Metrics.</strong> Mean absolute error (MAE) against <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D">; MAE after a <em>monotone recalibration</em> (an isotonic regression fitted on training pairs and applied to held-out pairs, which separates ordering error from calibration error); Spearman rank correlation <img src="https://latex.codecogs.com/png.latex?%5Crho"> between approximate and true similarities; and top-10 neighbour recall (the average overlap between each molecule’s ten nearest neighbours under the true and approximate similarity).</p>
+<p><strong>Transforms.</strong> Powers <img src="https://latex.codecogs.com/png.latex?x%5Ep"> for <img src="https://latex.codecogs.com/png.latex?p%20%5Cin%20%5B0.05,%201.5%5D">, binary <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BI%7D%5Bx%20%3E%0A0%5D">, <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B%5Clog(1%20+%20%5Calpha%20x)%7D"> for several <img src="https://latex.codecogs.com/png.latex?%5Calpha">, and hard and soft saturations <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B%5Cmin(x,%20c)%7D"> and <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Bx%20/%20(1%20+%20x%20/%20c)%7D">. In addition, since counts here never exceed 15, a <strong>free-form lookup table</strong> <img src="https://latex.codecogs.com/png.latex?%5Cvarphi(1),%20%5Cldots,%0A%5Cvarphi(15)"> was fitted directly on training pairs (with <img src="https://latex.codecogs.com/png.latex?%5Cvarphi(1)%20=%201">) to minimise MAE or to maximise Spearman <img src="https://latex.codecogs.com/png.latex?%5Crho">. The fitted lookup table is an <em>upper bound on the entire elementwise class</em>: no elementwise transform can do better on the training objective, and the train/held-out gap was about <img src="https://latex.codecogs.com/png.latex?0.0005">, so the held-out numbers are representative.</p>
+<section id="results" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="results"><span class="header-section-number">4.1</span> Results</h3>
+<div id="tbl-results" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Held-out accuracy of <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D"> on transformed fingerprints as an approximation of <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D"> (ZINC, Morgan radius 2, 2048 bits, 1000 held-out molecules). The lookup-table row reports the best value in each column across the MAE- and <img src="https://latex.codecogs.com/png.latex?%5Crho">-optimised tables.
+</figcaption>
+<div aria-describedby="tbl-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>transform</th>
+<th>MAE</th>
+<th>MAE after recalibration</th>
+<th>Spearman <img src="https://latex.codecogs.com/png.latex?%5Crho"></th>
+<th>recall@10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>raw counts (<img src="https://latex.codecogs.com/png.latex?%5Cvarphi(x)%20=%20x">)</td>
+<td>0.159</td>
+<td>0.018</td>
+<td>0.907</td>
+<td>0.59</td>
+</tr>
+<tr class="even">
+<td>binary</td>
+<td>0.038</td>
+<td>0.025</td>
+<td>0.803</td>
+<td>0.58</td>
+</tr>
+<tr class="odd">
+<td><img src="https://latex.codecogs.com/png.latex?x%5E%7B0.3%7D"> (best raw MAE)</td>
+<td>0.018</td>
+<td>0.017</td>
+<td>0.916</td>
+<td>0.65</td>
+</tr>
+<tr class="even">
+<td><img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Bx%7D"></td>
+<td>0.046</td>
+<td>0.012</td>
+<td>0.960</td>
+<td>0.70</td>
+</tr>
+<tr class="odd">
+<td><img src="https://latex.codecogs.com/png.latex?x%5E%7B0.55%7D"> (best ranking)</td>
+<td>0.057</td>
+<td>0.011</td>
+<td>0.963</td>
+<td>0.71</td>
+</tr>
+<tr class="even">
+<td><strong>best possible elementwise</strong> (fitted lookup table)</td>
+<td><strong>0.016</strong></td>
+<td><strong>0.011</strong></td>
+<td><strong>0.969</strong></td>
+<td><strong>0.72</strong></td>
+</tr>
+<tr class="odd">
+<td>CountSketch of unary encoding, <img src="https://latex.codecogs.com/png.latex?d%20=%202048"> (<code>fpsketch</code>)</td>
+<td>0.010</td>
+<td>—</td>
+<td>0.973</td>
+<td>0.81</td>
+</tr>
+<tr class="even">
+<td>unary encoding, exact (<img src="https://latex.codecogs.com/png.latex?d%20=%2030720">)</td>
+<td>0</td>
+<td>—</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="fig-ceiling" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ceiling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://austintripp.ca/blog/2026-09-18-sqrt-count-fingerprints/fig-elementwise-ceiling.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ceiling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Results of the elementwise sweep (reproduced from the original study; not rendered by this post). Left: MAE against <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D"> as a function of the power <img src="https://latex.codecogs.com/png.latex?p"> in <img src="https://latex.codecogs.com/png.latex?%5Cvarphi(x)%20=%20x%5Ep">, before and after monotone recalibration, with the fitted lookup-table ceiling as horizontal lines. Middle: Spearman <img src="https://latex.codecogs.com/png.latex?%5Crho"> and top-10 recall against <img src="https://latex.codecogs.com/png.latex?p">. Right: the shape of the optimal lookup table under a monotonicity constraint, compared with <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.25%7D"> and <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.5%7D">. The vertical red line marks <img src="https://latex.codecogs.com/png.latex?p%20=%200.5">.
+</figcaption>
+</figure>
+</div>
+<p>Three findings stand out.</p>
+<ol type="1">
+<li><strong>The tension between pointwise error and ranking is a calibration artifact.</strong> <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.25%7D"> to <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.3%7D"> wins on raw MAE only because it happens to cancel bias: its errors are a mix of over- and under-estimates that average out. <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.5%7D"> to <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.6%7D"> has about four times the raw MAE but far better <em>ordering</em> (<img src="https://latex.codecogs.com/png.latex?%5Crho"> 0.96 vs 0.92, recall 0.70 vs 0.65). After a monotone recalibration, <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.55%7D"> reaches MAE 0.011 while <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.3%7D"> only reaches 0.017. In other words, most of the square root’s apparent error is a systematic, removable over-estimate, exactly the one-sided bias Theorem&nbsp;1 predicts. <strong><img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Bx%7D"> is genuinely the better transform.</strong></li>
+<li><strong>A plain power law essentially saturates the class.</strong> The optimal lookup table reaches MAE 0.0156 versus 0.0181 for <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.3%7D"> (13% better) and <img src="https://latex.codecogs.com/png.latex?%5Crho%0A=%200.9685"> versus <img src="https://latex.codecogs.com/png.latex?0.9628"> for <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.6%7D"> (0.6% better). This is the empirical counterpart of Theorem&nbsp;2: <strong>there is nothing meaningful to gain from a cleverer elementwise transform.</strong></li>
+<li><strong>The optimal transform has an interpretable shape.</strong> The ranking-optimal monotone lookup table (right panel of Figure&nbsp;1) rises like <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.55%7D"> up to a count of about 5 and then saturates flat at about 3.0 (3.03 at radius 2, 3.00 at radius 3, so this is not fitting noise). Counts above roughly 6 carry no additional useful signal for reproducing <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D">. The log-scaling reported to work well by <span class="citation" data-cites="huber2026count">Huber and Pollmann (2026)</span> is qualitatively this shape: concave, and nearly flat for large counts.</li>
+</ol>
+</section>
+<section id="a-caveat-about-the-reference" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="a-caveat-about-the-reference"><span class="header-section-number">4.2</span> A caveat about the reference</h3>
+<p>The “true” <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D"> in Table&nbsp;2 is that of the 2048-bit <em>folded</em> fingerprint, because that is what practitioners typically compute. In a follow-up, the same comparison was made against the <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D"> of the <em>unfolded</em> fingerprint (RDKit’s full sparse count fingerprint). Simply using a standard 2048-bit count fingerprint already costs MAE about 0.007 against that reference, and 1024 bits costs 0.013. This is comparable to the entire elementwise ceiling. So the numbers above are a ceiling relative to a representation that is itself lossy. Sketching the <em>unfolded</em> fingerprint directly, in a single hashing step, avoids this: it is what <code>fpsketch</code> does by default, and it beat fold-then-sketch on every metric at every dimension in that follow-up.</p>
+</section>
+</section>
+<section id="leaving-the-elementwise-class" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="leaving-the-elementwise-class"><span class="header-section-number">5</span> Leaving the elementwise class</h2>
+<p>The last two rows of Table&nbsp;2 are the point of the whole exercise. The exact unary encoding reproduces <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D"> with zero error, but costs <img src="https://latex.codecogs.com/png.latex?15%20%5Ctimes%202048%20=%2030720"> dimensions. A CountSketch of the unary encoding at the <em>same</em> 2048 dimensions as the original fingerprint beats the theoretical ceiling of every elementwise transform on every metric: MAE 35% lower, top-10 recall 12% higher, and <img src="https://latex.codecogs.com/png.latex?%5Crho"> higher. At 4096 dimensions it reaches MAE 0.006, about 2.6 times better than anything elementwise can achieve. This is not a property of the specific sketch: the unary encoding turns the min-max similarity into an inner product, after which any unbiased inner-product sketch will do, and CountSketch is simply the cheapest one that never needs to materialise the input dimension.</p>
+<p>The one thing the unary encoding gives up is differentiability in the counts <img src="https://latex.codecogs.com/png.latex?x">. If you need gradients with respect to the counts, for example to learn per-feature weights, an elementwise transform is still what you want, and <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Bx%7D"> is the one to use.</p>
+</section>
+<section id="sec-verify" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="sec-verify"><span class="header-section-number">6</span> Verify it yourself</h2>
+<p>The study’s code is not published, but the headline claims are easy to check. The cell below reproduces the power sweep, the binary and <code>fpsketch</code> baselines, and the one-sided bound of Theorem&nbsp;1 on the 100 ZINC molecules used in the <code>fpsketch</code> post. Two differences from the study: the fingerprints here are <em>unfolded</em> (so the reference is the true <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D">), and there are only 4950 pairs, so the numbers differ slightly. You can run it with</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pip</span> install <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"fpsketch[chem]"</span> numpy scipy matplotlib</span></code></pre></div></div>
+<div id="verify-compute" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code: compute T_MM, T_DP of rescaled counts, and T_DP of fpsketch on 100 ZINC molecules</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb2-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> scipy.stats <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> spearmanr</span>
+<span id="cb2-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> rdkit <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Chem</span>
+<span id="cb2-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> rdkit.Chem <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> rdFingerprintGenerator</span>
+<span id="cb2-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fpsketch <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> encode_sparse</span>
+<span id="cb2-6"></span>
+<span id="cb2-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Unfolded Morgan count fingerprints, radius 2</span></span>
+<span id="cb2-8"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">with</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">open</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./ZINC-100.smiles"</span>) <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> f:</span>
+<span id="cb2-9">   smiles <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [line.strip() <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> line <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> f]</span>
+<span id="cb2-10">mols <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [Chem.MolFromSmiles(s) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> s <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> smiles]</span>
+<span id="cb2-11">gen <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> rdFingerprintGenerator.GetMorganGenerator(radius<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb2-12">fp_dicts <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [gen.GetSparseCountFingerprint(m).GetNonzeroElements() <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> m <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> mols]</span>
+<span id="cb2-13"></span>
+<span id="cb2-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Dense count matrix over the observed features</span></span>
+<span id="cb2-15">features <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sorted</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>().union(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>[fp.keys() <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> fp <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> fp_dicts]))</span>
+<span id="cb2-16">col <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> {f: i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i, f <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(features)}</span>
+<span id="cb2-17">X <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.zeros((<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(mols), <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(features)))</span>
+<span id="cb2-18"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> row, fp <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(fp_dicts):</span>
+<span id="cb2-19">   <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> f, count <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> fp.items():</span>
+<span id="cb2-20">      X[row, col[f]] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> count</span>
+<span id="cb2-21"></span>
+<span id="cb2-22"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> t_mm(X):</span>
+<span id="cb2-23">   smin <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.minimum(X[:, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>, :], X[<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>, :, :]).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb2-24">   smax <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.maximum(X[:, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>, :], X[<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>, :, :]).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb2-25">   <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> smin <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> smax</span>
+<span id="cb2-26"></span>
+<span id="cb2-27"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> t_dp(Z):</span>
+<span id="cb2-28">   gram <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> Z.T</span>
+<span id="cb2-29">   sq_norms <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.diag(gram)</span>
+<span id="cb2-30">   <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> gram <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (sq_norms[:, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> sq_norms[<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>, :] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> gram)</span>
+<span id="cb2-31"></span>
+<span id="cb2-32">iu <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.triu_indices(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(mols), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># distinct pairs</span></span>
+<span id="cb2-33">K_true <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> t_mm(X)</span>
+<span id="cb2-34"></span>
+<span id="cb2-35"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> evaluate(K_approx):</span>
+<span id="cb2-36">   err <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> K_approx[iu] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> K_true[iu]</span>
+<span id="cb2-37">   <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>(</span>
+<span id="cb2-38">      mae<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>np.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">abs</span>(err).mean(),</span>
+<span id="cb2-39">      bias<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>err.mean(),</span>
+<span id="cb2-40">      spearman<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>spearmanr(K_approx[iu], K_true[iu]).statistic,</span>
+<span id="cb2-41">   )</span>
+<span id="cb2-42"></span>
+<span id="cb2-43">powers <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.3</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.4</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.55</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.25</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>]</span>
+<span id="cb2-44">results <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> {<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"x^</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>p<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>: evaluate(t_dp(X <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span> p)) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> p <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> powers}</span>
+<span id="cb2-45">results[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"binary"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> evaluate(t_dp((X <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>).astype(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>)))</span>
+<span id="cb2-46"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> d <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1024</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2048</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4096</span>]:</span>
+<span id="cb2-47">   results[<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"fpsketch d=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>d<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> evaluate(t_dp(encode_sparse(fp_dicts, dim<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>d)))</span>
+<span id="cb2-48"></span>
+<span id="cb2-49"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(mols)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> molecules, </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(features)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> distinct features, max count </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(X.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>())<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb2-50"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'transform'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:&lt;16}{</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MAE'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:&gt;8}{</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'bias'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:&gt;9}{</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Spearman'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:&gt;10}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb2-51"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> name, r <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> results.items():</span>
+<span id="cb2-52">   <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>name<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:&lt;16}{</span>r[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'mae'</span>]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:8.4f}{</span>r[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'bias'</span>]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:+9.4f}{</span>r[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'spearman'</span>]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:10.4f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb2-53"></span>
+<span id="cb2-54"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># The one-sided bound: T_DP(sqrt x, sqrt x') &gt;= T_MM(x, x') on every pair</span></span>
+<span id="cb2-55">gap <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> t_dp(np.sqrt(X)) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> K_true</span>
+<span id="cb2-56"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> gap.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span>() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-12</span></span>
+<span id="cb2-57"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">sqrt gap: min </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>gap<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span>()<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.1e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">, mean over pairs </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>gap[iu]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>mean()<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.4f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>100 molecules, 1892 distinct features, max count 13
+transform            MAE     bias  Spearman
+x^0.1             0.0310  -0.0274    0.8484
+x^0.2             0.0218  -0.0138    0.8835
+x^0.3             0.0167  +0.0022    0.9175
+x^0.4             0.0227  +0.0209    0.9450
+x^0.5             0.0422  +0.0422    0.9603
+x^0.55            0.0538  +0.0538    0.9623
+x^0.6             0.0659  +0.0659    0.9607
+x^0.7             0.0913  +0.0912    0.9495
+x^0.8             0.1173  +0.1171    0.9321
+x^1.0             0.1655  +0.1649    0.8956
+x^1.25            0.2066  +0.2048    0.8559
+x^1.5             0.2215  +0.2178    0.8206
+binary            0.0407  -0.0387    0.8156
+fpsketch d=1024   0.0169  +0.0117    0.9481
+fpsketch d=2048   0.0114  +0.0056    0.9683
+fpsketch d=4096   0.0083  +0.0039    0.9827
+
+sqrt gap: min -6.9e-18, mean over pairs 0.0422</code></pre>
+</div>
+</div>
+<p>The ordering from Table&nbsp;2 reproduces: raw counts are by far the worst, <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.3%7D"> minimises raw MAE, <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.5%7D"> to <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.6%7D"> maximises rank agreement, and <code>fpsketch</code> at 2048 dimensions beats all of them on both. The bias column shows the square root’s error is entirely positive, and the assertion confirms the bound holds on every single pair. Figure&nbsp;2 plots the sweep.</p>
+<div id="cell-fig-verify" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code: plot MAE and Spearman rho against the power p (boilerplate, hidden by default)</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb4-2"></span>
+<span id="cb4-3">plt.rcParams.update({</span>
+<span id="cb4-4">   <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"figure.dpi"</span>: <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">120</span>,</span>
+<span id="cb4-5">   <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"font.size"</span>: <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>,</span>
+<span id="cb4-6">   <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"axes.spines.top"</span>: <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>,</span>
+<span id="cb4-7">   <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"axes.spines.right"</span>: <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>,</span>
+<span id="cb4-8">   <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"axes.grid"</span>: <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,</span>
+<span id="cb4-9">   <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grid.alpha"</span>: <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.3</span>,</span>
+<span id="cb4-10">   <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"legend.frameon"</span>: <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>,</span>
+<span id="cb4-11">})</span>
+<span id="cb4-12">COLORS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> {<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"power"</span>: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#7570b3"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"binary"</span>: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#d95f02"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"fpsketch"</span>: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#1b9e77"</span>}</span>
+<span id="cb4-13"></span>
+<span id="cb4-14">fig, axes <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> plt.subplots(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6.4</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3.0</span>))</span>
+<span id="cb4-15"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> ax, metric, label <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> [(axes[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mae"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"MAE vs $T_</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{MM}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$"</span>), (axes[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"spearman"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spearman $</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">rho$"</span>)]:</span>
+<span id="cb4-16">   ax.plot(powers, [results[<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"x^</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>p<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>][metric] <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> p <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> powers], <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"o-"</span>, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>COLORS[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"power"</span>], label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"$x^p$"</span>)</span>
+<span id="cb4-17">   ax.axhline(results[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"binary"</span>][metric], color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>COLORS[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"binary"</span>], linestyle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--"</span>, label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"binary"</span>)</span>
+<span id="cb4-18">   ax.axhline(results[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"fpsketch d=2048"</span>][metric], color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>COLORS[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"fpsketch"</span>], linestyle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-"</span>, label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"fpsketch, $d=2048$"</span>)</span>
+<span id="cb4-19">   ax.axvline(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gray"</span>, linewidth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, alpha<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>)</span>
+<span id="cb4-20">   ax.set_xlabel(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"power $p$"</span>)</span>
+<span id="cb4-21">   ax.set_ylabel(label)</span>
+<span id="cb4-22">axes[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>].set_yscale(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"log"</span>)</span>
+<span id="cb4-23">fig.tight_layout(rect<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.12</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>])</span>
+<span id="cb4-24">handles, labels <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> axes[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>].get_legend_handles_labels()</span>
+<span id="cb4-25">fig.legend(handles, labels, loc<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lower center"</span>, ncol<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, frameon<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb4-26">plt.show()</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-verify" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-verify-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://austintripp.ca/blog/2026-09-18-sqrt-count-fingerprints/index_files/figure-html/fig-verify-output-1.png" width="750" height="355" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-verify-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Reproduction of the power sweep on 100 unfolded ZINC fingerprints: MAE (left) and Spearman <img src="https://latex.codecogs.com/png.latex?%5Crho"> (right) of <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D(x%5Ep,%20x'%5Ep)"> against <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D(x,%20x')">, with binary and fpsketch (<img src="https://latex.codecogs.com/png.latex?d%20=%202048">) baselines as horizontal lines.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="recommendations" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="recommendations"><span class="header-section-number">7</span> Recommendations</h2>
+<ul>
+<li><strong>If you are locked into an elementwise transform</strong>, for example because you need differentiability with respect to the counts, <strong>use <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Bx%7D"></strong>, or <img src="https://latex.codecogs.com/png.latex?x%5E%7B0.55%7D"> if only the ordering of similarities matters. Its error is provably one-sided, it is within about 5% of the elementwise ceiling on ranking metrics, and a monotone recalibration removes most of its remaining error (MAE 0.046 to 0.012).</li>
+<li><strong>Do not use raw counts</strong> with <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D"> as a stand-in for <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D">: MAE 0.159, and the error in the similarity matrix is larger than the matrix itself in operator norm.</li>
+<li><strong>Do not search for a cleverer elementwise <img src="https://latex.codecogs.com/png.latex?%5Cvarphi">.</strong> The class is capped at MAE about 0.016 and <img src="https://latex.codecogs.com/png.latex?%5Crho"> about 0.969 on this data, and a plain power law already reaches it.</li>
+<li><strong>If you are not locked into an elementwise transform, use the unary encoding</strong>, sketched down to a convenient dimension with <a href="../../blog/2026-08-31-fpsketch/"><code>fpsketch</code></a>. At the same dimension as the original fingerprint it beats the entire elementwise class on every metric.</li>
+</ul>
+<p>One caveat on the framing. Table 1 of <span class="citation" data-cites="tripp2023tanimoto">Tripp et al. (2023)</span> found that <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D"> on raw counts <em>outperformed</em> <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D"> on some downstream regression tasks. Nothing here contradicts that: this post asks only how to make <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D"> <em>reproduce</em> <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D">, not which of the two is the better kernel. If <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BDP%7D%7D"> on some transform of the counts is genuinely a better inductive bias, faithfully approximating <img src="https://latex.codecogs.com/png.latex?T_%7B%5Cmathrm%7BMM%7D%7D"> is not always what you want. Measuring downstream accuracy for these encodings, rather than kernel fidelity, is the natural next step and is not covered by this study.</p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-charikar2002finding" class="csl-entry">
+Charikar, Moses, Kevin Chen, and Martin Farach-Colton. 2002. <span>“Finding Frequent Items in Data Streams.”</span> <em>International Colloquium on Automata, Languages, and Programming</em>, 693–703.
+</div>
+<div id="ref-huber2026count" class="csl-entry">
+Huber, Florian, and Julian Pollmann. 2026. <span>“Count Your Bits: Fingerprint Benchmarking to Assess Broad Chemical Space Representation.”</span> <em>Journal of Cheminformatics</em> 18 (1): 83.
+</div>
+<div id="ref-tripp2023tanimoto" class="csl-entry">
+Tripp, Austin, Sergio Bacallado, Sukriti Singh, and José Miguel Hernández-Lobato. 2023. <span>“Tanimoto Random Features for Scalable Molecular Machine Learning.”</span> <em>Advances in Neural Information Processing Systems</em>, 33656–86. <a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/6a69d44b3386e50c06f7107ef4f29302-Paper-Conference.pdf">https://proceedings.neurips.cc/paper_files/paper/2023/file/6a69d44b3386e50c06f7107ef4f29302-Paper-Conference.pdf</a>.
+</div>
+</div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin and Fable, Claude},
+  title = {Square-Root Scaling of Count Fingerprints: The Best
+    Elementwise Trick, and Why It Can’t Be Exact},
+  date = {2026-09-18},
+  url = {https://austintripp.ca/blog/2026-09-18-sqrt-count-fingerprints/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin, and Claude Fable. 2026. <span>“Square-Root Scaling of
+Count Fingerprints: The Best Elementwise Trick, and Why It Can’t Be
+Exact.”</span> September 18. <a href="https://austintripp.ca/blog/2026-09-18-sqrt-count-fingerprints/">https://austintripp.ca/blog/2026-09-18-sqrt-count-fingerprints/</a>.
+</div></div></section></div> ]]></description>
+  <category>machine learning</category>
+  <category>drug discovery</category>
+  <category>chemistry</category>
+  <guid>https://austintripp.ca/blog/2026-09-18-sqrt-count-fingerprints/</guid>
+  <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>fpsketch: a better fingerprint compression algorithm</title>
   <dc:creator>Austin Tripp</dc:creator>
@@ -995,7 +2038,7 @@ background-color: null;
 font-style: inherit;">False</span>)</span>
 <span id="cb13-40">plt.show()</span></code></pre></div></div>
 </details>
-<div id="cell-fig-tanimoto-results" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="8">
+<div id="cell-fig-tanimoto-results" class="cell quarto-layout-panel" data-execution_count="8" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-tanimoto-results" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1540,7 +2583,7 @@ background-color: null;
 font-style: inherit;">False</span>)</span>
 <span id="cb17-53">plt.show()</span></code></pre></div></div>
 </details>
-<div id="cell-fig-giant-results" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="11">
+<div id="cell-fig-giant-results" class="cell quarto-layout-panel" data-execution_count="11" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-giant-results" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1701,7 +2744,7 @@ font-style: inherit;">None</span>)</span>
 <span id="cb18-27">cax.set_position([cax_pos.x0, img_pos.y0, cax_pos.width, img_pos.height])</span>
 <span id="cb18-28">plt.show()</span></code></pre></div></div>
 </details>
-<div id="cell-fig-giant-heatmap" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="12">
+<div id="cell-fig-giant-heatmap" class="cell quarto-layout-panel" data-execution_count="12" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-giant-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1747,14 +2790,14 @@ Charikar, Moses, Kevin Chen, and Martin Farach-Colton. 2002. <span>“Finding Fr
 Huber, Florian, and Julian Pollmann. 2026. <span>“Count Your Bits: Fingerprint Benchmarking to Assess Broad Chemical Space Representation.”</span> <em>Journal of Cheminformatics</em> 18 (1): 83.
 </div>
 <div id="ref-tripp2023tanimoto" class="csl-entry">
-Tripp, Austin, Sergio Bacallado, Sukriti Singh, and José Miguel Hernández-Lobato. n.d. <span>“Tanimoto Random Features for Scalable Molecular Machine Learning.”</span> <em>Advances in Neural Information Processing Systems</em>, 33656–86. <a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/6a69d44b3386e50c06f7107ef4f29302-Paper-Conference.pdf">https://proceedings.neurips.cc/paper_files/paper/2023/file/6a69d44b3386e50c06f7107ef4f29302-Paper-Conference.pdf</a>.
+Tripp, Austin, Sergio Bacallado, Sukriti Singh, and José Miguel Hernández-Lobato. 2023. <span>“Tanimoto Random Features for Scalable Molecular Machine Learning.”</span> <em>Advances in Neural Information Processing Systems</em>, 33656–86. <a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/6a69d44b3386e50c06f7107ef4f29302-Paper-Conference.pdf">https://proceedings.neurips.cc/paper_files/paper/2023/file/6a69d44b3386e50c06f7107ef4f29302-Paper-Conference.pdf</a>.
 </div>
 </div></section><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1"><p>Here’s a more precise story:</p>
-<p>Earlier this summer I read a good paper which extensively studied the performance of various molecular fingerprints <span class="citation" data-cites="huber2026count">(Huber and Pollmann 2026)</span>. One of their conclusions was that log-scaling of count fingerprints was often beneficial. This reminded me of an experiment I did in one of my PhD papers <span class="citation" data-cites="tripp2023tanimoto">(Tripp et al., n.d.)</span> where I tried <em>square root</em> scaling of fingerprint counts. I decided to prompt Claude to study this question autonomously. After some iteration it looks like square root scaling was indeed effective, but without prompting it proposed CountSketch as a baseline and noted it worked well. I followed up on the idea, leading to this post.</p>
-<p>It also produced an interesting result on square root scaling, although I think it is overall less effective than <code>fpsketch</code>, so it will need to wait for a future post.↩︎</p></li>
+<p>Earlier this summer I read a good paper which extensively studied the performance of various molecular fingerprints <span class="citation" data-cites="huber2026count">(Huber and Pollmann 2026)</span>. One of their conclusions was that log-scaling of count fingerprints was often beneficial. This reminded me of an experiment I did in one of my PhD papers <span class="citation" data-cites="tripp2023tanimoto">(Tripp et al. 2023)</span> where I tried <em>square root</em> scaling of fingerprint counts. I decided to prompt Claude to study this question autonomously. After some iteration it looks like square root scaling was indeed effective, but without prompting it proposed CountSketch as a baseline and noted it worked well. I followed up on the idea, leading to this post.</p>
+<p>It also produced an interesting result on square root scaling, although I think it is overall less effective than <code>fpsketch</code>. That result is now written up in <a href="../../blog/2026-09-18-sqrt-count-fingerprints/">a companion post</a>.↩︎</p></li>
 <li id="fn2"><p>The details of this are beyond this post and exceed my understanding of CountSketch.↩︎</p></li>
 <li id="fn3"><p>See for example <span class="citation" data-cites="huber2026count">Huber and Pollmann (2026)</span> who recently concluded this in a systematic study.↩︎</p></li>
 <li id="fn4"><p>If <img src="https://latex.codecogs.com/png.latex?d/m"> is not an integer, the last sketch gets the leftover dimensions.↩︎</p></li>
@@ -2373,9 +3416,6 @@ Bayesian Optimization Work?”</span> July 25. <a href="https://austintripp.ca/b
 
 
 
-<div class="post-badges">
-<p><span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
-</div>
 <p>I recently read the paper<sup>1</sup> “Grand Challenges for Predictive Modeling in Small Molecule Drug Discovery”, which aims to survey all the challenges in the field I work in. About half of the paper was what I expected, the other half was either new or something I was exposed to but didn’t really think about. In this post I’ll briefly outline what I learned.</p>
 <section id="things-i-learned" class="level2">
 <h2 class="anchored" data-anchor-id="things-i-learned">Things I learned</h2>
@@ -2468,7 +3508,7 @@ July 12. <a href="https://austintripp.ca/blog/2026-07-12-grand-challenges-small-
 
 
 <div class="post-badges">
-<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-ai-assisted" title="AI helped with research, editing, or drafting parts of this.">🤖 AI-assisted</span> <span class="post-badge badge-effort-high" title="Carefully researched, drafted, and revised.">💎 High effort</span> <span class="post-badge badge-originality-medium" title="Vecchia is not original but I didn’t come across a comparable tutorial despite intentionally searching for it.">🧩 Medium originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-ai-assisted" title="AI helped with research, editing, or drafting parts of this.">🤖 AI-assisted</span> <span class="post-badge badge-effort-high" title="Carefully researched, drafted, and revised.">💎 High effort</span> <span class="post-badge badge-originality-medium" title="Vecchia is not original but I didn’t come across a comparable tutorial despite intentionally searching for it.">🧩 Medium originality</span></p>
 </div>
 <p>I recently found myself wanting to use the Vecchia GP approximation for a problem at work where low-rank approximation methods were a poor fit. I had vaguely heard about this approximation from a conversation with <a href="https://scholar.google.com/citations?user=RHRJtmgAAAAJ">Marcus Noack</a>, and I understood that it was a <em>sparse</em> approximation to the GP covariance. I always assumed this meant rounding near-zero entries in a GP covariance matrix to be exactly zero, thereby creating a sparse matrix.</p>
 <p>The Vecchia approximation is not well-supported in most GP packages, so I needed to implement it myself.<sup>1</sup> In doing so, I realize I had completely misunderstood it: it’s not a sparse approximation of the <em>covariance</em> matrix, but a sparse approximation of the <em>factorization</em> of the <em>precision</em> matrix (the name for the inverse of the covariance matrix).</p>
@@ -9228,194 +10268,6 @@ BO (Whoops!).”</span> January 27. <a href="https://austintripp.ca/blog/2026-01
   <category>_recent-highlight</category>
   <guid>https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/</guid>
   <pubDate>Tue, 27 Jan 2026 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>My model-centric view of Bayesian optimization</title>
-  <dc:creator>Austin Tripp</dc:creator>
-  <link>https://austintripp.ca/blog/2026-01-25-model-centric-bo/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="post-badges">
-<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-effort-high" title="Carefully researched, drafted, and revised.">💎 High effort</span> <span class="post-badge badge-originality-medium" title="It’s re-hashing ideas that are out there but I don’t think there is another paper/essay outlining a similar perspective.">🧩 Medium originality</span></p>
-</div>
-<p>A lot of conversations at NeurIPS this year made me think that I view the role of the surrogate model in Bayesian optimization a bit differently than many other researchers in the field, and this profoundly impacts my view of many other aspects of BO. Therefore, the purpose of this post is to explain my view and contrast it with what I believe is the more mainstream view.</p>
-<p><strong>Disclaimer:</strong> this post is basically me arguing against what <em>I</em> think that <em>other people</em> think. Maybe no “other people” actually think this, and the whole post is arguing against a straw man. That’s ok: the primary point of this post is to explain <em>my</em> view, not really to bash the “mainstream” view.</p>
-<section id="the-mainstream-optimizer-view-vs-my-model-centric-view" class="level2">
-<h2 class="anchored" data-anchor-id="the-mainstream-optimizer-view-vs-my-model-centric-view">The mainstream “optimizer” view vs my “model-centric” view</h2>
-<p>I call the mainstream view of BO the <em>optimizer</em> view: BO is an algorithm invoked by the user when they want to optimize their function. This means there is a strong obligation to provide the same interface as other optimization algorithms: ie the algorithm takes in an evaluation history of (x, y) points and returns new points x to evaluate. Of course users can customize the model in many ways (eg setting hyperparameters, changing the surrogate model), but such customization is <em>optional</em>: there clearly always needs to be a default, otherwise it places unrealistic demands on the users.</p>
-<p>In contrast, I call my view the <em>model-centric</em> view of BO. I think the entire “bet” of BO is in the accuracy of the model, and users of BO are in a much better position to fit good models for their problems than BO researchers are (since we don’t know their exact problem). Therefore, BO should effectively treat the model as an <em>input</em> to the problem rather than part of the optimization algorithm. Of course, the BO research community should also put some effort into developing better surrogate models- <em>but</em> these models shouldn’t be tied to any algorithm. If anything, we should try to make algorithms as model-agnostic as possible to minimize friction between a user’s custom model and BO.</p>
-<p>Here are some situations where the “model-centric” and “optimizer” views suggest different courses of action:</p>
-<ul>
-<li><strong>XYZBO</strong>: when I read papers like “XYZBO” which use model X, acquisition function Y, and inner loop optimizer Z I view this as basically marketing, since “serious” users would (and should!) bring their own model. However, in the “optimizer” view “XYZBO” is actually the <em>ideal</em> format of a BO algorithm.</li>
-<li><strong>Model-misspecification:</strong> fitting surrogate models is hard, and many pathologies arise when fitting exact GPs to small numbers of data points. In the “optimizer” view this is an important problem to try to solve. In the “model-centric” view this is much less important: we should assume that the user will bring model which isn’t catastrophically misspecified, and BO algorithm developers should clearly communicate that this is an important requirement.</li>
-<li><strong>Input spaces:</strong> in the “optimizer” view the algorithm accepts (x, y) points and therefore the type of X is important. Problems like “high-dimensional BO” or “mixed discrete-continuous” BO are important research directions. In the “model-centric” view, BO doesn’t actually see the x points, those are handled by the model, which is provided by the user, making the input space type an unnatural way to stratify the problem space.<sup>1</sup></li>
-<li><strong>“Cheating”:</strong> in the “optimizer” view, running BO with an extremely well-fit model is basically “cheating” and doesn’t represent real-world performance, so this setting is not studied. In the model-centric view, this is actually the desired scenario and it is not at all “cheating” to study it.<sup>2</sup></li>
-<li><strong>Method comparison:</strong> in the “optimizer” view, it is perfectly natural to do a direct side by side comparison of two algorithms with different surrogate models and suggest that the results of this comparison might generalize. In the model-centric view, there wouldn’t really be a scenario where one would potentially proceed with “surrogate model A, rest of algorithm B” or “surrogate model C, rest of algorithm D”: they would start with one model, so only the comparisons “AB/AD” or “CB/CD” would resemble a real-world deployment. Conclusions from any one such comparison would then inherently be model-dependent and would not necessarily be expected to generalize to other models.</li>
-</ul>
-<p>Hopefully these scenarios make the implications of these differences clear. I might elaborate on some of these differences in future posts.</p>
-<p>If you still find these differences unclear, I think the easiest way to binarize it is model-centric = “user should bring a custom model”, optimizer = “model fitting is internal to the BO algorithm”.</p>
-</section>
-<section id="the-path-from-optimizer-to-model-centric-views" class="level2">
-<h2 class="anchored" data-anchor-id="the-path-from-optimizer-to-model-centric-views">The path from optimizer to model-centric views</h2>
-<p>Assuming the reader is more sympathetic to the “optimizer” view than the model-centric view, let me outline an argument to change your mind. I’ll start by focusing on claims which I don’t anticipate being disputed by most BO researchers, and end with the more opinionated parts.</p>
-<p><strong>Assumed opinion: BO is principled.</strong> If your conception of BO is “a bunch of steps we string together because it works” and you don’t believe in any higher principles that say <em>why</em> the steps make sense together or why we should expect BO to be a good idea <em>a priori</em> (aka “without knowing in advance how well it worked”), then the argument below probably won’t convince you. In my experience few (if any) BO researchers actually hold this view; everybody I’ve asked as referred to higher principles of some kind, and I have written the argument below with this assumption in mind.</p>
-<section id="claim-bo-principles-all-heavily-rely-on-the-model" class="level3">
-<h3 class="anchored" data-anchor-id="claim-bo-principles-all-heavily-rely-on-the-model">Claim: BO principles all heavily rely on the model</h3>
-<p>BO has more than one motivating principle, but all the ones I’ve seen heavily appeal to the model:</p>
-<p><strong>Bayesian decision theory.</strong> Broadly, Bayesian decision theory says that if there is uncertainty in the outcome of our actions we cannot consistently act optimally. The best we can hope for is making reasonable decisions given what we know. A key finding is that such “reasonable decisions” usually look like maximizing expected utility<sup>3</sup>. This directly motivates a bunch of BO acquisition functions that are based on expected utility (“pure exploitation”, expected improvement, knowledge gradient, etc). Bayesian decision theory basically says that such acquisition functions represent the optimal strategy under uncertainty, <em>assuming one’s beliefs are encoded by the model</em>. Unfortunately, these guarantees disappear if the model does not match your (ie the BO user’s) beliefs. In this circumstance, from your perspective BO’s decisions will <em>not</em> be the optimum ones, and it will therefore not be optimal for <em>you</em> (the user) to let BO make decisions.</p>
-<p><strong>Bandits / regret analysis.</strong> A large number of BO algorithms come from multi-arm bandit algorithms. Generally these algorithms guarantee an “optimal” long run trade-off between exploration and exploitation, implying a guarantee of eventually solving any optimization problem. Unlike Bayesian decision theory, which basically justifies BO under short time horizons, bandit analysis is probably the best justification for running BO under long time horizons. However, as far as I can tell (and I am not an expert in bandits or regret), all these bounds depend in some way on the model being a good fit (more in footnote<sup>4</sup>). Poorly fit models either violate the assumption (and the bound simply does not hold), or they imply a much looser bound.</p>
-<p><strong>Heuristic reasonable decision making.</strong> This is common in presentations of BO to non-technical people: things like “at every step the algorithm is choosing a point expected to improve on the current best” or “at every step the algorithm chooses a point with a high potential upside”. This is effectively appealing to the same principles as above without going into the theory. Of course, using the standards of “heuristic reasonableness” as a guide, these decisions are clearly only as “reasonable” if the underlying predictions are “reasonable”.</p>
-<p>So, in all of these scenarios the model fit is key.</p>
-</section>
-<section id="claim-better-model---better-performance" class="level3">
-<h3 class="anchored" data-anchor-id="claim-better-model---better-performance">Claim: better model -&gt; better performance</h3>
-<p>We can extend these principles to make a claim that I expect few BO researchers will object to: that making the model better should lead to better performance. Unfortunately, different principles give a slightly different definition of what “better” is, so I will consider them independently.</p>
-<p>In Bayesian decision theory, “better” means “alignment to the user’s beliefs”, and “performance” is whether its decisions maximize expected utility with respect to those beliefs (which is the best one can reasonably expect to achieve when making decisions under uncertainty). In this scenario, the more aligned a model is to a user’s beliefs the more its decisions will coincide with the users, so performance will obviously improve.<sup>5</sup></p>
-<p>In bandits/regret, “better” will be some notion of probability of f under the model’s distribution p(f), with higher probability being better. “Performance” is actual optimization performance (eg does it find the optimum). With these definitions, regret bounds directly show that better models lead to better performance (at least better worst-case performance<sup>6</sup>).</p>
-<p>Are these different definitions compatible? Obviously not always: one can easily imagine a user with arbitrarily wrong beliefs about f where acting more “rationally” (according to Bayesian decision theory) leads to worse optimization performance, and better optimization decisions seem less “rational”. However, my sense is that in practice they won’t conflict. At least within the domains people think about most in BO (eg drug discovery, ML hyperparameter optimization), the decision makers are scientists who hold reasonable beliefs and <em>want</em> to hold accurate beliefs. Assuming these do coincide, a more accurate model is a “better” model, and its decisions will both perform better (in terms of optimization) and also appearing more “rational” to the BO user.</p>
-</section>
-<section id="claim-users-are-in-a-systemically-better-position-to-fit-better-models" class="level3">
-<h3 class="anchored" data-anchor-id="claim-users-are-in-a-systemically-better-position-to-fit-better-models">Claim: users are in a systemically better position to fit better models</h3>
-<p>Let’s put aside concerns of Bayesian modelling skill (eg “our Chemist doesn’t know how to code”). I claim that BO users are <em>systematically</em> in a better position to fit good BO models compared to BO researchers (as in, we should generally expect them to be able to fit a better model, skill aside).</p>
-<p>The reason is simple: users only need to fit a model <em>for their specific problem</em>, while BO researchers developing end-to-end BO algorithms (as per the “optimizer” view of BO) need to include a <em>general</em> model that works for a wide range of specific problems. The user can, for example, choose a “narrower” model p(f) which they anticipate gives their specific function f higher probability. As argued in the previous section, we would expect this to improve performance (at least if their assumptions are correct). If the BO researcher does the same, they will improve performance for some users, but at the cost of performance for other users (whose different function f’ has much lower probability under the hypothetical specialized model).</p>
-<p>Let me give a semi-concrete example of what this might look like in a drug discovery context. Let’s say we want to optimize binding between a molecule and a fixed protein P. Often the scientists have a lot of knowledge about the mechanism by which molecules can bind to P, such as “a C=O bond is critical for strong binding”. Leaving some room for epistemic humility, we could encode this as something like P(strong binding | no C=O bond) &lt; 0.01 and either design the model around it or use it as a validation metric. This model would then generally avoid molecules without C=O bonds, which in this scenario is probably the right thing to do.<sup>7</sup></p>
-<p>If the same rule was incorporated into a “general” BO algorithm (even one specifically meant for molecules), it would probably perform poorly if run on a binding to a different protein P’ where the C=O bond is not essential, and would perform <em>pathologically</em> badly on a “toxicity minimization” task where C=O bonds can actually <em>induce</em> toxicity.<sup>8</sup> Naturally, BO researchers avoid putting this kind of problem-specific knowledge into their models.</p>
-<p>What if the user doesn’t have any specific knowledge about their problem? Although I doubt that any users really know <em>nothing</em>, in this worst case one can always fall back to the kind of “general” surrogate models that are already included in popular BO libraries: for example, the MAP-fitted Matern GP with tuned priors that I recall was the default in <code>botorch</code> for a while.<sup>9</sup></p>
-<p>So, in summary, a user either has knowledge of their particular function f (and can use this to fit a better model for their specific task), or can fall back to a “general” BO model if they don’t. In either case, the user should be able to do <em>at least as well</em> as a BO researcher developing general models. This is precisely what I mean by “systematically better position to produce better models”.</p>
-<p>Finally, to wrap up the argument, let’s come back to the skill issue. Of course not everybody is an expert in Bayesian modelling! Despite this, I don’t view skill as <em>fundamentally</em> blocking for 2 main reasons:</p>
-<ol type="1">
-<li>Most BO users are not individuals but <em>companies</em>, and companies can hire skilled people (for the right price 😉).</li>
-<li>LLMs are getting pretty good at translating English text into code (and also at diagnosing weird HMC errors).</li>
-</ol>
-<p>So, at most I would view modelling skill as an issue of “priorities” or “convenience”, but definitely not as a fundamental limit of performance.</p>
-</section>
-<section id="various-opinions" class="level3">
-<h3 class="anchored" data-anchor-id="various-opinions">Various opinions</h3>
-<p>If you’ve accepted all the claims so far, then you basically agree that making the model better should make BO perform better, and that users are systematically better positioned to provide a better model (and reap the benefits of its better performance). I think this is ~90% of the way towards the model-centric viewpoint, with the remaining 10% being differences of opinion or values. I’ll throw out a bunch of points, maybe some of them will stick for you.</p>
-<ul>
-<li><strong>If this is all true why don’t more users bring their own model in practice?</strong> Having talked to many people who are interested in BO and who didn’t bring their own model despite that probably being the better decision, the reasons were 1) desire for a fast prototype 2) lack of awareness of the possible benefits of bring their own model 3) difficulty of using custom models in mainstream BO packages 4) not being aware that using a custom model is even an option 5) a belief that the people who wrote the paper know the method best so it’s safest to stick with their modelling choices (which I think shows a fundamental misunderstanding of the principles behind BO). 6) algorithms requiring technically difficult modifications to use with a custom model (eg without Gaussian marginals the standard analytic formula for EI doesn’t work, the user will need to modify this). None of these reasons are <em>fundamental</em>: I view them instead as a byproduct of how the field of BO has evolved.</li>
-<li><strong>Isn’t this catering too heavily to a specific user base?</strong> Fully accepting the model-centric view (and thus heavily pushing users to bring their own model) definitely <em>is</em> catering to a specific user base, but I think that’s ok!
-<ul>
-<li>We don’t necessarily need to cater to the broadest possible user base.</li>
-<li>If anything, I see this as catering to users <em>for whom BO has the best chance of working really well</em>, which is defensible and legitimate.</li>
-</ul></li>
-<li><strong>We shouldn’t drive away users.</strong> A few points:
-<ul>
-<li>General models do exist and I’m not advocating that we take them away. In practice model-centric BO probably looks like <code>model = MyModel(data) ; result = bo_loop(model)</code> instead of just <code>result = bo_loop(data)</code>. The marginal user who is driven away from BO just because of this extra line of code was probably not very committed to BO anyway.</li>
-<li>Is it the BO research community’s job to attract users? If so, there are <em>many</em> other things we could do that make a larger difference.</li>
-<li>You know what <em>really</em> drives away users? BO not working, despite attempts to fix the issue. Informally I’ve heard this story a few times in drug discovery. I think the model-centric view helps set expectations (eg “this will only go as well as your model allows it to”) and provides guidance about what to look at if things aren’t working (the model).</li>
-</ul></li>
-<li><strong>People are not motivated enough to bring their own models.</strong> This depends on the group. At the very least, I think many people in drug discovery are highly motivated to put in a lot of effort to do experiments more efficiently. If that requires a custom model, then they will make a custom model. Let’s not underestimate users!</li>
-</ul>
-</section>
-</section>
-<section id="some-counterarguments" class="level2">
-<h2 class="anchored" data-anchor-id="some-counterarguments">Some counterarguments</h2>
-<p>Here I will preemptively give a response to what I anticipate are the two largest criticisms of the model-centric view. Expand them for more detail.</p>
-<details closed="">
-<summary>
-<b>Criticism 1: fitting good models is harder than I make it sound.</b>
-</summary>
-<p>
-</p><p>I said before that people could hire Bayesian modelling experts or using LLMs, but even experts struggle to fit Bayesian models: it is a genuinely hard problem. My emphasis on bringing a very good model may sound to some readers like I’m underestimating this, and therefore that the model-centric view is an unreachable ideal for BO. To be clear: I’m not actually trying to say that we can just “solve” BO if only users brought their own models. So I will just respond to the concern about models in general.<br><br></p>
-<p>First, while I agree modelling is hard, my impression is that <i>at the current margins</i> BO users are not trying hard enough, and that more effort into the model will probably still yield results. In a hypothetical world where every BO user spent a whole month carefully constructing a model I would not advocate for more attention spent on the model: at this point it’s probably maxed-out and it’s the BO algorithm’s job to do the rest. However, my impression is most users spend ~0 time on the model (just using the out of the box one), hence my advocacy.<br><br></p>
-The second point is that my model-centric view is partly just a reflection of how I think BO works: it makes decisions which are “sensible” according to the beliefs of the model, and therefore “unreasonable” beliefs will likely turn into bad decisions. This perspective can give insights into how to diagnose issues in BO, even if they aren’t easy to solve.
-<p></p>
-</details>
-<p><br></p>
-<details closed="">
-<summary>
-<b>Criticism 2: empirically, do custom models help?</b>
-</summary>
-<p>Part of what I am advocating for sounds like an empirical question: will things go better if users bring their own model?</p>
-<p>I am not aware of any such experiment being run, and honestly if run right now I might expect the group bringing their own models to do worse. This is for a mix of reasons:</p>
-<ul>
-<li>
-Not much guidance available about model fitting for BO.
-</li>
-<li>
-Lots of BO algorithms are hard-coded around certain modelling choices, which require a lot of user effort to reimplement and introduces the possibility of bugs/mistakes.
-</li>
-<li>
-Optimization of the acquisition function being hard to get right.
-</li>
-</ul>
-<p>All of these are hard, but if the BO community wrote papers and software in a more model-agnostic way and wrote some better tutorials I’d be more optimistic. So, consider my argument more as a recommendation for BO researchers to slowly steer the community in this direction, rather than a claim about what will be better for users right now.<br><br></p>
-<p>Of course, there are a certain subset of users that I think would be early adopters of model-centric BO: particularly in fields like drug discovery where people already make models themselves and really want to get efficient optimization.</p>
-</details>
-<p><br></p>
-</section>
-<section id="conclusions-and-next-steps" class="level2">
-<h2 class="anchored" data-anchor-id="conclusions-and-next-steps">Conclusions and next steps</h2>
-<p>If you’ve made it this far, hopefully you understand the model-centric view and can understand the arguments for it.</p>
-<p>I’ll defer a full list of recommendations to a future post, or make separate individual posts, but my main suggestions are:</p>
-<ul>
-<li><strong>BO users:</strong> try bringing your own model, or at least check that the default one fit looks reasonable.</li>
-<li><strong>BO researchers:</strong>
-<ul>
-<li>Don’t write “XYZBO” papers- I think it sends a confusing message to users like things are bundled.</li>
-<li>Please work on methods where it is easier to substitute a custom model.</li>
-<li>Try to study relationship between model beliefs and BO performance.</li>
-</ul></li>
-<li><strong>BO software developers:</strong>
-<ul>
-<li>Please try to add support for custom models!</li>
-<li>A model-agnostic BO package might be a good idea (not sure how feasible it is though).</li>
-</ul></li>
-</ul>
-<hr>
-</section>
-<section id="edit-2026-02-21-interesting-snippet-from-garnett-bayesopt-book" class="level2">
-<h2 class="anchored" data-anchor-id="edit-2026-02-21-interesting-snippet-from-garnett-bayesopt-book">Edit 2026-02-21: interesting snippet from Garnett Bayesopt book</h2>
-<p>I found an interesting snippet from the end of chapter 12 <a href="https://bayesoptbook.com/">Roman Garnett’s 2023 Bayesopt textbook</a>.</p>
-<blockquote class="blockquote">
-<p>A guiding philosophy in Bayesian optimization has been to “take the human out of the loop” and hand over complete control of experimental design to an algorithm. This paradigm has demonstrated remarkable success on “black-box” problems, where the user has little understanding of the system being optimized. However, in settings such as scientific discovery, the user has a deep understanding of and intuition for the mechanisms driving the system of interest, and we should perhaps consider how to “bring them back into the loop.” One could imagine an ecosystem of cooperative tools that enable Bayesian optimization algorithms to benefit from user knowledge while facilitating the presentation of experimental progress and evolving model beliefs back to the users.</p>
-</blockquote>
-<p>This feels very similar to what I’m arguing here, except I’d further argue that in <em>most</em> cases the users will have enough understanding to be “brought into the loop”, and specifically that their role in the loop should (at least) be to shape the surrogate model.</p>
-
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>In the model-centric view, perhaps a more natural stratification would be based on model type: eg “Gaussian marginals”, “posterior accessible only via sampling”, etc.↩︎</p></li>
-<li id="fn2"><p>Of course users won’t always bring an excellent model, so it’s not the <em>only</em> scenario we should study.↩︎</p></li>
-<li id="fn3"><p>See <a href="../../blog/2025-11-02-expected-utility/">this post</a> for more details on the assumptions behind expected utility.↩︎</p></li>
-<li id="fn4"><p>I am aware of</p>
-<ol type="1">
-<li>Bayesian regret (which considers performance average over samples from your model, effectively means your model is the “optimal” model for the set of functions it is seeing).</li>
-<li>Some kind of model-dependent bound on the function (eg f has bounded RKHS norm in the RKHS of the GP model being used, maximum possible information gain from learning f(x))</li>
-<li>The explicit probability density/mass of the true function according to the model (more probable functions = better performance).</li>
-</ol>
-<p>All of these assume model correctness.↩︎</p></li>
-<li id="fn5"><p>If this feels like circular reasoning you are not wrong: we have basically defined “performance” to mean “making the model better”, so the claim is basically a tautology. I’m not trying to make a trick argument here, the whole point is that under the success framework of Bayesian decision theory “better model” and “better performance” are basically synonymous.↩︎</p></li>
-<li id="fn6"><p>I suppose you could argue that worst case performance ≠ average case performance or that regret bounds are loose, so better models might not actually lead to better performance. I don’t know enough about bandits/regret to fully refute these claims, but from what few bounds I have studied there are proof by construction cases that suggest at the very least that the performance in the bound might actually be realized. Happy to be proven wrong on this, do send me an email!↩︎</p></li>
-<li id="fn7"><p>I imagine many BO researchers being skeptical and viewing humans as overconfident. Yes, domain experts make mistakes, but in my experience 9/10 times domain experts do know what they are talking about.↩︎</p></li>
-<li id="fn8"><p>Chemists reading this are probably cringing at my simplified example. Just so I don’t seem totally clueless about drug discovery, the example I had in mind was a “covalent warhead” with a ketone, which is a desirable feature for some drugs but not all, and I am told that ketones also have a lot of non-specific interactions (binding to various things) which can cause toxic side effects. More generally, I don’t think that these drug discovery tasks should even be posed as single-objective optimization tasks to begin with, but that’s a separate story.↩︎</p></li>
-<li id="fn9"><p>Or maybe never was the default model, or maybe still is. I’m not an active <code>botorch</code> user, despite liking the library and having a high opinion of the team developing it.↩︎</p></li>
-</ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
-  author = {Tripp, Austin},
-  title = {My Model-Centric View of {Bayesian} Optimization},
-  date = {2026-01-25},
-  url = {https://austintripp.ca/blog/2026-01-25-model-centric-bo/},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
-Tripp, Austin. 2026. <span>“My Model-Centric View of Bayesian
-Optimization.”</span> January 25. <a href="https://austintripp.ca/blog/2026-01-25-model-centric-bo/">https://austintripp.ca/blog/2026-01-25-model-centric-bo/</a>.
-</div></div></section></div> ]]></description>
-  <category>machine learning</category>
-  <category>bayesian optimization</category>
-  <category>opinion</category>
-  <category>_recent-highlight</category>
-  <guid>https://austintripp.ca/blog/2026-01-25-model-centric-bo/</guid>
-  <pubDate>Sun, 25 Jan 2026 22:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

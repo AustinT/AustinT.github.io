@@ -102,7 +102,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3c9c489b3365030a08823a85c71cd1a4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-65ab6f6afcc98c2005f3bec1c5e98b7d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -326,7 +326,7 @@ window.Quarto = {
 
 
 <div class="post-badges">
-<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-ai-assisted" title="AI helped with research, editing, or drafting parts of this.">🤖 AI-assisted</span> <span class="post-badge badge-effort-high" title="Carefully researched, drafted, and revised.">💎 High effort</span> <span class="post-badge badge-originality-medium" title="Vecchia is not original but I didn’t come across a comparable tutorial despite intentionally searching for it.">🧩 Medium originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-ai-assisted" title="AI helped with research, editing, or drafting parts of this.">🤖 AI-assisted</span> <span class="post-badge badge-effort-high" title="Carefully researched, drafted, and revised.">💎 High effort</span> <span class="post-badge badge-originality-medium" title="Vecchia is not original but I didn’t come across a comparable tutorial despite intentionally searching for it.">🧩 Medium originality</span></p>
 </div>
 <p>I recently found myself wanting to use the Vecchia GP approximation for a problem at work where low-rank approximation methods were a poor fit. I had vaguely heard about this approximation from a conversation with <a href="https://scholar.google.com/citations?user=RHRJtmgAAAAJ">Marcus Noack</a>, and I understood that it was a <em>sparse</em> approximation to the GP covariance. I always assumed this meant rounding near-zero entries in a GP covariance matrix to be exactly zero, thereby creating a sparse matrix.</p>
 <p>The Vecchia approximation is not well-supported in most GP packages, so I needed to implement it myself.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> In doing so, I realize I had completely misunderstood it: it’s not a sparse approximation of the <em>covariance</em> matrix, but a sparse approximation of the <em>factorization</em> of the <em>precision</em> matrix (the name for the inverse of the covariance matrix).</p>

@@ -36,6 +36,18 @@
   color: #1a4a8a;
 }
 
+.badge-old {
+  background-color: #f5ede1;
+  border-color: #dcc19e;
+  color: #7a5c2e;
+}
+
+.badge-ancient {
+  background-color: #e6d7c3;
+  border-color: #c2a06b;
+  color: #4a3418;
+}
+
 .badge-ai-assisted {
   background-color: #f3e8fd;
   border-color: #d9b8f7;
@@ -46,6 +58,12 @@
   background-color: #e3caf7;
   border-color: #b877ea;
   color: #4a1968;
+}
+
+.badge-ai-human {
+  background-color: #eafaf0;
+  border-color: #b8e6c9;
+  color: #1f6b40;
 }
 
 .badge-effort-low {
