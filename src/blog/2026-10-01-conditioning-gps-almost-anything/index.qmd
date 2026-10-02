@@ -1,0 +1,114 @@
+---
+title: 'Thoughts on "Conditioning Gaussian Processes on Almost Anything"'
+description: "My rough notes on this interesting GP paper"
+date: 2026-10-01
+
+# Bibliography and citations: off
+citation: false
+google-scholar: false
+
+categories:
+- machine learning
+- research papers
+
+# Badges
+originality: low
+originality-note: "Basically a summary of a paper"
+effort: low
+effort-note: "Written in ~30 min after reading the paper"
+---
+
+[Conditioning Gaussian Processes on Almost
+Anything](https://arxiv.org/abs/2605.21041) by [Henry
+Moss](https://henrymoss.github.io/) et al is probably my favourite GP paper of
+the year so far. GP models are still useful for small data molecular property
+prediction tasks, so improvements in speed, accuracy, or generality are always
+welcome.
+
+## The method: FlowGP
+
+This paper's method, **FlowGP**, essentially re-casts GP sampling as
+a diffusion model. Normally samples from a GP are drawn by sampling $\mathbf{z}
+\sim \mathcal N (0, I)$ and applying:
+
+$$
+\mathbf{f} = \mathbf{\mu} + K^{1/2} \mathbf{z} \ .
+$$
+
+This is suspiciously close to the setup of diffusion models, which also aim to
+turn iid standard normal samples into samples from the desired distribution.
+FlowGP turns this into a diffusion process by defining:
+
+$$
+\mathbf{f}_t = \alpha(t) \left[\mathbf{\mu} + K^{1/2} \mathbf{z} \right]
++
+\left[1-\alpha(t)\right] \mathbf{z}
+$$
+
+where $\alpha(t)$ ranges between 1 and 0 as $t$ goes from 0 to 1. This is
+a linear interpolation between the iid samples $\mathbf{z}$ and the desired
+function samples $\mathbf{f}$.
+
+By itself this is, of course, a useless complicated way of sampling from GP priors.
+The real value comes from conditioning on things, which becomes a _guidance_
+term in the diffusion model. FlowGP uses the condition
+
+$$
+\nabla_{\mathbf{f}_t} \log{p\left(\mathbf{f}_t \mid \mathcal{C}\right)}
+=
+\nabla_{\mathbf{f}_t} \log{p\left(\mathbf{f}_t \right)}
++
+\nabla_{\mathbf{f}_t} \log{p\left(\mathcal{C} \mid \mathbf{f}_t \right)} \ ,
+$$
+
+which requires us only to have a _likelihood_ function for the condition
+$p\left(\mathcal{C} \mid \mathbf{f}_t \right)$ rather than an equation for
+the posterior $p\left(\mathbf{f}_t \mid \mathcal{C}\right)$ which is the hard
+part of sampling. This allows for a large amount of flexibility for what
+$\mathcal{C}$ is. It could be:
+
+- **Observed data with Gaussian noise.** This is a linear guidance term,
+  although the authors concede here that in practice the analytical posterior
+  term should just be used instead (i.e. this should be folded into the
+  $p\left(\mathbf{f}_t \right)$ term).
+- **Observed data with NON-Gaussian noise.** This will be some kind of
+  non-linear guidance term.
+- **Global conditions like bounds, monotonicity, or LLM judgements.** This is
+  the most interesting and non-standard part, but in practice it requires these
+  conditions to be defined softly (probabilistically) rather than as binary
+  constraints.
+
+## My analysis of the pros/cons of FlowGP
+
+There is arguably no substitute for its ability to impose global conditions
+like monotonicity. That is its strongest use case. On the flip side, it has no
+value over standard exact GPs with Gaussian noise (e.g. it doesn't address the
+cubic scaling problem). The ambiguous case in the middle is "standard"
+approximate GP problems like classification, heavy-tailed noise, etc, where
+FlowGP needs to compete with VI, EP, MCMC, or other approximation methods.
+Unfortunately, the paper didn't compare with any of these methods.
+I didn't run any experiments myself, just thought about it, and my guess is:
+
+- FlowGP is probably better than VI in cases where the variational family is
+  highly misspecified. I'd default to FlowGP over VI.
+- Not sure what to think about EP (I hardly use it)
+- FlowGP will inherit most of the same problems as gradient-based MCMC methods
+  like HMC: areas of high curvature will be challenging for integration, just
+  like they force a small step size in HMC. The trade-offs will be practical:
+   - HMC will fail with clear diagnostics (e.g. a collapsed acceptance rate).
+     FlowGP will probably fail more silently.
+   - The MC estimator of the guidance term in FlowGP can become unreliable for
+     very non-smooth likelihoods, whereas HMC doesn't need an estimator (it can
+     use an exact likelihood).
+   - HMC requires a burn in period + a long running chain to get independent
+     samples; FlowGP gets independent samples automatically.
+
+All things being equal, I'd probably go for MC methods over FlowGP in these
+settings, but I could be convinced to change.
+
+## Concluding thoughts
+
+Utility aside, this was a very nice "idea" paper bridging two sub-fields of
+machine learning. I'm excited to see what's in store for the future of this
+work!
+
