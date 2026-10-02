@@ -10,7 +10,64 @@
 <atom:link href="https://austintripp.ca/blog/all/index.xml" rel="self" type="application/rss+xml"/>
 <description>Austin Tripp&#39;s personal website</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Fri, 18 Sep 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 01 Oct 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Thoughts on “Conditioning Gaussian Processes on Almost Anything”</title>
+  <dc:creator>Austin Tripp</dc:creator>
+  <link>https://austintripp.ca/blog/2026-10-01-conditioning-gps-almost-anything/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="post-badges">
+<p><span class="post-badge badge-effort-low" title="Written in ~30 min after reading the paper">✏️ Quick post</span> <span class="post-badge badge-originality-low" title="Basically a summary of a paper">🪞 Low originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+</div>
+<p><a href="https://arxiv.org/abs/2605.21041">Conditioning Gaussian Processes on Almost Anything</a> by <a href="https://henrymoss.github.io/">Henry Moss</a> et al is probably my favourite GP paper of the year so far. GP models are still useful for small data molecular property prediction tasks, so improvements in speed, accuracy, or generality are always welcome.</p>
+<section id="the-method-flowgp" class="level2">
+<h2 class="anchored" data-anchor-id="the-method-flowgp">The method: FlowGP</h2>
+<p>This paper’s method, <strong>FlowGP</strong>, essentially re-casts GP sampling as a diffusion model. Normally samples from a GP are drawn by sampling <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bz%7D%0A%5Csim%20%5Cmathcal%20N%20(0,%20I)"> and applying:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathbf%7Bf%7D%20=%20%5Cmathbf%7B%5Cmu%7D%20+%20K%5E%7B1/2%7D%20%5Cmathbf%7Bz%7D%20%5C%20.%0A"></p>
+<p>This is suspiciously close to the setup of diffusion models, which also aim to turn iid standard normal samples into samples from the desired distribution. FlowGP turns this into a diffusion process by defining:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathbf%7Bf%7D_t%20=%20%5Calpha(t)%20%5Cleft%5B%5Cmathbf%7B%5Cmu%7D%20+%20K%5E%7B1/2%7D%20%5Cmathbf%7Bz%7D%20%5Cright%5D%0A+%0A%5Cleft%5B1-%5Calpha(t)%5Cright%5D%20%5Cmathbf%7Bz%7D%0A"></p>
+<p>where <img src="https://latex.codecogs.com/png.latex?%5Calpha(t)"> ranges between 1 and 0 as <img src="https://latex.codecogs.com/png.latex?t"> goes from 0 to 1. This is a linear interpolation between the iid samples <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bz%7D"> and the desired function samples <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bf%7D">.</p>
+<p>By itself this is, of course, a useless complicated way of sampling from GP priors. The real value comes from conditioning on things, which becomes a <em>guidance</em> term in the diffusion model. FlowGP uses the condition</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cnabla_%7B%5Cmathbf%7Bf%7D_t%7D%20%5Clog%7Bp%5Cleft(%5Cmathbf%7Bf%7D_t%20%5Cmid%20%5Cmathcal%7BC%7D%5Cright)%7D%0A=%0A%5Cnabla_%7B%5Cmathbf%7Bf%7D_t%7D%20%5Clog%7Bp%5Cleft(%5Cmathbf%7Bf%7D_t%20%5Cright)%7D%0A+%0A%5Cnabla_%7B%5Cmathbf%7Bf%7D_t%7D%20%5Clog%7Bp%5Cleft(%5Cmathcal%7BC%7D%20%5Cmid%20%5Cmathbf%7Bf%7D_t%20%5Cright)%7D%20%5C%20,%0A"></p>
+<p>which requires us only to have a <em>likelihood</em> function for the condition <img src="https://latex.codecogs.com/png.latex?p%5Cleft(%5Cmathcal%7BC%7D%20%5Cmid%20%5Cmathbf%7Bf%7D_t%20%5Cright)"> rather than an equation for the posterior <img src="https://latex.codecogs.com/png.latex?p%5Cleft(%5Cmathbf%7Bf%7D_t%20%5Cmid%20%5Cmathcal%7BC%7D%5Cright)"> which is the hard part of sampling. This allows for a large amount of flexibility for what <img src="https://latex.codecogs.com/png.latex?%5Cmathcal%7BC%7D"> is. It could be:</p>
+<ul>
+<li><strong>Observed data with Gaussian noise.</strong> This is a linear guidance term, although the authors concede here that in practice the analytical posterior term should just be used instead (i.e.&nbsp;this should be folded into the <img src="https://latex.codecogs.com/png.latex?p%5Cleft(%5Cmathbf%7Bf%7D_t%20%5Cright)"> term).</li>
+<li><strong>Observed data with NON-Gaussian noise.</strong> This will be some kind of non-linear guidance term.</li>
+<li><strong>Global conditions like bounds, monotonicity, or LLM judgements.</strong> This is the most interesting and non-standard part, but in practice it requires these conditions to be defined softly (probabilistically) rather than as binary constraints.</li>
+</ul>
+</section>
+<section id="my-analysis-of-the-proscons-of-flowgp" class="level2">
+<h2 class="anchored" data-anchor-id="my-analysis-of-the-proscons-of-flowgp">My analysis of the pros/cons of FlowGP</h2>
+<p>There is arguably no substitute for its ability to impose global conditions like monotonicity. That is its strongest use case. On the flip side, it has no value over standard exact GPs with Gaussian noise (e.g.&nbsp;it doesn’t address the cubic scaling problem). The ambiguous case in the middle is “standard” approximate GP problems like classification, heavy-tailed noise, etc, where FlowGP needs to compete with VI, EP, MCMC, or other approximation methods. Unfortunately, the paper didn’t compare with any of these methods. I didn’t run any experiments myself, just thought about it, and my guess is:</p>
+<ul>
+<li>FlowGP is probably better than VI in cases where the variational family is highly misspecified. I’d default to FlowGP over VI.</li>
+<li>Not sure what to think about EP (I hardly use it)</li>
+<li>FlowGP will inherit most of the same problems as gradient-based MCMC methods like HMC: areas of high curvature will be challenging for integration, just like they force a small step size in HMC. The trade-offs will be practical:
+<ul>
+<li>HMC will fail with clear diagnostics (e.g.&nbsp;a collapsed acceptance rate). FlowGP will probably fail more silently.</li>
+<li>The MC estimator of the guidance term in FlowGP can become unreliable for very non-smooth likelihoods, whereas HMC doesn’t need an estimator (it can use an exact likelihood).</li>
+<li>HMC requires a burn in period + a long running chain to get independent samples; FlowGP gets independent samples automatically.</li>
+</ul></li>
+</ul>
+<p>All things being equal, I’d probably go for MC methods over FlowGP in these settings, but I could be convinced to change.</p>
+</section>
+<section id="concluding-thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="concluding-thoughts">Concluding thoughts</h2>
+<p>Utility aside, this was a very nice “idea” paper bridging two sub-fields of machine learning. I’m excited to see what’s in store for the future of this work!</p>
+
+
+</section>
+
+ ]]></description>
+  <category>machine learning</category>
+  <category>research papers</category>
+  <guid>https://austintripp.ca/blog/2026-10-01-conditioning-gps-almost-anything/</guid>
+  <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Square-root scaling of count fingerprints: the best elementwise trick, and why it can’t be exact</title>
   <dc:creator>Austin Tripp</dc:creator>
@@ -2038,7 +2095,7 @@ background-color: null;
 font-style: inherit;">False</span>)</span>
 <span id="cb13-40">plt.show()</span></code></pre></div></div>
 </details>
-<div id="cell-fig-tanimoto-results" class="cell quarto-layout-panel" data-execution_count="8" data-layout-ncol="1">
+<div id="cell-fig-tanimoto-results" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="8">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-tanimoto-results" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2583,7 +2640,7 @@ background-color: null;
 font-style: inherit;">False</span>)</span>
 <span id="cb17-53">plt.show()</span></code></pre></div></div>
 </details>
-<div id="cell-fig-giant-results" class="cell quarto-layout-panel" data-execution_count="11" data-layout-ncol="1">
+<div id="cell-fig-giant-results" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="11">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-giant-results" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2744,7 +2801,7 @@ font-style: inherit;">None</span>)</span>
 <span id="cb18-27">cax.set_position([cax_pos.x0, img_pos.y0, cax_pos.width, img_pos.height])</span>
 <span id="cb18-28">plt.show()</span></code></pre></div></div>
 </details>
-<div id="cell-fig-giant-heatmap" class="cell quarto-layout-panel" data-execution_count="12" data-layout-ncol="1">
+<div id="cell-fig-giant-heatmap" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="12">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-giant-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2882,7 +2939,7 @@ Blog.”</span> August 24. <a href="https://austintripp.ca/blog/2026-08-24-blog-
 
 
 <div class="post-badges">
-<p><span class="post-badge badge-confidence-medium" title="Checked conclusions reasonably well but not the code">⛅ Medium confidence</span> <span class="post-badge badge-ai-co-written" title="As explained below, most of the post is directly written by Fable.">🤖 AI co-written</span> <span class="post-badge badge-effort-medium" title="A normal amount of drafting and revision.">🔧 Moderate effort</span> <span class="post-badge badge-originality-high" title="This is commenting on a paper from last year; I have not seen this comment made anywhere else.">💡 High originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+<p><span class="post-badge badge-confidence-medium" title="Checked conclusions reasonably well but not the code">⛅ Medium confidence</span> <span class="post-badge badge-ai-co-written" title="As explained below, most of the post is directly written by Fable.">🤖 AI co-written</span> <span class="post-badge badge-effort-medium" title="A normal amount of drafting and revision.">🔧 Moderate effort</span> <span class="post-badge badge-originality-high" title="This is commenting on a paper from last year; I have not seen this comment made anywhere else.">💡 High originality</span></p>
 </div>
 <section id="preamble" class="level2">
 <h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
@@ -10159,115 +10216,6 @@ BO.”</span> February 8. <a href="https://austintripp.ca/blog/2026-02-08-bo-ben
   <category>_recent-highlight</category>
   <guid>https://austintripp.ca/blog/2026-02-08-bo-benchmarks/</guid>
   <pubDate>Sun, 08 Feb 2026 22:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>We have forgotten about utility functions in BO (whoops!)</title>
-  <dc:creator>Austin Tripp</dc:creator>
-  <link>https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="post-badges">
-<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-effort-high" title="Carefully researched, drafted, and revised.">💎 High effort</span> <span class="post-badge badge-originality-high" title="Adding a utility function is of course not my original idea, but in the ML community I don’t think the consequences of excluding it are appreciated at all.">💡 High originality</span></p>
-</div>
-<p>Bayesian decision theory is one of the best justifications for BO- particularly for myopic acquisition functions like expected improvement. However, these acquisition functions are only “optimal” if one’s utility function is <img src="https://latex.codecogs.com/png.latex?u(y)%20=%0Ay"> (the identity function). Have BO researchers (and BO users) basically <em>forgotten</em> to swap this out for “real” utility functions in practice? In this post I argue that we have basically overlooked this detail (to our own detriment). It’s not <em>too</em> hard to fix, but unfortunately the <img src="https://latex.codecogs.com/png.latex?u(y)%20=%20y"> assumption is actually quite deeply embedded, and completely removing it will make things more complicated. Ultimately, despite the difficulty, I think we should do it anyway.</p>
-<section id="primer-how-the-utility-assumption-ends-up-in-expected-improvement" class="level2">
-<h2 class="anchored" data-anchor-id="primer-how-the-utility-assumption-ends-up-in-expected-improvement">Primer: how the utility assumption ends up in expected improvement</h2>
-<p>I will use the <em>expected improvement</em> (EI) acquisition function as a placeholder for utility-based acquisition functions in general, and present a quick derivation. A better and more thorough derivation can be found in §5.2 of “Bayesian Optimization” by Garnett.<sup>1</sup></p>
-<p><strong>Problem setting.</strong> We are maximizing a noiseless function <img src="https://latex.codecogs.com/png.latex?y%20=%20f(x)">. We have an evaluation history <img src="https://latex.codecogs.com/png.latex?%5C%7B%7B(x_1,%20y_1),%20%5Cldots,%20(x_n,%20y_n)%5C%7D%7D">. We can query 1 more x location: what should we do?</p>
-<p><strong>Utility Functions</strong> the answer depends on what we want. There is an element of risk/reward trade-off (eg should we do a risky evaluation which might be very large or a modest point which we are more confident about), and also some ambiguity about how the previous solutions should affect our decisions. EI starts by making an innocent assumption: we only care about the <em>single best point</em> we evaluate. This means there is an incumbent best point</p>
-<p><img src="https://latex.codecogs.com/png.latex?y%5E*%20=%20%5Cmax_%7Bi%5Cleq1%5Cleq%20n%7D%20y_i"></p>
-<p>and, if our final evaluation returns <img src="https://latex.codecogs.com/png.latex?y_%7Bn+1%7D%20%3C%20y%5E%5C*"> then that’s ok, we will just go with <img src="https://latex.codecogs.com/png.latex?y%5E*">. Otherwise we will go with <img src="https://latex.codecogs.com/png.latex?y_%7Bn+1%7D">. We can only <em>gain</em> from the final evaluation, not lose anything.</p>
-<p><strong>Bayesian decision theory.</strong> Next, Bayesian decision theory says that we should make this decision by maximizing <em>expected utility</em>, which maps each outcome through a utility function <img src="https://latex.codecogs.com/png.latex?u"> that says how “good” the outcome is. Assuming <img src="https://latex.codecogs.com/png.latex?u(y_1,%20%5Cldots,%20y_n,%20y_%7Bn+1%7D)=%5Cmax_i%20y_i"> and doing the math, you get an expected utility</p>
-<p><img src="https://latex.codecogs.com/png.latex?%20E_%7By_%7Bn+1%7D%7D%20%5Cleft%5B%20%5Cmax%5Cleft(0,%20y_%7Bn+1%7D-y%5E*%20%5Cright)%5Cright%5D"></p>
-<p>which is the expected amount of improvement (hence the name expected improvement).</p>
-<p><strong>Summary.</strong> The utility function appears when Bayesian decision theory is invoked, and the utility of a <em>set</em> of solutions is just the maximum value in the set.</p>
-</section>
-<section id="whats-wrong-with-this-utility-function" class="level2">
-<h2 class="anchored" data-anchor-id="whats-wrong-with-this-utility-function">What’s wrong with this utility function?</h2>
-<p>Bayesian decision theory states that preferences over uncertain outcomes can be cast as maximizing expected utility of <em>some</em> utility function: ie for any given set of preferences there must exist a utility function. It <em>does not</em> say that if you pick a utility function and maximize expected utility you will be acting according to your preferences. Therefore, the utility function fundamentally must be an <em>input</em> to the problem, not something that can be arbitrarily set.</p>
-<p>Digging into the assumptions behind expected utility a bit further,<sup>2</sup> the utility function’s values basically play 2 roles:</p>
-<ol type="1">
-<li>It <em>orders</em> the outcomes (saying which outcomes are better and worse, and which are equivalent).</li>
-<li>It defines the user’s <em>risk reward</em> over outcomes. Assuming <img src="https://latex.codecogs.com/png.latex?u(A)%20%3C%20u(B)%20%3C%0Au(C)"> it assumes the user would be equally ok with receiving B with 100% chance or taking the gamble “A with probability p, otherwise C” where <img src="https://latex.codecogs.com/png.latex?p%20=%0A%5Cleft(u(C)%20-%20u(B)%5Cright)%20/%20%5Cleft(u(C)%20-%20u(A)%20%5Cright)">.</li>
-</ol>
-<p><img src="https://latex.codecogs.com/png.latex?u(y)%20=%20y"> obviously correctly orders outcomes in the case of maximization (where higher is always better), but who knows what the user’s risk-reward trade-off actually is? The bet with probability p is a highly specific assumption that seems highly unlikely to hold for users in general. To make it a bit more concrete, let’s assume <img src="https://latex.codecogs.com/png.latex?y%5E*%20=%201"> (ie best score found so far is 1). If presented with the options:</p>
-<ol type="1">
-<li>1.5 (100% probability)</li>
-<li>0.5 (50% probability), 2.1 (50% probability)</li>
-<li>0.9 (90% probability), 7 (10% probability)</li>
-</ol>
-<p>Expected improvement under the standard utility function would choose option 3 because it has the highest expected improvement, even though it is the riskiest option.<sup>3</sup> To give a stylized real-world example of where this is might be unreasonable: in drug discovery there are often competitor drugs, and one’s drug needs to be <em>better</em> in order to get approved. If the competitor drug has a potency of 1, then <em>matching</em> them doesn’t succeed: you need to be better. I bet many decision makers would prefer option 1 in this case: it gets you “over the line” with certainty. Their utility function would probably be flat before <img src="https://latex.codecogs.com/png.latex?y=1">, then increase.</p>
-</section>
-<section id="how-did-this-utility-function-come-to-be-used-everywhere" class="level2">
-<h2 class="anchored" data-anchor-id="how-did-this-utility-function-come-to-be-used-everywhere">How did this utility function come to be used everywhere?</h2>
-<p>I’m not sure- and don’t really have time to go to the literature to find out. My guess is just a by-product of how papers are written. Academic papers aren’t really “users” of the algorithms so they don’t have strong preferences that would form the basis for a utility function. At the same time they need to make <em>some</em> choice to run experiments, and a choice like <img src="https://latex.codecogs.com/png.latex?u(y)%20=%20y"> seems more “neutral” than something like <img src="https://latex.codecogs.com/png.latex?u(y)%20=%20%5Cmin%5Cleft(y,%203%5Csqrt%7By%7D%20-1%5Cright)">, plus it allows EI to be computed analytically, so authors just go with it. Authors of other papers then reimplement the method and use the implementation in the original paper with <img src="https://latex.codecogs.com/png.latex?u(y)=y">. Over time, the original utility function gets forgotten and users concentrate on the case that is actually implemented and studied.</p>
-<p>My overall point is that using <img src="https://latex.codecogs.com/png.latex?u(y)=y"> was probably <em>not</em> a deliberate choice or statement about how BO methods should be used in general, it was just a simple design choice that stuck around.</p>
-</section>
-<section id="warped-gps-are-not-the-answer" class="level2">
-<h2 class="anchored" data-anchor-id="warped-gps-are-not-the-answer">Warped GPs are not the answer</h2>
-<p>A plausible-sounding workaround is the following: instead of creating a surrogate model of the unknown function f(x), create a surrogate model of <img src="https://latex.codecogs.com/png.latex?g(x)=u(f(x))"> and run BO with this. After all, <img src="https://latex.codecogs.com/png.latex?g(x)"> is effectively just another black-box function. This model, commonly called a <em>warped GP</em><sup>4</sup>, might seem to be the ideal solution: it uses the utility function without needing to adjust the underlying BO algorithm. Problem solved?</p>
-<p>Unfortunately I think not. The main issue I foresee is that real-world utility functions u might violate a lot of assumptions commonly made about surrogate models: for example, differentiability, continuity, or stationarity. For example, consider the drug discovery example I gave earlier about finding molecules that bind better than a competitor’s molecule. A lot of molecules with binding ≤ 1 will have a utility score of exactly 0, with a sudden jump in g once binding exceeds 1. This is probably hard to fit a model to: it turns what might be a smooth relationship between structure and binding into a discrete jump, and probably masks the learning signal because a lot of improvements in binding (eg 0.7 -&gt; 0.8 -&gt; 0.9) will just look like a constant zero. It’s also probably harder to fit a good noise model in utility space. An actual binding measurement probably has (somewhat) Gaussian noise of a similar magnitude for most binding strengths. However, mapped through a utility function to give noise on g, the noise would be highly non-Gaussian and therefore harder to model.</p>
-<p>A secondary issue is that such a model goes against the decision-theoretic roots of BO, which fundamentally posits that outcomes and preferences are conceptually separate. I think this separation is one of BO’s biggest strengths, especially when compared to other methods (like generative models) which mix preferences and beliefs together in a confusing way (and are thus a bit harder to tune and use).</p>
-<p>Of course we can abandon principled appeals to theory, it’s not <em>impossible</em> to overcome these modelling difficulties. In this sense warped GPs <em>could</em> work. The main point I want to convey is that they are a difficult choice that comes with a lot of “hidden” drawbacks, and therefore we (the BO community) shouldn’t just accept them as the sole solution and move on.</p>
-</section>
-<section id="properly-supporting-more-general-utility-functions-might-be-hard" class="level2">
-<h2 class="anchored" data-anchor-id="properly-supporting-more-general-utility-functions-might-be-hard">Properly supporting more general utility functions might be hard</h2>
-<p>If we stick to the principles of Bayesian decision theory, the “right” way to handle utility functions is as an <em>input</em> to the BO loop. A surrogate model is constructed, and the acquisition function should be computed on the <em>utilities</em> of the output, not the raw outputs themselves. Unfortunately this introduces a lot of potential difficulties.</p>
-<p>To start, what restrictions should exist on u, if any? If u is itself a black box function then something like numerical integration would be necessary to evaluate the acquisition function at any point. That adds a lot of computation cost, and that’s just for a <em>pointwise</em> estimation, not even the <em>gradient</em> <img src="https://latex.codecogs.com/png.latex?%5Cnabla_x%20%5Calpha(x)">.</p>
-<p>I think we can’t totally dismiss this worst-case scenario, but intuitively it feels like most users should be happy with <em>analytic</em> utility functions, possibly even ones which are continuous, and maybe even differentiable (almost everywhere). This includes functions like:</p>
-<ul>
-<li><img src="https://latex.codecogs.com/png.latex?u(y)%20=%20y"></li>
-<li><img src="https://latex.codecogs.com/png.latex?u(y)%20=%20%5Csqrt%7By%7D"></li>
-<li><img src="https://latex.codecogs.com/png.latex?u(y)%20=%20%5Cmin%5Cleft(y,%203%5Csqrt%7By%7D-1%5Cright)"></li>
-</ul>
-<p>This feels like a pretty broad class of functions for users to express their preferences with, and one which is more amenable to BO. Acquisition values may still need to be computed with numerical integration, but I bet this could be partially cached or done analytically (at least with Gaussian posteriors). You should even be able to compute acquisition function gradients using the analytic derivative of u.</p>
-<p>However, even in this more optimistic case BO software would look a lot more complicated: essentially every acquisition function would have custom computational requirements which need to be specified by the user (because having BO researchers provide out of the box utility functions sort of defeats the point of the user providing this as an input).</p>
-</section>
-<section id="summary-this-is-tough-but-worth-it" class="level2">
-<h2 class="anchored" data-anchor-id="summary-this-is-tough-but-worth-it">Summary: this is tough but worth it</h2>
-<p>Given how hard it would be to retrofit user-provided utility functions onto BO, should we (the BO research community) just not do it? While the lazy option is certainly tempting, I think at least <em>some</em> people in the BO community should work on this. Here is what I think pursuing this could lead to:</p>
-<ul>
-<li>A way for the user to input their risk/reward preferences, giving them more direct control over the explore/exploit behaviours of BO algorithms (something which many users would like).</li>
-<li>A more principled starting point for cost-aware BO, which usually needs to assume a value-cost trade off.</li>
-<li>Automatically the cases of maximization, minimization, and targeting a specific value get handled in a unified way (via the utility function). No more confusing the EI equations for maximization vs minimization!</li>
-<li>A utility-based framework naturally generalizes to multi-objective optimization (the utility function is basically a kind of scalarization).</li>
-</ul>
-<p>Overall I think there is potentially for at least one good JMLR-style paper here, or a NeurIPS/ICML/ICLR paper introducing a software library supporting arbitrary utility functions for BO. Plus, there are some acquisition functions without a clear grounding in Bayesian decision theory (eg UCB), and some theoretical work putting utility functions in would be welcome.<sup>5</sup> If any of this sounds interesting, feel free to get in touch with me.</p>
-<p><strong>Final thought</strong>: remember, in Bayesian ML we do things not because they are easy, but because they are <em>right</em>.</p>
-
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>Website here: <a href="https://bayesoptbook.com/" class="uri">https://bayesoptbook.com/</a>.↩︎</p></li>
-<li id="fn2"><p>See <a href="../../blog/2025-11-02-expected-utility/">this post</a> for more details on these assuptions.↩︎</p></li>
-<li id="fn3"><p>EI values are 1: 0.5 2: 0.55 3: 0.6.↩︎</p></li>
-<li id="fn4"><p>Original paper: <a href="https://proceedings.neurips.cc/paper/2003/hash/6b5754d737784b51ec5075c0dc437bf0-Abstract.html">Warped Gaussian Processes, NeurIPS 2003</a>.↩︎</p></li>
-<li id="fn5"><p>Eg for UCB I imagine the equivalent notion would be an upper bound on the <em>utility</em> (rather than an upper bound on the function), but I’m not sure if all the desirable properties of UCB would transfer to this case.↩︎</p></li>
-</ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
-  author = {Tripp, Austin},
-  title = {We Have Forgotten about Utility Functions in {BO} (Whoops!)},
-  date = {2026-01-27},
-  url = {https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
-Tripp, Austin. 2026. <span>“We Have Forgotten about Utility Functions in
-BO (Whoops!).”</span> January 27. <a href="https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/">https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/</a>.
-</div></div></section></div> ]]></description>
-  <category>machine learning</category>
-  <category>bayesian optimization</category>
-  <category>opinion</category>
-  <category>_recent-highlight</category>
-  <guid>https://austintripp.ca/blog/2026-01-27-forgotten-utility-bo/</guid>
-  <pubDate>Tue, 27 Jan 2026 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

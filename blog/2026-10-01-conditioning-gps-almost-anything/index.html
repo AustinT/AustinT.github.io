@@ -7,9 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Austin Tripp">
-<meta name="dcterms.date" content="2026-02-13">
+<meta name="dcterms.date" content="2026-10-01">
+<meta name="description" content="My rough notes on this interesting GP paper">
 
-<title>Tyler Cowen’s book on talent – Austin Tripp's website</title>
+<title>Thoughts on “Conditioning Gaussian Processes on Almost Anything” – Austin Tripp's website</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -76,6 +77,49 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../assets/badges.css">
 </head>
@@ -132,17 +176,34 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-method-flowgp" id="toc-the-method-flowgp" class="nav-link active" data-scroll-target="#the-method-flowgp">The method: FlowGP</a></li>
+  <li><a href="#my-analysis-of-the-proscons-of-flowgp" id="toc-my-analysis-of-the-proscons-of-flowgp" class="nav-link" data-scroll-target="#my-analysis-of-the-proscons-of-flowgp">My analysis of the pros/cons of FlowGP</a></li>
+  <li><a href="#concluding-thoughts" id="toc-concluding-thoughts" class="nav-link" data-scroll-target="#concluding-thoughts">Concluding thoughts</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tyler Cowen’s book on talent</h1>
-</div>
+<h1 class="title">Thoughts on “Conditioning Gaussian Processes on Almost Anything”</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">machine learning</div>
+    <div class="quarto-category">research papers</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    My rough notes on this interesting GP paper
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -157,7 +218,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 13, 2026</p>
+      <p class="date">October 1, 2026</p>
     </div>
   </div>
   
@@ -169,22 +230,62 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Cross-posting my summary of the book “Talent: How to Identify Energizers, Creatives, and Winners Around the World” from my GitHub: <a href="https://github.com/AustinT/book-summaries/blob/master/non-fiction/2026-02-01-talent.md">link</a>.</p>
-<p>This is a good book, I appreciated the heterodox advice about how to run interviews and spot “undervalued” candidates, even if only some of it is backed by data (this is a field with generally poor data).</p>
+<div class="post-badges">
+<p><span class="post-badge badge-effort-low" title="Written in ~30 min after reading the paper">✏️ Quick post</span> <span class="post-badge badge-originality-low" title="Basically a summary of a paper">🪞 Low originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+</div>
+<p><a href="https://arxiv.org/abs/2605.21041">Conditioning Gaussian Processes on Almost Anything</a> by <a href="https://henrymoss.github.io/">Henry Moss</a> et al is probably my favourite GP paper of the year so far. GP models are still useful for small data molecular property prediction tasks, so improvements in speed, accuracy, or generality are always welcome.</p>
+<section id="the-method-flowgp" class="level2">
+<h2 class="anchored" data-anchor-id="the-method-flowgp">The method: FlowGP</h2>
+<p>This paper’s method, <strong>FlowGP</strong>, essentially re-casts GP sampling as a diffusion model. Normally samples from a GP are drawn by sampling <span class="math inline">\mathbf{z}
+\sim \mathcal N (0, I)</span> and applying:</p>
+<p><span class="math display">
+\mathbf{f} = \mathbf{\mu} + K^{1/2} \mathbf{z} \ .
+</span></p>
+<p>This is suspiciously close to the setup of diffusion models, which also aim to turn iid standard normal samples into samples from the desired distribution. FlowGP turns this into a diffusion process by defining:</p>
+<p><span class="math display">
+\mathbf{f}_t = \alpha(t) \left[\mathbf{\mu} + K^{1/2} \mathbf{z} \right]
++
+\left[1-\alpha(t)\right] \mathbf{z}
+</span></p>
+<p>where <span class="math inline">\alpha(t)</span> ranges between 1 and 0 as <span class="math inline">t</span> goes from 0 to 1. This is a linear interpolation between the iid samples <span class="math inline">\mathbf{z}</span> and the desired function samples <span class="math inline">\mathbf{f}</span>.</p>
+<p>By itself this is, of course, a useless complicated way of sampling from GP priors. The real value comes from conditioning on things, which becomes a <em>guidance</em> term in the diffusion model. FlowGP uses the condition</p>
+<p><span class="math display">
+\nabla_{\mathbf{f}_t} \log{p\left(\mathbf{f}_t \mid \mathcal{C}\right)}
+=
+\nabla_{\mathbf{f}_t} \log{p\left(\mathbf{f}_t \right)}
++
+\nabla_{\mathbf{f}_t} \log{p\left(\mathcal{C} \mid \mathbf{f}_t \right)} \ ,
+</span></p>
+<p>which requires us only to have a <em>likelihood</em> function for the condition <span class="math inline">p\left(\mathcal{C} \mid \mathbf{f}_t \right)</span> rather than an equation for the posterior <span class="math inline">p\left(\mathbf{f}_t \mid \mathcal{C}\right)</span> which is the hard part of sampling. This allows for a large amount of flexibility for what <span class="math inline">\mathcal{C}</span> is. It could be:</p>
+<ul>
+<li><strong>Observed data with Gaussian noise.</strong> This is a linear guidance term, although the authors concede here that in practice the analytical posterior term should just be used instead (i.e.&nbsp;this should be folded into the <span class="math inline">p\left(\mathbf{f}_t \right)</span> term).</li>
+<li><strong>Observed data with NON-Gaussian noise.</strong> This will be some kind of non-linear guidance term.</li>
+<li><strong>Global conditions like bounds, monotonicity, or LLM judgements.</strong> This is the most interesting and non-standard part, but in practice it requires these conditions to be defined softly (probabilistically) rather than as binary constraints.</li>
+</ul>
+</section>
+<section id="my-analysis-of-the-proscons-of-flowgp" class="level2">
+<h2 class="anchored" data-anchor-id="my-analysis-of-the-proscons-of-flowgp">My analysis of the pros/cons of FlowGP</h2>
+<p>There is arguably no substitute for its ability to impose global conditions like monotonicity. That is its strongest use case. On the flip side, it has no value over standard exact GPs with Gaussian noise (e.g.&nbsp;it doesn’t address the cubic scaling problem). The ambiguous case in the middle is “standard” approximate GP problems like classification, heavy-tailed noise, etc, where FlowGP needs to compete with VI, EP, MCMC, or other approximation methods. Unfortunately, the paper didn’t compare with any of these methods. I didn’t run any experiments myself, just thought about it, and my guess is:</p>
+<ul>
+<li>FlowGP is probably better than VI in cases where the variational family is highly misspecified. I’d default to FlowGP over VI.</li>
+<li>Not sure what to think about EP (I hardly use it)</li>
+<li>FlowGP will inherit most of the same problems as gradient-based MCMC methods like HMC: areas of high curvature will be challenging for integration, just like they force a small step size in HMC. The trade-offs will be practical:
+<ul>
+<li>HMC will fail with clear diagnostics (e.g.&nbsp;a collapsed acceptance rate). FlowGP will probably fail more silently.</li>
+<li>The MC estimator of the guidance term in FlowGP can become unreliable for very non-smooth likelihoods, whereas HMC doesn’t need an estimator (it can use an exact likelihood).</li>
+<li>HMC requires a burn in period + a long running chain to get independent samples; FlowGP gets independent samples automatically.</li>
+</ul></li>
+</ul>
+<p>All things being equal, I’d probably go for MC methods over FlowGP in these settings, but I could be convinced to change.</p>
+</section>
+<section id="concluding-thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="concluding-thoughts">Concluding thoughts</h2>
+<p>Utility aside, this was a very nice “idea” paper bridging two sub-fields of machine learning. I’m excited to see what’s in store for the future of this work!</p>
 
 
+</section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
-  author = {Tripp, Austin},
-  title = {Tyler {Cowen’s} Book on Talent},
-  date = {2026-02-13},
-  url = {https://austintripp.ca/blog/2026-02-13-talent/},
-  langid = {en}
-}
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas" role="listitem">
-Tripp, Austin. 2026. <span>“Tyler Cowen’s Book on Talent.”</span>
-February 13. <a href="https://austintripp.ca/blog/2026-02-13-talent/">https://austintripp.ca/blog/2026-02-13-talent/</a>.
-</div></div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
