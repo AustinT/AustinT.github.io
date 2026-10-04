@@ -2,6 +2,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/2026-10-04-high-dim-bo-wrong-problem/index.html",
       "/blog/2026-08-31-fpsketch/index.html",
       "/blog/2026-07-25-spherical-linear-high-dim-bo/index.html",
       "/blog/2026-07-03-vecchia/index.html",
@@ -39,6 +40,8 @@
   {
     "listing": "/blog/all/index.html",
     "items": [
+      "/blog/2026-10-04-high-dim-bo-wrong-problem/index.html",
+      "/blog/2026-10-04-oxford-bo-miniconf/index.html",
       "/blog/2026-10-01-conditioning-gps-almost-anything/index.html",
       "/blog/2026-09-18-sqrt-count-fingerprints/index.html",
       "/blog/2026-08-31-fpsketch/index.html",

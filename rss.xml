@@ -10,7 +10,139 @@
 <atom:link href="https://austintripp.ca/blog/all/index.xml" rel="self" type="application/rss+xml"/>
 <description>Austin Tripp&#39;s personal website</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Thu, 01 Oct 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 04 Oct 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>High-dimensional BO is the wrong problem to study</title>
+  <dc:creator>Austin Tripp</dc:creator>
+  <link>https://austintripp.ca/blog/2026-10-04-high-dim-bo-wrong-problem/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="post-badges">
+<p><span class="post-badge badge-confidence-medium" title="I’ve thought about this a fair bit, but it’s essentially just speculation.">⛅ Medium confidence</span> <span class="post-badge badge-ai-assisted" title="Claude proofread the post and lightly edited parts for clarity.">🤖 AI-assisted</span> <span class="post-badge badge-effort-medium" title="I spent more time making slides, I typed this up in ≈ 30 minutes.">🔧 Moderate effort</span> <span class="post-badge badge-originality-medium" title="Summary of my own talk/opinion, although this opinion is not very original.">🧩 Medium originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+</div>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This article is a written version of a talk I gave last week at an Oxford mini-conference on BO. A companion post summarizing my takeaways from the conference is <a href="../../blog/2026-10-04-oxford-bo-miniconf/">here</a>.</p>
+</div>
+</div>
+</div>
+<p>A lot of papers have been written about “high dimensional Bayesian optimization” (BO) in machine learning: many saying it is hard, many proposing new algorithms for it, and recently some saying that standard algorithms actually work really well.<sup>1</sup> I think this field has done some productive work but is essentially aiming at the wrong problem, and it should instead re-organize itself to focus on specific, more fine-grained mechanisms that are correlated with high dimension. In this post I explain why.</p>
+<section id="dimension-cant-be-the-whole-story" class="level2">
+<h2 class="anchored" data-anchor-id="dimension-cant-be-the-whole-story">Dimension <em>can’t</em> be the whole story</h2>
+<p>Two things make me feel that focusing on “high dimension” isn’t quite right. First, in most practical problems, the “dimension” is essentially a modelling choice. It is the space of features you choose to represent and/or intervene on, or some transformation of those features. Molecule data provides a great example: the same molecular structures can be represented with handcrafted descriptors (e.g.&nbsp;molecular weight, number of heavy atoms), neural network embeddings, or molecular fingerprints (which are typically 1024 or 2048 dimensional). Thus, depending on which representation I use, my input space can range from <img src="https://latex.codecogs.com/png.latex?%5Capprox%2010%5E1"> – <img src="https://latex.codecogs.com/png.latex?10%5E3"> dimensions, without the underlying problem actually changing. So, whatever makes optimization hard for molecules, <em>dimension</em> can’t be it by itself.</p>
+<p>Second, the stationary GPs usually used by default in BO <strong>do not see dimension</strong>: they only see pairwise distances. If, hypothetically, the data lived on a lower-dimensional linear subspace, every pairwise distance would be unchanged, so for standard GPs<sup>2</sup> the kernel matrix, marginal likelihood, and predictions would be identical to those of a GP in the lower dimension (e.g., same learned hyperparameters, same acquisition function values).</p>
+<p>Together, these examples make me think that “dimension” can’t be the fundamental cause of the challenges that people observe.</p>
+</section>
+<section id="my-guesses-at-the-real-mechanisms-behind-high-dimensional-bo-struggles" class="level2">
+<h2 class="anchored" data-anchor-id="my-guesses-at-the-real-mechanisms-behind-high-dimensional-bo-struggles">My guesses at the <em>real</em> mechanisms behind high-dimensional BO struggles</h2>
+<p>“High-dimensional BO” is often studied by applying BO algorithms to a sequence of problems in increasing dimensions. The problems are designed to be “similar” to each other to (hopefully) isolate the effect of dimension alone. However, I don’t think they succeed in isolating dimension: as dimension increases, other things increase too, and I suspect <em>these</em> are the true sources of difficulties:</p>
+<ul>
+<li><p><strong>Input space volume</strong>: optimization is often done on <img src="https://latex.codecogs.com/png.latex?%5B0,%201%5D%5Ed"> (or a similar box). As <img src="https://latex.codecogs.com/png.latex?d"> increases, the effective size of this space increases (e.g.&nbsp;it takes more spheres of a fixed radius to cover the space). A larger input space effectively forces BO to “explore” more.</p></li>
+<li><p>(⚠️ speculation) <strong>Surrogate model quality</strong>: the GP prior placed on <img src="https://latex.codecogs.com/png.latex?f"> may be a worse and worse model for the true function as <img src="https://latex.codecogs.com/png.latex?d"> increases.</p>
+<p>For example, some toy benchmarks (e.g.&nbsp;Ackley) have small-scale wiggles on top of one big bowl. In low dimensions a GP prior may essentially expect around one large deviation from the mean, whereas in high dimensions the same prior may (because of the larger input space) expect <em>many</em> large deviations from the mean, so a function <img src="https://latex.codecogs.com/png.latex?f"> with just a single deviation is very unexpected.</p></li>
+<li><p><strong>Hyperparameter and acquisition function optimization issues</strong>: there are large regions with <img src="https://latex.codecogs.com/png.latex?%5Capprox0"> gradient in high dimensions, both with respect to the input and the GP hyperparameters. If one doesn’t carefully avoid it, many optimization operations may terminate prematurely and hurt performance.</p></li>
+<li><p><strong>Boundary over-exploration</strong>: most of the volume of high dimensional space is close to the boundary of at least one dimension, so BO may rarely explore the center of the space.</p></li>
+</ul>
+<p>These are just some examples, they are not mutually exclusive or exhaustive. I think researchers should try to better diagnose and characterize these mechanisms.</p>
+</section>
+<section id="we-should-focus-on-these-mechanisms-instead-of-focusing-on-dimension" class="level2">
+<h2 class="anchored" data-anchor-id="we-should-focus-on-these-mechanisms-instead-of-focusing-on-dimension">We should focus on these mechanisms instead of focusing on <em>dimension</em></h2>
+<p>Even though these mechanisms (and more) may co-occur as dimension increases, they don’t <em>always</em> co-occur. For example, one could have:</p>
+<ul>
+<li>Low-dimensional BO in a giant input space</li>
+<li>Non-standard GP models which have large regions of zero gradients, even in low-dimension</li>
+<li>Linear models, which explore boundaries in any dimension</li>
+</ul>
+<p>My intuition is that each of these mechanisms will benefit from a different (although possibly compatible) solution, so it will be better to study them separately. If we only study them through the lens of “high dimension” it will be hard to find a clear solution, since different problems may have different mechanisms driving their difficulty.</p>
+</section>
+<section id="analogy-depth-in-neural-networks" class="level2">
+<h2 class="anchored" data-anchor-id="analogy-depth-in-neural-networks">Analogy: “depth” in neural networks</h2>
+<p>I’ll end with an analogy which hopefully makes my suggestion clear. I think “dimension” in high-dimensional BO is a bit like “depth” in deep neural networks. Around 2010, scaling neural networks to larger depths didn’t work well: training would stall and accuracy would be poor. The next decade of research showed that this problem was a combination of several things:</p>
+<ul>
+<li><p>Gradients would vanish or explode as they propagated through many layers.</p>
+<p>This was largely addressed by non-saturating activations (ReLU) and better initialization strategies.</p></li>
+<li><p>Deep “plain” architectures were hard to optimize even when gradient scales were controlled (deeper plain networks could have <em>higher</em> training error than shallower ones).</p>
+<p>This was addressed by architectural changes like residual connections and normalization layers, which are often explained as making the loss landscape smoother / better conditioned.</p></li>
+<li><p>Initialization recipes at that time would start neural networks off in regions with big/small gradients and bad conditioning.</p>
+<p>This later got solved with things like He/Glorot initialization.</p></li>
+</ul>
+<p>Now, “depth” isn’t a major limiting factor and isn’t considered to fundamentally control the difficulty of neural network training. In hindsight, it was something that exposed and amplified these more fundamental problems. I think “dimension” is playing a similar role in high-dimensional Bayesian optimization, and therefore I suspect that progress will come from searching for more fundamental mechanisms, and in hindsight “dimension” won’t be considered the main cause of difficulty.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>My hope is that the field moves in the direction of studying mechanisms more directly, and writes papers about things like “BO in large input spaces” rather than “high-dimensional BO”.</p>
+<p>The talk was well received, and I expect the field will move this way (though I suspect it would have happened anyway).</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>To save time I’m not putting proper citations in this post, sorry 🙏↩︎</p></li>
+<li id="fn2"><p>With no ARD, i.e.&nbsp;just one lengthscale.↩︎</p></li>
+</ol>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {High-Dimensional {BO} Is the Wrong Problem to Study},
+  date = {2026-10-04},
+  url = {https://austintripp.ca/blog/2026-10-04-high-dim-bo-wrong-problem/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+Tripp, Austin. 2026. <span>“High-Dimensional BO Is the Wrong Problem to
+Study.”</span> October 4. <a href="https://austintripp.ca/blog/2026-10-04-high-dim-bo-wrong-problem/">https://austintripp.ca/blog/2026-10-04-high-dim-bo-wrong-problem/</a>.
+</div></div></section></div> ]]></description>
+  <category>machine learning</category>
+  <category>bayesian optimization</category>
+  <category>opinion</category>
+  <category>_recent-highlight</category>
+  <guid>https://austintripp.ca/blog/2026-10-04-high-dim-bo-wrong-problem/</guid>
+  <pubDate>Sun, 04 Oct 2026 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Notes from Oxford BO mini-conference</title>
+  <dc:creator>Austin Tripp</dc:creator>
+  <link>https://austintripp.ca/blog/2026-10-04-oxford-bo-miniconf/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="post-badges">
+<p><span class="post-badge badge-ai-assisted" title="Claude proofread the post and lightly edited parts for clarity.">🤖 AI-assisted</span> <span class="post-badge badge-effort-low" title="A short ~15 minute write-up">✏️ Quick post</span> <span class="post-badge badge-originality-low" title="My notes from other people’s talks">🪞 Low originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+</div>
+<p>Last week (2026-09-29) I had the pleasure of attending a mini-conference in Oxford on Bayesian optimization (BO), focusing mostly on high dimensional BO and the recent paper proposing linear kernels on transformed inputs <span class="citation" data-cites="doumont2026highdimbo">(Doumont et al. 2026)</span>. I gave a talk on how I thought high-dimensional BO is the wrong problem to study (post <a href="../../blog/2026-10-04-high-dim-bo-wrong-problem/">here</a>).</p>
+<p>Here are my main takeaways:</p>
+<ul>
+<li>Overall I think the field <em>is</em> moving towards studying more fundamental mechanisms (the main recommendation of my talk).</li>
+<li>Numerically tiny gradients make a lot of empirical BO very difficult, and confound past results. In particular, it is very easy to stop acquisition function optimization too early and pick a sub-optimal point. This is hard to avoid unless you are deliberately careful, so I suspect some (maybe much) of the poor high-dimensional BO performance reported in the past comes from this.</li>
+<li>People are still very interested in latent space BO methods. I’m not a believer myself, and I should write a post explaining why.</li>
+<li>BO with linear kernels (in a transformed space) opens the possibility for semi-analytic optimization methods exploiting the known structure of the problem (e.g.&nbsp;for most standard acquisition functions, all maximizers will be on the Pareto front of high predicted mean vs.&nbsp;high predicted variance).</li>
+</ul>
+<p>Overall it was a nice conference to attend and a good community of people to have a pint with 😊🍻</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-doumont2026highdimbo" class="csl-entry">
+Doumont, Colin, Donney Fan, Natalie Maus, Jacob R. Gardner, Henry Moss, and Geoff Pleiss. 2026. <span>“We Still Don’t Understand High-Dimensional Bayesian Optimization.”</span> In <em>Proceedings of the 29th International Conference on Artificial Intelligence and Statistics</em>, edited by Emtiyaz Khan, Yingzhen Li, Arno Solin, and Aaditya Ramdas, vol. 300. Proceedings of Machine Learning Research. PMLR. <a href="https://proceedings.mlr.press/v300/doumont26a.html">https://proceedings.mlr.press/v300/doumont26a.html</a>.
+</div>
+</div></section></div> ]]></description>
+  <category>machine learning</category>
+  <category>bayesian optimization</category>
+  <guid>https://austintripp.ca/blog/2026-10-04-oxford-bo-miniconf/</guid>
+  <pubDate>Sun, 04 Oct 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Thoughts on “Conditioning Gaussian Processes on Almost Anything”</title>
   <dc:creator>Austin Tripp</dc:creator>
@@ -2095,7 +2227,7 @@ background-color: null;
 font-style: inherit;">False</span>)</span>
 <span id="cb13-40">plt.show()</span></code></pre></div></div>
 </details>
-<div id="cell-fig-tanimoto-results" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="8">
+<div id="cell-fig-tanimoto-results" class="cell quarto-layout-panel" data-execution_count="8" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-tanimoto-results" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2640,7 +2772,7 @@ background-color: null;
 font-style: inherit;">False</span>)</span>
 <span id="cb17-53">plt.show()</span></code></pre></div></div>
 </details>
-<div id="cell-fig-giant-results" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="11">
+<div id="cell-fig-giant-results" class="cell quarto-layout-panel" data-execution_count="11" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-giant-results" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2801,7 +2933,7 @@ font-style: inherit;">None</span>)</span>
 <span id="cb18-27">cax.set_position([cax_pos.x0, img_pos.y0, cax_pos.width, img_pos.height])</span>
 <span id="cb18-28">plt.show()</span></code></pre></div></div>
 </details>
-<div id="cell-fig-giant-heatmap" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="12">
+<div id="cell-fig-giant-heatmap" class="cell quarto-layout-panel" data-execution_count="12" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-giant-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -10012,210 +10144,6 @@ February 13. <a href="https://austintripp.ca/blog/2026-02-13-talent/">https://au
 </div></div></section></div> ]]></description>
   <guid>https://austintripp.ca/blog/2026-02-13-talent/</guid>
   <pubDate>Fri, 13 Feb 2026 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>We are underselling the modularity of Bayesian optimization</title>
-  <dc:creator>Austin Tripp</dc:creator>
-  <link>https://austintripp.ca/blog/2026-02-09-bo-modularity/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="post-badges">
-<p><span class="post-badge badge-confidence-medium" title="Reasonably confident.">⛅ Medium confidence</span> <span class="post-badge badge-effort-medium" title="A normal amount of drafting and revision.">🔧 Moderate effort</span> <span class="post-badge badge-originality-medium" title="">🧩 Medium originality</span></p>
-</div>
-<p>I think the Bayesian optimization (BO) community is vastly underselling one of BO’s most practically appealing features: <em>modularity</em>. A “modular” algorithm is one composed of individual parts which are largely exchangeable. I think BO is extremely modular, and this is something users want in practice, but BO papers rarely describe it in this way. This post outlines these points in more detail and ends with some recommendations.</p>
-<section id="bo-is-modular" class="level2">
-<h2 class="anchored" data-anchor-id="bo-is-modular">BO is modular</h2>
-<p>I think BO algorithms can be broken into three modules which are largely independent.</p>
-<ol type="1">
-<li>The surrogate model</li>
-<li>The acquisition function</li>
-<li>The optimizer of the acquisition function</li>
-</ol>
-<p>I bet ~75% of BO researchers would immediately agree with this. The remaining researchers would probably raise objections like “expected improvement (EI) has an analytical form for GP models but not Bayesian neural networks, isn’t that a violation”? So, let me be precise about what I mean by “independent”: I mean that their <em>goals</em> are different and that they are <em>conceptually orthogonal</em>.</p>
-<p>Let’s use GPs/EI as an example that might “feel” like non-independent choices. Let’s first consider the <em>goals</em> of the surrogate model and acquisition function. I believe the goal of a BO surrogate model is specifying a set of probabilistic beliefs about the objective function in the most accurate way possible (I expect most BO researchers would agree). Choices of surrogate model should largely be determined by the question “what do I believe about f?” Conversely, I believe the goal of the acquisition function is to specify a desired algorithm behaviour given a set of beliefs (and again, I expect most BO researchers would agree). Choices of acquisition function should be determined by the question “how do I want the algorithm to behave?”</p>
-<p>I see no particular reason to expect strong correlations between beliefs and desired behaviours across problems. Why should the belief that all joint distributions on outputs are Gaussian (the fundamental assumption of a GP) compel you to want the algorithm to always myopically aim for maximum improvement on the best point seen so far (the EI acquisition function)? I see these as completely <em>conceptually orthogonal.</em></p>
-<p>Of course, EI being available in closed form is absolutely an advantage of using the GP+EI combo. However, I’d much rather call that a <em>synergy</em>: a <em>benefit</em> derived from using a particular combination, rather than a fundamental <em>dependence</em>. I think the difference is that a synergy is really a matter of convenience, while a true dependence implies that some choices are intrinsically better together than others.</p>
-<p>Let me explain the difference between these two with an analogy. I often get a burrito on my way home from work because there is an ok burrito place on my walk from Recursion’s London office to King’s Cross station. I would describe this as a <em>synergy</em> between food and travel destination (ie this particular combination saves time), but would argue that overall the food you eat is independent of one’s travel destination (eg burritos are not intrinsically suited to going home). Food choice and destinations have different goals and are conceptually orthogonal.</p>
-<p>In this post, I am not denying the existence of synergies in BO- they absolutely exist. My point is that synergies do not contradict modularity: certain combinations being easier does not mean that substitutions cannot be made, just that there will be difficulties in doing so.</p>
-<p>With this clarification, I’ll proceed as if the reader accepts the claim that BO <em>is</em> intrinsically modular.</p>
-</section>
-<section id="why-is-modularity-desirable" class="level2">
-<h2 class="anchored" data-anchor-id="why-is-modularity-desirable">Why is modularity desirable?</h2>
-<p>Modularity is useful for many reasons:</p>
-<ul>
-<li><strong>Debugging</strong>: if different modules are “responsible” for different functions/features of an algorithm, a bug (or other undesirable behaviour) can be localized to a particular part of the algorithm.</li>
-<li><strong>Corrigibility</strong>: if the algorithm is not doing what you want, you can substitute a module to change its behaviour in a somewhat predictable way. For example, since BO’s behaviour is controlled by its acquisition function, you can be confident that increasing UCB’s beta coefficient should increase exploration for all model types.</li>
-<li><strong>Reuse</strong>: deploying an algorithm in a new setting doesn’t require inventing a completely new algorithm since some parts could be re-used. For example, BO on a completely new data type (eg infinite sequences) might require a new model (eg a GP with a new kernel) and a new acquisition function optimizer that works in infinite sequence space, but acquisition functions like EI or UCB could still be used (and you know how they will behave roughly).</li>
-</ul>
-<p>Practitioners encounter these challenges all the time, and they are some of the biggest pain points of “black box” algorithms. For example, there are many optimization algorithms of the flavour “train a generative model somehow, then sample from it as your policy.” If you don’t like the samples, what do you change? The training procedure? The architecture? If you have a setup you like but slightly change the problem (eg generate reaction conditions with a solvent mixture instead of one solvent), what parts of the previous setup do you expect to transfer? Since the model architecture needs to change for the extra output, how should that affect training/sampling?</p>
-<p>These tricky questions are much simpler with modular algorithms: in each case a particular module is implicated, and the desired outcome of the change to that module should be reasonably clear.</p>
-</section>
-<section id="how-is-modularity-in-bo-undersold" class="level2">
-<h2 class="anchored" data-anchor-id="how-is-modularity-in-bo-undersold">How is modularity in BO undersold?</h2>
-<p>This is the crux of the post: in my interactions with practitioners, very few people seem to recognize and take advantage of BO’s modularity, even when it is the sensible thing to do. I attribute this to several causes:</p>
-<ol type="1">
-<li><strong>“Monolithic” algorithms</strong>: many BO papers give a unified name to their model/acquisition function/optimizer setup. For example, the <a href="http://proceedings.mlr.press/v108/korovina20a.html">ChemBO</a> paper uses a GP with a special optimal transport kernel, and an optimizer based on “walks” in synthesizable molecule space (they leave the acquisition function a bit variable). This gives the impression that these parts should be used as a <em>package</em> rather than as independent modules.</li>
-<li><strong>Biased experiments</strong>: beyond simply giving their combination a name, many papers conduct an ablation study to show that their combination is <em>better</em> than other combinations. I think this is just a response to reviewer pressures to 1) claim a novel methodological contribution 2) show that the novel method is better than comparable non-novel methods. Inevitably I think all these comparisons are biased: the authors just run experiments until they find one where their method works better, or they impose a subtle constraint that handicaps other methods without reviewers noticing.<sup>1</sup> However, practitioners might just take these results at face value.</li>
-<li><strong>Emphasizing synergies</strong>: a lot of BO papers describe computational synergies between their acquisition function and model, which also implies to practitioners that they should be used together.</li>
-<li><strong>Lack of emphasis on modularity:</strong> finally, aside from this blog post, I think there are very few written documents which explicitly describe this as a positive of BO. People just don’t think about it as an advantage. Part of why I am writing this post is to change this impression.</li>
-</ol>
-<p>Overall, this underselling seems <em>accidental</em>: it comes from a combination of nobody explicitly advertising this and papers being slightly incentivized to undersell modularity to emphasize the novelty of their methods.</p>
-</section>
-<section id="how-to-stop-underselling-modularity" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-stop-underselling-modularity">How to stop underselling modularity</h2>
-<p>First and foremost, I think BO researchers should explicitly mention modularity as an advantage of BO when introducing it (eg in talks or in the introductions of textbooks). Neither of the two most common “BO intro” references, <a href="https://ieeexplore.ieee.org/document/7352306/">Shahriari (2015)</a> and <a href="https://bayesoptbook.com/">Garnett’s 2023 textbook</a>, discuss modularity as an advantage of BO.<sup>2</sup> The next researcher who writes a popular BO overview can (and should) mention this!</p>
-<p>Second, I think researchers should try to avoid writing “monolithic algorithm” papers like XYZBO. If one does, please explicitly state something like “although we choose this combo of model/acquisition function/optimizer, you could really pick any subset of these that you want, they are conceptually independent.” This would avoid giving the impression that the algorithm is explicitly <em>not</em> modular. Similarly, if performing ablation studies on one component (eg vary acquisition function with the same model), explicitly state something like “note that the results might not transfer to all problem settings”, to avoid giving the impression that users should just stick with the choice from the paper.</p>
-<p>Lastly, it would be great if every paper had an appendix with an honest description of why each component was chosen, what alternatives were considered, and whether the authors guess practitioners should change them or stick with the defaults. An explicit section about swapping out components of the algorithm is a strong endorsement of modularity, and practical tips are always appreciated by users (who never like “discovering the sharp edges” by themselves). I don’t think including this would ever hurt one’s chances in peer review. If authors are really worried, just add it after the paper is accepted.<sup>3</sup></p>
-</section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>Modularity is great, let’s stop underselling this feature of BO!</p>
-
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>Examples of constraints authors might use to handicap other methods and bias the result towards showing that their method is better:</p>
-<ul>
-<li>Authors might set an arbitrary cap on wallclock time, which seems fair, but actually they just spent time optimizing their method’s code whereas other methods use unoptimized code and time out. The time cap is chosen so that other methods time out.</li>
-<li>Authors might tune the hyperparameters of the baselines unfairly (eg “all baseline methods use a learning rate of 1e-3 for fairness”, when that is actually a poor choice).</li>
-<li>Initializing the optimization problem in a particular way (eg their acquisition function might be more exploitative, so they initialize with data close to the optimum, other methods explore around a lot while their method quickly exploits and finds the optimum).</li>
-</ul>
-↩︎</li>
-<li id="fn2"><p>In fact, they don’t really say much at all about why you would want to pick BO over other methods. They motivate BO independently using uncertainty / the black box nature of the functions.↩︎</p></li>
-<li id="fn3"><p>I’ll take the opportunity to criticize peer review a bit.</p>
-<ol type="1">
-<li>Reviewers hardly read the appendix anyway.</li>
-<li>Bad reviewers basically stop caring after the paper is accepted.</li>
-<li>Don’t feel bad about manipulating reviewers who are silly enough to view an honest user guide as a negative feature of a paper.</li>
-</ol>
-↩︎</li>
-</ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
-  author = {Tripp, Austin},
-  title = {We Are Underselling the Modularity of {Bayesian}
-    Optimization},
-  date = {2026-02-09},
-  url = {https://austintripp.ca/blog/2026-02-09-bo-modularity/},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
-Tripp, Austin. 2026. <span>“We Are Underselling the Modularity of
-Bayesian Optimization.”</span> February 9. <a href="https://austintripp.ca/blog/2026-02-09-bo-modularity/">https://austintripp.ca/blog/2026-02-09-bo-modularity/</a>.
-</div></div></section></div> ]]></description>
-  <category>machine learning</category>
-  <category>bayesian optimization</category>
-  <category>opinion</category>
-  <category>_recent-highlight</category>
-  <guid>https://austintripp.ca/blog/2026-02-09-bo-modularity/</guid>
-  <pubDate>Mon, 09 Feb 2026 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Why I don’t care about toy benchmarks in BO</title>
-  <dc:creator>Austin Tripp</dc:creator>
-  <link>https://austintripp.ca/blog/2026-02-08-bo-benchmarks/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="post-badges">
-<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-effort-medium" title="A normal amount of drafting and revision.">🔧 Moderate effort</span> <span class="post-badge badge-originality-medium" title="">🧩 Medium originality</span></p>
-</div>
-<p>A lot of Bayesian optimization (BO) papers include experiments on “toy” functions. Examples of such toy functions are Ackley, Rosenbrock, Hartmann, and Branin. I basically ignore these experiments when I read papers and skip to the next section. When I review papers (and therefore cannot simply skip sections), I find my eyes glazing over and feel bored: I don’t care about these functions, don’t care about the results, and don’t really understand why the authors ran this experiment.</p>
-<p>For a while I assumed every BO researcher feels this way, but a bunch of recent conversations have made it clear to me that many people do care. So, in this post I explain why I don’t care at all about benchmarks on toy functions (and why you shouldn’t either).</p>
-<section id="the-main-issue-is-transferability" class="level2">
-<h2 class="anchored" data-anchor-id="the-main-issue-is-transferability">The main issue is transferability</h2>
-<p>Toy functions have known optima, and therefore running optimization on them is a pointless task. In isolation, the knowledge of which algorithms perform best on toy functions is a useless bit of trivia (since nobody is going to deploy them in practice to optimize these specific functions). I don’t think even the most ardent supporter of toy benchmark functions would dispute this. Instead, they claim that the value lies in some finding of the benchmark being <em>transferable</em> to settings we actually do care about (real world problems). I think this is the core of the disagreement: I simply don’t expect these results to be transferable at all to real-world settings. That will be the crux of this post.</p>
-<p>Before getting to that, let’s clear away two assumptions. The first is that I’m basically <em>guessing</em> that the point of toy benchmark experiments is to make statements about real-world problems. Unfortunately, the scientific rigor of ML is so poor that most papers don’t even state why they do the experiments they do or the scope of the results claimed, leaving it up to the reader’s imagination.<sup>1</sup> If you imagine something different when you see these experiments that’s ok, but the position argued in this post might not make sense. I am arguing against how <em>I</em> believe <em>most people</em> interpret these experiments.</p>
-<p>The second is that there are many possible “real-world” experiments. When I use this term in this post, I mean the set of applications where BO is most often proposed as a desirable solution, which I think is:</p>
-<ul>
-<li>ML hyperparameter search</li>
-<li>Scientific discovery (small molecules, proteins, and materials being top spaces)</li>
-<li>Chemical reaction optimization (choosing temperature, concentration, solvent, etc)</li>
-<li>Engineering design (eg choosing which wing design to simulate)</li>
-</ul>
-<p>Of course there are other problems, and sometimes real-world problems that highly resemble toy benchmarks. I’m assuming in this post that this is highly exceptional, and most real-world problems look very different than benchmarks.</p>
-</section>
-<section id="too-many-things-change-to-expect-toy-benchmark-results-to-transfer" class="level2">
-<h2 class="anchored" data-anchor-id="too-many-things-change-to-expect-toy-benchmark-results-to-transfer">Too many things change to expect toy benchmark results to transfer</h2>
-<p>In short, the answer is that <em>too many things change</em> for me to reasonably expect trends observed in benchmark problems to also hold in real-world problems. BO algorithms are <em>very</em> sensitive to changes, eg changes in model hyperparameters, acquisition functions, etc. In my experience playing around with many algorithms in my PhD, changes in parameters can significantly change both absolute performance, and performance relative to other algorithms. Therefore, in the toy benchmark -&gt; real-world function transfer, I simply see too many things change to expect trends to hold. Let’s go through some.</p>
-<section id="input-space-changes-mean-you-cant-even-run-the-same-algorithm" class="level3">
-<h3 class="anchored" data-anchor-id="input-space-changes-mean-you-cant-even-run-the-same-algorithm">Input space changes mean <em>you can’t even run the same algorithm</em></h3>
-<p>Almost all toy benchmarks are in d-dimensional Euclidean space, while most real-world problems have at least some discrete element. Continuous to fully (or partially) discrete is a massive change. First, it often requires a different model to be used than the one chosen for benchmarking (eg a stationary GP is not even well-defined on a space of graphs). Even if the same model can be used, the acquisition function optimizer probably needs to change, since pure gradient descent on the inputs is no longer possible.</p>
-<p>A second (related) concern is that the <em>bounds</em> of the input space can change. Toy benchmarks usually assume a unit hypercube of some kind, whereas real-world problems might be unbounded for have unknown bounds.</p>
-<p>Overall, this puts two holes on any claims of transferability of conclusions. First, if the algorithms studied <em>literally cannot be run on real-world problems</em>, arguably the counterfactual of running the algorithms on real-world problems <em>doesn’t even exist</em>, so there is no “transfer” possible. If, alternatively, you include changing core parts of the algorithm as part of the process of “transfer”, experience tells me that changing the model and acquisition function optimization are some of the biggest possible changes in the BO loop, ones that affect optimization performance in ways that are difficult to predict, making conclusions less likely to transfer.</p>
-</section>
-<section id="function-being-optimized" class="level3">
-<h3 class="anchored" data-anchor-id="function-being-optimized">Function being optimized</h3>
-<p>Benchmark functions are, usually, relatively smooth functions with no pathological features that defy modelling assumptions: things like discontinuities (or sharp jumps), varying smoothness, or different “regions” with qualitatively different behaviour. Real-world functions can have all of these. Therefore, even when using a “standard” model like a stationary GP, the model is far more likely to be misspecified, and small differences in misspecification could significantly change BO performance.</p>
-</section>
-<section id="biased-starting-data-causes-modelling-issues" class="level3">
-<h3 class="anchored" data-anchor-id="biased-starting-data-causes-modelling-issues">Biased starting data causes modelling issues</h3>
-<p>BO benchmark problems are usually randomly initialized, while in real-world problems one usually starts optimization from whatever previous data is available. This data is usually quite biased: eg biased to one region of input space, biased towards one mode, biased towards being close to optimal or far from optimal (depending on the problem). Unfortunately, biased data causes modelling issues.</p>
-<p>The most common way to fit models in BO is by maximum likelihood (eg maximizing marginal log likelihood to set GP hyperparameters), which balances model “simplicity” with data fit. With biased data, this has two important effects:</p>
-<ol type="1">
-<li>It often selects for models which assume the “bias” in the biased data is present uniformly.</li>
-<li>When parameters are underspecified, it picks the strongest and most simplifying assumption by default.</li>
-</ol>
-<p>Here’s a semi-real example in drug discovery, using an exact GP model (assuming molecules are represented by vector features). In the “lead optimization” phase of drug discovery, the starting data probably comes from the “hit ID” phase, which are all structurally similar and all unusually active, derived from the same initial “hit” molecule. First, the model is highly incentivized to learn a mean near the starting data mean (assuming a constant mean function) and kernel amplitude equal to starting dataset variance. While this set of parameters explains the starting data well, it severely overestimates the activity of molecules similar to the starting data, which are mostly not active at all. Second, having never seen any 2 data points that are very far away from each other, the model will not have good data to confidently set the GP lengthscale parameter. Maximum likelihood highly incentives large lengthscale values (this improves the “data fit” ter), and therefore the model will select the largest plausible lengthscale compatible with the current data. Unfortunately, this will probably mark structurally distinct molecules as more similar to training molecules than is reasonable, causing the GP’s predictive variance to be small. Overall, the result is a model that confidently predicts almost all molecules to be strong actives.</p>
-<p>The best argument I’ve heard against this is that the initial random sampling should be viewed as a core part of the BO procedure, not just a placeholder initialization strategy. Perhaps there is some merit to this- random sampling is a counter against dataset bias. But it is impractical for two reasons. First, in situations where function evaluations are really expensive (eg lab experiments with molecules), nobody wants to spend tons of money on random initialization. Second, in more complex input spaces (eg molecules), it’s not even clear what an appropriate “random” distribution is. There is no analogue to U(0, 1) or N(0, 1).</p>
-</section>
-<section id="unrealistic-state-of-knowledge" class="level3">
-<h3 class="anchored" data-anchor-id="unrealistic-state-of-knowledge">Unrealistic state of knowledge</h3>
-<p>This applies if you take <a href="../../blog/2026-01-25-model-centric-bo/">my previous advice</a> and aim to start BO with a model that roughly captures your probabilistic belief about the function f at the start of optimization, rather than just leave model selection as an internal part of the BO algorithm. Toy benchmarks don’t really simulate a realistic “state of knowledge” that could be used to influence model fitting. On one hand, BO researchers deliberately avoid biasing algorithm with knowledge about the location or value of the optimum, even though this is actually known and probably would help the algorithm perform better. On the other hand, the rough level / kind of smoothness <em>is</em> known and <em>is</em> used implicitly when the BO model creator selects a model class (eg Matern vs RBF kernel).</p>
-<p>Real-world problems don’t have this distinction of knowledge we “can” and “cannot” use- we can (and should) use all knowledge. In fact, I bet it’s actually more common in practice to have an idea of the optimum’s location and value but <em>not</em> the smoothness of the function- the opposite case to standard BO practice.</p>
-<p>Overall though, the bias against using knowledge about the problem probably means that toy benchmark results are based on models which are overly “broad” compared to real-world models, and I expect real-world problems to often use “narrower” models.</p>
-</section>
-</section>
-<section id="i-dont-believe-in-performance-floor" class="level2">
-<h2 class="anchored" data-anchor-id="i-dont-believe-in-performance-floor">I don’t believe in “performance floor”</h2>
-<p>Some people might accept that claims like “algorithm A outperforms algorithm B” might not hold between toy benchmarks and real-world problems, but advocate for a lesser version of the claim: “any algorithm that performs well on real-world problems should <em>at least</em> perform well on toy benchmarks”. Therefore, one could argue, toy benchmarks simply enforce a “floor” on performance, and not clearing this floor means an algorithm is not worth considering for real-world problems.</p>
-<p>I don’t believe this either, for largely the same reasons as above. Too many things change, and it isn’t too hard to imagine an algorithm that performs well in practice but does not perform well on toy benchmarks.</p>
-<p>For example, a BO algorithm which expects noisy, non-stationary data may use a GP model with a smaller lengthscale. In relatively smooth BO benchmarks, this would cause the algorithm to spend a lot of time doing local exploration, rather than doing large leaps towards the optimum, and therefore it’s performance might be relatively poor. It would be erroneously to discard this algorithm as “poor” though, it just makes a different set of assumptions that are not valid in the circumstances of the benchmark.</p>
-<p>Put another way, I think the same argument as above also applies in reverse: there are too many changes <em>from</em> real-world problems <em>to</em> toy benchmarks to expect performance results to transfer between these settings.</p>
-</section>
-<section id="no-insight-either" class="level2">
-<h2 class="anchored" data-anchor-id="no-insight-either">No “insight” either</h2>
-<p>Aside from conclusions transferring from toy benchmarks to real-world scenarios, another purported use of benchmark is to gain “insight” or “understanding” of BO methods. Many toy benchmark problems are simple or have one “difficult” component (eg 2 modes), and can be used to study how different algorithms handle these scenarios. I agree that toy benchmarks have the <em>potential</em> to yield such insights, but as they are currently used they do not yield any. This is because, in general, only the optimization <em>performance</em> are shown and studied, not the actual actions of the algorithms in input space. This limits insights to things like “this change makes performance worse” or “this change makes performance better”. I think the arguments from the previous sections apply here: there are just too many changes from toy problems to real-world ones to expect such trends to hold. I bet some algorithm behaviours <em>could</em> hold up between problems and models (eg “algorithm A prioritizes uncertain points over certain ones”), but since these aren’t reported there is nothing to comment on.</p>
-</section>
-<section id="conclusions" class="level2">
-<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
-<p>In this post I’ve outlined how a lot of things change between toy benchmarks and real-world problems, and argued that it is therefore unlikely for results on toy benchmarks to be transferable to real-world problems. For the same reason, I also disagree that toy benchmarks can be used as a “floor” or “filter” for all worthy algorithms to pass through. I concede there might be scope for toy benchmarks to yield insights into algorithms’ behaviour, although the prevailing practice of just showing the optimization performance (and not the actual underlying behaviour) prevents us from realizing this benefit. To me, this completely defeats the purpose of running the benchmarks in the first place, and hence I do not care about toy benchmarks.</p>
-<p>When I’ve expressed this view in the past, I’ve sometimes gotten the incredulous question “what should we do instead, not run <em>any</em> standardized benchmark?” My answer is yes, I’d rather see no benchmark than a flawed one (or at the very least, it could just be put into the appendix). I’m not sure why so many people find this shocking. To finish, I’d like to seed the reader with the suggestion to seriously consider just not running toy benchmarks at all. It’s hard to deviate from established practice, but when the practice is not useful I think it’s what we should do.</p>
-
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>I liked the paper <a href="https://doi.org/10.48550/arXiv.2405.02200">Position: Why We Must Rethink Empirical Research in Machine Learning</a> for its explanation of this (even though the paper was a bit too verbose). To paraphrase, other sciences usually have an explicit goal of what they are trying to measure, and try to establish “validity” of the metric they are using (ie “does it actually measure what we want to measure”). Not only does ML not really try to establish the validity of its metrics, it usually doesn’t even specify what it is trying to measure.↩︎</p></li>
-</ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
-  author = {Tripp, Austin},
-  title = {Why {I} Don’t Care about Toy Benchmarks in {BO}},
-  date = {2026-02-08},
-  url = {https://austintripp.ca/blog/2026-02-08-bo-benchmarks/},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
-Tripp, Austin. 2026. <span>“Why I Don’t Care about Toy Benchmarks in
-BO.”</span> February 8. <a href="https://austintripp.ca/blog/2026-02-08-bo-benchmarks/">https://austintripp.ca/blog/2026-02-08-bo-benchmarks/</a>.
-</div></div></section></div> ]]></description>
-  <category>machine learning</category>
-  <category>bayesian optimization</category>
-  <category>opinion</category>
-  <category>_recent-highlight</category>
-  <guid>https://austintripp.ca/blog/2026-02-08-bo-benchmarks/</guid>
-  <pubDate>Sun, 08 Feb 2026 22:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

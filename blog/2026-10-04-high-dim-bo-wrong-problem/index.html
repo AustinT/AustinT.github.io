@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Austin Tripp">
+<meta name="dcterms.date" content="2026-10-04">
+<meta name="description" content="Arguing we should study specific mechanisms rather than “high dimension” in general.">
 
-<title>Research – Austin Tripp’s website</title>
+<title>High-dimensional BO is the wrong problem to study – Austin Tripp’s website</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -29,25 +32,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7100700a5d4657facf49b32369185e6d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7100700a5d4657facf49b32369185e6d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -75,35 +76,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-papers-list .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-year','listing-venue','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-papers-list'] = new List('listing-papers-list', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
@@ -149,7 +121,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="../assets/badges.css">
+<link rel="stylesheet" href="../../assets/badges.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -159,7 +131,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Austin Tripp’s website</span>
     </a>
   </div>
@@ -170,27 +142,27 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../cv/index.html"> 
+    <a class="nav-link" href="../../cv/index.html"> 
 <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../research/index.html" aria-current="page"> 
+    <a class="nav-link" href="../../research/index.html"> 
 <span class="menu-text">Research</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../resources/index.html"> 
+    <a class="nav-link" href="../../resources/index.html"> 
 <span class="menu-text">Resources</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../blog/index.html"> 
+    <a class="nav-link" href="../../blog/index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../now/index.html"> 
+    <a class="nav-link" href="../../now/index.html"> 
 <span class="menu-text">Now</span></a>
   </li>  
 </ul>
@@ -209,10 +181,11 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#current-work-as-of-2026" id="toc-current-work-as-of-2026" class="nav-link active" data-scroll-target="#current-work-as-of-2026">Current work (as of 2026)</a></li>
-  <li><a href="#general-research-interests" id="toc-general-research-interests" class="nav-link" data-scroll-target="#general-research-interests">General research interests</a></li>
-  <li><a href="#publications" id="toc-publications" class="nav-link" data-scroll-target="#publications">Publications</a></li>
-  <li><a href="#retrospective-thoughts-on-my-papers" id="toc-retrospective-thoughts-on-my-papers" class="nav-link" data-scroll-target="#retrospective-thoughts-on-my-papers">Retrospective thoughts on my papers</a></li>
+  <li><a href="#dimension-cant-be-the-whole-story" id="toc-dimension-cant-be-the-whole-story" class="nav-link active" data-scroll-target="#dimension-cant-be-the-whole-story">Dimension <em>can’t</em> be the whole story</a></li>
+  <li><a href="#my-guesses-at-the-real-mechanisms-behind-high-dimensional-bo-struggles" id="toc-my-guesses-at-the-real-mechanisms-behind-high-dimensional-bo-struggles" class="nav-link" data-scroll-target="#my-guesses-at-the-real-mechanisms-behind-high-dimensional-bo-struggles">My guesses at the <em>real</em> mechanisms behind high-dimensional BO struggles</a></li>
+  <li><a href="#we-should-focus-on-these-mechanisms-instead-of-focusing-on-dimension" id="toc-we-should-focus-on-these-mechanisms-instead-of-focusing-on-dimension" class="nav-link" data-scroll-target="#we-should-focus-on-these-mechanisms-instead-of-focusing-on-dimension">We should focus on these mechanisms instead of focusing on <em>dimension</em></a></li>
+  <li><a href="#analogy-depth-in-neural-networks" id="toc-analogy-depth-in-neural-networks" class="nav-link" data-scroll-target="#analogy-depth-in-neural-networks">Analogy: “depth” in neural networks</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
     </div>
@@ -221,14 +194,37 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Research</h1>
-</div>
+<h1 class="title">High-dimensional BO is the wrong problem to study</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">machine learning</div>
+    <div class="quarto-category">bayesian optimization</div>
+    <div class="quarto-category">opinion</div>
+    <div class="quarto-category">_recent-highlight</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Arguing we should study specific mechanisms rather than “high dimension” in general.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Austin Tripp </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 4, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -238,362 +234,87 @@ window.Quarto = {
 </header>
 
 
-<section id="current-work-as-of-2026" class="level2">
-<h2 class="anchored" data-anchor-id="current-work-as-of-2026">Current work (as of 2026)</h2>
-<p>I am working on algorithms to decide which molecules to test in drug discovery campaigns. Some specific problems I am working on (or have worked on recently) are:</p>
-<ul>
-<li>Applying Bayesian optimization to drug screening (and making it work in practice)</li>
-<li>Molecular property prediction with quantified uncertainty</li>
-<li>Retrosynthetic planning (how to synthesize novel molecules)</li>
-<li>Meaningful evaluation of ML algorithms in chemistry (average loss on a test set can be misleading)</li>
-</ul>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="post-badges">
+<p><span class="post-badge badge-confidence-medium" title="I’ve thought about this a fair bit, but it’s essentially just speculation.">⛅ Medium confidence</span> <span class="post-badge badge-ai-assisted" title="Claude proofread the post and lightly edited parts for clarity.">🤖 AI-assisted</span> <span class="post-badge badge-effort-medium" title="I spent more time making slides, I typed this up in ≈ 30 minutes.">🔧 Moderate effort</span> <span class="post-badge badge-originality-medium" title="Summary of my own talk/opinion, although this opinion is not very original.">🧩 Medium originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+</div>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Disclaimer
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>I have signed a confidentiality agreement as part of my current position and therefore will not be able to disclose <em>everything</em> I am working on.</p>
+<div class="callout-body-container">
+<p>This article is a written version of a talk I gave last week at an Oxford mini-conference on BO. A companion post summarizing my takeaways from the conference is <a href="../../blog/2026-10-04-oxford-bo-miniconf/">here</a>.</p>
 </div>
 </div>
+</div>
+<p>A lot of papers have been written about “high dimensional Bayesian optimization” (BO) in machine learning: many saying it is hard, many proposing new algorithms for it, and recently some saying that standard algorithms actually work really well.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> I think this field has done some productive work but is essentially aiming at the wrong problem, and it should instead re-organize itself to focus on specific, more fine-grained mechanisms that are correlated with high dimension. In this post I explain why.</p>
+<section id="dimension-cant-be-the-whole-story" class="level2">
+<h2 class="anchored" data-anchor-id="dimension-cant-be-the-whole-story">Dimension <em>can’t</em> be the whole story</h2>
+<p>Two things make me feel that focusing on “high dimension” isn’t quite right. First, in most practical problems, the “dimension” is essentially a modelling choice. It is the space of features you choose to represent and/or intervene on, or some transformation of those features. Molecule data provides a great example: the same molecular structures can be represented with handcrafted descriptors (e.g.&nbsp;molecular weight, number of heavy atoms), neural network embeddings, or molecular fingerprints (which are typically 1024 or 2048 dimensional). Thus, depending on which representation I use, my input space can range from <span class="math inline">\approx 10^1</span> – <span class="math inline">10^3</span> dimensions, without the underlying problem actually changing. So, whatever makes optimization hard for molecules, <em>dimension</em> can’t be it by itself.</p>
+<p>Second, the stationary GPs usually used by default in BO <strong>do not see dimension</strong>: they only see pairwise distances. If, hypothetically, the data lived on a lower-dimensional linear subspace, every pairwise distance would be unchanged, so for standard GPs<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> the kernel matrix, marginal likelihood, and predictions would be identical to those of a GP in the lower dimension (e.g., same learned hyperparameters, same acquisition function values).</p>
+<p>Together, these examples make me think that “dimension” can’t be the fundamental cause of the challenges that people observe.</p>
 </section>
-<section id="general-research-interests" class="level2">
-<h2 class="anchored" data-anchor-id="general-research-interests">General research interests</h2>
-<p>I am generally interested in how machine learning can enhance scientific discovery (for <em>positive</em> applications). Due to issues of robustness, generalization, and small dataset sizes I generally do not believe that replacing existing systems with deep neural networks is the best strategy for most practical problems (at least with current technology). Instead, I think that the way forward is to identify small parts of larger systems in science where machine learning could have an advantage over existing approaches, then try to develop methods that are well-suited to these niches. Currently the niche I am focusing on is early-stage drug candidate generation.</p>
+<section id="my-guesses-at-the-real-mechanisms-behind-high-dimensional-bo-struggles" class="level2">
+<h2 class="anchored" data-anchor-id="my-guesses-at-the-real-mechanisms-behind-high-dimensional-bo-struggles">My guesses at the <em>real</em> mechanisms behind high-dimensional BO struggles</h2>
+<p>“High-dimensional BO” is often studied by applying BO algorithms to a sequence of problems in increasing dimensions. The problems are designed to be “similar” to each other to (hopefully) isolate the effect of dimension alone. However, I don’t think they succeed in isolating dimension: as dimension increases, other things increase too, and I suspect <em>these</em> are the true sources of difficulties:</p>
 <ul>
-<li>Sequential decision making (e.g.&nbsp;Bayesian optimization)</li>
-<li>Gaussian processes and other kernel methods</li>
-<li>Learning on small datasets</li>
-<li>How can large language models help discovery? Until recently I thought they had limited potential for this, but I have started to change my mind.</li>
-<li>Model robustness and reliability</li>
-<li>Uncertainty quantification</li>
-<li>Evaluation of machine learning algorithms in a way that reflects their practical usage</li>
-<li>AI safety/alignment</li>
+<li><p><strong>Input space volume</strong>: optimization is often done on <span class="math inline">[0, 1]^d</span> (or a similar box). As <span class="math inline">d</span> increases, the effective size of this space increases (e.g.&nbsp;it takes more spheres of a fixed radius to cover the space). A larger input space effectively forces BO to “explore” more.</p></li>
+<li><p>(⚠️ speculation) <strong>Surrogate model quality</strong>: the GP prior placed on <span class="math inline">f</span> may be a worse and worse model for the true function as <span class="math inline">d</span> increases.</p>
+<p>For example, some toy benchmarks (e.g.&nbsp;Ackley) have small-scale wiggles on top of one big bowl. In low dimensions a GP prior may essentially expect around one large deviation from the mean, whereas in high dimensions the same prior may (because of the larger input space) expect <em>many</em> large deviations from the mean, so a function <span class="math inline">f</span> with just a single deviation is very unexpected.</p></li>
+<li><p><strong>Hyperparameter and acquisition function optimization issues</strong>: there are large regions with <span class="math inline">\approx0</span> gradient in high dimensions, both with respect to the input and the GP hyperparameters. If one doesn’t carefully avoid it, many optimization operations may terminate prematurely and hurt performance.</p></li>
+<li><p><strong>Boundary over-exploration</strong>: most of the volume of high dimensional space is close to the boundary of at least one dimension, so BO may rarely explore the center of the space.</p></li>
 </ul>
+<p>These are just some examples, they are not mutually exclusive or exhaustive. I think researchers should try to better diagnose and characterize these mechanisms.</p>
 </section>
-<section id="publications" class="level2">
-<h2 class="anchored" data-anchor-id="publications">Publications</h2>
-<p>For a complete list see my <a href="https://scholar.google.com/citations?user=WAvRaxMAAAAJ">Google Scholar page</a> or <a href="https://www.semanticscholar.org/author/Austin-Tripp/115766771">Semantic Scholar profile</a>. For some of my papers I have a dedicated webpage with more details (and retrospective thoughts). Click any paper title below for more detail.</p>
-<div id="listing-papers-list" class="quarto-listing quarto-listing-container-table">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-    <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-    <select id="listing-papers-list-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-papers-list'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-      <option value="" disabled="" selected="" hidden="">Order By</option>
-      <option value="index" data-direction="asc">Default</option>
-      <option value="listing-title-sort" data-direction="asc">
-        Title
-      </option>
-    </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<table class="quarto-listing-table table">
-<thead>
-<tr>
-
-<th>
-<a class="sort" data-sort="listing-title-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Title</a>
-</th>
-
-<th>
-Year
-</th>
-
-<th>
-Venue
-</th>
-
-<th>
-Categories
-</th>
-
-</tr>
-</thead>
-<tbody class="list">
-
-<tr data-index="0" data-categories="cHJlcHJpbnQ=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="26" data-listing-title-sort="Hash Collisions in Molecular Fingerprints: Effects on Property Prediction and Bayesian Optimization" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/hash-collisions-fingerprints/index.html" class="title listing-title">Hash Collisions in Molecular Fingerprints: Effects on Property Prediction and Bayesian Optimization</a>
-</td>
-<td>
-<span class="listing-year">2025</span>
-</td>
-<td>
-<span class="listing-venue">arXiv preprint</span>
-</td>
-<td>
-<span class="listing-categories">preprint</span>
-</td>
-
-</tr>
-
-<tr data-index="1" data-categories="d29ya3Nob3A=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="26" data-listing-title-sort="Basic Bayesian Optimization is Underrated for Molecule Design" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/basic-bo-underrated/index.html" class="title listing-title">Basic Bayesian Optimization is Underrated for Molecule Design</a>
-</td>
-<td>
-<span class="listing-year">2024</span>
-</td>
-<td>
-<span class="listing-venue">ICML 2024 AI for Science Workshop</span>
-</td>
-<td>
-<span class="listing-categories">workshop</span>
-</td>
-
-</tr>
-
-<tr data-index="2" data-categories="cGFwZXI=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="66" data-listing-title-sort="Retro-fallback: retrosynthetic planning in an uncertain world" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/retro-fallback/index.html" class="title listing-title">Retro-fallback: retrosynthetic planning in an uncertain world</a>
-</td>
-<td>
-<span class="listing-year">2024</span>
-</td>
-<td>
-<span class="listing-venue">The Twelfth International Conference on Learning Representations</span>
-</td>
-<td>
-<span class="listing-categories">paper</span>
-</td>
-
-</tr>
-
-<tr data-index="3" data-categories="cGFwZXI=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="81" data-listing-title-sort="Meta-learning Adaptive Deep Kernel Gaussian Processes for Molecular Property Prediction" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/adaptive-deep-kernel-gp/index.html" class="title listing-title">Meta-learning Adaptive Deep Kernel Gaussian Processes for Molecular Property Prediction</a>
-</td>
-<td>
-<span class="listing-year">2023</span>
-</td>
-<td>
-<span class="listing-venue">The Eleventh International Conference on Learning Representations</span>
-</td>
-<td>
-<span class="listing-categories">paper</span>
-</td>
-
-</tr>
-
-<tr data-index="4" data-categories="cHJlcHJpbnQ=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="26" data-listing-title-sort="Genetic algorithms are strong baselines for molecule generation" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/genetic-algorithm-strong-baselines/index.html" class="title listing-title">Genetic algorithms are strong baselines for molecule generation</a>
-</td>
-<td>
-<span class="listing-year">2023</span>
-</td>
-<td>
-<span class="listing-venue">arXiv preprint</span>
-</td>
-<td>
-<span class="listing-categories">preprint</span>
-</td>
-
-</tr>
-
-<tr data-index="5" data-categories="cHJlcHJpbnQ=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="26" data-listing-title-sort="Re-evaluating Retrosynthesis Algorithms with Syntheseus" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/syntheseus-retrosynthesis/index.html" class="title listing-title">Re-evaluating Retrosynthesis Algorithms with Syntheseus</a>
-</td>
-<td>
-<span class="listing-year">2023</span>
-</td>
-<td>
-<span class="listing-venue">arXiv preprint</span>
-</td>
-<td>
-<span class="listing-categories">preprint</span>
-</td>
-
-</tr>
-
-<tr data-index="6" data-categories="cGFwZXI=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="69" data-listing-title-sort="Tanimoto Random Features for Scalable Molecular Machine Learning" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/tanimoto-random-features/index.html" class="title listing-title">Tanimoto Random Features for Scalable Molecular Machine Learning</a>
-</td>
-<td>
-<span class="listing-year">2023</span>
-</td>
-<td>
-<span class="listing-venue">Advances in Neural Information Processing Systems</span>
-</td>
-<td>
-<span class="listing-categories">paper</span>
-</td>
-
-</tr>
-
-<tr data-index="7" data-categories="cGFwZXI=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="60" data-listing-title-sort="DOCKSTRING: easy molecular docking yields better benchmarks for ligand design" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/dockstring/index.html" class="title listing-title">DOCKSTRING: easy molecular docking yields better benchmarks for ligand design</a>
-</td>
-<td>
-<span class="listing-year">2022</span>
-</td>
-<td>
-<span class="listing-venue">Journal of Chemical Information and Modeling</span>
-</td>
-<td>
-<span class="listing-categories">paper</span>
-</td>
-
-</tr>
-
-<tr data-index="8" data-categories="cGFwZXI=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="2" data-listing-word-count-sort="332" data-listing-title-sort="Sample-Efficient Optimization in the Latent Space of Deep Generative Models via Weighted Retraining" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/latent-space-weighted-retraining/index.html" class="title listing-title">Sample-Efficient Optimization in the Latent Space of Deep Generative Models via Weighted Retraining</a>
-</td>
-<td>
-<span class="listing-year">2020</span>
-</td>
-<td>
-<span class="listing-venue">Advances in Neural Information Processing Systems</span>
-</td>
-<td>
-<span class="listing-categories">paper</span>
-</td>
-
-</tr>
-
-<tr data-index="9" data-categories="cHJlcHJpbnQ=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="26" data-listing-title-sort="A study of EHVI vs fixed scalarization for molecule design" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/ehvi-vs-scalarization/index.html" class="title listing-title">A study of EHVI vs fixed scalarization for molecule design</a>
-</td>
-<td>
-<span class="listing-year">2025</span>
-</td>
-<td>
-<span class="listing-venue">arXiv preprint</span>
-</td>
-<td>
-<span class="listing-categories">preprint</span>
-</td>
-
-</tr>
-
-<tr data-index="10" data-categories="cGFwZXI=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="26" data-listing-title-sort="Batched Bayesian Optimization by Maximizing the Probability of Including the Optimum" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/qPO-batch-bo/index.html" class="title listing-title">Batched Bayesian Optimization by Maximizing the Probability of Including the Optimum</a>
-</td>
-<td>
-<span class="listing-year">2025</span>
-</td>
-<td>
-<span class="listing-venue">Journal of Chemical Information and Modeling</span>
-</td>
-<td>
-<span class="listing-categories">paper</span>
-</td>
-
-</tr>
-
-<tr data-index="11" data-categories="cGFwZXI=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="26" data-listing-title-sort="Stochastic Gradient Descent for Gaussian Processes Done Right" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/sgd-gaussian-processes/index.html" class="title listing-title">Stochastic Gradient Descent for Gaussian Processes Done Right</a>
-</td>
-<td>
-<span class="listing-year">2024</span>
-</td>
-<td>
-<span class="listing-venue">The Twelfth International Conference on Learning Representations</span>
-</td>
-<td>
-<span class="listing-categories">paper</span>
-</td>
-
-</tr>
-
-<tr data-index="12" data-categories="cGFwZXI=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="125" data-listing-title-sort="Retrosynthetic Planning with Dual Value Networks" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/dual-value-networks-retrosynthesis/index.html" class="title listing-title">Retrosynthetic Planning with Dual Value Networks</a>
-</td>
-<td>
-<span class="listing-year">2023</span>
-</td>
-<td>
-<span class="listing-venue">Proceedings of the 40th International Conference on Machine Learning</span>
-</td>
-<td>
-<span class="listing-categories">paper</span>
-</td>
-
-</tr>
-
-<tr data-index="13" data-categories="cGFwZXI=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="77" data-listing-title-sort="GAUCHE: A Library for Gaussian Processes in Chemistry" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/gauche-gp-package/index.html" class="title listing-title">GAUCHE: A Library for Gaussian Processes in Chemistry</a>
-</td>
-<td>
-<span class="listing-year">2023</span>
-</td>
-<td>
-<span class="listing-venue">Advances in Neural Information Processing Systems</span>
-</td>
-<td>
-<span class="listing-categories">paper</span>
-</td>
-
-</tr>
-
-<tr data-index="14" data-categories="cGFwZXI=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="112" data-listing-title-sort="Nonequilibrium sensing of volatile compounds using active and passive analyte delivery" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/volatile-sensing-2023/index.html" class="title listing-title">Nonequilibrium sensing of volatile compounds using active and passive analyte delivery</a>
-</td>
-<td>
-<span class="listing-year">2023</span>
-</td>
-<td>
-<span class="listing-venue">Proceedings of the National Academy of Sciences</span>
-</td>
-<td>
-<span class="listing-categories">paper</span>
-</td>
-
-</tr>
-
-<tr data-index="15" data-categories="cGFwZXI=" data-listing-file-modified-sort="1791148403524" data-listing-reading-time-sort="1" data-listing-word-count-sort="61" data-listing-title-sort="Petroleomic analysis of the treatment of naphthenic organics in oil sands process-affected water with buoyant photocatalysts" data-listing-filename-sort="index.qmd">
-<td>
-<a href="../research/papers/oil-sands-photocatalysts/index.html" class="title listing-title">Petroleomic analysis of the treatment of naphthenic organics in oil sands process-affected water with buoyant photocatalysts</a>
-</td>
-<td>
-<span class="listing-year">2018</span>
-</td>
-<td>
-<span class="listing-venue">Water Research</span>
-</td>
-<td>
-<span class="listing-categories">paper</span>
-</td>
-
-</tr>
-
-</tbody>
-</table>
-<div class="listing-no-matching d-none">No matching items</div>
-</div>
+<section id="we-should-focus-on-these-mechanisms-instead-of-focusing-on-dimension" class="level2">
+<h2 class="anchored" data-anchor-id="we-should-focus-on-these-mechanisms-instead-of-focusing-on-dimension">We should focus on these mechanisms instead of focusing on <em>dimension</em></h2>
+<p>Even though these mechanisms (and more) may co-occur as dimension increases, they don’t <em>always</em> co-occur. For example, one could have:</p>
+<ul>
+<li>Low-dimensional BO in a giant input space</li>
+<li>Non-standard GP models which have large regions of zero gradients, even in low-dimension</li>
+<li>Linear models, which explore boundaries in any dimension</li>
+</ul>
+<p>My intuition is that each of these mechanisms will benefit from a different (although possibly compatible) solution, so it will be better to study them separately. If we only study them through the lens of “high dimension” it will be hard to find a clear solution, since different problems may have different mechanisms driving their difficulty.</p>
 </section>
-<section id="retrospective-thoughts-on-my-papers" class="level2">
-<h2 class="anchored" data-anchor-id="retrospective-thoughts-on-my-papers">Retrospective thoughts on my papers</h2>
-<p>On each paper’s page I have tried to provide an honest evaluation of the paper. I added this because:</p>
-<ol type="1">
-<li>It might be hard to tell at a glance whether something in an academic paper will work in real life.</li>
-<li>Because updating scientific papers is relatively uncommon, there isn’t really a proper place for an author to state how their work looks in hindsight.</li>
+<section id="analogy-depth-in-neural-networks" class="level2">
+<h2 class="anchored" data-anchor-id="analogy-depth-in-neural-networks">Analogy: “depth” in neural networks</h2>
+<p>I’ll end with an analogy which hopefully makes my suggestion clear. I think “dimension” in high-dimensional BO is a bit like “depth” in deep neural networks. Around 2010, scaling neural networks to larger depths didn’t work well: training would stall and accuracy would be poor. The next decade of research showed that this problem was a combination of several things:</p>
+<ul>
+<li><p>Gradients would vanish or explode as they propagated through many layers.</p>
+<p>This was largely addressed by non-saturating activations (ReLU) and better initialization strategies.</p></li>
+<li><p>Deep “plain” architectures were hard to optimize even when gradient scales were controlled (deeper plain networks could have <em>higher</em> training error than shallower ones).</p>
+<p>This was addressed by architectural changes like residual connections and normalization layers, which are often explained as making the loss landscape smoother / better conditioned.</p></li>
+<li><p>Initialization recipes at that time would start neural networks off in regions with big/small gradients and bad conditioning.</p>
+<p>This later got solved with things like He/Glorot initialization.</p></li>
+</ul>
+<p>Now, “depth” isn’t a major limiting factor and isn’t considered to fundamentally control the difficulty of neural network training. In hindsight, it was something that exposed and amplified these more fundamental problems. I think “dimension” is playing a similar role in high-dimensional Bayesian optimization, and therefore I suspect that progress will come from searching for more fundamental mechanisms, and in hindsight “dimension” won’t be considered the main cause of difficulty.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>My hope is that the field moves in the direction of studying mechanisms more directly, and writes papers about things like “BO in large input spaces” rather than “high-dimensional BO”.</p>
+<p>The talk was well received, and I expect the field will move this way (though I suspect it would have happened anyway).</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>To save time I’m not putting proper citations in this post, sorry 🙏<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>With no ARD, i.e.&nbsp;just one lengthscale.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-<p>If you would like me to write about a specific article that is missing or would like an update on an existing article, please send me an email and I will write an update.</p>
-
-
-
-</section>
-
-</main> <!-- /main -->
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+  author = {Tripp, Austin},
+  title = {High-Dimensional {BO} Is the Wrong Problem to Study},
+  date = {2026-10-04},
+  url = {https://austintripp.ca/blog/2026-10-04-high-dim-bo-wrong-problem/},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas" role="listitem">
+Tripp, Austin. 2026. <span>“High-Dimensional BO Is the Wrong Problem to
+Study.”</span> October 4. <a href="https://austintripp.ca/blog/2026-10-04-high-dim-bo-wrong-problem/">https://austintripp.ca/blog/2026-10-04-high-dim-bo-wrong-problem/</a>.
+</div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
