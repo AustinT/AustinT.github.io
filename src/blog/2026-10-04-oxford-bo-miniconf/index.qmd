@@ -1,0 +1,49 @@
+---
+title: 'Notes from Oxford BO mini-conference'
+date: 2026-10-04
+
+# Include references, citations off
+citation: false
+google-scholar: false
+bibliography: references.bib
+
+categories:
+- machine learning
+- bayesian optimization
+
+# Badges
+originality: low
+originality-note: "My notes from other people's talks"
+effort: low
+effort-note: "A short ~15 minute write-up"
+ai-involvement: assisted
+ai-involvement-note: "Claude proofread the post and lightly edited parts for clarity."
+---
+
+Last week (2026-09-29) I had the pleasure of attending a mini-conference in
+Oxford on Bayesian optimization (BO), focusing mostly on high dimensional BO
+and the recent paper proposing linear kernels on transformed inputs
+[@doumont2026highdimbo]. I gave a talk on how I thought high-dimensional BO is
+the wrong problem to study (post
+[here](/blog/2026-10-04-high-dim-bo-wrong-problem/)).
+
+Here are my main takeaways:
+
+- Overall I think the field _is_ moving towards studying more fundamental
+  mechanisms (the main recommendation of my talk).
+- Numerically tiny gradients make a lot of empirical BO very difficult, and
+  confound past results. In particular, it is very easy to stop acquisition
+  function optimization too early and pick a sub-optimal point. This is hard to
+  avoid unless you are deliberately careful, so I suspect some (maybe much) of
+  the poor high-dimensional BO performance reported in the past comes from
+  this.
+- People are still very interested in latent space BO methods. I'm not
+  a believer myself, and I should write a post explaining why.
+- BO with linear kernels (in a transformed space) opens the possibility for
+  semi-analytic optimization methods exploiting the known structure of the
+  problem (e.g. for most standard acquisition functions, all maximizers will be
+  on the Pareto front of high predicted mean vs. high predicted variance).
+
+Overall it was a nice conference to attend and a good community of people to
+have a pint with 😊🍻
+

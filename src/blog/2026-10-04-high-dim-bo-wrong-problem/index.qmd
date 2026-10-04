@@ -1,0 +1,162 @@
+---
+title: "High-dimensional BO is the wrong problem to study"
+description: 'Arguing we should study specific mechanisms rather than "high dimension" in general.'
+date: 2026-10-04
+
+# Citations on, google scholar off
+citation: true
+google-scholar: false
+
+categories:
+- machine learning
+- bayesian optimization
+- opinion
+- _recent-highlight
+
+# Badges
+originality: medium
+originality-note: "Summary of my own talk/opinion, although this opinion is not very original."
+effort: medium
+effort-note: "I spent more time making slides, I typed this up in ≈ 30 minutes."
+confidence: medium
+confidence-note: "I've thought about this a fair bit, but it's essentially just speculation."
+ai-involvement: assisted
+ai-involvement-note: "Claude proofread the post and lightly edited parts for clarity."
+---
+
+::: {.callout}
+
+This article is a written version of a talk I gave last week at an Oxford
+mini-conference on BO. A companion post summarizing my takeaways from the
+conference is [here](/blog/2026-10-04-oxford-bo-miniconf/).
+
+:::
+
+A lot of papers have been written about "high dimensional Bayesian
+optimization" (BO) in machine learning: many saying it is hard, many proposing
+new algorithms for it, and recently some saying that standard algorithms
+actually work really well.[^citations] I think this field has done some
+productive work but is essentially aiming at the wrong problem, and it should
+instead re-organize itself to focus on specific, more fine-grained mechanisms
+that are correlated with high dimension. In this post I explain why.
+
+[^citations]: To save time I'm not putting proper citations in this post, sorry
+    🙏
+
+## Dimension _can't_ be the whole story
+
+Two things make me feel that focusing on "high dimension" isn't quite right.
+First, in most practical problems, the "dimension" is essentially a modelling
+choice. It is the space of features you choose to represent and/or intervene
+on, or some transformation of those features. Molecule data provides a great
+example: the same molecular structures can be represented with handcrafted
+descriptors (e.g. molecular weight, number of heavy atoms), neural network
+embeddings, or molecular fingerprints (which are typically 1024 or 2048
+dimensional). Thus, depending on which representation I use, my input space can
+range from $\approx 10^1$ -- $10^3$ dimensions, without the underlying problem
+actually changing. So, whatever makes optimization hard for molecules,
+_dimension_ can't be it by itself.
+
+Second, the stationary GPs usually used by default in BO **do not see
+dimension**: they only see pairwise distances. If, hypothetically, the data
+lived on a lower-dimensional linear subspace, every pairwise distance would be
+unchanged, so for standard GPs[^no-ard] the kernel matrix, marginal likelihood,
+and predictions would be identical to those of a GP in the lower dimension
+(e.g., same learned hyperparameters, same acquisition function values).
+
+[^no-ard]: With no ARD, i.e. just one lengthscale.
+
+Together, these examples make me think that "dimension" can't be the
+fundamental cause of the challenges that people observe.
+
+## My guesses at the _real_ mechanisms behind high-dimensional BO struggles
+
+"High-dimensional BO" is often studied by applying BO algorithms to a sequence
+of problems in increasing dimensions. The problems are designed to be "similar"
+to each other to (hopefully) isolate the effect of dimension alone. However,
+I don't think they succeed in isolating dimension: as dimension increases,
+other things increase too, and I suspect _these_ are the true sources of
+difficulties:
+
+- **Input space volume**: optimization is often done on $[0, 1]^d$ (or
+  a similar box). As $d$ increases, the effective size of this space increases
+  (e.g. it takes more spheres of a fixed radius to cover the space). A larger
+  input space effectively forces BO to "explore" more.
+- (⚠️ speculation) **Surrogate model quality**: the GP prior placed on $f$ may
+  be a worse and worse model for the true function as $d$ increases.
+  
+  For example, some toy benchmarks (e.g. Ackley) have small-scale wiggles on
+  top of one big bowl. In low dimensions a GP prior may essentially expect
+  around one large deviation from the mean, whereas in high dimensions the same
+  prior may (because of the larger input space) expect _many_ large deviations
+  from the mean, so a function $f$ with just a single deviation is very
+  unexpected.
+- **Hyperparameter and acquisition function optimization issues**: there are
+  large regions with $\approx0$ gradient in high dimensions, both with respect
+  to the input and the GP hyperparameters. If one doesn't carefully avoid it,
+  many optimization operations may terminate prematurely and hurt performance.
+- **Boundary over-exploration**: most of the volume of high dimensional space
+  is close to the boundary of at least one dimension, so BO may rarely explore
+  the center of the space.
+
+These are just some examples, they are not mutually exclusive or exhaustive.
+I think researchers should try to better diagnose and characterize these
+mechanisms.
+
+## We should focus on these mechanisms instead of focusing on _dimension_
+
+Even though these mechanisms (and more) may co-occur as dimension increases,
+they don't _always_ co-occur. For example, one could have:
+
+- Low-dimensional BO in a giant input space
+- Non-standard GP models which have large regions of zero gradients, even in
+  low-dimension
+- Linear models, which explore boundaries in any dimension
+
+My intuition is that each of these mechanisms will benefit from a different
+(although possibly compatible) solution, so it will be better to study them
+separately. If we only study them through the lens of "high dimension" it will
+be hard to find a clear solution, since different problems may have different
+mechanisms driving their difficulty.
+
+## Analogy: "depth" in neural networks
+
+I'll end with an analogy which hopefully makes my suggestion clear. I think
+"dimension" in high-dimensional BO is a bit like "depth" in deep neural
+networks. Around 2010, scaling neural networks to larger depths didn't work
+well: training would stall and accuracy would be poor. The next decade of
+research showed that this problem was a combination of several things:
+
+- Gradients would vanish or explode as they propagated through many layers.
+
+  This was largely addressed by non-saturating activations (ReLU) and better
+  initialization strategies.
+- Deep "plain" architectures were hard to optimize even when gradient scales
+  were controlled (deeper plain networks could have _higher_ training error
+  than shallower ones).
+
+  This was addressed by architectural changes like residual connections and
+  normalization layers, which are often explained as making the loss landscape
+  smoother / better conditioned.
+- Initialization recipes at that time would start neural networks off in
+  regions with big/small gradients and bad conditioning.
+
+  This later got solved with things like He/Glorot initialization.
+
+Now, "depth" isn't a major limiting factor and isn't considered to
+fundamentally control the difficulty of neural network training. In hindsight,
+it was something that exposed and amplified these more fundamental problems.
+I think "dimension" is playing a similar role in high-dimensional Bayesian
+optimization, and therefore I suspect that progress will come from searching
+for more fundamental mechanisms, and in hindsight "dimension" won't be
+considered the main cause of difficulty.
+
+## Conclusion
+
+My hope is that the field moves in the direction of studying mechanisms more
+directly, and writes papers about things like "BO in large input spaces" rather
+than "high-dimensional BO".
+
+The talk was well received, and I expect the field will move this way (though
+I suspect it would have happened anyway).
+
