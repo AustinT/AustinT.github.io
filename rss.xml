@@ -9,7 +9,7 @@
 <link>https://austintripp.ca/blog/all/</link>
 <atom:link href="https://austintripp.ca/blog/all/index.xml" rel="self" type="application/rss+xml"/>
 <description>Austin Tripp&#39;s personal website</description>
-<generator>quarto-1.10.18</generator>
+<generator>quarto-1.10.19</generator>
 <lastBuildDate>Sun, 04 Oct 2026 00:00:00 GMT</lastBuildDate>
 <item>
   <title>High-dimensional BO is the wrong problem to study</title>
@@ -3021,7 +3021,7 @@ Algorithm.”</span> August 31. <a href="https://austintripp.ca/blog/2026-08-31-
 
 
 <div class="post-badges">
-<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-effort-high" title="Thought a lot about what I wanted to convey with my blog.">💎 High effort</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-effort-high" title="Thought a lot about what I wanted to convey with my blog.">💎 High effort</span></p>
 </div>
 <p>My content standards for this blog have changed over time. Originally I aimed for all the content to be unique and (possibly?) valuable: questions or observations that I thought were original (or at least not easy to find). This included <a href="../../blog/2018/07/02/adam-to-sgd/">the relationship between Adam and SGD</a>, <a href="../../blog/2018/09/12/sparse-matrices-tips1/">tips and tricks for using sparse matrices in scipy</a>, and even <a href="../../blog/2018/10/08/communal-fridge/">some theories about how to manage a communal fridge in a decentralized way</a>. These were not groundbreaking discoveries or anything, maybe just the result of a day of reading, but I thought there was genuine value in distilling my reading into a 10 minute read. I have benefited many times from people explaining clearly in ~15 minutes what would otherwise take hours or days to understand and wanted to contribute.</p>
 <p>Of course, LLMs have changed this a lot. There is now very little value to working out the solutions to small mathematical problems like relating Adam to SGD: LLMs can do that pretty easily. There is also much less value in distilling key insights from documentation or research papers: LLMs can do that too. And I’m also less willing to put half-baked opinion posts online now, at least without asking an LLM “is there an obviously reason why this is dumb”.</p>
