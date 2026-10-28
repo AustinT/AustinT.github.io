@@ -1,0 +1,39 @@
+---
+title: Why I'm not interested in finance roles
+---
+
+If you are a recruiter or hiring manager at a hedge fund, trading firm, bank,
+or other finance company: thank you for thinking of me, but I am not interested
+in discussing job opportunities.
+This page is my template explanation for why.
+
+## The short version
+
+I want my career to have a high positive impact on the world.
+I don't think the finance industry is a good place for that.
+
+## The longer version
+
+My reasoning is roughly:
+
+1. **Most finance work seems neutral, not positive.**
+   The first order effects seem neutral (e.g. short-term trading firms competing
+   on speed, where one firm's gain is another firm's loss).
+   The second order effects (price discovery, liquidity) seem small
+   (as in my individual contribution to those effects seems negligible).
+2. **Low _counterfactual_ impact.**
+   I don't think I'm any better suited for finance job than any other STEM PhD.
+   I see myself as probably replaceable with the next candidate in line.
+   I have a hard time imagining that I would make a difference nobody else could.
+3. **I'd rather work directly on problems I care about.**
+   I would find it hard to stay motivated working on something I do not think
+   improves the world or is a problem I really care about.
+
+## What about earning to give?
+
+This doesn't seem like the best way for me to have impact at the moment.
+
+## Exceptional opportunities
+
+Maybe there are niches in finance that have more positive impact! If you think
+you are in one of those niches, please feel free to contact me.
