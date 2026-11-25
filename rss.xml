@@ -9,8 +9,90 @@
 <link>https://austintripp.ca/blog/all/</link>
 <atom:link href="https://austintripp.ca/blog/all/index.xml" rel="self" type="application/rss+xml"/>
 <description>Austin Tripp&#39;s personal website</description>
-<generator>quarto-1.10.19</generator>
-<lastBuildDate>Sun, 04 Oct 2026 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.11.9</generator>
+<lastBuildDate>Wed, 25 Nov 2026 14:00:00 GMT</lastBuildDate>
+<item>
+  <title>Coherent updates and non-myopic Bayesian optimization</title>
+  <dc:creator>Austin Tripp</dc:creator>
+  <link>https://austintripp.ca/blog/2026-11-25-coherent-bo/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="post-badges">
+<p><span class="post-badge badge-confidence-high" title="Highly confident in the claims.">☀️ High confidence</span> <span class="post-badge badge-ai-human" title="Writing is all me, except for light proofreading and 2 footnotes fact-checked by Claude.">✍️ Entirely human</span> <span class="post-badge badge-effort-medium" title="~1h reading + writing up">🔧 Moderate effort</span> <span class="post-badge badge-originality-medium" title="Inspired by a paper, but with some original insights from me">🧩 Medium originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+</div>
+<p>Reading <span class="citation" data-cites="reason2026measuringcoherencepredictivemodels">Reason et al. (2026)</span> today made me realize something surprising (but obvious in hindsight): Bayesian optimization (BO) algorithms usually assume a predictive model which performs Bayesian updating, even though approximate inference methods don’t actually guarantee this. Let’s use a simple example with 2 variables, <img src="https://latex.codecogs.com/png.latex?y_1"> and <img src="https://latex.codecogs.com/png.latex?y_2">. A Bayesian model will specify:</p>
+<ul>
+<li><img src="https://latex.codecogs.com/png.latex?p_1(y_1)">: PDF<sup>1</sup> of <img src="https://latex.codecogs.com/png.latex?y_1"></li>
+<li><img src="https://latex.codecogs.com/png.latex?p_2(y_2)">: PDF of <img src="https://latex.codecogs.com/png.latex?y_2"></li>
+<li><img src="https://latex.codecogs.com/png.latex?p_%7B12%7D(y_1,%20y_2)">: joint distribution of <img src="https://latex.codecogs.com/png.latex?y_1"> and <img src="https://latex.codecogs.com/png.latex?y_2"> together</li>
+</ul>
+<p>In a <em>coherent</em> model, we have <img src="https://latex.codecogs.com/png.latex?p_1(y_1)%20=%20%5Cint%20p_%7B12%7D(y_1,%20y_2)%5C,%20dy_2"> (and vice versa for <img src="https://latex.codecogs.com/png.latex?p_2(y_2)">). This means we can freely choose between accessing <img src="https://latex.codecogs.com/png.latex?p_1(y_1)"> directly or by marginalizing the joint distribution, whatever is computationally more convenient.</p>
+<p>However, for many models in practical use <img src="https://latex.codecogs.com/png.latex?p_1(%5Ccdot)"> and <img src="https://latex.codecogs.com/png.latex?%5Cint%20p_%7B12%7D(%5Ccdot,%0Ay_2)%5C,dy_2"> may <em>not</em> be equal. We call these models <em>incoherent</em>. Strictly speaking, almost every model using approximate inference is likely to be somewhat incoherent: eg inducing point GPs<sup>2</sup>, prior-fitted networks<sup>3</sup>, any probabilistic model sampled using MCMC<sup>4</sup>.</p>
+<section id="does-coherence-matter" class="level2">
+<h2 class="anchored" data-anchor-id="does-coherence-matter">Does coherence matter?</h2>
+<p>I suspect normally no, and I think this is why it’s hardly mentioned in BO papers. The vast majority of BO papers use acquisition functions that depend only on marginals. For example, expected improvement, probability of improvement, and upper confidence bound all just use <img src="https://latex.codecogs.com/png.latex?p(y)">. If a BO loop chooses point 1 based on <img src="https://latex.codecogs.com/png.latex?p(y_1)"> and this causes an incoherent update to <img src="https://latex.codecogs.com/png.latex?p(y_2)"> in the next step, that doesn’t really matter too much, because these are never directly compared.</p>
+<p>However, some acquisition functions involve hypothetical model updates and therefore <em>do</em> implicitly assume coherence. For example, an information-theoretic acquisition function like</p>
+<p><span id="eq-mi"><img src="https://latex.codecogs.com/png.latex?%0AI(y_1,%20y_2)%20=%20H(y_2)%20-%20%5Cmathbb%20E_%7By_1%7D%20%5Cleft%5B%20H(y_2%20%5Cmid%20y_1)%20%5Cright%5D%0A%5Ctag%7B1%7D"></span></p>
+<p>implicitly relies on a coherent Bayesian update to produce <img src="https://latex.codecogs.com/png.latex?p(y_2%20%5Cmid%20y_1)">. However, if this update is not made coherently, that doesn’t actually guarantee anything bad will happen. Maybe at worst this “pseudo mutual information” could be negative.</p>
+<p><span class="citation" data-cites="reason2026measuringcoherencepredictivemodels">Reason et al. (2026)</span> mainly points out that under incoherent updating, different ways of writing an acquisition function may no longer be equivalent. For example, mutual information can either be a difference between unconditional and conditional entropies (like Equation&nbsp;1) or a KL divergence between the joint and the product of marginals. These have different analytic expressions and use different marginals/conditionals/joint distributions and therefore might differ if the typical relationships between these distributions don’t hold.</p>
+</section>
+<section id="importance-for-non-myopic-bo" class="level2">
+<h2 class="anchored" data-anchor-id="importance-for-non-myopic-bo">Importance for non-myopic BO</h2>
+<p>Non-myopic Bayesian optimization techniques (which include information-theoretic ones) generally try to “look ahead” and reason about future actions under a plausible set of labels for current proposed actions. Clearly this assumes <em>some degree</em> of coherence. I see two potential pitfalls.</p>
+<section id="different-updates-between-acquisition-function-and-the-outer-loop" class="level3">
+<h3 class="anchored" data-anchor-id="different-updates-between-acquisition-function-and-the-outer-loop">1) Different updates between acquisition function and the outer loop</h3>
+<p>For example, when using inducing point GPs one might just add new proposed actions as extra inducing points when calculating the acquisition function, but do a full refit after acquiring new labels. This creates the potential for a model to choose to observe point <img src="https://latex.codecogs.com/png.latex?x_1"> because of a scenario like “<img src="https://latex.codecogs.com/png.latex?y_1=7"> implies the optimum is <img src="https://latex.codecogs.com/png.latex?x_2"> with 99% probability”, only for the model to have a different estimate upon actually observing <img src="https://latex.codecogs.com/png.latex?y_1=7">. This kind of inconsistency could make a model unable to properly follow through with its plans.</p>
+</section>
+<section id="using-an-acquisition-function-with-updates-the-model-wont-actually-perform" class="level3">
+<h3 class="anchored" data-anchor-id="using-an-acquisition-function-with-updates-the-model-wont-actually-perform">2) Using an acquisition function with updates the model won’t actually perform</h3>
+<p>Let’s use entropy search <span class="citation" data-cites="hennig2012entropy">(Hennig and Schuler 2012)</span> as an example. It assumes you want to learn about the location of the maximizer <img src="https://latex.codecogs.com/png.latex?x%5E*"> of a function, and proposes to use <img src="https://latex.codecogs.com/png.latex?I(x%5E*,%20y)"> as the acquisition function.</p>
+<p><em>Predictive</em> entropy search <span class="citation" data-cites="hernandez2014predictive">(Hernández-Lobato et al. 2014)</span> proposes to re-write this as:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AI(x%5E*,%20y)%20=%20H(y)%20-%20%5Cmathbb%20E_%7Bx%5E*%7D%20%5Cleft%5B%20H(y%20%5Cmid%20x%5E*%20)%20%5Cright%5D%20%5C%20,%0A"></p>
+<p>then goes on to propose an approximation for <img src="https://latex.codecogs.com/png.latex?p(y%20%5Cmid%20x%5E*)">. Because of the symmetry of mutual information,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AI(x%5E*,%20y)%20=%20H(y)%20-%20%5Cmathbb%20E_%7Bx%5E*%7D%20%5Cleft%5B%20H(y%20%5Cmid%20x%5E*%20)%20%5Cright%5D%20=%20H(x%5E*)%20-%20%5Cmathbb%20E_%7By%7D%20%5Cleft%5B%20H(x%5E*%20%5Cmid%20y%20)%20%5Cright%5D%20%5C%20,%0A"></p>
+<p>this expression <em>should</em> therefore equal the model’s entropy reduction about <img src="https://latex.codecogs.com/png.latex?p(x%5E*)">. However, for an incoherent model this equality might not hold. Because the model will never actually observe <img src="https://latex.codecogs.com/png.latex?x%5E*">, <img src="https://latex.codecogs.com/png.latex?p(y%20%5Cmid%20x%5E*)"> represents an update that the model will never actually perform. Instead, the model will only perform an (approximate) update to <img src="https://latex.codecogs.com/png.latex?p(x%5E*%20%5Cmid%20y)">, and this could be completely inconsistent with what is calculated in the acquisition function.</p>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Overall this is nothing too new and nothing to be overly concerned about, but if you are working on non-myopic BO my suggestion is to keep coherence in mind, and try to use approximations that mirror the updates your model will actually perform, instead of an idealized perfect update.</p>
+
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-hennig2012entropy" class="csl-entry">
+Hennig, Philipp, and Christian J Schuler. 2012. <span>“Entropy Search for Information-Efficient Global Optimization.”</span> <em>Journal of Machine Learning Research</em> 13 (6).
+</div>
+<div id="ref-hernandez2014predictive" class="csl-entry">
+Hernández-Lobato, José M, Matthew W Hoffman, and Zoubin Ghahramani. 2014. <span>“Predictive Entropy Search for Efficient Global Optimization of Black-Box Functions.”</span> <em>Advances in Neural Information Processing Systems</em> 27.
+</div>
+<div id="ref-maddox2021conditioning" class="csl-entry">
+Maddox, Wesley J, Samuel Stanton, and Andrew G Wilson. 2021. <span>“Conditioning Sparse Variational Gaussian Processes for Online Decision-Making.”</span> In <em>Advances in Neural Information Processing Systems</em>, edited by M. Ranzato, A. Beygelzimer, Y. Dauphin, P. S. Liang, and J. Wortman Vaughan, vol. 34. Curran Associates, Inc.
+</div>
+<div id="ref-reason2026measuringcoherencepredictivemodels" class="csl-entry">
+Reason, Jamie, Vik Shirvaikar, Mark van der Wilk, and Chris Holmes. 2026. <em>Measuring Coherence in Predictive Models</em>. <a href="https://arxiv.org/abs/2611.20325">https://arxiv.org/abs/2611.20325</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>I’ll just assume continuous <img src="https://latex.codecogs.com/png.latex?y"> to avoid needing to write PDF or PMF everywhere.↩︎</p></li>
+<li id="fn2"><p>If the inducing points are re-fit when conditioning on <img src="https://latex.codecogs.com/png.latex?y_2"> (which is basically always done in practice) then it specifies a different model. I am aware of <span class="citation" data-cites="maddox2021conditioning">Maddox et al. (2021)</span> which proposes a different updating rule to avoid this, but haven’t read this paper in detail.↩︎</p></li>
+<li id="fn3"><p>these are <em>amortized</em> Bayesian methods, and the amortization might not be exact.↩︎</p></li>
+<li id="fn4"><p>MCMC chains are finite in practice and may not fully mix, so re-running MCMC on the updated data won’t exactly match the conditional implied by the original samples.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>machine learning</category>
+  <category>bayesian optimization</category>
+  <category>research papers</category>
+  <guid>https://austintripp.ca/blog/2026-11-25-coherent-bo/</guid>
+  <pubDate>Wed, 25 Nov 2026 14:00:00 GMT</pubDate>
+</item>
 <item>
   <title>High-dimensional BO is the wrong problem to study</title>
   <dc:creator>Austin Tripp</dc:creator>
@@ -90,14 +172,14 @@
 <li id="fn1"><p>To save time I’m not putting proper citations in this post, sorry 🙏↩︎</p></li>
 <li id="fn2"><p>With no ARD, i.e.&nbsp;just one lengthscale.↩︎</p></li>
 </ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
   title = {High-Dimensional {BO} Is the Wrong Problem to Study},
   date = {2026-10-04},
   url = {https://austintripp.ca/blog/2026-10-04-high-dim-bo-wrong-problem/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“High-Dimensional BO Is the Wrong Problem to
 Study.”</span> October 4. <a href="https://austintripp.ca/blog/2026-10-04-high-dim-bo-wrong-problem/">https://austintripp.ca/blog/2026-10-04-high-dim-bo-wrong-problem/</a>.
 </div></div></section></div> ]]></description>
@@ -211,7 +293,7 @@ Doumont, Colin, Donney Fan, Natalie Maus, Jacob R. Gardner, Henry Moss, and Geof
 
 
 <div class="post-badges">
-<p><span class="post-badge badge-confidence-medium" title="I checked the theory myself. I reviewed the experiments like a paper review, but did not audit the code.">⛅ Medium confidence</span> <span class="post-badge badge-ai-co-written" title="Everything after the callout is written by Claude Fable.">🤖 AI co-written</span> <span class="post-badge badge-effort-medium" title="Mostly done by Claude">🔧 Moderate effort</span> <span class="post-badge badge-originality-medium" title="Square-root scaling itself is folklore. I have not seen the one-sided bound, the impossibility proof, or the ceiling measurement elsewhere.">🧩 Medium originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+<p><span class="post-badge badge-confidence-medium" title="I checked the theory myself. I reviewed the experiments like a paper review, but did not audit the code.">⛅ Medium confidence</span> <span class="post-badge badge-ai-co-written" title="Everything after the callout is written by Claude Fable.">🤖 AI co-written</span> <span class="post-badge badge-effort-medium" title="Mostly done by Claude">🔧 Moderate effort</span> <span class="post-badge badge-originality-medium" title="Square-root scaling itself is folklore. I have not seen the one-sided bound, the impossibility proof, or the ceiling measurement elsewhere.">🧩 Medium originality</span></p>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1224,7 +1306,7 @@ Huber, Florian, and Julian Pollmann. 2026. <span>“Count Your Bits: Fingerprint
 <div id="ref-tripp2023tanimoto" class="csl-entry">
 Tripp, Austin, Sergio Bacallado, Sukriti Singh, and José Miguel Hernández-Lobato. 2023. <span>“Tanimoto Random Features for Scalable Molecular Machine Learning.”</span> <em>Advances in Neural Information Processing Systems</em>, 33656–86. <a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/6a69d44b3386e50c06f7107ef4f29302-Paper-Conference.pdf">https://proceedings.neurips.cc/paper_files/paper/2023/file/6a69d44b3386e50c06f7107ef4f29302-Paper-Conference.pdf</a>.
 </div>
-</div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+</div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin and Fable, Claude},
   title = {Square-Root Scaling of Count Fingerprints: The Best
     Elementwise Trick, and Why It Can’t Be Exact},
@@ -1232,7 +1314,7 @@ Tripp, Austin, Sergio Bacallado, Sukriti Singh, and José Miguel Hernández-Loba
   url = {https://austintripp.ca/blog/2026-09-18-sqrt-count-fingerprints/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin, and Claude Fable. 2026. <span>“Square-Root Scaling of
 Count Fingerprints: The Best Elementwise Trick, and Why It Can’t Be
 Exact.”</span> September 18. <a href="https://austintripp.ca/blog/2026-09-18-sqrt-count-fingerprints/">https://austintripp.ca/blog/2026-09-18-sqrt-count-fingerprints/</a>.
@@ -1253,7 +1335,7 @@ Exact.”</span> September 18. <a href="https://austintripp.ca/blog/2026-09-18-s
 
 
 <div class="post-badges">
-<p><span class="post-badge badge-confidence-high" title="I went through the idea myself in detail">☀️ High confidence</span> <span class="post-badge badge-ai-assisted" title="I wrote some initial messy code, then Claude polished it. Text is my own with light AI help for editing.">🤖 AI-assisted</span> <span class="post-badge badge-effort-high" title="This was a weekend project (excluding thinking time).">💎 High effort</span> <span class="post-badge badge-originality-high" title="Seems like nobody has applied CountSketch to fingerprints before!">💡 High originality</span> <span class="post-badge badge-fresh" title="Published within the last 60 days.">🌱 New</span></p>
+<p><span class="post-badge badge-confidence-high" title="I went through the idea myself in detail">☀️ High confidence</span> <span class="post-badge badge-ai-assisted" title="I wrote some initial messy code, then Claude polished it. Text is my own with light AI help for editing.">🤖 AI-assisted</span> <span class="post-badge badge-effort-high" title="This was a weekend project (excluding thinking time).">💎 High effort</span> <span class="post-badge badge-originality-high" title="Seems like nobody has applied CountSketch to fingerprints before!">💡 High originality</span></p>
 </div>
 <p>During a discussion<sup>1</sup> with Claude, it raised the idea of using <em>sketching</em> (random linear projections) to compress molecular fingerprints. After thinking this over a bit, I think it’s actually an amazing idea. This weekend I prototyped the idea in a new Python package <code>fpsketch</code>, and it seems very effective! I think this might be a strict improvement over the default of “folding” fingerprints. I’m excited to try it out and would love for others to try too.</p>
 <p><code>fpsketch</code> <a href="https://pypi.org/project/fpsketch/">is on PyPI</a>: if you work in cheminformatics, please try it out!</p>
@@ -2227,7 +2309,7 @@ background-color: null;
 font-style: inherit;">False</span>)</span>
 <span id="cb13-40">plt.show()</span></code></pre></div></div>
 </details>
-<div id="cell-fig-tanimoto-results" class="cell quarto-layout-panel" data-execution_count="8" data-layout-ncol="1">
+<div id="cell-fig-tanimoto-results" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="8">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-tanimoto-results" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2772,7 +2854,7 @@ background-color: null;
 font-style: inherit;">False</span>)</span>
 <span id="cb17-53">plt.show()</span></code></pre></div></div>
 </details>
-<div id="cell-fig-giant-results" class="cell quarto-layout-panel" data-execution_count="11" data-layout-ncol="1">
+<div id="cell-fig-giant-results" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="11">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-giant-results" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2933,7 +3015,7 @@ font-style: inherit;">None</span>)</span>
 <span id="cb18-27">cax.set_position([cax_pos.x0, img_pos.y0, cax_pos.width, img_pos.height])</span>
 <span id="cb18-28">plt.show()</span></code></pre></div></div>
 </details>
-<div id="cell-fig-giant-heatmap" class="cell quarto-layout-panel" data-execution_count="12" data-layout-ncol="1">
+<div id="cell-fig-giant-heatmap" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="12">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-giant-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2993,14 +3075,14 @@ Tripp, Austin, Sergio Bacallado, Sukriti Singh, and José Miguel Hernández-Loba
 <li id="fn5"><p>Note this is a permalink to a specific commit for the first release version; this code may change in the future.↩︎</p></li>
 <li id="fn6"><p>Admittedly, this would probably just be light advising from me — my day job at Valence/Recursion keeps me pretty busy.↩︎</p></li>
 </ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
   title = {Fpsketch: A Better Fingerprint Compression Algorithm},
   date = {2026-08-31},
   url = {https://austintripp.ca/blog/2026-08-31-fpsketch/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“Fpsketch: A Better Fingerprint Compression
 Algorithm.”</span> August 31. <a href="https://austintripp.ca/blog/2026-08-31-fpsketch/">https://austintripp.ca/blog/2026-08-31-fpsketch/</a>.
 </div></div></section></div> ]]></description>
@@ -3044,14 +3126,14 @@ Algorithm.”</span> August 31. <a href="https://austintripp.ca/blog/2026-08-31-
 <li id="fn1"><p>For “promotion” posts it’s the idea itself I want to promote, not my personal description of the idea.↩︎</p></li>
 <li id="fn2"><p>Most recently <a href="https://danmackinlay.name/">Dan MacKinlay</a>’s website, which I like I lot!↩︎</p></li>
 </ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
   title = {Replacing Disclaimers with Badges on My Blog.},
   date = {2026-08-24},
   url = {https://austintripp.ca/blog/2026-08-24-blog-badges/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“Replacing Disclaimers with Badges on My
 Blog.”</span> August 24. <a href="https://austintripp.ca/blog/2026-08-24-blog-badges/">https://austintripp.ca/blog/2026-08-24-blog-badges/</a>.
 </div></div></section></div> ]]></description>
@@ -3578,14 +3660,14 @@ Blog.”</span> August 24. <a href="https://austintripp.ca/blog/2026-08-24-blog-
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin and Fable, Claude},
   title = {Why Does Spherical-Linear {Bayesian} Optimization Work?},
   date = {2026-07-25},
   url = {https://austintripp.ca/blog/2026-07-25-spherical-linear-high-dim-bo/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin, and Claude Fable. 2026. <span>“Why Does Spherical-Linear
 Bayesian Optimization Work?”</span> July 25. <a href="https://austintripp.ca/blog/2026-07-25-spherical-linear-high-dim-bo/">https://austintripp.ca/blog/2026-07-25-spherical-linear-high-dim-bo/</a>.
 </div></div></section></div> ]]></description>
@@ -3666,7 +3748,7 @@ Bayesian Optimization Work?”</span> July 25. <a href="https://austintripp.ca/b
 <ol>
 <li id="fn1"><p>Link: <a href="https://chemrxiv.org/doi/full/10.26434/chemrxiv.15000615/v1" class="uri">https://chemrxiv.org/doi/full/10.26434/chemrxiv.15000615/v1</a>↩︎</p></li>
 </ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
   title = {Thoughts on “{Grand} {Challenges} for {Predictive} {Modeling}
     in {Small} {Molecule} {Drug} {Discovery}”},
@@ -3674,7 +3756,7 @@ Bayesian Optimization Work?”</span> July 25. <a href="https://austintripp.ca/b
   url = {https://austintripp.ca/blog/2026-07-12-grand-challenges-small-molecules/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“Thoughts on <span>‘Grand Challenges for
 Predictive Modeling in Small Molecule Drug Discovery’</span>.”</span>
 July 12. <a href="https://austintripp.ca/blog/2026-07-12-grand-challenges-small-molecules/">https://austintripp.ca/blog/2026-07-12-grand-challenges-small-molecules/</a>.
@@ -9307,7 +9389,7 @@ Zhang, Lu. 2018. <em>Nearest Neighbor Gaussian Processes (NNGP) Based Models in 
 <li id="fn8"><p>I think I recall reading that it is optimal in terms of KL between the true and approximate distributions, but I’m not sure, and won’t touch this subject in this post.↩︎</p></li>
 <li id="fn9"><p>As far as I can tell this is another artifact of evaluation on a grid, and I won’t explore this in more detail.↩︎</p></li>
 </ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
   title = {The {Vecchia} {Gaussian} {Process} {Approximation}
     {Explained}},
@@ -9315,7 +9397,7 @@ Zhang, Lu. 2018. <em>Nearest Neighbor Gaussian Processes (NNGP) Based Models in 
   url = {https://austintripp.ca/blog/2026-07-03-vecchia/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“The Vecchia Gaussian Process Approximation
 Explained.”</span> July 3. <a href="https://austintripp.ca/blog/2026-07-03-vecchia/">https://austintripp.ca/blog/2026-07-03-vecchia/</a>.
 </div></div></section></div> ]]></description>
@@ -9508,14 +9590,14 @@ Figure&nbsp;1: Plot of <img src="https://latex.codecogs.com/png.latex?y%20=%20mx
 <li id="fn2"><p>Technically the word <code>python</code> should be surrounded with curly braces. I had to sacrifice accuracy a bit to preview quarto syntax within a quarto document without that syntax actually being used and compiled!↩︎</p></li>
 <li id="fn3"><p>More details in <a href="../../blog/2026-05-10-quarto-website/">this other post</a>↩︎</p></li>
 </ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
   title = {Quarto Is Great!},
   date = {2026-05-10},
   url = {https://austintripp.ca/blog/2026-05-10-quarto-is-great/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“Quarto Is Great!”</span> May 10. <a href="https://austintripp.ca/blog/2026-05-10-quarto-is-great/">https://austintripp.ca/blog/2026-05-10-quarto-is-great/</a>.
 </div></div></section></div> ]]></description>
   <category>opinion</category>
@@ -9558,14 +9640,14 @@ Tripp, Austin. 2026. <span>“Quarto Is Great!”</span> May 10. <a href="https:
 </ul>
 ↩︎</li>
 </ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
   title = {Refactoring My Website to Use {Quarto}},
   date = {2026-05-10},
   url = {https://austintripp.ca/blog/2026-05-10-quarto-website/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“Refactoring My Website to Use
 Quarto.”</span> May 10. <a href="https://austintripp.ca/blog/2026-05-10-quarto-website/">https://austintripp.ca/blog/2026-05-10-quarto-website/</a>.
 </div></div></section></div> ]]></description>
@@ -9634,7 +9716,7 @@ Quarto.”</span> May 10. <a href="https://austintripp.ca/blog/2026-05-10-quarto
 </ol>
 ↩︎</li>
 </ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
   title = {Getting Value Out of Coding Agents for Low-Urgency,
     Low-Impact Projects.},
@@ -9642,7 +9724,7 @@ Quarto.”</span> May 10. <a href="https://austintripp.ca/blog/2026-05-10-quarto
   url = {https://austintripp.ca/blog/2026-05-04-llms-for-low-stakes-projects/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“Getting Value Out of Coding Agents for
 Low-Urgency, Low-Impact Projects.”</span> May 4. <a href="https://austintripp.ca/blog/2026-05-04-llms-for-low-stakes-projects/">https://austintripp.ca/blog/2026-05-04-llms-for-low-stakes-projects/</a>.
 </div></div></section></div> ]]></description>
@@ -9703,16 +9785,16 @@ Low-Urgency, Low-Impact Projects.”</span> May 4. <a href="https://austintripp.
 <ol>
 <li id="fn1"><p>Unfortunately I forget the source: I think it was a podcast?↩︎</p></li>
 </ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
-  title = {Write Research Papers to Be *Skimmed*},
+  title = {Write Research Papers to Be \emph{Skimmed}},
   date = {2026-05-04},
   url = {https://austintripp.ca/blog/2026-05-04-skimmable-papers/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“Write Research Papers to Be
-*Skimmed*.”</span> May 4. <a href="https://austintripp.ca/blog/2026-05-04-skimmable-papers/">https://austintripp.ca/blog/2026-05-04-skimmable-papers/</a>.
+<em>Skimmed</em>.”</span> May 4. <a href="https://austintripp.ca/blog/2026-05-04-skimmable-papers/">https://austintripp.ca/blog/2026-05-04-skimmable-papers/</a>.
 </div></div></section></div> ]]></description>
   <category>writing</category>
   <category>research papers</category>
@@ -9773,14 +9855,14 @@ Tripp, Austin. 2026. <span>“Write Research Papers to Be
 <ol>
 <li id="fn1"><p>One might encounter these when deploying Tanimoto Kernel Gaussian Processes on large datasets.↩︎</p></li>
 </ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
   title = {First Time Encountering a Hallucinated Citation of My Paper.},
   date = {2026-05-01},
   url = {https://austintripp.ca/blog/2026-05-01-first-hallucinated-citation/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“First Time Encountering a Hallucinated
 Citation of My Paper.”</span> May 1. <a href="https://austintripp.ca/blog/2026-05-01-first-hallucinated-citation/">https://austintripp.ca/blog/2026-05-01-first-hallucinated-citation/</a>.
 </div></div></section></div> ]]></description>
@@ -9824,14 +9906,14 @@ Citation of My Paper.”</span> May 1. <a href="https://austintripp.ca/blog/2026
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
   title = {Book Review: {The} {Drug} {Hunters}},
   date = {2026-03-11},
   url = {https://austintripp.ca/blog/2026-03-11-drug-hunters/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“Book Review: The Drug Hunters.”</span> March
 11. <a href="https://austintripp.ca/blog/2026-03-11-drug-hunters/">https://austintripp.ca/blog/2026-03-11-drug-hunters/</a>.
 </div></div></section></div> ]]></description>
@@ -9923,14 +10005,14 @@ Tripp, Austin. 2026. <span>“Book Review: The Drug Hunters.”</span> March
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
   title = {Behaviour-Based Evaluations in {Bayesian} Optimization},
   date = {2026-02-21},
   url = {https://austintripp.ca/blog/2026-02-21-behaviour-based-BO-evals/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“Behaviour-Based Evaluations in Bayesian
 Optimization.”</span> February 21. <a href="https://austintripp.ca/blog/2026-02-21-behaviour-based-BO-evals/">https://austintripp.ca/blog/2026-02-21-behaviour-based-BO-evals/</a>.
 </div></div></section></div> ]]></description>
@@ -10020,7 +10102,7 @@ Optimization.”</span> February 21. <a href="https://austintripp.ca/blog/2026-0
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
   title = {Rebranding {BO} Away from “Black-Box” and Towards
     “Model-Based”},
@@ -10028,7 +10110,7 @@ Optimization.”</span> February 21. <a href="https://austintripp.ca/blog/2026-0
   url = {https://austintripp.ca/blog/2026-02-16-bo-rebrand/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“Rebranding BO Away from
 <span>‘Black-Box’</span> and Towards <span>‘Model-Based’</span>.”</span>
 February 16. <a href="https://austintripp.ca/blog/2026-02-16-bo-rebrand/">https://austintripp.ca/blog/2026-02-16-bo-rebrand/</a>.
@@ -10098,7 +10180,7 @@ February 16. <a href="https://austintripp.ca/blog/2026-02-16-bo-rebrand/">https:
 <ol>
 <li id="fn1"><p>If done on <img src="https://latex.codecogs.com/png.latex?f">. There is another version of Thompson sampling done on <img src="https://latex.codecogs.com/png.latex?y"> which would behave differently.↩︎</p></li>
 </ol>
-</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{tripp2026,
   author = {Tripp, Austin},
   title = {Clarifying Noise Vs Model Misspecification in {Gaussian}
     {Process} Models (and Its Importance in {BO)}},
@@ -10106,7 +10188,7 @@ February 16. <a href="https://austintripp.ca/blog/2026-02-16-bo-rebrand/">https:
   url = {https://austintripp.ca/blog/2026-02-14-noise-in-gp-models/},
   langid = {en}
 }
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
+</code></pre></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
 Tripp, Austin. 2026. <span>“Clarifying Noise Vs Model Misspecification
 in Gaussian Process Models (and Its Importance in BO).”</span> February
 14. <a href="https://austintripp.ca/blog/2026-02-14-noise-in-gp-models/">https://austintripp.ca/blog/2026-02-14-noise-in-gp-models/</a>.
@@ -10116,34 +10198,6 @@ in Gaussian Process Models (and Its Importance in BO).”</span> February
   <category>_recent-highlight</category>
   <guid>https://austintripp.ca/blog/2026-02-14-noise-in-gp-models/</guid>
   <pubDate>Sat, 14 Feb 2026 23:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Tyler Cowen’s book on talent</title>
-  <dc:creator>Austin Tripp</dc:creator>
-  <link>https://austintripp.ca/blog/2026-02-13-talent/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>Cross-posting my summary of the book “Talent: How to Identify Energizers, Creatives, and Winners Around the World” from my GitHub: <a href="https://github.com/AustinT/book-summaries/blob/master/non-fiction/2026-02-01-talent.md">link</a>.</p>
-<p>This is a good book, I appreciated the heterodox advice about how to run interviews and spot “undervalued” candidates, even if only some of it is backed by data (this is a field with generally poor data).</p>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{tripp2026,
-  author = {Tripp, Austin},
-  title = {Tyler {Cowen’s} Book on Talent},
-  date = {2026-02-13},
-  url = {https://austintripp.ca/blog/2026-02-13-talent/},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-tripp2026" class="csl-entry quarto-appendix-citeas">
-Tripp, Austin. 2026. <span>“Tyler Cowen’s Book on Talent.”</span>
-February 13. <a href="https://austintripp.ca/blog/2026-02-13-talent/">https://austintripp.ca/blog/2026-02-13-talent/</a>.
-</div></div></section></div> ]]></description>
-  <guid>https://austintripp.ca/blog/2026-02-13-talent/</guid>
-  <pubDate>Fri, 13 Feb 2026 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
