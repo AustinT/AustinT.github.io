@@ -1,0 +1,145 @@
+---
+title: "Coherent updates and non-myopic Bayesian optimization"
+date: 2026-11-25T14:00Z
+
+# Include references, citations off
+citation: false
+google-scholar: false
+bibliography: references.bib
+
+categories:
+- machine learning
+- bayesian optimization
+- research papers
+
+# Badges
+originality: medium
+originality-note: "Inspired by a paper, but with some original insights from me"
+effort: medium
+effort-note: "~1h reading + writing up"
+ai-involvement: human
+ai-involvement-note: "Writing is all me, except for light proofreading and 2 footnotes fact-checked by Claude."
+confidence: high
+---
+
+Reading @reason2026measuringcoherencepredictivemodels today made me realize
+something surprising (but obvious in hindsight): Bayesian optimization (BO)
+algorithms usually assume a predictive model which performs Bayesian updating,
+even though approximate inference methods don't actually guarantee this. Let's
+use a simple example with 2 variables, $y_1$ and $y_2$. A Bayesian model will
+specify:
+
+- $p_1(y_1)$: PDF[^pdf] of $y_1$
+- $p_2(y_2)$: PDF of $y_2$
+- $p_{12}(y_1, y_2)$: joint distribution of $y_1$ and $y_2$ together
+
+[^pdf]: I'll just assume continuous $y$ to avoid needing to write PDF or PMF
+    everywhere.
+
+In a _coherent_ model, we have $p_1(y_1) = \int p_{12}(y_1, y_2)\, dy_2$ (and
+vice versa for $p_2(y_2)$). This means we can freely choose between accessing
+$p_1(y_1)$ directly or by marginalizing the joint distribution, whatever is
+computationally more convenient. 
+
+However, for many models in practical use $p_1(\cdot)$ and $\int p_{12}(\cdot,
+y_2)\,dy_2$ may _not_ be equal. We call these models _incoherent_. Strictly
+speaking, almost every model using approximate inference is likely to be
+somewhat incoherent: eg inducing point GPs[^inducing-gps], prior-fitted
+networks[^pfns], any probabilistic model sampled using MCMC[^mcmc].
+
+[^inducing-gps]: If the inducing points are re-fit when conditioning on $y_2$
+    (which is basically always done in practice) then it specifies a different
+    model. I am aware of @maddox2021conditioning which proposes a different
+    updating rule to avoid this, but haven't read this paper in detail.
+
+[^pfns]: these are _amortized_ Bayesian methods, and the amortization might not
+    be exact.
+
+[^mcmc]: MCMC chains are finite in practice and may not fully mix, so
+    re-running MCMC on the updated data won't exactly match the conditional
+    implied by the original samples.
+
+## Does coherence matter?
+
+I suspect normally no, and I think this is why it's hardly mentioned in BO
+papers. The vast majority of BO papers use acquisition functions that depend
+only on marginals. For example, expected improvement, probability of
+improvement, and upper confidence bound all just use $p(y)$. If a BO loop
+chooses point 1 based on $p(y_1)$ and this causes an incoherent update to
+$p(y_2)$ in the next step, that doesn't really matter too much, because these
+are never directly compared.
+
+However, some acquisition functions involve hypothetical model updates and
+therefore _do_ implicitly assume coherence. For example, an
+information-theoretic acquisition function like
+
+$$
+I(y_1, y_2) = H(y_2) - \mathbb E_{y_1} \left[ H(y_2 \mid y_1) \right]
+$${#eq-mi}
+
+implicitly relies on a coherent Bayesian update to produce $p(y_2 \mid y_1)$.
+However, if this update is not made coherently, that doesn't actually guarantee
+anything bad will happen. Maybe at worst this "pseudo mutual information" could
+be negative.
+
+@reason2026measuringcoherencepredictivemodels mainly points out that under
+incoherent updating, different ways of writing an acquisition function may no
+longer be equivalent. For example, mutual information can either be
+a difference between unconditional and conditional entropies (like @eq-mi) or
+a KL divergence between the joint and the product of marginals. These have
+different analytic expressions and use different marginals/conditionals/joint
+distributions and therefore might differ if the typical relationships between
+these distributions don't hold.
+
+## Importance for non-myopic BO
+
+Non-myopic Bayesian optimization techniques (which include
+information-theoretic ones) generally try to "look ahead" and reason about
+future actions under a plausible set of labels for current proposed actions.
+Clearly this assumes _some degree_ of coherence. I see two potential pitfalls.
+
+### 1) Different updates between acquisition function and the outer loop
+
+For example, when using inducing point GPs one might just add new proposed
+actions as extra inducing points when calculating the acquisition function, but
+do a full refit after acquiring new labels. This creates the potential for
+a model to choose to observe point $x_1$ because of a scenario like "$y_1=7$
+implies the optimum is $x_2$ with 99% probability", only for the model to have
+a different estimate upon actually observing $y_1=7$. This kind of
+inconsistency could make a model unable to properly follow through with its
+plans.
+
+### 2) Using an acquisition function with updates the model won't actually perform
+
+Let's use entropy search [@hennig2012entropy] as an example. It assumes you
+want to learn about the location of the maximizer $x^*$ of a function, and
+proposes to use $I(x^*, y)$ as the acquisition function.
+
+_Predictive_ entropy search [@hernandez2014predictive] proposes to re-write
+this as:
+
+$$
+I(x^*, y) = H(y) - \mathbb E_{x^*} \left[ H(y \mid x^* ) \right] \ ,
+$$
+
+then goes on to propose an approximation for $p(y \mid x^*)$. Because of the
+symmetry of mutual information,
+
+$$
+I(x^*, y) = H(y) - \mathbb E_{x^*} \left[ H(y \mid x^* ) \right] = H(x^*) - \mathbb E_{y} \left[ H(x^* \mid y ) \right] \ ,
+$$
+
+this expression _should_ therefore equal the model's entropy reduction about
+$p(x^*)$. However, for an incoherent model this equality might not hold.
+Because the model will never actually observe $x^*$, $p(y \mid x^*)$ represents
+an update that the model will never actually perform. Instead, the model will
+only perform an (approximate) update to $p(x^* \mid y)$, and this could be
+completely inconsistent with what is calculated in the acquisition function.
+
+## Conclusion
+
+Overall this is nothing too new and nothing to be overly concerned about, but
+if you are working on non-myopic BO my suggestion is to keep coherence in mind,
+and try to use approximations that mirror the updates your model will actually
+perform, instead of an idealized perfect update.
+
